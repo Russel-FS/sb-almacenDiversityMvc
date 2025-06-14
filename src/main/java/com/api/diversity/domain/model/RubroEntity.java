@@ -3,7 +3,6 @@ package com.api.diversity.domain.model;
 import java.time.LocalDateTime;
 
 import com.api.diversity.domain.enums.EstadoRubro;
-import com.api.diversity.domain.enums.NombreRubro;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,9 +35,8 @@ public class RubroEntity {
     @Column(name = "NombreRubro", nullable = false)
     private String nombreRubro;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "Code", nullable = false)
-    private NombreRubro code;
+    private String code;
 
     @Column(name = "Descripcion")
     private String descripcion;

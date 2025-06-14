@@ -39,15 +39,15 @@ CREATE TABLE Usuarios (
 
 -- Tabla de Rubros
 CREATE TABLE Rubros (
-    IdRubro INT IDENTITY (1, 1) PRIMARY KEY,
+    ID_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
     NombreRubro VARCHAR(80) NOT NULL,
     Code VARCHAR(50) NOT NULL,
     Descripcion VARCHAR(255),
     Estado VARCHAR(20) NOT NULL,
     PublicId VARCHAR(100),
     ImagenUrl VARCHAR(255),
-    Fecha_Creacion DATETIME DEFAULT GETDATE (),
-    Fecha_Modificacion DATETIME DEFAULT GETDATE (),
+    Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_by BIGINT NOT NULL,
     updated_by BIGINT,
     CONSTRAINT UQ_Rubros_Code_Nombre UNIQUE (Code, NombreRubro),
@@ -251,31 +251,7 @@ VALUES (
         'Operador',
         'Puede registrar entradas y salidas'
     );
-
--- Inserción de rubros
-INSERT INTO
-    Rubros (
-        Nombre_Rubro,
-        code,
-        Descripcion
-    )
-VALUES (
-        'Piñatería',
-        'PINATERIA',
-        'Productos relacionados con piñatería'
-    ),
-    (
-        'Librería',
-        'LIBRERIA',
-        'Productos de librería y papelería'
-    ),
-    (
-        'Cámaras de Seguridad',
-        'CAMARAS_SEGURIDAD',
-        'Equipos y accesorios de seguridad'
-    );
-
--- Inserción de usuario administrador por defecto
+-- Inserción de usuario administrador
 INSERT INTO
     Usuarios (
         Nombre_Usuario,
@@ -290,4 +266,30 @@ VALUES (
         'Administrador del Sistema',
         1,
         '$2a$10$YourHashedPasswordHere'
+    );
+-- Inserción de rubros
+INSERT INTO
+    Rubros (
+        created_by,
+        Nombre_Rubro,
+        code,
+        Descripcion
+    )
+VALUES (
+        1,
+        'Piñatería',
+        'PINATERIA',
+        'Productos relacionados con piñatería'
+    ),
+    (
+        1,
+        'Librería',
+        'LIBRERIA',
+        'Productos de librería y papelería'
+    ),
+    (
+        1,
+        'Cámaras de Seguridad',
+        'CAMARAS_SEGURIDAD',
+        'Equipos y accesorios de seguridad'
     );
