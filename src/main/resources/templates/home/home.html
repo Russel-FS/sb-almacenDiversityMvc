@@ -6,82 +6,85 @@
   </head>
   <body>
     <div th:replace="~{layout :: layout(~{::section})}">
-      <section>        <!-- Hero Section -->
-        <div class="relative bg-gradient-to-b from-gray-50 to-white overflow-hidden">
-          <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80" 
-                 class="w-full h-full object-cover opacity-10" alt="Background"/>
-          </div>
-          <div class="max-w-6xl mx-auto px-4 relative z-10">
+      <section>
+        <!-- Hero Section -->
+        <div class="relative overflow-hidden bg-white">
+          <div class="absolute inset-0 bg-[radial-gradient(45%_50%_at_50%_50%,rgba(220,220,220,0.15)_0%,rgba(255,255,255,0)_100%)]"></div>
+          <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div class="py-24 md:py-32">
-              <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="text-left">
-                  <h1 class="text-4xl md:text-5xl font-semibold bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent mb-6">
+              <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="text-left max-w-2xl">
+                  <h1 class="text-4xl md:text-5xl font-medium tracking-tight text-gray-900 mb-6">
                     Control Total de tu Inventario
                   </h1>
-                  <p class="text-gray-600 text-xl mb-8 leading-relaxed">
+                  <p class="text-lg text-gray-600 leading-relaxed mb-8">
                     Sistema integral para la gestión eficiente de productos, categorías e inventario. Optimiza tus operaciones con una interfaz moderna y funcional.
                   </p>
+                  <div class="flex gap-4">
+                    <a href="/productos" class="inline-flex items-center px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors">
+                      Comenzar
+                    </a>
+                    <a href="/categorias" class="inline-flex items-center px-6 py-3 text-sm font-medium text-gray-900 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                      Ver Categorías
+                    </a>
+                  </div>
                 </div>
-                <div class="relative h-64 md:h-96">
+                <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100">
                   <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80" 
-                       class="w-full h-full object-cover rounded-2xl shadow-lg" alt="Sistema de gestión"/>
+                       class="w-full h-full object-cover" alt="Sistema de gestión"/>
+                  <div class="absolute inset-0 bg-gradient-to-tr from-gray-900/10 via-transparent to-transparent"></div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- Features Section -->
-        <div class="max-w-6xl mx-auto px-4 py-16">
-          <h2 class="text-3xl font-semibold text-center mb-12 text-gray-900">Gestión Empresarial Simplificada</h2>
+        </div>        <!-- Features Section -->
+        <div class="max-w-5xl mx-auto px-4 py-24">
+          <div class="text-center max-w-2xl mx-auto mb-16">
+            <h2 class="text-2xl font-medium text-gray-900 mb-4">Gestión Empresarial Simplificada</h2>
+            <p class="text-gray-600">Descubre las herramientas que necesitas para optimizar tu negocio.</p>
+          </div>
+          
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <a th:href="@{/categorias}" class="group">
-              <div
-                class="p-8 rounded-2xl bg-gradient-to-b from-gray-50 to-white border border-gray-100 hover:border-gray-200 transition-all duration-300"
-              >                <div class="mb-6 relative h-32 rounded-xl overflow-hidden">
+              <div class="p-6 rounded-2xl bg-white ring-1 ring-gray-100 hover:ring-gray-200 transition-all duration-300">
+                <div class="mb-5 relative aspect-[4/3] rounded-lg overflow-hidden bg-gray-50">
                   <img src="https://images.unsplash.com/photo-1472289065668-ce650ac443d2?auto=format&fit=crop&q=80" 
-                       class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300" alt="Categorías"/>
-                  <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+                       class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" alt="Categorías"/>
                 </div>
-                <h3 class="text-xl font-medium text-gray-900 mb-2">
+                <h3 class="text-lg font-medium text-gray-900 mb-2">
                   Categorías
                 </h3>
-                <p class="text-gray-500 text-sm">
+                <p class="text-sm text-gray-500 leading-relaxed">
                   Organización inteligente de productos para una gestión eficiente
                 </p>
               </div>
             </a>
 
             <a th:href="@{/productos}" class="group">
-              <div
-                class="p-8 rounded-2xl bg-gradient-to-b from-gray-50 to-white border border-gray-100 hover:border-gray-200 transition-all duration-300"
-              >                <div class="mb-6 relative h-32 rounded-xl overflow-hidden">
+              <div class="p-6 rounded-2xl bg-white ring-1 ring-gray-100 hover:ring-gray-200 transition-all duration-300">
+                <div class="mb-5 relative aspect-[4/3] rounded-lg overflow-hidden bg-gray-50">
                   <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80" 
-                       class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300" alt="Productos"/>
-                  <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+                       class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" alt="Productos"/>
                 </div>
-                <h3 class="text-xl font-medium text-gray-900 mb-2">
+                <h3 class="text-lg font-medium text-gray-900 mb-2">
                   Productos
                 </h3>
-                <p class="text-gray-500 text-sm">
+                <p class="text-sm text-gray-500 leading-relaxed">
                   Control detallado de tu catálogo de productos
                 </p>
               </div>
             </a>
 
             <a th:href="@{/inventario}" class="group">
-              <div
-                class="p-8 rounded-2xl bg-gradient-to-b from-gray-50 to-white border border-gray-100 hover:border-gray-200 transition-all duration-300"
-              >                <div class="mb-6 relative h-32 rounded-xl overflow-hidden">
+              <div class="p-6 rounded-2xl bg-white ring-1 ring-gray-100 hover:ring-gray-200 transition-all duration-300">
+                <div class="mb-5 relative aspect-[4/3] rounded-lg overflow-hidden bg-gray-50">
                   <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80" 
-                       class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300" alt="Inventario"/>
-                  <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300"></div>
+                       class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" alt="Inventario"/>
                 </div>
-                <h3 class="text-xl font-medium text-gray-900 mb-2">
+                <h3 class="text-lg font-medium text-gray-900 mb-2">
                   Inventario
                 </h3>
-                <p class="text-gray-500 text-sm">
+                <p class="text-sm text-gray-500 leading-relaxed">
                   Monitoreo y control preciso de tu inventario en tiempo real
                 </p>
               </div>
