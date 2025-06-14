@@ -122,6 +122,7 @@
                   th:action="@{/rubros/guardar}"
                   th:object="${rubro}"
                   method="post"
+                  enctype="multipart/form-data"
                   class="space-y-8"
                 >
                   <input type="hidden" th:field="*{idRubro}" />

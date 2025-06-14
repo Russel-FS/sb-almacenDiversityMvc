@@ -3,11 +3,13 @@ package com.api.diversity.infrastructure.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -15,6 +17,7 @@ import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.service.IRubroService;
 import com.api.diversity.domain.enums.EstadoRubro;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -48,21 +51,16 @@ public class RubroController {
     }
 
     @PostMapping("/guardar")
-    public String guardarRubro(@ModelAttribute RubroDto rubro, MultipartFile file,
+    public String guardarRubro(@ModelAttribute @Valid RubroDto rubro, BindingResult result,
+            @RequestParam("imagen") MultipartFile imagen,
             RedirectAttributes redirectAttributes) {
         try {
-            if (rubro.getIdRubro() != null) {
-                RubroDto rubroOriginal = rubroService.findById(rubro.getIdRubro());
-                rubro.setCode(rubroOriginal.getCode());
-                rubro.setCreatedBy(rubroOriginal.getCreatedBy());
-            } else {
-                rubro.setCreatedBy(1L);
+            if (result.hasErrors()) {
+                redirectAttributes.addFlashAttribute("mensaje", "Error en los datos del rubro");
+                redirectAttributes.addFlashAttribute("tipoMensaje", "error");
+                return "rubros/form";
             }
-
-            if (rubro.getEstado() == null) {
-                rubro.setEstado(EstadoRubro.Activo);
-            }
-            rubroService.save(rubro, file);
+            rubroService.save(rubro, imagen);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro guardado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
         } catch (Exception e) {
