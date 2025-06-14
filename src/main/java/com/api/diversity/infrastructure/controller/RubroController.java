@@ -46,8 +46,11 @@ public class RubroController {
                 redirectAttributes.addFlashAttribute("tipoMensaje", "error");
                 return "redirect:/rubros/editar/" + rubro.getIdRubro();
             }
+
+            RubroDto rubroOriginal = rubroService.findById(rubro.getIdRubro());
+            rubro.setCode(rubroOriginal.getCode());
+
             log.info("Guardando rubro: {}", rubro);
-            System.out.println("Guardando rubro: " + rubro);
             rubroService.save(rubro);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro actualizado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");

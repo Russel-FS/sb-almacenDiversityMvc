@@ -16,6 +16,7 @@ public class RubroMapper {
         return RubroDto.builder()
                 .idRubro(entity.getIdRubro())
                 .nombreRubro(entity.getNombreRubro())
+                .code(entity.getCode())
                 .descripcion(entity.getDescripcion())
                 .estado(entity.getEstado())
                 .build();
@@ -29,6 +30,7 @@ public class RubroMapper {
         RubroEntity entity = new RubroEntity();
         entity.setIdRubro(dto.getIdRubro());
         entity.setNombreRubro(dto.getNombreRubro());
+        entity.setCode(dto.getCode());
         entity.setDescripcion(dto.getDescripcion());
         entity.setEstado(dto.getEstado());
         return entity;
