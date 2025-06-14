@@ -1,9 +1,9 @@
-package com.api.diversity.application.service;
+package com.api.diversity.application.service.impl;
 
 import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.mappers.RubroMapper;
-import com.api.diversity.application.service.impl.CloudinaryService;
 import com.api.diversity.application.service.impl.CloudinaryService.CloudinaryResponse;
+import com.api.diversity.application.service.interfaces.IRubroService;
 import com.api.diversity.domain.model.RubroEntity;
 import com.api.diversity.domain.ports.RubroRepository;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RubroService implements IRubroService {
+public class RubroServiceImpl implements IRubroService {
 
     @Autowired
     private RubroRepository rubroRepository;

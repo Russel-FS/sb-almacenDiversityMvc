@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.api.diversity.application.dto.RubroDto;
-import com.api.diversity.application.service.IRubroService;
+import com.api.diversity.application.service.interfaces.IRubroService;
 import com.api.diversity.domain.enums.EstadoRubro;
 
 import jakarta.validation.Valid;

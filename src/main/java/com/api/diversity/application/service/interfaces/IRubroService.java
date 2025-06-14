@@ -1,4 +1,4 @@
-package com.api.diversity.application.service;
+package com.api.diversity.application.service.interfaces;
 
 import com.api.diversity.application.dto.RubroDto;
 
