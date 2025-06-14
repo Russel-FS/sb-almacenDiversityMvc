@@ -17,13 +17,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
 @Entity
-@Table(name = "Rubros")
+@Table(name = "Rubros", uniqueConstraints = {
+        @UniqueConstraint(name = "UQ_Rubros_Code_Nombre", columnNames = { "Code", "Nombre" })
+})
 public class RubroEntity {
 
     @Id
