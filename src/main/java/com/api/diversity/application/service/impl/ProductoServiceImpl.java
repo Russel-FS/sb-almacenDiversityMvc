@@ -1,5 +1,6 @@
 package com.api.diversity.application.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,6 +49,9 @@ public class ProductoServiceImpl implements IProductoService {
             CloudinaryService.CloudinaryResponse response = cloudinaryService.uploadFile(imagen, "productos");
             producto.setUrlImagen(response.getUrl());
             producto.setPublicId(response.getPublicId());
+        }
+        if (producto.getIdProducto() == null || producto.getIdProducto().isEmpty()) {
+            producto.setFechaRegistro(LocalDateTime.now());
         }
         ProductoEntity entity = productoMapper.toEntity(producto);
         ProductoEntity savedEntity = productoRepository.save(entity);

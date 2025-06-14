@@ -57,13 +57,24 @@ public class ProductoController {
     public String guardarProducto(@Valid Producto producto,
             BindingResult result,
             @RequestParam("imagen") MultipartFile imagen,
-            RedirectAttributes flash) {
+            RedirectAttributes flash,
+            Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("categorias", categoriaService.findAll());
             return "productos/form";
         }
-        productoService.save(producto, imagen);
-        flash.addFlashAttribute("mensaje", "Producto guardado exitosamente.");
-        flash.addFlashAttribute("tipoMensaje", "success");
+
+        try {
+            productoService.save(producto, imagen);
+            flash.addFlashAttribute("mensaje", "Producto guardado exitosamente.");
+            flash.addFlashAttribute("tipoMensaje", "success");
+        } catch (Exception e) {
+            flash.addFlashAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
+            flash.addFlashAttribute("tipoMensaje", "error");
+            model.addAttribute("categorias", categoriaService.findAll());
+            return "productos/form";
+        }
+
         return "redirect:/productos";
     }
 
