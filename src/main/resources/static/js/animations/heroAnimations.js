@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
       easing: 'easeOutQuart'
     });
 
-    // Animación del título "Centro de Control"
+    // Animación del título centro de control
     anime({
       targets: ['#sectionTitle', '#sectionDescription'],
       translateY: [15, 0],
