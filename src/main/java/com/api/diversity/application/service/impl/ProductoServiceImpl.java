@@ -51,7 +51,7 @@ public class ProductoServiceImpl implements IProductoService {
             producto.setPublicId(response.getPublicId());
         }
         if (producto.getIdProducto() == null || producto.getIdProducto() == 0) {
-            producto.setFechaRegistro(LocalDateTime.now());
+            producto.setFechaCreacion(LocalDateTime.now());
         }
         ProductoEntity entity = productoMapper.toEntity(producto);
         ProductoEntity savedEntity = productoRepository.save(entity);
