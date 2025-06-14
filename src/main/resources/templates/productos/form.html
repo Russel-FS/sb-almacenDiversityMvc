@@ -449,12 +449,13 @@
                           />
                         </div>
                       </div>
-                      <div th:if="${producto.urlImagen != null}" class="mt-4">
+                      <div class="mt-4">
                         <img
                           id="vistaPreviaImagen"
-                          th:src="${producto.urlImagen}"
-                          alt="Imagen actual"
+                          th:src="${producto.urlImagen != null ? producto.urlImagen : ''}"
+                          alt="Vista previa de la imagen"
                           class="h-32 w-32 object-cover rounded-lg shadow-lg"
+                          style="display: none"
                         />
                       </div>
                     </div>
