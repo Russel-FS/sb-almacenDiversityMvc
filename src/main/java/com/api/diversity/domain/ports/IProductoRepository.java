@@ -3,12 +3,12 @@ package com.api.diversity.domain.ports;
 import java.util.List;
 import java.util.Optional;
 
-import com.api.diversity.application.dto.Producto;
+import com.api.diversity.domain.model.ProductoEntity;
 
 public interface IProductoRepository {
-    List<Producto> findAll();
-    Optional<Producto> findById(String id);
-    Producto save(Producto producto);
+    List<ProductoEntity> findAll();
+    Optional<ProductoEntity> findById(String id);
+    ProductoEntity save(ProductoEntity producto);
     void deleteById(String id);
-    List<Producto> findByCategoria(Long categoriaId);
+    List<ProductoEntity> findByCategoria(Long categoriaId);
 }
