@@ -95,7 +95,6 @@ CREATE TABLE Clientes (
     Telefono VARCHAR(15),
     Direccion VARCHAR(255)
 );
-
-select * from Pedidos;
+ 
 
 select * from usuarios;
