@@ -6,7 +6,7 @@
   </head>
   <body>
     <div th:replace="~{layout :: layout(~{::section})}">
-      <section id="heroElement" hidden>
+      <section>
         <!-- Hero Section -->
         <div class="relative overflow-hidden bg-white">
           <div class="absolute inset-0">
@@ -28,7 +28,7 @@
                 <!-- Contenido -->
                 <div class="text-left max-w-2xl">
                   <div
-                    class="inline-flex items-center px-4 py-2 rounded-full bg-gray-900/5 mb-6"
+                    class="inline-flex items-center px-4 py-2 rounded-full bg-gray-900/5 mb-6 animate-badge"
                   >
                     <svg
                       class="w-5 h-5 text-gray-900 mr-2"
@@ -49,6 +49,7 @@
                   </div>
 
                   <h1
+                    id="heroTitle"
                     class="text-4xl lg:text-6xl font-medium tracking-tight text-gray-900 mb-8"
                   >
                     Bienvenido a tu
@@ -58,13 +59,16 @@
                     >
                   </h1>
 
-                  <p class="text-lg text-gray-600 leading-relaxed mb-10">
+                  <p
+                    id="heroDescription"
+                    class="text-lg text-gray-600 leading-relaxed mb-10"
+                  >
                     Accede rápidamente a todas tus herramientas de gestión.
                     Monitorea tu inventario, administra productos y optimiza tus
                     operaciones desde un solo lugar.
                   </p>
 
-                  <div class="flex flex-col sm:flex-row gap-4">
+                  <div id="heroButtons" class="flex flex-col sm:flex-row gap-4">
                     <a
                       href="/inventario"
                       class="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors"
@@ -176,22 +180,28 @@
           <div class="relative max-w-5xl mx-auto px-4 py-24">
             <div class="text-center max-w-2xl mx-auto mb-16">
               <div
-                class="inline-flex items-center justify-center p-1 mb-3 rounded-full bg-gray-900/5 backdrop-blur-sm"
+                class="inline-flex items-center justify-center p-1 mb-3 rounded-full bg-gray-900/5 backdrop-blur-sm animate-badge"
               >
                 <span
                   class="px-3 py-1 text-xs font-medium text-gray-700 rounded-full bg-white shadow-sm"
                   >Sistema Central</span
                 >
               </div>
-              <h2 class="mt-3 text-3xl font-medium text-gray-900">
+              <h2
+                id="sectionTitle"
+                class="mt-3 text-3xl font-medium text-gray-900"
+              >
                 Centro de Control
               </h2>
-              <p class="mt-4 text-gray-500">
+              <p id="sectionDescription" class="mt-4 text-gray-500">
                 Accede a todas tus herramientas desde un solo lugar
               </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+              id="quickAccessCards"
+              class="grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
               <a th:href="@{/categorias}" class="group relative">
                 <div
                   class="absolute -inset-px rounded-2xl bg-gradient-to-tr from-gray-200 to-gray-100 opacity-0 group-hover:opacity-100 blur transition duration-500"
@@ -436,27 +446,6 @@
         </div>
       </section>
     </div>
-
-    <script>
-      +document.addEventListener("DOMContentLoaded", function () {
-        // elemento a animar
-        const el = document.getElementById("heroElement");
-        el.removeAttribute("hidden");
-        // Estilos base
-        el.style.opacity = 0;
-        el.style.transform = "translateY(-50px)";
-        el.style.filter = "blur(8px)";
-
-        anime({
-          targets: el,
-          delay: 200,
-          opacity: [0, 1],
-          translateY: [-50, 0],
-          filter: ["blur(8px)", "blur(0px)"],
-          duration: 1500,
-          easing: "easeOutCubic",
-        });
-      });
-    </script>
+    <script th:src="@{/js/animations/heroAnimations.js}"></script>
   </body>
 </html>
