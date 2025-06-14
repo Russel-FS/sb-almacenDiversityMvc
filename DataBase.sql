@@ -15,10 +15,13 @@ CREATE TABLE Productos (
     Descripcion TEXT,
     Categoria BIGINT NOT NULL,
     Stock INT DEFAULT 0,
+    Url_Imagen VARCHAR(500),
     Precio_Unitario DECIMAL(10, 2) NOT NULL,
     Fecha_Registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (Categoria) REFERENCES Categorias (ID_Categoria)
 );
+
+ 
 
 CREATE TABLE Entradas (
     ID_Entrada INT AUTO_INCREMENT PRIMARY KEY,
