@@ -6,4 +6,6 @@ import com.api.diversity.domain.model.RolEntity;
 
 public interface IRolRepository {
     Optional<RolEntity> findById(Long id);
+
+    RolEntity save(RolEntity rol);
 }

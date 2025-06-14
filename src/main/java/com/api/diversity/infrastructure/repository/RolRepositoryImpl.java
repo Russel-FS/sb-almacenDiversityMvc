@@ -19,4 +19,9 @@ public class RolRepositoryImpl implements IRolRepository {
     public Optional<RolEntity> findById(Long id) {
         return rolJpaRepository.findById(id);
     }
+
+    @Override
+    public RolEntity save(RolEntity rol) {
+        return rolJpaRepository.save(rol);
+    }
 }

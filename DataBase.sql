@@ -261,12 +261,13 @@ INSERT INTO
         Contraseña
     )
 VALUES (
-        'Flores',
-        'flores@gmail.com',
+        'admin',
+        'admin@gmail.com',
         'Administrador del Sistema',
         1,
         '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy' -- Hash de "admin123"
     );
+
 -- Inserción de rubros
 INSERT INTO
     Rubros (
