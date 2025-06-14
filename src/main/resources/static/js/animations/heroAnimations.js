@@ -1,68 +1,69 @@
 document.addEventListener("DOMContentLoaded", function () { 
-     anime({
-      targets: ".animate-badge",
+    // Animación del badge del hero
+    anime({
+      targets: '.animate-badge',
       scale: [0.95, 1],
       opacity: [0, 1],
       duration: 1200,
-      easing: "easeOutQuart",
+      easing: 'easeOutQuart'
     });
 
     // Animación del título principal
     anime({
-      targets: "#heroTitle",
+      targets: '#heroTitle',
       translateY: [20, 0],
       opacity: [0, 1],
       duration: 1500,
-      easing: "easeOutQuart",
+      easing: 'easeOutQuart'
     });
 
     // Animación de la descripción
     anime({
-      targets: "#heroDescription",
+      targets: '#heroDescription',
       translateY: [20, 0],
       opacity: [0, 1],
       delay: 300,
       duration: 1500,
-      easing: "easeOutQuart",
+      easing: 'easeOutQuart'
     });
 
-    // animacion de los botones
+    // Animación de los botones
     anime({
-      targets: "#heroButtons a",
+      targets: '#heroButtons a',
       translateX: [-20, 0],
       opacity: [0, 1],
       delay: anime.stagger(200),
       duration: 1200,
-      easing: "easeOutQuart",
+      easing: 'easeOutQuart'
     });
 
-    // animación de las tarjetas de acceso rápido
+    // Animación de las tarjetas de acceso rápido
     anime({
-      targets: "#quickAccessCards a",
+      targets: '#quickAccessCards a',
       translateY: [30, 0],
       opacity: [0, 1],
       delay: anime.stagger(300),
       duration: 1800,
-      easing: "easeOutQuart",
+      easing: 'easeOutQuart'
     });
 
     // Animación de las imágenes en las tarjetas
     anime({
-      targets: ".aspect-\\[4\\/3\\] img",
+      targets: '.aspect-\\[4\\/3\\] img',
       scale: [0.98, 1],
       opacity: [0, 1],
       delay: anime.stagger(200),
       duration: 1500,
-      easing: "easeOutQuart",
+      easing: 'easeOutQuart'
     });
 
-    // Animación del título
+    // Animación del título "Centro de Control"
     anime({
-      targets: ["#sectionTitle", "#sectionDescription"],
+      targets: ['#sectionTitle', '#sectionDescription'],
       translateY: [15, 0],
       opacity: [0, 1],
       delay: anime.stagger(200),
       duration: 1500,
-      easing: "easeOutQuart",
+      easing: 'easeOutQuart'
     });
-  }); 
+}); 
