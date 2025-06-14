@@ -1,7 +1,6 @@
--- Creación de la base de datos
-CREATE DATABASE IF NOT EXISTS diversity_inventory;
-
 DROP DATABASE IF EXISTS diversity_inventory;
+
+CREATE DATABASE IF NOT EXISTS diversity_inventory;
 
 USE diversity_inventory;
 
