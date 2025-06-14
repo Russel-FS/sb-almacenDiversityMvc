@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductMapper {
 
     private final CategoryMapper categoryMapper;
-    private final RubroMapper rubroMapper;
+    private final UsuarioMapper usuarioMapper;
 
     public Producto toModel(ProductoEntity entity) {
         if (entity == null) {
@@ -25,7 +25,6 @@ public class ProductMapper {
                 .nombreProducto(entity.getNombreProducto())
                 .descripcion(entity.getDescripcion())
                 .categoria(categoryMapper.toDto(entity.getCategoria()))
-                .rubro(rubroMapper.toDto(entity.getRubro()))
                 .precioCompra(entity.getPrecioCompra())
                 .precioVenta(entity.getPrecioVenta())
                 .stockActual(entity.getStockActual())
@@ -34,6 +33,8 @@ public class ProductMapper {
                 .estado(entity.getEstado())
                 .fechaCreacion(entity.getFechaCreacion())
                 .fechaModificacion(entity.getFechaModificacion())
+                .createdBy(usuarioMapper.toDto(entity.getCreatedBy()))
+                .updatedBy(usuarioMapper.toDto(entity.getUpdatedBy()))
                 .build();
     }
 
@@ -48,7 +49,6 @@ public class ProductMapper {
         entity.setNombreProducto(model.getNombreProducto());
         entity.setDescripcion(model.getDescripcion());
         entity.setCategoria(categoryMapper.toEntity(model.getCategoria()));
-        entity.setRubro(rubroMapper.toEntity(model.getRubro()));
         entity.setPrecioCompra(model.getPrecioCompra());
         entity.setPrecioVenta(model.getPrecioVenta());
         entity.setStockActual(model.getStockActual());
@@ -57,6 +57,8 @@ public class ProductMapper {
         entity.setEstado(model.getEstado());
         entity.setFechaCreacion(model.getFechaCreacion());
         entity.setFechaModificacion(model.getFechaModificacion());
+        entity.setCreatedBy(usuarioMapper.toEntity(model.getCreatedBy()));
+        entity.setUpdatedBy(usuarioMapper.toEntity(model.getUpdatedBy()));
         return entity;
     }
 }
