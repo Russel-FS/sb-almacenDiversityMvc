@@ -90,54 +90,8 @@
                   class="space-y-10"
                 >
                   <input type="hidden" th:field="*{idRubro}" />
-
-                  <!-- Código del Rubro -->
-                  <div class="relative">
-                    <div
-                      class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
-                    ></div>
-                    <div class="relative">
-                      <label
-                        for="code"
-                        class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
-                      >
-                        <svg
-                          class="w-4 h-4 text-gray-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"
-                          />
-                        </svg>
-                        Código del Rubro
-                      </label>
-                      <div class="relative group">
-                        <div
-                          class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
-                        ></div>
-                        <div class="relative">
-                          <select
-                            name="code"
-                            class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
-                            required
-                          >
-                            <option value="">Seleccione un código</option>
-                            <option
-                              th:each="code : ${T(com.api.diversity.domain.enums.NombreRubro).values()}"
-                              th:value="${code}"
-                              th:text="${code}"
-                              th:selected="${rubro.code == code}"
-                            ></option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <input type="hidden" th:field="*{code}" />
+                  <input type="hidden" th:field="*{estado}" />
 
                   <!-- Nombre del Rubro -->
                   <div class="relative">
@@ -217,53 +171,6 @@
                             class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6 resize-none"
                             placeholder="Describe el propósito del rubro..."
                           ></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Estado -->
-                  <div class="relative">
-                    <div
-                      class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
-                    ></div>
-                    <div class="relative">
-                      <label
-                        for="estado"
-                        class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
-                      >
-                        <svg
-                          class="w-4 h-4 text-gray-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                        Estado
-                      </label>
-                      <div class="relative group">
-                        <div
-                          class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
-                        ></div>
-                        <div class="relative">
-                          <select
-                            th:field="*{estado}"
-                            class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
-                            required
-                          >
-                            <option value="">Seleccione un estado</option>
-                            <option
-                              th:each="estado : ${T(com.api.diversity.domain.enums.EstadoRubro).values()}"
-                              th:value="${estado}"
-                              th:text="${estado}"
-                            ></option>
-                          </select>
                         </div>
                       </div>
                     </div>
