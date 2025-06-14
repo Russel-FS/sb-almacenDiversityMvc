@@ -1,6 +1,7 @@
 CREATE DATABASE JC_Diversity;
 
 USE JC_Diversity;
+ 
 
 CREATE TABLE Categorias (
     ID_Categoria BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -12,7 +13,7 @@ CREATE TABLE Productos (
     ID_Producto VARCHAR(10) PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
     Descripcion TEXT,
-    Categoria INT NOT NULL,
+    Categoria BIGINT NOT NULL,
     Stock INT DEFAULT 0,
     Precio_Unitario DECIMAL(10, 2) NOT NULL,
     Fecha_Registro DATETIME DEFAULT CURRENT_TIMESTAMP,
