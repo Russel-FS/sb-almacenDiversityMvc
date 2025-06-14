@@ -287,11 +287,13 @@
                         ></div>
                         <div class="relative">
                           <!-- Vista previa de la imagen -->
-                          <div class="mb-4" th:if="${rubro.imagenUrl != null}">
+                          <div class="mb-4">
                             <img
-                              th:src="${rubro.imagenUrl}"
+                              id="imagenRubro"
+                              th:src="${rubro.imagenUrl != null ? rubro.imagenUrl : ''}"
                               alt="Imagen del rubro"
                               class="w-32 h-32 object-cover rounded-lg shadow-md"
+                              style="display: none"
                             />
                           </div>
                           <!-- Campos ocultos para la imagen -->
@@ -299,6 +301,7 @@
                           <input type="hidden" th:field="*{imagenUrl}" />
                           <!-- Input para subir nueva imagen -->
                           <input
+                            id="imagen"
                             type="file"
                             name="imagen"
                             accept="image/*"
@@ -331,5 +334,19 @@
         </div>
       </section>
     </div>
+
+    <script>
+      const inputFile = document.getElementById("imagen");
+      const imagenPreview = document.getElementById("imagenRubro");
+
+      inputFile.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          const imageUrl = URL.createObjectURL(file);
+          imagenPreview.src = imageUrl;
+          imagenPreview.style.display = "block";
+        }
+      });
+    </script>
   </body>
 </html>
