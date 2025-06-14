@@ -91,6 +91,8 @@
                   class="space-y-10"
                 >
                   <input type="hidden" th:field="*{idProducto}" />
+                  <input type="hidden" th:field="*{urlImagen}" />
+                  <input type="hidden" th:field="*{publicId}" />
 
                   <!-- Nombre -->
                   <div class="relative">
@@ -316,7 +318,7 @@
                               type="number"
                               th:field="*{stock}"
                               id="stock"
-                              min="0"
+                              min="1"
                               class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
                             />
                           </div>
@@ -378,7 +380,7 @@
                               th:field="*{precioUnitario}"
                               id="precioUnitario"
                               step="0.01"
-                              min="0"
+                              min="1"
                               class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
                               required
                             />
@@ -442,15 +444,18 @@
                             name="imagen"
                             id="imagen"
                             accept="image/*"
+                            dropzone="true"
                             class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-900/5 file:text-gray-700 hover:file:bg-gray-900/10"
                           />
                         </div>
                       </div>
-                      <div th:if="${producto.urlImagen != null}" class="mt-4">
+                      <div class="mt-4">
                         <img
-                          th:src="${producto.urlImagen}"
-                          alt="Imagen actual"
+                          id="vistaPreviaImagen"
+                          th:src="${producto.urlImagen != null ? producto.urlImagen : ''}"
+                          alt="Vista previa de la imagen"
                           class="h-32 w-32 object-cover rounded-lg shadow-lg"
+                          style="display: none"
                         />
                       </div>
                     </div>
@@ -551,5 +556,49 @@
         </div>
       </section>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const inputImagen = document.getElementById("imagen");
+        const vistaPrevia = document.getElementById("vistaPreviaImagen");
+
+        function mostrarVistaPrevia(file) {
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              vistaPrevia.src = e.target.result;
+              vistaPrevia.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+
+        inputImagen.addEventListener("change", function (e) {
+          const file = e.target.files[0];
+          mostrarVistaPrevia(file);
+        });
+
+        inputImagen.addEventListener("drop", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const file = e.dataTransfer.files[0];
+          if (file && file.type.startsWith("image/")) {
+            inputImagen.files = e.dataTransfer.files;
+            mostrarVistaPrevia(file);
+          }
+        });
+
+        inputImagen.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+
+        inputImagen.addEventListener("dragenter", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      });
+    </script>
   </body>
 </html>
