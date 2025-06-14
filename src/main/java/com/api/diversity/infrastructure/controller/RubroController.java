@@ -2,6 +2,9 @@ package com.api.diversity.infrastructure.controller;
 
 import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.service.IRubroService;
+
+import lombok.extern.log4j.Log4j2;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/rubros")
+@Log4j2
 public class RubroController {
 
     @Autowired
@@ -42,7 +46,8 @@ public class RubroController {
                 redirectAttributes.addFlashAttribute("tipoMensaje", "error");
                 return "redirect:/rubros/editar/" + rubro.getIdRubro();
             }
-
+            log.info("Guardando rubro: {}", rubro);
+            System.out.println("Guardando rubro: " + rubro);
             rubroService.save(rubro);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro actualizado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");

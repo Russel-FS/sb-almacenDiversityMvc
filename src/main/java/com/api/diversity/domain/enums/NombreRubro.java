@@ -1,7 +1,7 @@
 package com.api.diversity.domain.enums;
 
 public enum NombreRubro {
-    PIÑATERIA,
+    PINATERIA,
     LIBRERIA,
-    CAMARAS_DE_SEGURIDAD
+    CAMARAS_SEGURIDAD
 }

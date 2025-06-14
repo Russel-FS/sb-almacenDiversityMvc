@@ -90,12 +90,8 @@
                   class="space-y-10"
                 >
                   <input type="hidden" th:field="*{idRubro}" />
-                  <input type="hidden" name="code" th:value="${rubro.code}" />
-                  <input
-                    type="hidden"
-                    name="estado"
-                    th:value="${rubro.estado}"
-                  />
+                  <input type="hidden" th:field="*{code}" />
+                  <input type="hidden" th:field="*{estado}" />
 
                   <!-- Nombre del Rubro -->
                   <div class="relative">

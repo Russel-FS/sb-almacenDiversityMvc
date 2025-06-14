@@ -43,9 +43,9 @@ CREATE TABLE Rubros (
     ID_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
     Nombre_Rubro VARCHAR(80) NOT NULL UNIQUE,
     Code ENUM(
-        'PIÑATERIA',
+        'PINATERIA',
         'LIBRERIA',
-        'CAMARAS_DE_SEGURIDAD'
+        'CAMARAS_SEGURIDAD'
     ) NOT NULL,
     Descripcion TEXT,
     Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
@@ -260,7 +260,7 @@ INSERT INTO
     )
 VALUES (
         'Piñatería',
-        'PIÑATERIA',
+        'PINATERIA',
         'Productos relacionados con piñatería'
     ),
     (
@@ -270,7 +270,7 @@ VALUES (
     ),
     (
         'Cámaras de Seguridad',
-        'CAMARAS_DE_SEGURIDAD',
+        'CAMARAS_SEGURIDAD',
         'Equipos y accesorios de seguridad'
     );
 
