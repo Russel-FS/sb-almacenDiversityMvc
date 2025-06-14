@@ -45,22 +45,20 @@ public class CategoriaController {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
         model.addAttribute("categoria", categoria);
         return "categorias/form";
-    }
-
-    @PostMapping("/guardar")
+    }    @PostMapping("/guardar")
     public String guardarCategoria(@Valid Categoria categoria, BindingResult result, RedirectAttributes flash) {
         if (result.hasErrors()) {
             return "categorias/form";
         } 
         categoriaService.save(categoria);
         flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
+        flash.addFlashAttribute("tipoMensaje", "success");
         return "redirect:/categorias";
-    }
-
-    @GetMapping("/eliminar/{id}")
+    }    @GetMapping("/eliminar/{id}")
     public String eliminarCategoria(@PathVariable Long id, RedirectAttributes flash) {
         categoriaService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Categoría eliminada exitosamente.");
+        flash.addFlashAttribute("tipoMensaje", "error");
         return "redirect:/categorias";
     }
 }
