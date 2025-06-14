@@ -19,7 +19,7 @@ public class ProductoEntity {
 
     @Id
     @Column(name = "ID_Producto")
-    private String idProducto;
+    private Long idProducto;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;

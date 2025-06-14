@@ -45,7 +45,7 @@ public class ProductoController {
     }
 
     @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable String id, Model model) {
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         Producto producto = productoService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
         model.addAttribute("producto", producto);
@@ -79,7 +79,7 @@ public class ProductoController {
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminarProducto(@PathVariable String id, RedirectAttributes flash) {
+    public String eliminarProducto(@PathVariable Long id, RedirectAttributes flash) {
         productoService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Producto eliminado exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "error");

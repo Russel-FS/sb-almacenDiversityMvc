@@ -10,11 +10,11 @@ import com.api.diversity.application.dto.Producto;
 public interface IProductoService {
     List<Producto> findAll();
 
-    Optional<Producto> findById(String id);
+    Optional<Producto> findById(Long id);
 
     Producto save(Producto producto, MultipartFile imagen);
 
-    void deleteById(String id);
+    void deleteById(Long id);
 
     List<Producto> findByCategoria(Long categoriaId);
 }

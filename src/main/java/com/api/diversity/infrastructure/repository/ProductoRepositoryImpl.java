@@ -13,9 +13,8 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class ProductoRepositoryImpl implements IProductoRepository {
-    
+
     private final IProductoJpaRepository productoJpaRepository;
- 
 
     @Override
     public List<ProductoEntity> findAll() {
@@ -23,7 +22,7 @@ public class ProductoRepositoryImpl implements IProductoRepository {
     }
 
     @Override
-    public Optional<ProductoEntity> findById(String id) {
+    public Optional<ProductoEntity> findById(Long id) {
         return productoJpaRepository.findById(id);
     }
 
@@ -33,7 +32,7 @@ public class ProductoRepositoryImpl implements IProductoRepository {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Long id) {
         productoJpaRepository.deleteById(id);
     }
 

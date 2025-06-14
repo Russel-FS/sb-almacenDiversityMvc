@@ -37,7 +37,7 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Producto> findById(String id) {
+    public Optional<Producto> findById(Long id) {
         return productoRepository.findById(id)
                 .map(productoMapper::toModel);
     }
@@ -50,7 +50,7 @@ public class ProductoServiceImpl implements IProductoService {
             producto.setUrlImagen(response.getUrl());
             producto.setPublicId(response.getPublicId());
         }
-        if (producto.getIdProducto() == null || producto.getIdProducto().isEmpty()) {
+        if (producto.getIdProducto() == null || producto.getIdProducto() == 0) {
             producto.setFechaRegistro(LocalDateTime.now());
         }
         ProductoEntity entity = productoMapper.toEntity(producto);
@@ -60,7 +60,7 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     @Transactional
-    public void deleteById(String id) {
+    public void deleteById(Long id) {
         Optional<ProductoEntity> productoOpt = productoRepository.findById(id);
         if (productoOpt.isPresent()) {
             ProductoEntity producto = productoOpt.get();
