@@ -41,7 +41,8 @@ CREATE TABLE Usuarios (
 -- Tabla de Rubros
 CREATE TABLE Rubros (
     ID_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
-    Nombre_Rubro ENUM(
+    Nombre_Rubro VARCHAR(80) NOT NULL UNIQUE,
+    Code ENUM(
         'PIÑATERIA',
         'LIBRERIA',
         'CAMARAS_DE_SEGURIDAD'
@@ -50,7 +51,7 @@ CREATE TABLE Rubros (
     Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT UQ_Rubro_Nombre UNIQUE (Nombre_Rubro)
+    CONSTRAINT UQ_Rubro_Nombre UNIQUE (Code, Nombre_Rubro)
 );
 
 -- Tabla de Categorías
@@ -252,16 +253,23 @@ VALUES (
 
 -- Inserción de rubros
 INSERT INTO
-    Rubros (Nombre_Rubro, Descripcion)
+    Rubros (
+        Nombre_Rubro,
+        code,
+        Descripcion
+    )
 VALUES (
+        'Piñatería',
         'PIÑATERIA',
         'Productos relacionados con piñatería'
     ),
     (
+        'Librería',
         'LIBRERIA',
         'Productos de librería y papelería'
     ),
     (
+        'Cámaras de Seguridad',
         'CAMARAS_DE_SEGURIDAD',
         'Equipos y accesorios de seguridad'
     );

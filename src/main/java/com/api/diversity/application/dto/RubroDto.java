@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RubroDto {
     private Long idRubro;
-    private NombreRubro nombreRubro;
+    private String nombreRubro;
+    private NombreRubro code;
     private String descripcion;
     private EstadoRubro estado;
 }

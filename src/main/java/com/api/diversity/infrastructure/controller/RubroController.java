@@ -2,7 +2,6 @@ package com.api.diversity.infrastructure.controller;
 
 import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.service.IRubroService;
-import com.api.diversity.domain.enums.NombreRubro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +21,6 @@ public class RubroController {
         return "rubros/lista";
     }
 
-    @GetMapping("/nuevo")
-    public String mostrarFormularioNuevo(Model model) {
-        model.addAttribute("rubro", new RubroDto());
-        return "rubros/form";
-    }
-
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         model.addAttribute("rubro", rubroService.findById(id));
@@ -37,26 +30,24 @@ public class RubroController {
     @PostMapping("/guardar")
     public String guardarRubro(@ModelAttribute RubroDto rubro, RedirectAttributes redirectAttributes) {
         try {
-            // Convertir el nombre del rubro a mayúsculas y reemplazar espacios por guiones
-            // bajos
-            String nombreRubro = rubro.getNombreRubro().toString().toUpperCase().replace(" ", "_");
-
-            // Intentar convertir a enum
-            try {
-                NombreRubro nombreRubroEnum = NombreRubro.valueOf(nombreRubro);
-                rubro.setNombreRubro(nombreRubroEnum);
-            } catch (IllegalArgumentException e) {
+            if (rubro.getIdRubro() == null) {
                 redirectAttributes.addFlashAttribute("mensaje",
-                        "El nombre del rubro no es válido. Use solo letras y espacios.");
+                        "No se puede crear un nuevo rubro. Los rubros son predefinidos.");
                 redirectAttributes.addFlashAttribute("tipoMensaje", "error");
-                return "redirect:/rubros/nuevo";
+                return "redirect:/rubros";
+            }
+
+            if (rubro.getNombreRubro() == null || rubro.getNombreRubro().trim().isEmpty()) {
+                redirectAttributes.addFlashAttribute("mensaje", "El nombre del rubro no puede estar vacío.");
+                redirectAttributes.addFlashAttribute("tipoMensaje", "error");
+                return "redirect:/rubros/editar/" + rubro.getIdRubro();
             }
 
             rubroService.save(rubro);
-            redirectAttributes.addFlashAttribute("mensaje", "Rubro guardado exitosamente");
+            redirectAttributes.addFlashAttribute("mensaje", "Rubro actualizado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensaje", "Error al guardar el rubro: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("mensaje", "Error al actualizar el rubro: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
         return "redirect:/rubros";

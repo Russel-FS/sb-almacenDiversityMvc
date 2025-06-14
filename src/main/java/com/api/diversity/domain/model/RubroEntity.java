@@ -25,9 +25,12 @@ public class RubroEntity {
     @Column(name = "ID_Rubro")
     private Long idRubro;
 
+    @Column(name = "Nombre_Rubro", nullable = false, length = 80)
+    private String nombreRubro;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "Nombre_Rubro", nullable = false, unique = true)
-    private NombreRubro nombreRubro;
+    @Column(name = "Code", nullable = false)
+    private NombreRubro code;
 
     @Column(name = "Descripcion")
     private String descripcion;
