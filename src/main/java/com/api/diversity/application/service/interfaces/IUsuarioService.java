@@ -5,6 +5,8 @@ import com.api.diversity.application.dto.UsuarioDto;
 public interface IUsuarioService {
     UsuarioDto findByEmailAndPassword(String email, String contraseña);
 
+    UsuarioDto findByEmail(String email);
+
     UsuarioDto save(UsuarioDto usuarioDto);
 
     UsuarioDto update(UsuarioDto usuarioDto);

@@ -116,4 +116,11 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public boolean existsByNombreUsuario(String nombreUsuario) {
         return usuarioRepository.existsByNombreUsuario(nombreUsuario);
     }
+
+    @Override
+    public UsuarioDto findByEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .map(usuarioMapper::toDto)
+                .orElse(null);
+    }
 }
