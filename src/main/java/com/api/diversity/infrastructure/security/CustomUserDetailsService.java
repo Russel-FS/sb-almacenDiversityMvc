@@ -36,7 +36,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         // Obtener el rol del usuario
         RolDto rol = rolService.findById(usuario.getRol().getIdRol());
 
-        // Crear autoridades basadas en el rol
+        // crear la lista de autoridades
+        if (rol == null) {
+            throw new UsernameNotFoundException("Rol no encontrado para el usuario: " + email);
+        }
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + rol.getNombreRol().toUpperCase()));
 
