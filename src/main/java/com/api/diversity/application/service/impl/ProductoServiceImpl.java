@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.api.diversity.application.dto.Producto;
 import com.api.diversity.application.mappers.ProductMapper;
+import com.api.diversity.application.service.impl.CloudinaryService.CloudinaryResponse;
 import com.api.diversity.application.service.interfaces.IProductoService;
 import com.api.diversity.domain.model.ProductoEntity;
 import com.api.diversity.domain.ports.IProductoRepository;
@@ -46,7 +47,7 @@ public class ProductoServiceImpl implements IProductoService {
     @Transactional
     public Producto save(Producto producto, MultipartFile imagen) {
         if (imagen != null && !imagen.isEmpty()) {
-            CloudinaryService.CloudinaryResponse response = cloudinaryService.uploadFile(imagen, "productos");
+            CloudinaryResponse response = cloudinaryService.uploadFile(imagen, "productos");
             producto.setUrlImagen(response.getUrl());
             producto.setPublicId(response.getPublicId());
         }
