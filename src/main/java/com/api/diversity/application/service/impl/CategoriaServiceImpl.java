@@ -1,4 +1,4 @@
-package com.api.diversity.application.service;
+package com.api.diversity.application.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.api.diversity.application.interfaces.ICategoriaService;
-import com.api.diversity.domain.model.Categoria;
+import com.api.diversity.application.dto.CategoriaDto;
+import com.api.diversity.application.service.interfaces.ICategoriaService;
 import com.api.diversity.domain.ports.ICategoriaRepository;
 
 import lombok.AllArgsConstructor;
@@ -15,23 +15,23 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 @Transactional
-public class CategoriaService implements ICategoriaService {
+public class CategoriaServiceImpl implements ICategoriaService {
 
     private final ICategoriaRepository categoriaRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Categoria> findAll() {
+    public List<CategoriaDto> findAll() {
         return categoriaRepository.findAll();
     }
 
     @Override
-    @Transactional(readOnly = true)    public Optional<Categoria> findById(Long id) {
+    @Transactional(readOnly = true)    public Optional<CategoriaDto> findById(Long id) {
         return categoriaRepository.findById(id);
     }
 
     @Override
-    public Categoria save(Categoria categoria) {
+    public CategoriaDto save(CategoriaDto categoria) {
         return categoriaRepository.save(categoria);
     }
 
