@@ -7,8 +7,12 @@ import com.api.diversity.domain.model.ProductoEntity;
 
 public interface IProductoRepository {
     List<ProductoEntity> findAll();
-    Optional<ProductoEntity> findById(String id);
+
+    Optional<ProductoEntity> findById(Long id);
+
     ProductoEntity save(ProductoEntity producto);
-    void deleteById(String id);
+
+    void deleteById(Long id);
+
     List<ProductoEntity> findByCategoria(Long categoriaId);
 }

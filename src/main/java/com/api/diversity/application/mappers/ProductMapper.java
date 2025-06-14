@@ -7,7 +7,6 @@ import com.api.diversity.application.dto.Producto;
 import com.api.diversity.domain.model.ProductoEntity;
 
 import lombok.RequiredArgsConstructor;
- 
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +25,7 @@ public class ProductMapper {
         }
         producto.setStock(entity.getStock());
         producto.setUrlImagen(entity.getUrlImagen());
+        producto.setPublicId(entity.getPublicId());
         producto.setPrecioUnitario(entity.getPrecioUnitario());
         producto.setFechaRegistro(entity.getFechaRegistro());
         return producto;
@@ -42,6 +42,7 @@ public class ProductMapper {
         }
         entity.setStock(model.getStock());
         entity.setUrlImagen(model.getUrlImagen());
+        entity.setPublicId(model.getPublicId());
         entity.setPrecioUnitario(model.getPrecioUnitario());
         entity.setFechaRegistro(model.getFechaRegistro());
         return entity;
