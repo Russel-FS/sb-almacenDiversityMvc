@@ -8,4 +8,6 @@ public interface IRolRepository {
     Optional<RolEntity> findById(Long id);
 
     RolEntity save(RolEntity rol);
+
+    Optional<RolEntity> findByNombreRol(String nombreRol);
 }

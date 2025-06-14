@@ -24,4 +24,9 @@ public class RolRepositoryImpl implements IRolRepository {
     public RolEntity save(RolEntity rol) {
         return rolJpaRepository.save(rol);
     }
+
+    @Override
+    public Optional<RolEntity> findByNombreRol(String nombreRol) {
+        return rolJpaRepository.findByNombreRol(nombreRol);
+    }
 }
