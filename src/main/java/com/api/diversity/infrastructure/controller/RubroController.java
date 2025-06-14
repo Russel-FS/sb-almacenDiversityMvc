@@ -34,6 +34,7 @@ public class RubroController {
     public String mostrarFormularioNuevoRubro(Model model) {
         RubroDto rubro = new RubroDto();
         rubro.setEstado(EstadoRubro.Activo);
+        rubro.setCreatedBy(1L);
         model.addAttribute("rubro", rubro);
         return "rubros/form";
     }
@@ -54,8 +55,10 @@ public class RubroController {
                 RubroDto rubroOriginal = rubroService.findById(rubro.getIdRubro());
                 rubro.setCode(rubroOriginal.getCode());
                 rubro.setCreatedBy(rubroOriginal.getCreatedBy());
+            } else {
+                rubro.setCreatedBy(1L);
             }
-            rubro.setCreatedBy(1L);
+
             rubroService.save(rubro);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro guardado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");

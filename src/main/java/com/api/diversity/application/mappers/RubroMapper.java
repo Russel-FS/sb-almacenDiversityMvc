@@ -1,12 +1,17 @@
 package com.api.diversity.application.mappers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.domain.model.RubroEntity;
+import com.api.diversity.domain.repository.UsuarioRepository;
 
 @Component
 public class RubroMapper {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public RubroDto toDto(RubroEntity entity) {
         if (entity == null) {
@@ -44,9 +49,17 @@ public class RubroMapper {
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());
 
-        // No establecemos createdBy ni updatedBy aquí ya que son entidades
-        // UsuarioEntity
-        // y necesitarían ser cargadas desde la base de datos
+        // Establecemos el usuario creador
+        if (dto.getCreatedBy() != null) {
+            usuarioRepository.findById(dto.getCreatedBy())
+                    .ifPresent(entity::setCreatedBy);
+        }
+
+        // Establecemos el usuario que modificó
+        if (dto.getUpdatedBy() != null) {
+            usuarioRepository.findById(dto.getUpdatedBy())
+                    .ifPresent(entity::setUpdatedBy);
+        }
 
         return entity;
     }
