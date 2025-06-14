@@ -58,7 +58,7 @@ public class RubroController {
             } else {
                 rubro.setCreatedBy(1L);
             }
-
+            log.info("Rubro a guardar: {}", rubro);
             rubroService.save(rubro);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro guardado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
