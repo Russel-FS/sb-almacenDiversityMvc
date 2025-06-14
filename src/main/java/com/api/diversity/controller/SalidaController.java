@@ -1,17 +1,26 @@
 package com.api.diversity.controller;
 
-import com.api.diversity.model.Salida;
-import com.api.diversity.model.DetalleSalida;
-import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.api.diversity.model.DetalleSalida;
+import com.api.diversity.model.Salida;
 
 @RestController
 @RequestMapping("/api/salidas")
 public class SalidaController {
 
-    private static List<Salida> salidas = new ArrayList<>();
-    private static List<DetalleSalida> detalles = new ArrayList<>();
+    private static final List<Salida> salidas = new ArrayList<>();
+    private static final List<DetalleSalida> detalles = new ArrayList<>();
 
     // --- Métodos para Salida ---
 
