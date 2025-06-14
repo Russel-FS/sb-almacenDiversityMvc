@@ -6,19 +6,22 @@ import com.api.diversity.application.dto.CategoriaDto;
 import com.api.diversity.application.dto.Producto;
 import com.api.diversity.domain.model.ProductoEntity;
 
+import lombok.RequiredArgsConstructor;
+ 
+
 @Component
+@RequiredArgsConstructor
 public class ProductMapper {
 
-    private Producto mapToModel(ProductoEntity entity) {
+    private final CategoryMapper categoryMapper;
+
+    public Producto toModel(ProductoEntity entity) {
         Producto producto = new Producto();
         producto.setIdProducto(entity.getIdProducto());
         producto.setNombre(entity.getNombre());
         producto.setDescripcion(entity.getDescripcion());
         if (entity.getCategoria() != null) {
-            CategoriaDto categoria = new CategoriaDto();
-            categoria.setIdCategoria(entity.getCategoria().getIdCategoria());
-            categoria.setNombreCategoria(entity.getCategoria().getNombreCategoria());
-            categoria.setDescripcion(entity.getCategoria().getDescripcion());
+            CategoriaDto categoria = categoryMapper.toDto(entity.getCategoria());
             producto.setCategoria(categoria);
         }
         producto.setStock(entity.getStock());
@@ -28,17 +31,14 @@ public class ProductMapper {
         return producto;
     }
 
-    private ProductoEntity mapToEntity(Producto model) {
+    public ProductoEntity toEntity(Producto model) {
         ProductoEntity entity = new ProductoEntity();
         entity.setIdProducto(model.getIdProducto());
         entity.setNombre(model.getNombre());
         entity.setDescripcion(model.getDescripcion());
         if (model.getCategoria() != null) {
-            CategoriaDto categoria = new CategoriaDto();
-            categoria.setIdCategoria(model.getCategoria().getIdCategoria());
-            categoria.setNombreCategoria(model.getCategoria().getNombreCategoria());
-            categoria.setDescripcion(model.getCategoria().getDescripcion());
-            entity.setCategoria(categoria);
+            CategoriaDto categoria = model.getCategoria();
+            entity.setCategoria(categoryMapper.toEntity(categoria));
         }
         entity.setStock(model.getStock());
         entity.setUrlImagen(model.getUrlImagen());
