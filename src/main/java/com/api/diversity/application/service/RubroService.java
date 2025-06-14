@@ -40,20 +40,10 @@ public class RubroService implements IRubroService {
     @Override
     @Transactional
     public RubroDto save(RubroDto rubroDto) {
-        // Validaciones adicionales
-        if (rubroDto.getNombreRubro() == null || rubroDto.getNombreRubro().trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del rubro es requerido");
-        }
-        if (rubroDto.getCode() == null || rubroDto.getCode().trim().isEmpty()) {
-            throw new IllegalArgumentException("El código del rubro es requerido");
-        }
-
-        // Aseguramos que el estado no sea null
         if (rubroDto.getEstado() == null) {
             rubroDto.setEstado(EstadoRubro.Activo);
         }
 
-        // Aseguramos que createdBy no sea null
         if (rubroDto.getCreatedBy() == null) {
             rubroDto.setCreatedBy(1L);
         }
