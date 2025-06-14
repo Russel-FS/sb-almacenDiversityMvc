@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,28 +26,49 @@ public class ProductoEntity {
     @Column(name = "ID_Producto")
     private Long idProducto;
 
-    @Column(name = "Nombre", nullable = false)
-    private String nombre;
+    @Column(name = "Codigo_Producto", nullable = false, unique = true)
+    private String codigoProducto;
+
+    @Column(name = "Nombre_Producto", nullable = false)
+    private String nombreProducto;
 
     @Column(name = "Descripcion")
     private String descripcion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Categoria", nullable = false)
+    @JoinColumn(name = "ID_Categoria", nullable = false)
     private CategoryEntity categoria;
 
-    @Column(name = "Stock")
-    private Integer stock;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_Rubro", nullable = false)
+    private RubroEntity rubro;
 
-    @Column(name = "Url_Imagen")
-    private String urlImagen;
+    @Column(name = "Precio_Compra", nullable = false)
+    private BigDecimal precioCompra;
 
-    @Column(name = "Public_Id")
-    private String publicId;
+    @Column(name = "Precio_Venta", nullable = false)
+    private BigDecimal precioVenta;
 
-    @Column(name = "Precio_Unitario", nullable = false)
-    private BigDecimal precioUnitario;
+    @Column(name = "Stock_Actual", nullable = false)
+    private Integer stockActual;
 
-    @Column(name = "Fecha_Registro")
-    private LocalDateTime fechaRegistro;
+    @Column(name = "Stock_Minimo", nullable = false)
+    private Integer stockMinimo;
+
+    @Column(name = "Stock_Maximo", nullable = false)
+    private Integer stockMaximo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Estado", nullable = false)
+    private EstadoProducto estado;
+
+    @Column(name = "Fecha_Creacion")
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "Fecha_Modificacion")
+    private LocalDateTime fechaModificacion;
+
+    public enum EstadoProducto {
+        Activo, Inactivo, Agotado
+    }
 }

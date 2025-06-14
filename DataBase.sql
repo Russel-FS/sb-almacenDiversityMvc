@@ -1,6 +1,8 @@
 -- Creación de la base de datos
 CREATE DATABASE IF NOT EXISTS diversity_inventory;
 
+DROP DATABASE IF EXISTS diversity_inventory;
+
 USE diversity_inventory;
 
 -- Tabla de Roles
@@ -58,7 +60,11 @@ CREATE TABLE Categorias (
     Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CreatedBy BIGINT NOT NULL,
+    UpdatedBy BIGINT,
     FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro),
+    FOREIGN KEY (CreatedBy) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (UpdatedBy) REFERENCES Usuarios (ID_Usuario),
     CONSTRAINT UQ_Categoria_Nombre_Rubro UNIQUE (Nombre_Categoria, ID_Rubro)
 );
 
@@ -69,7 +75,6 @@ CREATE TABLE Productos (
     Nombre_Producto VARCHAR(100) NOT NULL,
     Descripcion TEXT,
     ID_Categoria BIGINT NOT NULL,
-    ID_Rubro BIGINT NOT NULL,
     Precio_Compra DECIMAL(10, 2) NOT NULL,
     Precio_Venta DECIMAL(10, 2) NOT NULL,
     Stock_Actual INT NOT NULL DEFAULT 0,
@@ -82,8 +87,11 @@ CREATE TABLE Productos (
     ) DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CreatedBy BIGINT NOT NULL,
+    UpdatedBy BIGINT,
     FOREIGN KEY (ID_Categoria) REFERENCES Categorias (ID_Categoria),
-    FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro),
+    FOREIGN KEY (CreatedBy) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (UpdatedBy) REFERENCES Usuarios (ID_Usuario),
     CONSTRAINT UQ_Producto_Codigo UNIQUE (Codigo_Producto)
 );
 
@@ -218,7 +226,7 @@ SELECT
 FROM
     Productos p
     INNER JOIN Categorias c ON p.ID_Categoria = c.ID_Categoria
-    INNER JOIN Rubros r ON p.ID_Rubro = r.ID_Rubro
+    INNER JOIN Rubros r ON c.ID_Rubro = r.ID_Rubro
 WHERE
     p.Estado != 'Inactivo';
 
