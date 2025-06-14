@@ -40,63 +40,82 @@
               ></div>
 
               <div class="p-8">
-                <!-- Encabezado con estadísticas -->
-                <div class="mb-8">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                      <h2 class="text-3xl font-medium text-gray-900">Rubros</h2>
-                      <span
-                        class="inline-flex items-center px-3 py-1 rounded-full bg-gray-900/5 text-xs font-medium text-gray-900"
+                <!-- Encabezado con título y botón de acción -->
+                <div
+                  class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-lg p-6 mb-6"
+                >
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <h1 class="text-3xl font-bold text-white mb-2">Rubros</h1>
+                      <p class="text-blue-100">Gestión de Rubros</p>
+                    </div>
+                    <div class="flex space-x-4">
+                      <a
+                        th:href="@{/rubros/nuevo}"
+                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md hover:shadow-lg"
                       >
-                        Gestión de Rubros
-                      </span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-5 w-5 mr-2"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                        Añadir Rubro
+                      </a>
                     </div>
                   </div>
-                  <!-- Mensaje -->
+                </div>
+
+                <!-- Mensaje -->
+                <div
+                  th:if="${mensaje}"
+                  id="mensajeAlerta"
+                  th:class="${'relative overflow-hidden rounded-lg backdrop-blur-sm p-4 opacity-0 transition-all duration-1000 ease-out transform translate-y-4 ' + (tipoMensaje == 'error' ? 'bg-gradient-to-r from-red-50 to-red-50/50' : 'bg-gradient-to-r from-green-50 to-green-50/50')}"
+                >
                   <div
-                    th:if="${mensaje}"
-                    id="mensajeAlerta"
-                    th:class="${'relative overflow-hidden rounded-lg backdrop-blur-sm p-4 opacity-0 transition-all duration-1000 ease-out transform translate-y-4 ' + (tipoMensaje == 'error' ? 'bg-gradient-to-r from-red-50 to-red-50/50' : 'bg-gradient-to-r from-green-50 to-green-50/50')}"
-                  >
-                    <div
-                      th:class="${'absolute top-0 left-0 w-1 h-full bg-gradient-to-b ' + (tipoMensaje == 'error' ? 'from-red-500 to-red-600' : 'from-green-500 to-green-600')}"
-                    ></div>
-                    <div class="flex items-center gap-3 pl-3">
-                      <!-- Icono de éxito -->
-                      <svg
-                        th:if="${tipoMensaje != 'error'}"
-                        class="w-5 h-5 text-green-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <!-- Icono de error -->
-                      <svg
-                        th:if="${tipoMensaje == 'error'}"
-                        class="w-5 h-5 text-red-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                        />
-                      </svg>
-                      <p
-                        th:class="${'text-sm font-medium ' + (tipoMensaje == 'error' ? 'text-red-900' : 'text-green-900')}"
-                        th:text="${mensaje}"
-                      ></p>
-                    </div>
+                    th:class="${'absolute top-0 left-0 w-1 h-full bg-gradient-to-b ' + (tipoMensaje == 'error' ? 'from-red-500 to-red-600' : 'from-green-500 to-green-600')}"
+                  ></div>
+                  <div class="flex items-center gap-3 pl-3">
+                    <!-- Icono de éxito -->
+                    <svg
+                      th:if="${tipoMensaje != 'error'}"
+                      class="w-5 h-5 text-green-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <!-- Icono de error -->
+                    <svg
+                      th:if="${tipoMensaje == 'error'}"
+                      class="w-5 h-5 text-red-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                    <p
+                      th:class="${'text-sm font-medium ' + (tipoMensaje == 'error' ? 'text-red-900' : 'text-green-900')}"
+                      th:text="${mensaje}"
+                    ></p>
                   </div>
                 </div>
 

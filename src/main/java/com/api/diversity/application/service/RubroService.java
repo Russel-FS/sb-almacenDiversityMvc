@@ -4,7 +4,6 @@ import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.mappers.RubroMapper;
 import com.api.diversity.domain.model.RubroEntity;
 import com.api.diversity.domain.ports.RubroRepository;
-import com.api.diversity.domain.enums.NombreRubro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +51,7 @@ public class RubroService implements IRubroService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean existsByNombreRubro(NombreRubro nombreRubro) {
+    public boolean existsByNombreRubro(String nombreRubro) {
         return rubroRepository.existsByNombreRubro(nombreRubro);
     }
 }

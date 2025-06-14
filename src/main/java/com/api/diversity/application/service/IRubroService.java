@@ -1,7 +1,6 @@
 package com.api.diversity.application.service;
 
 import com.api.diversity.application.dto.RubroDto;
-import com.api.diversity.domain.enums.NombreRubro;
 
 import java.util.List;
 
@@ -14,5 +13,5 @@ public interface IRubroService {
 
     void deleteById(Long id);
 
-    boolean existsByNombreRubro(NombreRubro nombreRubro);
+    boolean existsByNombreRubro(String nombreRubro);
 }
