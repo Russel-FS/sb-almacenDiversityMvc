@@ -4,348 +4,191 @@
     <meta charset="UTF-8" />
     <title>Rubros</title>
   </head>
-  <body>
+  <body class="bg-white">
     <div th:replace="~{layout :: layout(~{::section})}">
       <section>
-        <!-- Contenedor principal-->
-        <div
-          class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50"
-        >
-          <!-- elemento de fondo decorativos -->
-          <div class="absolute inset-0 overflow-hidden">
-            <div
-              class="absolute -top-[40%] -right-[10%] w-[800px] h-[800px] opacity-[0.15]"
-            >
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 rounded-full blur-3xl"
-              ></div>
-            </div>
-            <div
-              class="absolute -bottom-[30%] -left-[10%] w-[600px] h-[600px] opacity-[0.07]"
-            >
-              <div
-                class="absolute inset-0 bg-gradient-to-tr from-gray-900 to-gray-800 rounded-full blur-3xl"
-              ></div>
-            </div>
-          </div>
-
-          <div class="relative max-w-7xl mx-auto px-4 py-16">
-            <!-- Panel principal -->
-            <div
-              class="relative bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl ring-1 ring-gray-900/5"
-            >
-              <!-- Barra lateral decorativa -->
-              <div
-                class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-gray-900 to-gray-700 rounded-l-2xl"
-              ></div>
-
-              <div class="p-8">
-                <!-- Encabezado con título y botón de acción -->
-                <div class="mb-8">
-                  <div class="flex items-center justify-between mb-6">
-                    <div class="flex items-start gap-4">
-                      <div class="relative">
-                        <div
-                          class="absolute -inset-1.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl blur opacity-20"
-                        ></div>
-                        <div
-                          class="relative flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-gray-900 to-gray-800"
-                        >
-                          <svg
-                            class="w-7 h-7 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="1.5"
-                              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                      <div>
-                        <h2 class="text-2xl font-medium text-gray-900">
-                          Gestión de Rubros
-                        </h2>
-                        <p class="mt-1 text-sm text-gray-500">
-                          Administra tus rubros del sistema
-                        </p>
-                      </div>
-                    </div>
-                    <a
-                      th:href="@{/rubros/nuevo}"
-                      class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 active:scale-[0.98]"
-                    >
-                      <div
-                        class="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-950 transition-transform duration-300 hover:scale-105"
-                      ></div>
-                      <span class="relative flex items-center">
-                        <svg
-                          class="w-5 h-5 mr-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                          />
-                        </svg>
-                        Nuevo Rubro
-                      </span>
-                    </a>
-                  </div>
+        <!-- Contenido Principal -->
+        <main class="py-8">
+          <div class="max-w-7xl mx-auto px-6">
+            <!-- Encabezado -->
+            <div class="mb-12">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h1 class="text-3xl font-medium text-gray-900 tracking-tight">
+                    Rubros
+                  </h1>
+                  <p class="mt-2 text-sm text-gray-500">
+                    Administra tus rubros del sistema
+                  </p>
                 </div>
-
-                <!-- Mensaje -->
-                <div
-                  th:if="${mensaje}"
-                  id="mensajeAlerta"
-                  th:class="${'relative overflow-hidden rounded-lg backdrop-blur-sm p-4 opacity-0 transition-all duration-1000 ease-out transform translate-y-4 ' + (tipoMensaje == 'error' ? 'bg-gradient-to-r from-red-50 to-red-50/50' : 'bg-gradient-to-r from-green-50 to-green-50/50')}"
+                <a
+                  th:href="@{/rubros/nuevo}"
+                  class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-full hover:bg-gray-800 transition-colors"
                 >
-                  <div
-                    th:class="${'absolute top-0 left-0 w-1 h-full bg-gradient-to-b ' + (tipoMensaje == 'error' ? 'from-red-500 to-red-600' : 'from-green-500 to-green-600')}"
-                  ></div>
-                  <div class="flex items-center gap-3 pl-3">
-                    <!-- Icono de éxito -->
-                    <svg
-                      th:if="${tipoMensaje != 'error'}"
-                      class="w-5 h-5 text-green-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <!-- Icono de error -->
-                    <svg
-                      th:if="${tipoMensaje == 'error'}"
-                      class="w-5 h-5 text-red-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                      />
-                    </svg>
-                    <p
-                      th:class="${'text-sm font-medium ' + (tipoMensaje == 'error' ? 'text-red-900' : 'text-green-900')}"
-                      th:text="${mensaje}"
-                    ></p>
-                  </div>
-                </div>
-
-                <!-- Tabla -->
-                <div
-                  class="relative rounded-xl overflow-hidden bg-white ring-1 ring-gray-900/5"
-                >
-                  <div class="overflow-x-auto max-h-[450px]">
-                    <table class="min-w-full divide-y divide-gray-200">
-                      <thead>
-                        <tr class="bg-gray-50">
-                          <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >ID</span
-                            >
-                          </th>
-                          <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Nombre</span
-                            >
-                          </th>
-                          <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Descripción</span
-                            >
-                          </th>
-                          <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Estado</span
-                            >
-                          </th>
-                          <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Acciones</span
-                            >
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody class="divide-y divide-gray-200 bg-white">
-                        <tr
-                          th:each="rubro : ${rubros}"
-                          class="group transition-colors hover:bg-gray-50"
-                        >
-                          <td
-                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                            th:text="${rubro.idRubro}"
-                          ></td>
-                          <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                              <div class="flex-shrink-0">
-                                <span
-                                  class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-900/5 text-gray-900"
-                                >
-                                  <svg
-                                    class="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="1.5"
-                                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"
-                                    />
-                                  </svg>
-                                </span>
-                              </div>
-                              <div class="ml-4">
-                                <div
-                                  class="text-sm font-medium text-gray-900"
-                                  th:text="${rubro.nombreRubro}"
-                                ></div>
-                              </div>
-                            </div>
-                          </td>
-                          <td class="px-6 py-4">
-                            <div
-                              class="text-sm text-gray-500 max-w-md"
-                              th:text="${rubro.descripcion}"
-                            ></div>
-                          </td>
-                          <td class="px-6 py-4 whitespace-nowrap">
-                            <span
-                              th:class="${'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' + (rubro.estado.name() == 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800')}"
-                              th:text="${rubro.estado.name()}"
-                            ></span>
-                          </td>
-                          <td
-                            class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
-                          >
-                            <div class="flex items-center gap-2">
-                              <a
-                                th:href="@{/rubros/editar/} + ${rubro.idRubro}"
-                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors group-hover:shadow-sm"
-                              >
-                                <svg
-                                  class="w-4 h-4 mr-1.5"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.5"
-                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                  />
-                                </svg>
-                                Editar
-                              </a>
-                              <a
-                                th:href="@{/rubros/eliminar/} + ${rubro.idRubro}"
-                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-red-700 bg-red-50 hover:bg-red-100 transition-colors group-hover:shadow-sm"
-                                onclick="return confirm('¿Está seguro de eliminar este rubro?')"
-                              >
-                                <svg
-                                  class="w-4 h-4 mr-1.5"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="1.5"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                  />
-                                </svg>
-                                Eliminar
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                  <svg
+                    class="w-4 h-4 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                  Nuevo Rubro
+                </a>
               </div>
             </div>
 
-            <!-- Tarjeta informativa flotante -->
+            <!-- Mensaje -->
             <div
-              class="absolute bottom-6 right-4 max-w-xs bg-white/80 backdrop-blur-xl rounded-xl shadow-lg ring-1 ring-gray-900/5 px-4 py-3"
+              th:if="${mensaje}"
+              id="mensajeAlerta"
+              th:class="${'relative overflow-hidden rounded-2xl p-4 opacity-0 transition-all duration-1000 ease-out transform translate-y-4 ' + (tipoMensaje == 'error' ? 'bg-red-50' : 'bg-green-50')}"
             >
               <div class="flex items-center gap-3">
-                <div class="flex-shrink-0">
-                  <span
-                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-900/5"
-                  >
-                    <svg
-                      class="w-4 h-4 text-gray-900"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                <svg
+                  th:if="${tipoMensaje != 'error'}"
+                  class="w-5 h-5 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <svg
+                  th:if="${tipoMensaje == 'error'}"
+                  class="w-5 h-5 text-red-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                <p
+                  th:class="${'text-sm font-medium ' + (tipoMensaje == 'error' ? 'text-red-900' : 'text-green-900')}"
+                  th:text="${mensaje}"
+                ></p>
+              </div>
+            </div>
+
+            <!-- Grid de Cards -->
+            <div class="mt-8">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card de Rubro -->
+                <div
+                  th:each="rubro : ${rubros}"
+                  class="group relative bg-white rounded-2xl overflow-hidden"
+                >
+                  <!-- Imagen -->
+                  <div class="relative aspect-[16/9] overflow-hidden">
+                    <div
+                      class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"
+                    ></div>
+                    <img
+                      th:if="${rubro.imagenUrl != null}"
+                      th:src="${rubro.imagenUrl}"
+                      class="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.02]"
+                      alt="Imagen del rubro"
+                    />
+                    <div
+                      th:unless="${rubro.imagenUrl != null}"
+                      class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100"
                     >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </span>
-                </div>
-                <div>
-                  <p class="text-xs font-medium text-gray-900">
-                    Gestión Eficiente
-                  </p>
-                  <p class="text-xs text-gray-500">
-                    Organiza tus rubros para un mejor control del sistema
-                  </p>
+                      <svg
+                        class="w-16 h-16 text-gray-200"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1"
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- Contenido -->
+                  <div class="p-6">
+                    <!-- Título y Estado -->
+                    <div class="flex items-center justify-between mb-3">
+                      <h3
+                        class="text-lg font-medium text-gray-900 tracking-tight"
+                        th:text="${rubro.nombreRubro}"
+                      ></h3>
+                      <span
+                        th:class="${'text-xs font-medium ' + (rubro.estado.name() == 'Activo' ? 'text-green-600' : 'text-red-600')}"
+                        th:text="${rubro.estado.name()}"
+                      ></span>
+                    </div>
+
+                    <!-- Descripción -->
+                    <p
+                      class="text-sm text-gray-500 mb-4 line-clamp-2"
+                      th:text="${rubro.descripcion}"
+                    ></p>
+
+                    <!-- Código y Acciones -->
+                    <div
+                      class="flex items-center justify-between pt-4 border-t border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400"
+                        th:text="${rubro.code}"
+                      ></span>
+                      <div class="flex items-center gap-4">
+                        <a
+                          th:href="@{/rubros/editar/} + ${rubro.idRubro}"
+                          class="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                        >
+                          Editar
+                        </a>
+                        <a
+                          th:href="@{/rubros/eliminar/} + ${rubro.idRubro}"
+                          class="text-sm text-red-600 hover:text-red-700 transition-colors"
+                          onclick="return confirm('¿Está seguro de eliminar este rubro?')"
+                        >
+                          Eliminar
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </main>
       </section>
     </div>
+
     <!-- Script para el mensaje -->
     <script th:if="${mensaje}">
       document.addEventListener("DOMContentLoaded", function () {
         const mensaje = document.getElementById("mensajeAlerta");
-        // mostrar mensaje
         setTimeout(() => {
           mensaje.classList.remove("opacity-0", "translate-y-4");
           mensaje.classList.add("opacity-100", "translate-y-0");
         }, 100);
 
-        // ocultar mensaje después de 5 segundos
         setTimeout(() => {
           mensaje.classList.remove("opacity-100", "translate-y-0");
           mensaje.classList.add("opacity-0", "translate-y-4");
-
-          // Remover el mensaje después
           setTimeout(() => {
             mensaje.remove();
           }, 1000);
