@@ -123,13 +123,11 @@
                   th:object="${rubro}"
                   method="post"
                   class="space-y-8"
-                  enctype="multipart/form-data"
                 >
                   <input type="hidden" th:field="*{idRubro}" />
-                  <input type="hidden" th:field="*{code}" />
                   <input type="hidden" th:field="*{estado}" />
 
-                  <!-- Nombre del Rubro (solo lectura) -->
+                  <!-- Nombre del Rubro -->
                   <div class="relative">
                     <div
                       class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
@@ -163,7 +161,47 @@
                             type="text"
                             th:field="*{nombreRubro}"
                             class="block w-full rounded-lg border-0 px-4 py-3.5 bg-gray-50 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
-                            readonly
+                            th:readonly="${rubro.idRubro != null}"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Código del Rubro -->
+                  <div class="relative" th:if="${rubro.idRubro == null}">
+                    <div
+                      class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
+                    ></div>
+                    <div class="relative">
+                      <label
+                        for="code"
+                        class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
+                      >
+                        <svg
+                          class="w-4 h-4 text-gray-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                          />
+                        </svg>
+                        Código del Rubro
+                      </label>
+                      <div class="relative group">
+                        <div
+                          class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
+                        ></div>
+                        <div class="relative">
+                          <input
+                            type="text"
+                            th:field="*{code}"
+                            class="block w-full rounded-lg border-0 px-4 py-3.5 bg-gray-50 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
                           />
                         </div>
                       </div>
@@ -303,82 +341,20 @@
                     </div>
                   </div>
 
-                  <!-- Acciones -->
-                  <div class="relative pt-6">
-                    <div
-                      class="absolute inset-0 bg-gradient-to-b from-transparent via-gray-50/50 to-gray-50/80 backdrop-blur-sm"
-                    ></div>
-                    <div class="relative flex items-center justify-between">
-                      <a
-                        th:href="@{/rubros}"
-                        class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200"
-                      >
-                        <svg
-                          class="w-4 h-4 mr-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                          />
-                        </svg>
-                        Volver a la Lista
-                      </a>
-                      <div class="flex items-center gap-3">
-                        <button
-                          type="submit"
-                          class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 active:scale-[0.98]"
-                        >
-                          <div
-                            class="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-950 transition-transform duration-300 hover:scale-105"
-                          ></div>
-                          <span class="relative flex items-center">
-                            <svg
-                              class="w-4 h-4 mr-2"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                            Guardar Cambios
-                          </span>
-                        </button>
-                        <a
-                          th:href="@{/rubros/nuevo}"
-                          class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 active:scale-[0.98]"
-                        >
-                          <div
-                            class="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transition-transform duration-300 hover:scale-105"
-                          ></div>
-                          <span class="relative flex items-center">
-                            <svg
-                              class="w-4 h-4 mr-2"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 4v16m8-8H4"
-                              />
-                            </svg>
-                            Nuevo Rubro
-                          </span>
-                        </a>
-                      </div>
-                    </div>
+                  <!-- Botones de acción -->
+                  <div class="flex items-center justify-end gap-4 pt-6">
+                    <a
+                      th:href="@{/rubros}"
+                      class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    >
+                      Cancelar
+                    </a>
+                    <button
+                      type="submit"
+                      class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-900 border border-transparent rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    >
+                      Guardar Cambios
+                    </button>
                   </div>
                 </form>
               </div>
