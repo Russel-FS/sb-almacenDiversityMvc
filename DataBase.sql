@@ -19,8 +19,7 @@ CREATE TABLE Productos (
     Precio_Unitario DECIMAL(10, 2) NOT NULL,
     Fecha_Registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (Categoria) REFERENCES Categorias (ID_Categoria)
-);
-
+); 
  
 
 CREATE TABLE Entradas (

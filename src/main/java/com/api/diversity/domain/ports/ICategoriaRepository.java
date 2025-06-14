@@ -1,8 +1,9 @@
-package com.api.diversity.infrastructure.repository;
+package com.api.diversity.domain.ports;
 
-import com.api.diversity.domain.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.api.diversity.domain.model.Categoria;
 
 @Repository
 public interface ICategoriaRepository extends JpaRepository<Categoria, Long> {

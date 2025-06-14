@@ -1,14 +1,16 @@
 package com.api.diversity.application.service;
 
-import com.api.diversity.application.interfaces.ICategoriaService;
-import com.api.diversity.domain.model.Categoria;
-import com.api.diversity.infrastructure.repository.ICategoriaRepository;
-import lombok.AllArgsConstructor;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import com.api.diversity.application.interfaces.ICategoriaService;
+import com.api.diversity.domain.model.Categoria;
+import com.api.diversity.domain.ports.ICategoriaRepository;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
