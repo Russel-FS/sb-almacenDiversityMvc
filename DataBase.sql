@@ -62,11 +62,11 @@ CREATE TABLE Categorias (
     Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CreatedBy BIGINT NOT NULL,
-    UpdatedBy BIGINT,
+    created_by BIGINT NOT NULL,
+    updated_by BIGINT,
     FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro),
-    FOREIGN KEY (CreatedBy) REFERENCES Usuarios (ID_Usuario),
-    FOREIGN KEY (UpdatedBy) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (created_by) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (updated_by) REFERENCES Usuarios (ID_Usuario),
     CONSTRAINT UQ_Categoria_Nombre_Rubro UNIQUE (Nombre_Categoria, ID_Rubro)
 );
 
@@ -82,8 +82,8 @@ CREATE TABLE Productos (
     Stock_Actual INT NOT NULL DEFAULT 0,
     Stock_Minimo INT NOT NULL DEFAULT 0,
     Stock_Maximo INT NOT NULL DEFAULT 0,
-    UrlImagen VARCHAR(255),
-    PublicId VARCHAR(100),
+    url_imagen VARCHAR(255),
+    public_id VARCHAR(100),
     Estado ENUM(
         'Activo',
         'Inactivo',
@@ -91,11 +91,11 @@ CREATE TABLE Productos (
     ) DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CreatedBy BIGINT NOT NULL,
-    UpdatedBy BIGINT,
+    created_by BIGINT NOT NULL,
+    updated_by BIGINT,
     FOREIGN KEY (ID_Categoria) REFERENCES Categorias (ID_Categoria),
-    FOREIGN KEY (CreatedBy) REFERENCES Usuarios (ID_Usuario),
-    FOREIGN KEY (UpdatedBy) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (created_by) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (updated_by) REFERENCES Usuarios (ID_Usuario),
     CONSTRAINT UQ_Producto_Codigo UNIQUE (Codigo_Producto)
 );
 

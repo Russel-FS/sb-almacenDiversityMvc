@@ -59,10 +59,10 @@ public class ProductoEntity {
     @Column(name = "Stock_Maximo", nullable = false)
     private Integer stockMaximo;
 
-    @Column(name = "UrlImagen")
+    @Column(name = "url_imagen")
     private String urlImagen;
 
-    @Column(name = "PublicId")
+    @Column(name = "public_id")
     private String publicId;
 
     @Enumerated(EnumType.STRING)
@@ -78,10 +78,10 @@ public class ProductoEntity {
     private LocalDateTime fechaModificacion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CreatedBy", nullable = false)
+    @JoinColumn(name = "created_by", nullable = false)
     private UsuarioEntity createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UpdatedBy")
+    @JoinColumn(name = "updated_by")
     private UsuarioEntity updatedBy;
 }

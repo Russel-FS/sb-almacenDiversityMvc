@@ -2,6 +2,9 @@ package com.api.diversity.domain.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.api.diversity.domain.enums.EstadoCategoria;
 
 import jakarta.persistence.Column;
@@ -41,17 +44,19 @@ public class CategoryEntity {
     @Column(name = "Estado", nullable = false)
     private EstadoCategoria estado;
 
-    @Column(name = "Fecha_Creacion")
+    @CreationTimestamp
+    @Column(name = "Fecha_Creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 
+    @UpdateTimestamp
     @Column(name = "Fecha_Modificacion")
     private LocalDateTime fechaModificacion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CreatedBy", nullable = false)
+    @JoinColumn(name = "created_by", nullable = false)
     private UsuarioEntity createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UpdatedBy")
+    @JoinColumn(name = "updated_by")
     private UsuarioEntity updatedBy;
 }
