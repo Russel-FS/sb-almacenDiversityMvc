@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Diversity System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-['Inter']">
+    
+    <div class="relative h-[200px] bg-gradient-to-r from-blue-900 to-blue-700">
+        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80" 
+             class="w-full h-full object-cover mix-blend-overlay opacity-30" alt="banner">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <h1 class="text-4xl font-semibold text-white">Sistema de Gestión Diversity</h1>
+        </div>
+    </div>
+ 
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-7">
+                    <div class="flex items-center py-4 space-x-8">
+                        <a href="/" class="text-gray-700 hover:text-blue-600 transition-colors">Inicio</a>
+                        <a th:href="@{/categorias}" class="text-gray-700 hover:text-blue-600 transition-colors">Categorías</a>
+                        <a th:href="@{/productos}" class="text-gray-700 hover:text-blue-600 transition-colors">Productos</a>
+                        <a th:href="@{/inventario}" class="text-gray-700 hover:text-blue-600 transition-colors">Inventario</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+ 
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div th:replace="${content}">
+        </div>
+    </main>
+</body>
+</html>

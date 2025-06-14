@@ -1,40 +1,54 @@
-// filepath: src/main/resources/templates/categorias/lista.html
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout/plantilla :: head">
 </head>
 <body>
     <div th:fragment="content">
-        <h2>Gestión de Categorías</h2>
-        
-        <div class="mb-3">
-            <a th:href="@{/categorias/nuevo}" class="btn btn-primary">Nueva Categoría</a>
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-gray-800">Gestión de Categorías</h2>
+                <a th:href="@{/categorias/nuevo}" 
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    Nueva Categoría
+                </a>
+            </div>
+ 
+            <div th:if="${mensaje}" 
+                 class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6">
+                <p th:text="${mensaje}"></p>
+            </div>
+ 
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr th:each="categoria : ${categorias}" class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${categoria.idCategoria}"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${categoria.nombreCategoria}"></td>
+                            <td class="px-6 py-4 text-sm text-gray-500" th:text="${categoria.descripcion}"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                <a th:href="@{/categorias/editar/} + ${categoria.idCategoria}" 
+                                   class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md">
+                                    Editar
+                                </a>
+                                <a th:href="@{/categorias/eliminar/} + ${categoria.idCategoria}" 
+                                   class="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-md"
+                                   onclick="return confirm('¿Está seguro de eliminar esta categoría?')">
+                                    Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-        <div class="alert alert-success" th:if="${mensaje}" th:text="${mensaje}"></div>
-
-        <table class="table table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="categoria : ${categorias}">
-                    <td th:text="${categoria.idCategoria}"></td>
-                    <td th:text="${categoria.nombreCategoria}"></td>
-                    <td th:text="${categoria.descripcion}"></td>
-                    <td>
-                        <a th:href="@{/categorias/editar/} + ${categoria.idCategoria}" class="btn btn-warning btn-sm">Editar</a>
-                        <a th:href="@{/categorias/eliminar/} + ${categoria.idCategoria}" class="btn btn-danger btn-sm" 
-                           onclick="return confirm('¿Está seguro de eliminar esta categoría?')">Eliminar</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 </body>
 </html>
