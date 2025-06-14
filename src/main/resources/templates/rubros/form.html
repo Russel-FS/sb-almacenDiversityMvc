@@ -177,7 +177,7 @@
                   </div>
 
                   <!-- Código del Rubro -->
-                  <div class="relative" th:if="${rubro.idRubro == null}">
+                  <div class="relative">
                     <div
                       class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
                     ></div>
@@ -208,9 +208,12 @@
                         <div class="relative">
                           <input
                             type="text"
+                            id="code"
+                            name="code"
                             th:field="*{code}"
                             th:value="*{code}"
                             class="block w-full rounded-lg border-0 px-4 py-3.5 bg-gray-50 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
+                            th:readonly="${rubro.idRubro != null}"
                             required
                           />
                         </div>
