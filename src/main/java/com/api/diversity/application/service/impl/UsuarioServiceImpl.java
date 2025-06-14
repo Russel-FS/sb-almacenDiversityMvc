@@ -23,23 +23,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional(readOnly = true)
-    public UsuarioDto findByEmailAndPassword(String email, String contraseña) {
-        try {
-            UsuarioEntity usuario = usuarioRepository.findByEmail(email)
-                    .orElse(null);
-
-            if (usuario != null && passwordEncoder.matches(contraseña, usuario.getContraseña())) {
-                return usuarioMapper.toDto(usuario);
-            }
-            return null;
-        } catch (Exception e) {
-            log.error("Error al buscar usuario por email y contraseña", e);
-            throw new RuntimeException("Error al autenticar usuario", e);
-        }
-    }
-
-    @Override
     @Transactional
     public UsuarioDto save(UsuarioDto usuarioDto) {
         try {

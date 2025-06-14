@@ -23,7 +23,6 @@ public class SecurityConfig {
 
     private final DataSource dataSource;
     private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -53,7 +52,7 @@ public class SecurityConfig {
         AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
         builder
                 .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
+                .passwordEncoder(passwordEncoder());
         return builder.build();
     }
 
@@ -65,7 +64,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
