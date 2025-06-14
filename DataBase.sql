@@ -3,7 +3,7 @@ CREATE DATABASE JC_Diversity;
 USE JC_Diversity;
 
 CREATE TABLE Categorias (
-    ID_Categoria INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Categoria BIGINT AUTO_INCREMENT PRIMARY KEY,
     Nombre_Categoria VARCHAR(50) NOT NULL,
     Descripcion TEXT
 );
