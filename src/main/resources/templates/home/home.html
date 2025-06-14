@@ -11,21 +11,6 @@
         <div
           class="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-white"
         >
-          <!-- Imagen de fondo -->
-          <div class="absolute inset-0">
-            <img
-              src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80"
-              class="w-full h-full object-cover opacity-70 blur-[2px]"
-              alt="Fondo elegante"
-            />
-            <div
-              class="absolute inset-0 bg-gradient-to-br from-white/80 via-white/75 to-white/60"
-            ></div>
-            <div
-              class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.03)_0%,_transparent_100%)]"
-            ></div>
-          </div>
-
           <!-- Contenido principal -->
           <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="py-24 md:py-32">
@@ -43,7 +28,7 @@
                   </div>
 
                   <h1
-                    class="text-4xl lg:text-7xl font-medium tracking-tight text-[#1b2432] mb-8"
+                    class="text-3xl lg:text-5xl font-medium tracking-tight text-[#1b2432] mb-8"
                   >
                     Bienvenido a tu
                     <span
@@ -54,7 +39,7 @@
                   </h1>
 
                   <p
-                    class="text-xl text-[#1b2432]/80 leading-relaxed mb-12 max-w-xl"
+                    class="text-lg text-[#1b2432]/80 leading-relaxed mb-12 max-w-xl"
                   >
                     Accede rápidamente a todas tus herramientas de gestión.
                     Monitorea tu inventario, administra productos y optimiza tus
@@ -88,6 +73,32 @@
                       Gestionar Productos
                     </a>
                   </div>
+                </div>
+
+                <!-- Imagen lateral -->
+                <div class="relative hidden lg:block">
+                  <div
+                    class="absolute -inset-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl opacity-50 blur-2xl"
+                  ></div>
+                  <div
+                    class="relative aspect-[16/9] w-[600px] mx-auto rounded-3xl overflow-hidden shadow-2xl"
+                  >
+                    <img
+                      src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80"
+                      class="w-full h-full object-cover transform hover:scale-[1.02] transition-transform duration-700 ease-out will-change-transform"
+                      alt="Espacio de trabajo acogedor"
+                    />
+                    <div
+                      class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"
+                    ></div>
+                  </div>
+                  <!-- Elementos decorativos -->
+                  <div
+                    class="absolute -bottom-7 -right-7 w-36 h-36 bg-gradient-to-br from-amber-200 to-orange-200 rounded-full opacity-20 blur-xl"
+                  ></div>
+                  <div
+                    class="absolute -top-7 -left-7 w-28 h-28 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full opacity-20 blur-xl"
+                  ></div>
                 </div>
               </div>
             </div>
@@ -126,7 +137,7 @@
               <!-- Card de Categorías -->
               <a th:href="@{/categorias}" class="group relative">
                 <div
-                  class="absolute -inset-0.5 bg-gradient-to-r from-[#1b2432]/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"
+                  class="absolute -inset-0.5 bg-gradient-to-r from-amber-100 to-orange-100 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"
                 ></div>
                 <div
                   class="relative h-full bg-white/80 backdrop-blur-sm rounded-3xl transition duration-300 overflow-hidden shadow-lg hover:shadow-xl border border-[#1b2432]/10"
@@ -153,10 +164,10 @@
                         Categorías
                       </h3>
                       <span
-                        class="flex items-center justify-center w-14 h-14 rounded-full bg-[#1b2432]/5 group-hover:bg-[#1b2432]/10 transition-colors duration-300"
+                        class="flex items-center justify-center w-14 h-14 rounded-full bg-amber-50 group-hover:bg-amber-100 transition-colors duration-300"
                       >
                         <svg
-                          class="w-7 h-7 text-[#1b2432]"
+                          class="w-7 h-7 text-amber-600"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -182,14 +193,14 @@
               <!-- Card de Productos -->
               <a th:href="@{/productos}" class="group relative">
                 <div
-                  class="absolute -inset-0.5 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"
+                  class="absolute -inset-0.5 bg-gradient-to-r from-amber-100 to-orange-100 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"
                 ></div>
                 <div
-                  class="relative h-full bg-white rounded-3xl transition duration-300 overflow-hidden shadow-sm hover:shadow-md border border-gray-100"
+                  class="relative h-full bg-white/80 backdrop-blur-sm rounded-3xl transition duration-300 overflow-hidden shadow-lg hover:shadow-xl border border-[#1b2432]/10"
                 >
                   <div class="relative aspect-[16/9] overflow-hidden">
                     <div
-                      class="absolute inset-0 bg-gradient-to-br from-gray-900/[0.02] to-gray-900/[0.01] group-hover:from-gray-900/[0.03] group-hover:to-gray-900/[0.02] transition-colors duration-300"
+                      class="absolute inset-0 bg-gradient-to-br from-[#1b2432]/5 to-transparent group-hover:from-[#1b2432]/10 group-hover:to-transparent transition-colors duration-300"
                     ></div>
                     <img
                       src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&q=80"
@@ -197,7 +208,7 @@
                       alt="Productos"
                     />
                     <div
-                      class="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      class="absolute inset-0 bg-gradient-to-t from-[#1b2432]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     ></div>
                   </div>
 
@@ -209,10 +220,10 @@
                         Productos
                       </h3>
                       <span
-                        class="flex items-center justify-center w-14 h-14 rounded-full bg-[#1b2432]/5 group-hover:bg-[#1b2432]/10 transition-colors duration-300"
+                        class="flex items-center justify-center w-14 h-14 rounded-full bg-amber-50 group-hover:bg-amber-100 transition-colors duration-300"
                       >
                         <svg
-                          class="w-7 h-7 text-[#1b2432]"
+                          class="w-7 h-7 text-amber-600"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -227,30 +238,10 @@
                       </span>
                     </div>
                     <p
-                      class="text-lg text-[#1b2432]/80 leading-relaxed group-hover:text-gray-700 line-clamp-2"
+                      class="text-lg text-[#1b2432]/80 leading-relaxed group-hover:text-[#1b2432]/90 line-clamp-2"
                     >
                       Gestiona tu catálogo completo de productos
                     </p>
-                    <div
-                      class="mt-8 flex items-center gap-4 text-sm text-gray-500"
-                    >
-                      <span class="flex items-center gap-2">
-                        <svg
-                          class="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                          />
-                        </svg>
-                        Catálogo Digital
-                      </span>
-                    </div>
                   </div>
                 </div>
               </a>
@@ -258,14 +249,14 @@
               <!-- Card de Inventario -->
               <a th:href="@{/inventario}" class="group relative">
                 <div
-                  class="absolute -inset-0.5 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"
+                  class="absolute -inset-0.5 bg-gradient-to-r from-amber-100 to-orange-100 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"
                 ></div>
                 <div
-                  class="relative h-full bg-white rounded-3xl transition duration-300 overflow-hidden shadow-sm hover:shadow-md border border-gray-100"
+                  class="relative h-full bg-white/80 backdrop-blur-sm rounded-3xl transition duration-300 overflow-hidden shadow-lg hover:shadow-xl border border-[#1b2432]/10"
                 >
                   <div class="relative aspect-[16/9] overflow-hidden">
                     <div
-                      class="absolute inset-0 bg-gradient-to-br from-gray-900/[0.02] to-gray-900/[0.01] group-hover:from-gray-900/[0.03] group-hover:to-gray-900/[0.02] transition-colors duration-300"
+                      class="absolute inset-0 bg-gradient-to-br from-[#1b2432]/5 to-transparent group-hover:from-[#1b2432]/10 group-hover:to-transparent transition-colors duration-300"
                     ></div>
                     <img
                       src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80"
@@ -273,7 +264,7 @@
                       alt="Inventario"
                     />
                     <div
-                      class="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      class="absolute inset-0 bg-gradient-to-t from-[#1b2432]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     ></div>
                   </div>
 
@@ -285,10 +276,10 @@
                         Inventario
                       </h3>
                       <span
-                        class="flex items-center justify-center w-14 h-14 rounded-full bg-[#1b2432]/5 group-hover:bg-[#1b2432]/10 transition-colors duration-300"
+                        class="flex items-center justify-center w-14 h-14 rounded-full bg-amber-50 group-hover:bg-amber-100 transition-colors duration-300"
                       >
                         <svg
-                          class="w-7 h-7 text-[#1b2432]"
+                          class="w-7 h-7 text-amber-600"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -303,30 +294,10 @@
                       </span>
                     </div>
                     <p
-                      class="text-lg text-[#1b2432]/80 leading-relaxed group-hover:text-gray-700 line-clamp-2"
+                      class="text-lg text-[#1b2432]/80 leading-relaxed group-hover:text-[#1b2432]/90 line-clamp-2"
                     >
                       Monitorea tu stock de productos
                     </p>
-                    <div
-                      class="mt-8 flex items-center gap-4 text-sm text-gray-500"
-                    >
-                      <span class="flex items-center gap-2">
-                        <svg
-                          class="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
-                        Gestión Centralizada
-                      </span>
-                    </div>
                   </div>
                 </div>
               </a>
