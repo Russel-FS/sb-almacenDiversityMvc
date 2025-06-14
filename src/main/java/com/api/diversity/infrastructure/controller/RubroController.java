@@ -2,6 +2,7 @@ package com.api.diversity.infrastructure.controller;
 
 import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.service.IRubroService;
+import com.api.diversity.domain.enums.NombreRubro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,21 @@ public class RubroController {
     @PostMapping("/guardar")
     public String guardarRubro(@ModelAttribute RubroDto rubro, RedirectAttributes redirectAttributes) {
         try {
+            // Convertir el nombre del rubro a mayúsculas y reemplazar espacios por guiones
+            // bajos
+            String nombreRubro = rubro.getNombreRubro().toString().toUpperCase().replace(" ", "_");
+
+            // Intentar convertir a enum
+            try {
+                NombreRubro nombreRubroEnum = NombreRubro.valueOf(nombreRubro);
+                rubro.setNombreRubro(nombreRubroEnum);
+            } catch (IllegalArgumentException e) {
+                redirectAttributes.addFlashAttribute("mensaje",
+                        "El nombre del rubro no es válido. Use solo letras y espacios.");
+                redirectAttributes.addFlashAttribute("tipoMensaje", "error");
+                return "redirect:/rubros/nuevo";
+            }
+
             rubroService.save(rubro);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro guardado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
