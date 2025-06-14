@@ -1,17 +1,13 @@
 package com.api.diversity.application.mappers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.domain.model.RubroEntity;
-import com.api.diversity.domain.repository.UsuarioRepository;
+import com.api.diversity.domain.model.UsuarioEntity;
 
 @Component
 public class RubroMapper {
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
     public RubroDto toDto(RubroEntity entity) {
         if (entity == null) {
@@ -48,17 +44,17 @@ public class RubroMapper {
         entity.setImagenUrl(dto.getImagenUrl());
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());
-
-        // Establecemos el usuario creador
+        // informacion de usuario
         if (dto.getCreatedBy() != null) {
-            usuarioRepository.findById(dto.getCreatedBy())
-                    .ifPresent(entity::setCreatedBy);
+            UsuarioEntity createdBy = new UsuarioEntity();
+            createdBy.setIdUsuario(dto.getCreatedBy());
+            entity.setCreatedBy(createdBy);
         }
 
-        // Establecemos el usuario que modificó
         if (dto.getUpdatedBy() != null) {
-            usuarioRepository.findById(dto.getUpdatedBy())
-                    .ifPresent(entity::setUpdatedBy);
+            UsuarioEntity updatedBy = new UsuarioEntity();
+            updatedBy.setIdUsuario(dto.getUpdatedBy());
+            entity.setUpdatedBy(updatedBy);
         }
 
         return entity;
