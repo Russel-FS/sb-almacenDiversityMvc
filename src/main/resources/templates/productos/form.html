@@ -444,12 +444,14 @@
                             name="imagen"
                             id="imagen"
                             accept="image/*"
+                            dropzone="true"
                             class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-900/5 file:text-gray-700 hover:file:bg-gray-900/10"
                           />
                         </div>
                       </div>
                       <div th:if="${producto.urlImagen != null}" class="mt-4">
                         <img
+                          id="vistaPreviaImagen"
                           th:src="${producto.urlImagen}"
                           alt="Imagen actual"
                           class="h-32 w-32 object-cover rounded-lg shadow-lg"
@@ -553,5 +555,49 @@
         </div>
       </section>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const inputImagen = document.getElementById("imagen");
+        const vistaPrevia = document.getElementById("vistaPreviaImagen");
+
+        function mostrarVistaPrevia(file) {
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              vistaPrevia.src = e.target.result;
+              vistaPrevia.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+
+        inputImagen.addEventListener("change", function (e) {
+          const file = e.target.files[0];
+          mostrarVistaPrevia(file);
+        });
+
+        inputImagen.addEventListener("drop", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const file = e.dataTransfer.files[0];
+          if (file && file.type.startsWith("image/")) {
+            inputImagen.files = e.dataTransfer.files;
+            mostrarVistaPrevia(file);
+          }
+        });
+
+        inputImagen.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+
+        inputImagen.addEventListener("dragenter", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      });
+    </script>
   </body>
 </html>
