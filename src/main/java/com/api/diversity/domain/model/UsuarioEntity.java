@@ -2,7 +2,7 @@ package com.api.diversity.domain.model;
 
 import java.time.LocalDateTime;
 
-import com.api.diversity.domain.enums.EstadoCategoria;
+import com.api.diversity.domain.enums.EstadoUsuario;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,39 +19,40 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Categorias")
-public class CategoryEntity {
+@Table(name = "Usuarios")
+public class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_Categoria")
-    private Long idCategoria;
+    @Column(name = "ID_Usuario")
+    private Long idUsuario;
+
+    @Column(name = "Nombre_Usuario", nullable = false, unique = true)
+    private String nombreUsuario;
+
+    @Column(name = "Email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "Nombre_Completo", nullable = false)
+    private String nombreCompleto;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Rubro", nullable = false)
-    private RubroEntity rubro;
+    @JoinColumn(name = "ID_Rol", nullable = false)
+    private RolEntity rol;
 
-    @Column(name = "Nombre_Categoria", nullable = false)
-    private String nombreCategoria;
-
-    @Column(name = "Descripcion")
-    private String descripcion;
+    @Column(name = "Contraseña", nullable = false)
+    private String contraseña;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Estado", nullable = false)
-    private EstadoCategoria estado;
+    private EstadoUsuario estado;
+
+    @Column(name = "Ultimo_Acceso")
+    private LocalDateTime ultimoAcceso;
 
     @Column(name = "Fecha_Creacion")
     private LocalDateTime fechaCreacion;
 
     @Column(name = "Fecha_Modificacion")
     private LocalDateTime fechaModificacion;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CreatedBy", nullable = false)
-    private UsuarioEntity createdBy;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UpdatedBy")
-    private UsuarioEntity updatedBy;
 }

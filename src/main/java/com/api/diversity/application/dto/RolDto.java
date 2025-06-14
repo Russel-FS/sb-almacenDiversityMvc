@@ -1,7 +1,8 @@
 package com.api.diversity.application.dto;
 
-import com.api.diversity.domain.enums.EstadoRubro;
-import com.api.diversity.domain.enums.NombreRubro;
+import java.time.LocalDateTime;
+
+import com.api.diversity.domain.enums.EstadoRol;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +13,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RubroDto {
-    private Long idRubro;
-    private NombreRubro nombreRubro;
+public class RolDto {
+    private Long idRol;
+    private String nombreRol;
     private String descripcion;
-    private EstadoRubro estado;
+    private EstadoRol estado;
+    private LocalDateTime fechaCreacion;
 }

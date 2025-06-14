@@ -2,8 +2,7 @@ package com.api.diversity.domain.model;
 
 import java.time.LocalDateTime;
 
-import com.api.diversity.domain.enums.EstadoRubro;
-import com.api.diversity.domain.enums.NombreRubro;
+import com.api.diversity.domain.enums.EstadoRol;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,28 +16,24 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Rubros")
-public class RubroEntity {
+@Table(name = "Roles")
+public class RolEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_Rubro")
-    private Long idRubro;
+    @Column(name = "ID_Rol")
+    private Long idRol;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "Nombre_Rubro", nullable = false, unique = true)
-    private NombreRubro nombreRubro;
+    @Column(name = "Nombre_Rol", nullable = false, unique = true)
+    private String nombreRol;
 
     @Column(name = "Descripcion")
     private String descripcion;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Estado", nullable = false)
-    private EstadoRubro estado;
+    private EstadoRol estado;
 
     @Column(name = "Fecha_Creacion")
     private LocalDateTime fechaCreacion;
-
-    @Column(name = "Fecha_Modificacion")
-    private LocalDateTime fechaModificacion;
 }

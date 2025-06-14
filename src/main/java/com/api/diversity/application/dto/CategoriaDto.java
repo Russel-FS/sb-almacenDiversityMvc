@@ -1,6 +1,8 @@
 package com.api.diversity.application.dto;
 
-import com.api.diversity.domain.model.CategoryEntity.EstadoCategoria;
+import java.time.LocalDateTime;
+
+import com.api.diversity.domain.enums.EstadoCategoria;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +19,8 @@ public class CategoriaDto {
     private String nombreCategoria;
     private String descripcion;
     private EstadoCategoria estado;
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaModificacion;
+    private UsuarioDto createdBy;
+    private UsuarioDto updatedBy;
 }

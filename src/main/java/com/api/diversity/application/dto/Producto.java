@@ -3,7 +3,7 @@ package com.api.diversity.application.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.api.diversity.domain.model.ProductoEntity.EstadoProducto;
+import com.api.diversity.domain.enums.EstadoProducto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +20,6 @@ public class Producto {
     private String nombreProducto;
     private String descripcion;
     private CategoriaDto categoria;
-    private RubroDto rubro;
     private BigDecimal precioCompra;
     private BigDecimal precioVenta;
     private Integer stockActual;
@@ -29,4 +28,6 @@ public class Producto {
     private EstadoProducto estado;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
+    private UsuarioDto createdBy;
+    private UsuarioDto updatedBy;
 }

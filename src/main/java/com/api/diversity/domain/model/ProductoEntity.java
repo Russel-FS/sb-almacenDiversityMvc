@@ -3,6 +3,8 @@ package com.api.diversity.domain.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.api.diversity.domain.enums.EstadoProducto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,10 +41,6 @@ public class ProductoEntity {
     @JoinColumn(name = "ID_Categoria", nullable = false)
     private CategoryEntity categoria;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Rubro", nullable = false)
-    private RubroEntity rubro;
-
     @Column(name = "Precio_Compra", nullable = false)
     private BigDecimal precioCompra;
 
@@ -68,7 +66,11 @@ public class ProductoEntity {
     @Column(name = "Fecha_Modificacion")
     private LocalDateTime fechaModificacion;
 
-    public enum EstadoProducto {
-        Activo, Inactivo, Agotado
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CreatedBy", nullable = false)
+    private UsuarioEntity createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UpdatedBy")
+    private UsuarioEntity updatedBy;
 }
