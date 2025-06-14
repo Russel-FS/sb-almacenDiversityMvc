@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.api.diversity.application.dto.RubroDto;
@@ -47,7 +48,8 @@ public class RubroController {
     }
 
     @PostMapping("/guardar")
-    public String guardarRubro(@ModelAttribute RubroDto rubro, RedirectAttributes redirectAttributes) {
+    public String guardarRubro(@ModelAttribute RubroDto rubro, MultipartFile file,
+            RedirectAttributes redirectAttributes) {
         try {
             if (rubro.getIdRubro() != null) {
                 RubroDto rubroOriginal = rubroService.findById(rubro.getIdRubro());
@@ -60,8 +62,7 @@ public class RubroController {
             if (rubro.getEstado() == null) {
                 rubro.setEstado(EstadoRubro.Activo);
             }
-
-            rubroService.save(rubro);
+            rubroService.save(rubro, file);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro guardado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
         } catch (Exception e) {
