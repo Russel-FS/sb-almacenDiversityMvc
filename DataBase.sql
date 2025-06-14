@@ -40,7 +40,7 @@ CREATE TABLE Usuarios (
 -- Tabla de Rubros
 CREATE TABLE Rubros (
     ID_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
-    NombreRubro VARCHAR(80) NOT NULL,
+    Nombre VARCHAR(80) NOT NULL,
     Code VARCHAR(50) NOT NULL,
     Descripcion VARCHAR(255),
     Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
@@ -50,7 +50,7 @@ CREATE TABLE Rubros (
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_by BIGINT NOT NULL,
     updated_by BIGINT,
-    CONSTRAINT UQ_Rubros_Code_Nombre UNIQUE (Code, NombreRubro),
+    CONSTRAINT UQ_Rubros_Code_Nombre UNIQUE (Code, Nombre),
     FOREIGN KEY (created_by) REFERENCES Usuarios (ID_Usuario),
     FOREIGN KEY (updated_by) REFERENCES Usuarios (ID_Usuario)
 );
@@ -209,7 +209,7 @@ SELECT
     p.Nombre_Producto,
     p.Descripcion,
     c.Nombre_Categoria,
-    r.NombreRubro,
+    r.Nombre,
     p.Stock_Actual,
     p.Stock_Minimo,
     p.Stock_Maximo,
@@ -271,7 +271,7 @@ VALUES (
 INSERT INTO
     Rubros (
         created_by,
-        NombreRubro,
+        Nombre,
         code,
         Descripcion
     )

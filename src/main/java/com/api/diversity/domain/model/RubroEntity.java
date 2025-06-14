@@ -35,7 +35,7 @@ public class RubroEntity {
     @Column(name = "ID_Rubro")
     private Long idRubro;
 
-    @Column(name = "NombreRubro", nullable = false, length = 80)
+    @Column(name = "Nombre", nullable = false, length = 80)
     private String nombreRubro;
 
     @Column(name = "Code", nullable = false, length = 50)

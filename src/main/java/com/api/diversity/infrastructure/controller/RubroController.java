@@ -51,6 +51,14 @@ public class RubroController {
         try {
             log.info("Guardando rubro: {}", rubro);
 
+            // Validaciones
+            if (rubro.getNombreRubro() == null || rubro.getNombreRubro().trim().isEmpty()) {
+                throw new IllegalArgumentException("El nombre del rubro es requerido");
+            }
+            if (rubro.getCode() == null || rubro.getCode().trim().isEmpty()) {
+                throw new IllegalArgumentException("El código del rubro es requerido");
+            }
+
             if (rubro.getIdRubro() != null) {
                 RubroDto rubroOriginal = rubroService.findById(rubro.getIdRubro());
                 rubro.setCode(rubroOriginal.getCode());
@@ -58,6 +66,12 @@ public class RubroController {
             } else {
                 rubro.setCreatedBy(1L);
             }
+
+            // Aseguramos que el estado no sea null
+            if (rubro.getEstado() == null) {
+                rubro.setEstado(EstadoRubro.Activo);
+            }
+
             log.info("Rubro a guardar: {}", rubro);
             rubroService.save(rubro);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro guardado exitosamente");
