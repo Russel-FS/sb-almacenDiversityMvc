@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/plantilla :: head">
-</head>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: html}">
 <body>
-    <div th:fragment="content">
-        <!-- Hero Section -->
+    <div th:fragment="content"> 
         <div class="flex flex-col items-center justify-center py-12">
             <h1 class="text-4xl font-bold text-gray-900 mb-8">Sistema de Gestión Diversity</h1>
-            
-            <!-- Cards de acceso rápido -->
+             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
-                <!-- Card Categorías -->
+            
                 <a href="/categorias" class="group">
                     <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
                         <div class="h-40 bg-blue-50 rounded-lg mb-4 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
@@ -22,8 +18,7 @@
                         <p class="text-gray-600">Gestiona las categorías de tus productos</p>
                     </div>
                 </a>
-
-                <!-- Card Productos -->
+ 
                 <a href="/productos" class="group">
                     <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
                         <div class="h-40 bg-green-50 rounded-lg mb-4 flex items-center justify-center group-hover:bg-green-100 transition-colors">
@@ -35,8 +30,7 @@
                         <p class="text-gray-600">Administra tu catálogo de productos</p>
                     </div>
                 </a>
-
-                <!-- Card Inventario -->
+ 
                 <a href="/inventario" class="group">
                     <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
                         <div class="h-40 bg-purple-50 rounded-lg mb-4 flex items-center justify-center group-hover:bg-purple-100 transition-colors">
@@ -45,7 +39,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">Inventario</h3>
-                        <p class="text-gray-600">Controla tu stock y movimientos</p>
+                        <p class="text-gray-600">Control y gestión de inventario</p>
                     </div>
                 </a>
             </div>
