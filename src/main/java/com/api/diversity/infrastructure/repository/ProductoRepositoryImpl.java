@@ -1,0 +1,44 @@
+package com.api.diversity.infrastructure.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Repository;
+
+import com.api.diversity.domain.model.ProductoEntity;
+import com.api.diversity.domain.ports.IProductoRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Repository
+@RequiredArgsConstructor
+public class ProductoRepositoryImpl implements IProductoRepository {
+    
+    private final IProductoJpaRepository productoJpaRepository;
+ 
+
+    @Override
+    public List<ProductoEntity> findAll() {
+        return productoJpaRepository.findAll();
+    }
+
+    @Override
+    public Optional<ProductoEntity> findById(String id) {
+        return productoJpaRepository.findById(id);
+    }
+
+    @Override
+    public ProductoEntity save(ProductoEntity producto) {
+        return productoJpaRepository.save(producto);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        productoJpaRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ProductoEntity> findByCategoria(Long categoriaId) {
+        return productoJpaRepository.findByCategoria_IdCategoria(categoriaId);
+    }
+}

@@ -1,16 +1,18 @@
-package com.api.diversity.domain.model;
+package com.api.diversity.application.dto;
 
-import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import lombok.Data;
+
 @Data
 public class Producto {
-    private Integer idProducto;
+    private String idProducto;
     private String nombre;
     private String descripcion;
-    private Integer categoriaId;
+    private CategoriaDto categoria;
     private Integer stock;
+    private String urlImagen;
     private BigDecimal precioUnitario;
     private LocalDateTime fechaRegistro;
 }
