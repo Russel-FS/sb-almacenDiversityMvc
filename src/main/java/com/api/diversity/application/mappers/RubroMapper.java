@@ -19,6 +19,12 @@ public class RubroMapper {
                 .code(entity.getCode())
                 .descripcion(entity.getDescripcion())
                 .estado(entity.getEstado())
+                .publicId(entity.getPublicId())
+                .imagenUrl(entity.getImagenUrl())
+                .fechaCreacion(entity.getFechaCreacion())
+                .fechaModificacion(entity.getFechaModificacion())
+                .createdBy(entity.getCreatedBy() != null ? entity.getCreatedBy().getIdUsuario() : null)
+                .updatedBy(entity.getUpdatedBy() != null ? entity.getUpdatedBy().getIdUsuario() : null)
                 .build();
     }
 
@@ -33,6 +39,10 @@ public class RubroMapper {
         entity.setCode(dto.getCode());
         entity.setDescripcion(dto.getDescripcion());
         entity.setEstado(dto.getEstado());
+        entity.setPublicId(dto.getPublicId());
+        entity.setImagenUrl(dto.getImagenUrl());
+        entity.setFechaCreacion(dto.getFechaCreacion());
+        entity.setFechaModificacion(dto.getFechaModificacion());
         return entity;
     }
 }

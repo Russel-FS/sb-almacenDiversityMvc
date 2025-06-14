@@ -39,18 +39,20 @@ CREATE TABLE Usuarios (
 
 -- Tabla de Rubros
 CREATE TABLE Rubros (
-    ID_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
-    Nombre_Rubro VARCHAR(80) NOT NULL UNIQUE,
-    Code ENUM(
-        'PINATERIA',
-        'LIBRERIA',
-        'CAMARAS_SEGURIDAD'
-    ) NOT NULL,
-    Descripcion TEXT,
-    Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
-    Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT UQ_Rubro_Nombre UNIQUE (Code, Nombre_Rubro)
+    IdRubro INT IDENTITY (1, 1) PRIMARY KEY,
+    NombreRubro VARCHAR(80) NOT NULL,
+    Code VARCHAR(50) NOT NULL,
+    Descripcion VARCHAR(255),
+    Estado VARCHAR(20) NOT NULL,
+    PublicId VARCHAR(100),
+    ImagenUrl VARCHAR(255),
+    Fecha_Creacion DATETIME DEFAULT GETDATE (),
+    Fecha_Modificacion DATETIME DEFAULT GETDATE (),
+    created_by BIGINT NOT NULL,
+    updated_by BIGINT,
+    CONSTRAINT UQ_Rubros_Code_Nombre UNIQUE (Code, NombreRubro),
+    FOREIGN KEY (created_by) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (updated_by) REFERENCES Usuarios (ID_Usuario)
 );
 
 -- Tabla de Categorías

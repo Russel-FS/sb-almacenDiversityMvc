@@ -18,4 +18,10 @@ public class RubroDto {
     private NombreRubro code;
     private String descripcion;
     private EstadoRubro estado;
+    private String publicId;
+    private String imagenUrl;
+    private java.time.LocalDateTime fechaCreacion;
+    private java.time.LocalDateTime fechaModificacion;
+    private Long createdBy;
+    private Long updatedBy;
 }
