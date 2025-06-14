@@ -38,9 +38,8 @@ public class ProductoServiceImpl implements IProductoService {
     @Override
     public Producto save(Producto producto) {
         ProductoEntity entity = productoMapper.toEntity(producto);
-        return productoRepository.save(entity)
-                .map(productoMapper::toModel)
-                .orElse(null);
+        ProductoEntity savedEntity = productoRepository.save(entity);
+        return productoMapper.toModel(savedEntity);
     }
 
     @Override

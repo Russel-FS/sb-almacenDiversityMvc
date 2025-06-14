@@ -1,11 +1,15 @@
 package com.api.diversity.domain.ports;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
 
-import com.api.diversity.application.dto.CategoriaDto;
+import com.api.diversity.domain.model.CategoryEntity;
 
-@Repository
-public interface ICategoriaRepository extends JpaRepository<CategoriaDto, Long> {
-       boolean existsByNombreCategoria(String nombreCategoria);
+public interface ICategoriaRepository {
+    List<CategoryEntity> findAll();
+    Optional<CategoryEntity> findById(Long id);
+    CategoryEntity save(CategoryEntity category);
+    void deleteById(Long id);
+    boolean existsById(Long id);
+    boolean existsByNombreCategoria(String nombreCategoria);
 }
