@@ -1,7 +1,8 @@
-package com.api.diversity.controller;
+package com.api.diversity.infrastructure.controller;
 
-import com.api.diversity.model.Cliente;
 import org.springframework.web.bind.annotation.*;
+
+import com.api.diversity.domain.model.Cliente;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.api.diversity.controller;
+package com.api.diversity.infrastructure.controller;
 
 
 
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.diversity.model.Usuario;
+import com.api.diversity.domain.model.Usuario;
 
 @RestController
 @RequestMapping("/api/Usuario") 

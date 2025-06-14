@@ -1,8 +1,9 @@
-package com.api.diversity.model;
+package com.api.diversity.domain.model;
 
-import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import lombok.Data;
 
 @Data
 public class Entrada {

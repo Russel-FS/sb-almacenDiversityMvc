@@ -1,11 +1,11 @@
-package com.api.diversity.controller;
-
-import com.api.diversity.model.Categoria;
+package com.api.diversity.infrastructure.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
+
+import com.api.diversity.domain.model.Categoria;
 
 @RestController
 @RequestMapping("/api/categorias")

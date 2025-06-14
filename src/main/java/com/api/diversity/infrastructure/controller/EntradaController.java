@@ -1,7 +1,8 @@
-package com.api.diversity.controller;
+package com.api.diversity.infrastructure.controller;
 
-import com.api.diversity.model.Entrada;
 import org.springframework.web.bind.annotation.*;
+
+import com.api.diversity.domain.model.Entrada;
 
 @RestController
 @RequestMapping("/api/entradas")

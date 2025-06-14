@@ -1,7 +1,8 @@
-package com.api.diversity.model;
+package com.api.diversity.domain.model;
+
+import java.math.BigDecimal;
 
 import lombok.Data;
-import java.math.BigDecimal;
 
 @Data
 public class DetallePedido {
