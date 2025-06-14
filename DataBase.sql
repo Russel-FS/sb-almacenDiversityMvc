@@ -43,7 +43,7 @@ CREATE TABLE Rubros (
     NombreRubro VARCHAR(80) NOT NULL,
     Code VARCHAR(50) NOT NULL,
     Descripcion VARCHAR(255),
-    Estado VARCHAR(20) NOT NULL,
+    Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
     PublicId VARCHAR(100),
     ImagenUrl VARCHAR(255),
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -209,7 +209,7 @@ SELECT
     p.Nombre_Producto,
     p.Descripcion,
     c.Nombre_Categoria,
-    r.Nombre_Rubro,
+    r.NombreRubro,
     p.Stock_Actual,
     p.Stock_Minimo,
     p.Stock_Maximo,
@@ -271,7 +271,7 @@ VALUES (
 INSERT INTO
     Rubros (
         created_by,
-        Nombre_Rubro,
+        NombreRubro,
         code,
         Descripcion
     )
