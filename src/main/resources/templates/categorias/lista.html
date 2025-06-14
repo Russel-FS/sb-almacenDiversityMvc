@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/plantilla :: head">
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head>
+    <meta charset="UTF-8">
+    <title>categoria</title>
 </head>
 <body>
-    <div th:fragment="content">
-        <div class="bg-white rounded-lg shadow-sm p-6">
+      <div th:replace="~{layout :: layout(~{::section})}">
+         <section class="bg-white rounded-lg shadow-sm p-6">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-semibold text-gray-800">Gestión de Categorías</h2>
                 <a th:href="@{/categorias/nuevo}" 
@@ -48,7 +50,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </section>
     </div>
 </body>
 </html>
