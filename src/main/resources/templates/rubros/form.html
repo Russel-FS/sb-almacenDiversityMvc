@@ -125,8 +125,11 @@
                   enctype="multipart/form-data"
                   class="space-y-8"
                 >
+                  <!-- Campos ocultos para ID y estado -->
                   <input type="hidden" th:field="*{idRubro}" />
                   <input type="hidden" th:field="*{estado}" />
+                  <input type="hidden" th:field="*{publicId}" />
+                  <input type="hidden" th:field="*{imagenUrl}" />
 
                   <!-- Nombre del Rubro -->
                   <div class="relative">
@@ -296,10 +299,6 @@
                               style="display: none"
                             />
                           </div>
-                          <!-- Campos ocultos para la imagen -->
-                          <input type="hidden" th:field="*{publicId}" />
-                          <input type="hidden" th:field="*{imagenUrl}" />
-                          <!-- Input para subir nueva imagen -->
                           <input
                             id="imagen"
                             type="file"
