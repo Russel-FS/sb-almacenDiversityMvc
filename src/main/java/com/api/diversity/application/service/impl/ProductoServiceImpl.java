@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.diversity.application.dto.Producto;
 import com.api.diversity.application.mappers.ProductMapper;
@@ -16,12 +17,14 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProductoServiceImpl implements IProductoService {
     
     private final IProductoRepository productoRepository;
     private final ProductMapper productoMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Producto> findAll() {
         return productoRepository.findAll()
                 .stream()
@@ -30,12 +33,14 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Producto> findById(String id) {
         return productoRepository.findById(id)
                 .map(productoMapper::toModel);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Producto save(Producto producto) {
         ProductoEntity entity = productoMapper.toEntity(producto);
         ProductoEntity savedEntity = productoRepository.save(entity);
@@ -43,11 +48,13 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
+    @Transactional
     public void deleteById(String id) {
         productoRepository.deleteById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Producto> findByCategoria(Long categoriaId) {
         return productoRepository.findByCategoria(categoriaId)
                 .stream()
