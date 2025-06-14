@@ -34,6 +34,7 @@ public class RubroController {
     public String mostrarFormularioNuevoRubro(Model model) {
         RubroDto rubro = new RubroDto();
         rubro.setEstado(EstadoRubro.Activo);
+        rubro.setCreatedBy(1L);
         model.addAttribute("rubro", rubro);
         return "rubros/form";
     }
