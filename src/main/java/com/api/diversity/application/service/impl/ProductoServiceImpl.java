@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.api.diversity.application.dto.Producto;
 import com.api.diversity.application.mappers.ProductMapper;
@@ -19,9 +20,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 public class ProductoServiceImpl implements IProductoService {
-    
+
     private final IProductoRepository productoRepository;
     private final ProductMapper productoMapper;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     @Transactional(readOnly = true)
@@ -41,7 +43,12 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Producto save(Producto producto) {
+    public Producto save(Producto producto, MultipartFile imagen) {
+        if (imagen != null && !imagen.isEmpty()) {
+            CloudinaryService.CloudinaryResponse response = cloudinaryService.uploadFile(imagen, "productos");
+            producto.setUrlImagen(response.getUrl());
+            producto.setPublicId(response.getPublicId());
+        }
         ProductoEntity entity = productoMapper.toEntity(producto);
         ProductoEntity savedEntity = productoRepository.save(entity);
         return productoMapper.toModel(savedEntity);
@@ -50,6 +57,13 @@ public class ProductoServiceImpl implements IProductoService {
     @Override
     @Transactional
     public void deleteById(String id) {
+        Optional<ProductoEntity> productoOpt = productoRepository.findById(id);
+        if (productoOpt.isPresent()) {
+            ProductoEntity producto = productoOpt.get();
+            if (producto.getPublicId() != null && !producto.getPublicId().isEmpty()) {
+                cloudinaryService.deleteFile(producto.getPublicId());
+            }
+        }
         productoRepository.deleteById(id);
     }
 

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content})}"
+>
+  <head>
+    <title>Producto - Diversity</title>
+  </head>
+  <body>
+    <div th:fragment="content">
+      <div class="min-h-screen bg-gray-50 py-8">
+        <div class="max-w-5xl mx-auto px-4">
+          <!-- Header -->
+          <div class="mb-8">
+            <div class="flex items-center justify-between">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <h2
+                    class="text-3xl font-medium text-gray-900"
+                    th:text="${producto.idProducto == null ? 'Nuevo Producto' : 'Editar Producto'}"
+                  ></h2>
+                  <span
+                    class="inline-flex items-center px-3 py-1 rounded-full bg-gray-900/5 text-xs font-medium text-gray-900"
+                  >
+                    Gestión de Inventario
+                  </span>
+                </div>
+                <p class="text-gray-500">
+                  Crea y gestiona tus productos de manera eficiente
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulario -->
+          <form
+            th:action="@{/productos/guardar}"
+            th:object="${producto}"
+            method="post"
+            enctype="multipart/form-data"
+            class="space-y-10"
+          >
+            <input type="hidden" th:field="*{idProducto}" />
+
+            <!-- Nombre -->
+            <div>
+              <label
+                for="nombre"
+                class="block text-sm font-medium text-gray-700"
+                >Nombre</label
+              >
+              <input
+                type="text"
+                th:field="*{nombre}"
+                id="nombre"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                required
+              />
+              <div
+                class="text-red-500 text-sm mt-1"
+                th:if="${#fields.hasErrors('nombre')}"
+                th:errors="*{nombre}"
+              ></div>
+            </div>
+
+            <!-- Descripción -->
+            <div>
+              <label
+                for="descripcion"
+                class="block text-sm font-medium text-gray-700"
+                >Descripción</label
+              >
+              <textarea
+                th:field="*{descripcion}"
+                id="descripcion"
+                rows="3"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              ></textarea>
+              <div
+                class="text-red-500 text-sm mt-1"
+                th:if="${#fields.hasErrors('descripcion')}"
+                th:errors="*{descripcion}"
+              ></div>
+            </div>
+
+            <!-- Categoría -->
+            <div>
+              <label
+                for="categoria"
+                class="block text-sm font-medium text-gray-700"
+                >Categoría</label
+              >
+              <select
+                th:field="*{categoria.idCategoria}"
+                id="categoria"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                required
+              >
+                <option value="">Seleccione una categoría</option>
+                <option
+                  th:each="cat : ${categorias}"
+                  th:value="${cat.idCategoria}"
+                  th:text="${cat.nombreCategoria}"
+                ></option>
+              </select>
+              <div
+                class="text-red-500 text-sm mt-1"
+                th:if="${#fields.hasErrors('categoria')}"
+                th:errors="*{categoria}"
+              ></div>
+            </div>
+
+            <!-- Stock -->
+            <div>
+              <label for="stock" class="block text-sm font-medium text-gray-700"
+                >Stock</label
+              >
+              <input
+                type="number"
+                th:field="*{stock}"
+                id="stock"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                min="0"
+              />
+              <div
+                class="text-red-500 text-sm mt-1"
+                th:if="${#fields.hasErrors('stock')}"
+                th:errors="*{stock}"
+              ></div>
+            </div>
+
+            <!-- Precio Unitario -->
+            <div>
+              <label
+                for="precioUnitario"
+                class="block text-sm font-medium text-gray-700"
+                >Precio Unitario</label
+              >
+              <input
+                type="number"
+                th:field="*{precioUnitario}"
+                id="precioUnitario"
+                step="0.01"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                required
+              />
+              <div
+                class="text-red-500 text-sm mt-1"
+                th:if="${#fields.hasErrors('precioUnitario')}"
+                th:errors="*{precioUnitario}"
+              ></div>
+            </div>
+
+            <!-- Imagen -->
+            <div>
+              <label
+                for="imagen"
+                class="block text-sm font-medium text-gray-700"
+                >Imagen del Producto</label
+              >
+              <div class="mt-1 flex items-center">
+                <input
+                  type="file"
+                  name="imagen"
+                  id="imagen"
+                  accept="image/*"
+                  class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                />
+              </div>
+              <div th:if="${producto.urlImagen != null}" class="mt-2">
+                <img
+                  th:src="${producto.urlImagen}"
+                  alt="Imagen actual"
+                  class="h-32 w-32 object-cover rounded-lg"
+                />
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex justify-end gap-4">
+              <a
+                th:href="@{/productos}"
+                class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Cancelar
+              </a>
+              <button
+                type="submit"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Guardar Producto
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,7 +1,6 @@
 CREATE DATABASE JC_Diversity;
 
 USE JC_Diversity;
- 
 
 CREATE TABLE Categorias (
     ID_Categoria BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -16,11 +15,11 @@ CREATE TABLE Productos (
     Categoria BIGINT NOT NULL,
     Stock INT DEFAULT 0,
     Url_Imagen VARCHAR(500),
+    Public_Id VARCHAR(255),
     Precio_Unitario DECIMAL(10, 2) NOT NULL,
     Fecha_Registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (Categoria) REFERENCES Categorias (ID_Categoria)
-); 
- 
+);
 
 CREATE TABLE Entradas (
     ID_Entrada INT AUTO_INCREMENT PRIMARY KEY,
@@ -98,6 +97,5 @@ CREATE TABLE Clientes (
     Telefono VARCHAR(15),
     Direccion VARCHAR(255)
 );
- 
 
 select * from usuarios;

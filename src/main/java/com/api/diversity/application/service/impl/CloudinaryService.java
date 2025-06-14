@@ -9,26 +9,36 @@ import com.cloudinary.Cloudinary;
 import java.io.IOException;
 import java.util.Map;
 
+import lombok.Data;
+
 @Service
 public class CloudinaryService {
 
+    @Data
+    public static class CloudinaryResponse {
+        private final String url;
+        private final String publicId;
+    }
+
     @Autowired
     private Cloudinary cloudinary;
- 
-    public String uploadFile(MultipartFile file) {
-        return uploadFile(file, "diversity"); 
+
+    public CloudinaryResponse uploadFile(MultipartFile file) {
+        return uploadFile(file, "diversity");
     }
 
     @SuppressWarnings("unchecked")
-    public String uploadFile(MultipartFile file, String folder) {
+    public CloudinaryResponse uploadFile(MultipartFile file, String folder) {
         try {
             Map<String, Object> params = Map.of(
                     "folder", folder,
                     "resource_type", "auto");
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), params);
-            return uploadResult.get("url").toString();
+            return new CloudinaryResponse(
+                    uploadResult.get("url").toString(),
+                    uploadResult.get("public_id").toString());
         } catch (IOException e) {
-            throw new RuntimeException("Error uploading file to Cloudinary", e);
+            throw new RuntimeException("Error al subir el archivo a cloudinary", e);
         }
     }
 
@@ -36,7 +46,7 @@ public class CloudinaryService {
         try {
             cloudinary.uploader().destroy(publicId, Map.of());
         } catch (IOException e) {
-            throw new RuntimeException("Error deleting file from Cloudinary", e);
+            throw new RuntimeException("Error al eliminar el archivo en cloudinary", e);
         }
     }
 }

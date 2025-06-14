@@ -13,6 +13,7 @@ public class Producto {
     private CategoriaDto categoria;
     private Integer stock;
     private String urlImagen;
+    private String publicId;
     private BigDecimal precioUnitario;
     private LocalDateTime fechaRegistro;
 }
