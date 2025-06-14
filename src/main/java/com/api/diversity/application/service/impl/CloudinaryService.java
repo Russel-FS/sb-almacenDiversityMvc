@@ -14,11 +14,18 @@ public class CloudinaryService {
 
     @Autowired
     private Cloudinary cloudinary;
+ 
+    public String uploadFile(MultipartFile file) {
+        return uploadFile(file, "diversity"); 
+    }
 
     @SuppressWarnings("unchecked")
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file, String folder) {
         try {
-            Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), Map.of());
+            Map<String, Object> params = Map.of(
+                    "folder", folder,
+                    "resource_type", "auto");
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), params);
             return uploadResult.get("url").toString();
         } catch (IOException e) {
             throw new RuntimeException("Error uploading file to Cloudinary", e);
