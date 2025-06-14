@@ -24,6 +24,8 @@ public class UsuarioMapper {
                 .email(entity.getEmail())
                 .nombreCompleto(entity.getNombreCompleto())
                 .rol(rolMapper.toDto(entity.getRol()))
+                .urlImagen(entity.getUrlImagen())
+                .publicId(entity.getPublicId())
                 .contraseña(entity.getContraseña())
                 .estado(entity.getEstado())
                 .ultimoAcceso(entity.getUltimoAcceso())
@@ -43,6 +45,8 @@ public class UsuarioMapper {
         entity.setEmail(dto.getEmail());
         entity.setNombreCompleto(dto.getNombreCompleto());
         entity.setRol(rolMapper.toEntity(dto.getRol()));
+        entity.setUrlImagen(dto.getUrlImagen());
+        entity.setPublicId(dto.getPublicId());
         entity.setContraseña(dto.getContraseña());
         entity.setEstado(dto.getEstado());
         entity.setUltimoAcceso(dto.getUltimoAcceso());

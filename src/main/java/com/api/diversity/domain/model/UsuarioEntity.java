@@ -2,6 +2,9 @@ package com.api.diversity.domain.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.api.diversity.domain.enums.EstadoUsuario;
 
 import jakarta.persistence.Column;
@@ -43,6 +46,12 @@ public class UsuarioEntity {
     @Column(name = "Contraseña", nullable = false)
     private String contraseña;
 
+    @Column(name = "UrlImagen")
+    private String urlImagen;
+
+    @Column(name = "PublicId")
+    private String publicId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "Estado", nullable = false)
     private EstadoUsuario estado;
@@ -50,9 +59,11 @@ public class UsuarioEntity {
     @Column(name = "Ultimo_Acceso")
     private LocalDateTime ultimoAcceso;
 
-    @Column(name = "Fecha_Creacion")
+    @CreationTimestamp
+    @Column(name = "Fecha_Creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 
+    @UpdateTimestamp
     @Column(name = "Fecha_Modificacion")
     private LocalDateTime fechaModificacion;
 }

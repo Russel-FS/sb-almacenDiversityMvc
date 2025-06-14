@@ -25,6 +25,8 @@ public class Producto {
     private Integer stockActual;
     private Integer stockMinimo;
     private Integer stockMaximo;
+    private String urlImagen;
+    private String publicId;
     private EstadoProducto estado;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;

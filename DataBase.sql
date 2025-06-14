@@ -23,6 +23,8 @@ CREATE TABLE Usuarios (
     Nombre_Completo VARCHAR(100) NOT NULL,
     ID_Rol BIGINT NOT NULL,
     Contraseña VARCHAR(255) NOT NULL,
+    UrlImagen VARCHAR(255),
+    PublicId VARCHAR(100),
     Estado ENUM(
         'Activo',
         'Inactivo',
@@ -80,6 +82,8 @@ CREATE TABLE Productos (
     Stock_Actual INT NOT NULL DEFAULT 0,
     Stock_Minimo INT NOT NULL DEFAULT 0,
     Stock_Maximo INT NOT NULL DEFAULT 0,
+    UrlImagen VARCHAR(255),
+    PublicId VARCHAR(100),
     Estado ENUM(
         'Activo',
         'Inactivo',

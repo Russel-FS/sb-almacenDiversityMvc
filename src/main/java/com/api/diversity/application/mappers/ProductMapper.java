@@ -30,6 +30,8 @@ public class ProductMapper {
                 .stockActual(entity.getStockActual())
                 .stockMinimo(entity.getStockMinimo())
                 .stockMaximo(entity.getStockMaximo())
+                .urlImagen(entity.getUrlImagen())
+                .publicId(entity.getPublicId())
                 .estado(entity.getEstado())
                 .fechaCreacion(entity.getFechaCreacion())
                 .fechaModificacion(entity.getFechaModificacion())
@@ -54,6 +56,8 @@ public class ProductMapper {
         entity.setStockActual(model.getStockActual());
         entity.setStockMinimo(model.getStockMinimo());
         entity.setStockMaximo(model.getStockMaximo());
+        entity.setUrlImagen(model.getUrlImagen());
+        entity.setPublicId(model.getPublicId());
         entity.setEstado(model.getEstado());
         entity.setFechaCreacion(model.getFechaCreacion());
         entity.setFechaModificacion(model.getFechaModificacion());

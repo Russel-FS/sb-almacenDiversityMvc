@@ -3,6 +3,9 @@ package com.api.diversity.domain.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.api.diversity.domain.enums.EstadoProducto;
 
 import jakarta.persistence.Column;
@@ -56,13 +59,21 @@ public class ProductoEntity {
     @Column(name = "Stock_Maximo", nullable = false)
     private Integer stockMaximo;
 
+    @Column(name = "UrlImagen")
+    private String urlImagen;
+
+    @Column(name = "PublicId")
+    private String publicId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "Estado", nullable = false)
     private EstadoProducto estado;
 
-    @Column(name = "Fecha_Creacion")
+    @CreationTimestamp
+    @Column(name = "Fecha_Creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 
+    @UpdateTimestamp
     @Column(name = "Fecha_Modificacion")
     private LocalDateTime fechaModificacion;
 

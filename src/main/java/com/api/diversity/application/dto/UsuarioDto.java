@@ -19,6 +19,8 @@ public class UsuarioDto {
     private String email;
     private String nombreCompleto;
     private RolDto rol;
+    private String urlImagen;
+    private String publicId;
     private String contraseña;
     private EstadoUsuario estado;
     private LocalDateTime ultimoAcceso;
