@@ -29,6 +29,7 @@ public class AuthController {
     @PostMapping("/login")
     public String procesarLogin(UsuarioDto usuarioDto, HttpSession session, RedirectAttributes redirectAttributes) {
         try {
+            log.info("Intentando iniciar sesión con el usuario: {}", usuarioDto.getEmail());
             UsuarioDto usuario = usuarioService.findByEmailAndPassword(usuarioDto.getEmail(),
                     usuarioDto.getContraseña());
             if (usuario != null) {
