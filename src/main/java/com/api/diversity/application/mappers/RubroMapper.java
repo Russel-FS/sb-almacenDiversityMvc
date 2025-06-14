@@ -43,6 +43,11 @@ public class RubroMapper {
         entity.setImagenUrl(dto.getImagenUrl());
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());
+
+        // No establecemos createdBy ni updatedBy aquí ya que son entidades
+        // UsuarioEntity
+        // y necesitarían ser cargadas desde la base de datos
+
         return entity;
     }
 }

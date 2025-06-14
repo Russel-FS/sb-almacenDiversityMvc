@@ -34,7 +34,6 @@ public class RubroController {
     public String mostrarFormularioNuevoRubro(Model model) {
         RubroDto rubro = new RubroDto();
         rubro.setEstado(EstadoRubro.Activo);
-        rubro.setCreatedBy(1L);
         model.addAttribute("rubro", rubro);
         return "rubros/form";
     }
@@ -54,12 +53,14 @@ public class RubroController {
             if (rubro.getIdRubro() != null) {
                 RubroDto rubroOriginal = rubroService.findById(rubro.getIdRubro());
                 rubro.setCode(rubroOriginal.getCode());
+                rubro.setCreatedBy(rubroOriginal.getCreatedBy());
             }
+            rubro.setCreatedBy(1L);
             rubroService.save(rubro);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro guardado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
         } catch (Exception e) {
-            log.error("Error al guardar el rubro: {}", e.getMessage());
+            log.error("Error al guardar el rubro", e);
             redirectAttributes.addFlashAttribute("mensaje", "Error al guardar el rubro: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
@@ -73,7 +74,7 @@ public class RubroController {
             redirectAttributes.addFlashAttribute("mensaje", "Rubro eliminado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
         } catch (Exception e) {
-            log.error("Error al eliminar el rubro: {}", e.getMessage());
+            log.error("Error al eliminar el rubro", e);
             redirectAttributes.addFlashAttribute("mensaje", "Error al eliminar el rubro: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
