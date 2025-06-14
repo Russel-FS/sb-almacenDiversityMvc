@@ -42,7 +42,7 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Producto save(Producto producto, MultipartFile imagen) {
         if (imagen != null && !imagen.isEmpty()) {
             CloudinaryService.CloudinaryResponse response = cloudinaryService.uploadFile(imagen, "productos");
