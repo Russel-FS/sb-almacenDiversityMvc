@@ -42,9 +42,9 @@ CREATE TABLE Usuarios (
 CREATE TABLE Rubros (
     ID_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
     Nombre_Rubro ENUM(
-        'Piñatería',
-        'Librería',
-        'Cámaras de Seguridad'
+        'PIÑATERIA',
+        'LIBRERIA',
+        'CAMARAS_DE_SEGURIDAD'
     ) NOT NULL,
     Descripcion TEXT,
     Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
@@ -254,15 +254,15 @@ VALUES (
 INSERT INTO
     Rubros (Nombre_Rubro, Descripcion)
 VALUES (
-        'Piñatería',
+        'PIÑATERIA',
         'Productos relacionados con piñatería'
     ),
     (
-        'Librería',
+        'LIBRERIA',
         'Productos de librería y papelería'
     ),
     (
-        'Cámaras de Seguridad',
+        'CAMARAS_DE_SEGURIDAD',
         'Equipos y accesorios de seguridad'
     );
 
