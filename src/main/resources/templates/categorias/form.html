@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/plantilla :: head">
+</head>
+<body>
+    <div th:fragment="content">
+        <h2 th:text="${categoria.idCategoria == null ? 'Nueva Categoría' : 'Editar Categoría'}"></h2>
+
+        <form th:action="@{/categorias/guardar}" th:object="${categoria}" method="post">
+            <input type="hidden" th:field="*{idCategoria}">
+            
+            <div class="mb-3">
+                <label for="nombreCategoria" class="form-label">Nombre de la Categoría</label>
+                <input type="text" class="form-control" id="nombreCategoria" th:field="*{nombreCategoria}" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('nombreCategoria')}" th:errors="*{nombreCategoria}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3"></textarea>
+                <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/categorias}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
