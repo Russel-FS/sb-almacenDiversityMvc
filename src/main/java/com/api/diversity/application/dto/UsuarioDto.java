@@ -19,6 +19,7 @@ public class UsuarioDto {
     private String email;
     private String nombreCompleto;
     private RolDto rol;
+    private RubroDto rubro;
     private String urlImagen;
     private String publicId;
     private String contraseña;

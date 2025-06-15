@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioMapper {
 
     private final RolMapper rolMapper;
+    private final RubroMapper rubroMapper;
 
     public UsuarioDto toDto(UsuarioEntity entity) {
         if (entity == null) {
@@ -24,6 +25,7 @@ public class UsuarioMapper {
                 .email(entity.getEmail())
                 .nombreCompleto(entity.getNombreCompleto())
                 .rol(rolMapper.toDto(entity.getRol()))
+                .rubro(rubroMapper.toDto(entity.getRubro()))
                 .urlImagen(entity.getUrlImagen())
                 .publicId(entity.getPublicId())
                 .contraseña(entity.getContraseña())
@@ -45,6 +47,7 @@ public class UsuarioMapper {
         entity.setEmail(dto.getEmail());
         entity.setNombreCompleto(dto.getNombreCompleto());
         entity.setRol(rolMapper.toEntity(dto.getRol()));
+        entity.setRubro(rubroMapper.toEntity(dto.getRubro()));
         entity.setUrlImagen(dto.getUrlImagen());
         entity.setPublicId(dto.getPublicId());
         entity.setContraseña(dto.getContraseña());

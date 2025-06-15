@@ -47,6 +47,10 @@ public class UsuarioEntity {
     @JoinColumn(name = "ID_Rol", nullable = false)
     private RolEntity rol;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_Rubro", nullable = false)
+    private RubroEntity rubro;
+
     @Column(name = "Contraseña", nullable = false)
     private String contraseña;
 

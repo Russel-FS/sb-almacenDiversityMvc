@@ -26,6 +26,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Transactional
     public UsuarioDto save(UsuarioDto usuarioDto) {
         try {
+            // Validaciones existentes
             if (usuarioRepository.existsByEmail(usuarioDto.getEmail())) {
                 throw new RuntimeException("El email ya está registrado");
             }
@@ -33,6 +34,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
                 throw new RuntimeException("El nombre de usuario ya está registrado");
             }
 
+            // Validaciones adicionales
+            if (usuarioDto.getRubro() == null || usuarioDto.getRubro().getIdRubro() == null) {
+                throw new RuntimeException("El rubro es requerido");
+            }
+
+            if (usuarioDto.getRol() == null || usuarioDto.getRol().getIdRol() == null) {
+                throw new RuntimeException("El rol es requerido");
+            }
+
+            // Encriptación de contraseña
             if (usuarioDto.getContraseña() != null && !usuarioDto.getContraseña().startsWith("$2a$")) {
                 usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
             }
@@ -41,7 +52,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
             return usuarioMapper.toDto(usuarioRepository.save(usuario));
         } catch (Exception e) {
             log.error("Error al guardar usuario", e);
-            throw new RuntimeException("Error al guardar usuario", e);
+            throw new RuntimeException("Error al guardar usuario: " + e.getMessage(), e);
         }
     }
 
@@ -52,6 +63,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
             UsuarioEntity usuarioExistente = usuarioRepository.findById(usuarioDto.getIdUsuario())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+            // Validaciones adicionales
+            if (usuarioDto.getRubro() == null || usuarioDto.getRubro().getIdRubro() == null) {
+                throw new RuntimeException("El rubro es requerido");
+            }
+
+            if (usuarioDto.getRol() == null || usuarioDto.getRol().getIdRol() == null) {
+                throw new RuntimeException("El rol es requerido");
+            }
+
+            // Manejo de contraseña
             if (usuarioDto.getContraseña() != null && !usuarioDto.getContraseña().isEmpty()) {
                 usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
             } else {
@@ -62,7 +83,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
             return usuarioMapper.toDto(usuarioRepository.save(usuario));
         } catch (Exception e) {
             log.error("Error al actualizar usuario", e);
-            throw new RuntimeException("Error al actualizar usuario", e);
+            throw new RuntimeException("Error al actualizar usuario: " + e.getMessage(), e);
         }
     }
 
