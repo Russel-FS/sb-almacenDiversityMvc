@@ -31,6 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuario no encontrado: " + email);
         }
 
+        System.out.println("Usuario encontrado: " + usuario.getEmail());
         // Obtener el rol del usuario
         RolDto rol = rolService.findById(usuario.getRol().getIdRol());
 
