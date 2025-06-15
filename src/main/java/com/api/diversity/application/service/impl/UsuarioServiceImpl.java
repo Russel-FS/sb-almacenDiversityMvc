@@ -1,5 +1,6 @@
 package com.api.diversity.application.service.impl;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,8 +9,9 @@ import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.mappers.UsuarioMapper;
 import com.api.diversity.application.service.interfaces.IUsuarioService;
 import com.api.diversity.domain.model.UsuarioEntity;
-import com.api.diversity.domain.ports.IUsuarioRepository; 
+import com.api.diversity.domain.ports.IUsuarioRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,33 +28,39 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Transactional
     public UsuarioDto save(UsuarioDto usuarioDto) {
         try {
-            // Validaciones existentes 
+            // Validaciones existentes
             if (usuarioRepository.existsByEmail(usuarioDto.getEmail())) {
-                throw new RuntimeException("El email ya está registrado");
+                throw new DataIntegrityViolationException("El email ya está registrado");
             }
             if (usuarioRepository.existsByNombreUsuario(usuarioDto.getNombreUsuario())) {
-                throw new RuntimeException("El nombre de usuario ya está registrado");
+                throw new DataIntegrityViolationException("El nombre de usuario ya está registrado");
             }
 
             // Validaciones adicionales
             if (usuarioDto.getRubro() == null || usuarioDto.getRubro().getIdRubro() == null) {
-                throw new RuntimeException("El rubro es requerido");
+                throw new IllegalArgumentException("El rubro es requerido");
             }
 
             if (usuarioDto.getRol() == null || usuarioDto.getRol().getIdRol() == null) {
-                throw new RuntimeException("El rol es requerido");
+                throw new IllegalArgumentException("El rol es requerido");
             }
 
-            // Encriptación de contraseñaa
+            // Encriptación de contraseña
             if (usuarioDto.getContraseña() != null && !usuarioDto.getContraseña().startsWith("$2a$")) {
                 usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
             }
 
             UsuarioEntity usuario = usuarioMapper.toEntity(usuarioDto);
             return usuarioMapper.toDto(usuarioRepository.save(usuario));
+        } catch (DataIntegrityViolationException e) {
+            log.error("Error de integridad de datos al guardar usuario", e);
+            throw new DataIntegrityViolationException("Error al guardar usuario: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("Error de validación al guardar usuario", e);
+            throw new IllegalArgumentException("Error de validación: " + e.getMessage());
         } catch (Exception e) {
-            log.error("Error al guardar usuario", e);
-            throw new RuntimeException("Error al guardar usuario: " + e.getMessage(), e);
+            log.error("Error inesperado al guardar usuario", e);
+            throw new RuntimeException("Error inesperado al guardar usuario", e);
         }
     }
 
@@ -61,14 +69,14 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public UsuarioDto update(UsuarioDto usuarioDto) {
         try {
             UsuarioEntity usuarioExistente = usuarioRepository.findById(usuarioDto.getIdUsuario())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
- 
+                    .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+
             if (usuarioDto.getRubro() == null || usuarioDto.getRubro().getIdRubro() == null) {
-                throw new RuntimeException("El rubro es requerido");
+                throw new IllegalArgumentException("El rubro es requerido");
             }
 
             if (usuarioDto.getRol() == null || usuarioDto.getRol().getIdRol() == null) {
-                throw new RuntimeException("El rol es requerido");
+                throw new IllegalArgumentException("El rol es requerido");
             }
 
             // Manejo de contraseña
@@ -80,9 +88,18 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
             UsuarioEntity usuario = usuarioMapper.toEntity(usuarioDto);
             return usuarioMapper.toDto(usuarioRepository.save(usuario));
+        } catch (EntityNotFoundException e) {
+            log.error("Usuario no encontrado", e);
+            throw new EntityNotFoundException(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("Error de validación al actualizar usuario", e);
+            throw new IllegalArgumentException("Error de validación: " + e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            log.error("Error de integridad de datos al actualizar usuario", e);
+            throw new DataIntegrityViolationException("Error al actualizar usuario: " + e.getMessage());
         } catch (Exception e) {
-            log.error("Error al actualizar usuario", e);
-            throw new RuntimeException("Error al actualizar usuario: " + e.getMessage(), e);
+            log.error("Error inesperado al actualizar usuario", e);
+            throw new RuntimeException("Error inesperado al actualizar usuario", e);
         }
     }
 
@@ -90,10 +107,20 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Transactional
     public void deleteById(Long id) {
         try {
+            if (!usuarioRepository.existsById(id)) {
+                throw new EntityNotFoundException("Usuario no encontrado");
+            }
             usuarioRepository.deleteById(id);
+        } catch (EntityNotFoundException e) {
+            log.error("Usuario no encontrado al intentar eliminar", e);
+            throw new EntityNotFoundException(e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            log.error("Error de integridad de datos al eliminar usuario", e);
+            throw new DataIntegrityViolationException(
+                    "No se puede eliminar el usuario porque tiene registros relacionados");
         } catch (Exception e) {
-            log.error("Error al eliminar usuario", e);
-            throw new RuntimeException("Error al eliminar usuario", e);
+            log.error("Error inesperado al eliminar usuario", e);
+            throw new RuntimeException("Error inesperado al eliminar usuario", e);
         }
     }
 
@@ -103,13 +130,17 @@ public class UsuarioServiceImpl implements IUsuarioService {
         try {
             return usuarioRepository.findById(id)
                     .map(usuarioMapper::toDto)
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                    .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+        } catch (EntityNotFoundException e) {
+            log.error("Usuario no encontrado", e);
+            throw new EntityNotFoundException(e.getMessage());
         } catch (Exception e) {
-            log.error("Error al buscar usuario por ID", e);
-            throw new RuntimeException("Error al buscar usuario", e);
+            log.error("Error inesperado al buscar usuario por ID", e);
+            throw new RuntimeException("Error inesperado al buscar usuario", e);
         }
     }
 
+    // Los métodos de consulta simples pueden mantener su implementación actual
     @Override
     @Transactional(readOnly = true)
     public boolean existsByEmail(String email) {
@@ -124,8 +155,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public UsuarioDto findByEmail(String email) {
-        return usuarioRepository.findByEmail(email)
-                .map(usuarioMapper::toDto)
-                .orElse(null);
+        try {
+            return usuarioRepository.findByEmail(email)
+                    .map(usuarioMapper::toDto)
+                    .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+        } catch (EntityNotFoundException e) {
+            log.error("Usuario no encontrado por email", e);
+            throw new EntityNotFoundException(e.getMessage());
+        } catch (Exception e) {
+            log.error("Error inesperado al buscar usuario por email", e);
+            throw new RuntimeException("Error inesperado al buscar usuario por email", e);
+        }
     }
 }
