@@ -61,7 +61,7 @@ CREATE TABLE Categorias (
     ID_Rubro BIGINT NOT NULL,
     Nombre_Categoria VARCHAR(100) NOT NULL,
     Descripcion TEXT,
-    Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
+    Estado ENUM('Activo', 'Inactivo', 'Eliminado') DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_by BIGINT NOT NULL,
@@ -71,6 +71,7 @@ CREATE TABLE Categorias (
     FOREIGN KEY (updated_by) REFERENCES Usuarios (ID_Usuario),
     CONSTRAINT UQ_Categoria_Nombre_Rubro UNIQUE (Nombre_Categoria, ID_Rubro)
 );
+ 
 
 -- Tabla de Productos
 CREATE TABLE Productos (
