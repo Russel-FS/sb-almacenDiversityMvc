@@ -24,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/categorias")
 @RequiredArgsConstructor
 public class CategoriaController {
-
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
@@ -58,6 +57,7 @@ public class CategoriaController {
             model.addAttribute("rubros", rubroService.findAll());
             return "categorias/form";
         }
+
         categoriaService.save(categoria);
         flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "success");
