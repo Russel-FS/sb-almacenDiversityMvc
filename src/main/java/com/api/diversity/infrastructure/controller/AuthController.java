@@ -20,6 +20,13 @@ public class AuthController {
         return "auth/login";
     }
 
+    /**
+     * Método para manejar el cierre de sesión.
+     *
+     * @param session            la sesión HTTP actual
+     * @param redirectAttributes atributos para redirección
+     * @return la vista de redirección al login
+     */
     @GetMapping("/logout")
     public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
         session.invalidate();

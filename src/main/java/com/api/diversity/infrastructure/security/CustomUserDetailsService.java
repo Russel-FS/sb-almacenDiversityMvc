@@ -27,6 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UsuarioDto usuario = usuarioService.findByEmail(email);
+        System.out.println("Buscando usuario por email: " + email);
         if (usuario == null) {
             throw new UsernameNotFoundException("Usuario no encontrado: " + email);
         }
