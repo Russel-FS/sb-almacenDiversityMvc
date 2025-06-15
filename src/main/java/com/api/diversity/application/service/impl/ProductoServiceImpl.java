@@ -13,6 +13,7 @@ import com.api.diversity.application.dto.ProductoDto;
 import com.api.diversity.application.mappers.ProductMapper;
 import com.api.diversity.application.service.impl.CloudinaryService.CloudinaryResponse;
 import com.api.diversity.application.service.interfaces.IProductoService;
+import com.api.diversity.domain.enums.EstadoProducto;
 import com.api.diversity.domain.model.ProductoEntity;
 import com.api.diversity.domain.ports.IProductoRepository;
 import com.api.diversity.infrastructure.security.SecurityContext;
@@ -78,11 +79,12 @@ public class ProductoServiceImpl implements IProductoService {
         Optional<ProductoEntity> productoOpt = productoRepository.findById(id);
         if (productoOpt.isPresent()) {
             ProductoEntity producto = productoOpt.get();
+            producto.setEstado(EstadoProducto.Inactivo);
             if (producto.getPublicId() != null && !producto.getPublicId().isEmpty()) {
                 cloudinaryService.deleteFile(producto.getPublicId());
             }
-        }
-        productoRepository.deleteById(id);
+            productoRepository.save(producto);
+        } 
     }
 
     @Override

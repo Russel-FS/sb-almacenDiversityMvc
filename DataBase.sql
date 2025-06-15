@@ -91,7 +91,8 @@ CREATE TABLE Productos (
     Estado ENUM(
         'Activo',
         'Inactivo',
-        'Agotado'
+        'Agotado',
+        'Eliminado'
     ) DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -155,105 +155,90 @@
                 <div
                   class="relative rounded-xl overflow-hidden bg-white ring-1 ring-gray-900/5"
                 >
-                  <div class="overflow-x-auto max-h-[450px]">
-                    <table class="min-w-full divide-y divide-gray-200">
+                  <div class="overflow-x-auto max-h-[450px]">                    <table class="min-w-full divide-y divide-gray-200">
                       <thead>
                         <tr class="bg-gray-50">
                           <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Imagen</span
-                            >
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Imagen</span>
                           </th>
                           <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Nombre</span
-                            >
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Código</span>
                           </th>
                           <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Categoría</span
-                            >
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</span>
                           </th>
                           <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Precio</span
-                            >
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</span>
                           </th>
                           <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Stock</span
-                            >
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">P. Compra</span>
                           </th>
                           <th scope="col" class="relative px-6 py-4">
-                            <span
-                              class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                              >Acciones</span
-                            >
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">P. Venta</span>
+                          </th>
+                          <th scope="col" class="relative px-6 py-4">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</span>
+                          </th>
+                          <th scope="col" class="relative px-6 py-4">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</span>
+                          </th>
+                          <th scope="col" class="relative px-6 py-4">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</span>
                           </th>
                         </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-200 bg-white">
-                        <tr
-                          th:each="producto : ${productos}"
-                          class="group transition-colors hover:bg-gray-50"
-                        >
+                        <tr th:each="producto : ${productos}" class="group transition-colors hover:bg-gray-50">
                           <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex-shrink-0 h-12 w-12">
-                              <img
-                                th:if="${producto.urlImagen}"
+                              <img th:if="${producto.urlImagen}"
                                 th:src="${producto.urlImagen}"
                                 class="h-12 w-12 rounded-lg object-cover shadow-sm"
-                                alt="Imagen del producto"
-                              />
-                              <div
-                                th:unless="${producto.urlImagen}"
-                                class="h-12 w-12 rounded-lg bg-gray-200 flex items-center justify-center"
-                              >
-                                <svg
-                                  class="h-6 w-6 text-gray-400"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                  />
+                                alt="Imagen del producto" />
+                              <div th:unless="${producto.urlImagen}"
+                                class="h-12 w-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                                <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                  viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                               </div>
                             </div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div
-                              class="text-sm font-medium text-gray-900"
-                              th:text="${producto.nombre}"
-                            ></div>
+                            <div class="text-sm font-medium text-gray-900" th:text="${producto.codigoProducto}"></div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div
-                              class="text-sm text-gray-500"
-                              th:text="${producto.categoria.nombreCategoria}"
-                            ></div>
+                            <div class="text-sm font-medium text-gray-900" th:text="${producto.nombreProducto}"></div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div
-                              class="text-sm font-medium text-gray-900"
-                              th:text="${#numbers.formatCurrency(producto.precioUnitario)}"
-                            ></div>
+                            <div class="text-sm text-gray-500" th:text="${producto.categoria.nombreCategoria}"></div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
-                            <div
-                              class="text-sm text-gray-500"
-                              th:text="${producto.stock}"
-                            ></div>
+                            <div class="text-sm font-medium text-gray-900" th:text="${#numbers.formatCurrency(producto.precioCompra)}"></div>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900" th:text="${#numbers.formatCurrency(producto.precioVenta)}"></div>
+                          </td>                          <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-1">
+                              <div class="text-sm text-gray-500" th:text="${producto.stockActual}"></div>
+                              <th:block th:if="${producto.stockMinimo != null && producto.stockActual <= producto.stockMinimo}">
+                                <div class="px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800">
+                                  Bajo
+                                </div>
+                              </th:block>
+                            </div>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">                            <span th:switch="${producto.estado}">
+                              <span th:case="'ACTIVO'"
+                                    class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                                Activo
+                              </span>
+                              <span th:case="'INACTIVO'"
+                                    class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
+                                Inactivo
+                              </span>
+                            </span>
                           </td>
                           <td
                             class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
