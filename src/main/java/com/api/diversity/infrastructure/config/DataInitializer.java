@@ -16,7 +16,7 @@ import com.api.diversity.domain.enums.EstadoUsuario;
 import com.api.diversity.domain.enums.TipoRol;
 import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.model.RolEntity;
-import com.api.diversity.domain.ports.IRolRepository; 
+import com.api.diversity.domain.ports.IRolRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,12 +31,14 @@ public class DataInitializer implements CommandLineRunner {
     private final IRolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
 
-        /**
-         * Metodo que se encarga de inicializar los datos por defecto, tales como roles y rubros.
-         * Ademas, crea un usuario administrador si es que no existe.
-         * @param args argumentos que se reciben desde la linea de comandos
-         * @throws Exception
-         */
+    /**
+     * Metodo que se encarga de inicializar los datos por defecto, tales como roles
+     * y rubros.
+     * Ademas, crea un usuario administrador si es que no existe.
+     * 
+     * @param args argumentos que se reciben desde la linea de comandos
+     * @throws Exception
+     */
     @Override
     @Transactional
     public void run(String... args) throws Exception {
@@ -54,13 +56,13 @@ public class DataInitializer implements CommandLineRunner {
             }
 
             // creacion de rubros por defecto
-            for(TipoRubro tipoRubro : TipoRubro.values()) {
-                if(!rubroService.existsByNombreRubro(tipoRubro.getNombre())) {
+            for (TipoRubro tipoRubro : TipoRubro.values()) {
+                if (!rubroService.existsByNombreRubro(tipoRubro.getNombre())) {
                     rubroService.save(RubroDto.builder()
                             .nombreRubro(tipoRubro.getNombre())
                             .code(tipoRubro.getCode())
                             .descripcion(tipoRubro.getDescripcion())
-                            .estado(EstadoRubro.Activo) 
+                            .estado(EstadoRubro.Activo)
                             .build(), null);
                     log.info("Rubro {} creado exitosamente", tipoRubro.getNombre());
                 }
@@ -69,6 +71,10 @@ public class DataInitializer implements CommandLineRunner {
             // Buscar el rol ADMINISTRADOR
             RolEntity rolAdmin = rolRepository.findByNombreRol(TipoRol.ADMINISTRADOR.getNombre())
                     .orElseThrow(() -> new RuntimeException("Rol ADMINISTRADOR no encontrado"));
+
+            // Buscar un rubro por defecto
+            RubroDto rubroDefault = rubroService.findByNombreRubro(TipoRubro.SIN_RUBRO.getNombre())
+                    .orElseThrow(() -> new RuntimeException("Rubro SIN_RUBRO no encontrado"));
 
             // Verificar si el usuario admin existe
             UsuarioDto usuarioExistente = usuarioService.findByEmail("admin@gmail.com");

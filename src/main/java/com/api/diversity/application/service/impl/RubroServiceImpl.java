@@ -1,22 +1,23 @@
 package com.api.diversity.application.service.impl;
 
-import com.api.diversity.application.dto.RubroDto;
-import com.api.diversity.application.mappers.RubroMapper;
-import com.api.diversity.application.service.impl.CloudinaryService.CloudinaryResponse;
-import com.api.diversity.application.service.interfaces.IRubroService;
-import com.api.diversity.domain.model.RubroEntity;
-import com.api.diversity.domain.ports.RubroRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import lombok.RequiredArgsConstructor;
-
-import com.api.diversity.domain.enums.EstadoRubro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.api.diversity.application.dto.RubroDto;
+import com.api.diversity.application.mappers.RubroMapper;
+import com.api.diversity.application.service.impl.CloudinaryService.CloudinaryResponse;
+import com.api.diversity.application.service.interfaces.IRubroService;
+import com.api.diversity.domain.enums.EstadoRubro;
+import com.api.diversity.domain.model.RubroEntity;
+import com.api.diversity.domain.ports.RubroRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -72,5 +73,12 @@ public class RubroServiceImpl implements IRubroService {
     @Transactional(readOnly = true)
     public boolean existsByNombreRubro(String nombreRubro) {
         return rubroRepository.existsByNombreRubro(nombreRubro);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<RubroDto> findByNombreRubro(String nombreRubro) {
+        return rubroRepository.findByNombreRubro(nombreRubro)
+                .map(rubroMapper::toDto);
     }
 }

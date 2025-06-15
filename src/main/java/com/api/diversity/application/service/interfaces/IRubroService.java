@@ -1,10 +1,11 @@
 package com.api.diversity.application.service.interfaces;
 
-import com.api.diversity.application.dto.RubroDto;
-
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import com.api.diversity.application.dto.RubroDto;
 
 public interface IRubroService {
     List<RubroDto> findAll();
@@ -16,4 +17,6 @@ public interface IRubroService {
     void deleteById(Long id);
 
     boolean existsByNombreRubro(String nombreRubro);
+
+    Optional<RubroDto> findByNombreRubro(String nombreRubro);
 }
