@@ -49,7 +49,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     usuario.getContraseña(),
                     usuario.getNombreCompleto(),
                     Collections.singletonList(authority));
-        } catch (Exception e) {
+        } catch (UsernameNotFoundException e) {
             log.error("Error al cargar usuario por email: {}", email, e);
             throw e;
         }
