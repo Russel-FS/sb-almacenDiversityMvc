@@ -29,8 +29,6 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        log.info("Iniciando la carga de datos iniciales...");
-
         // Crear roles si no existen
         for (TipoRol tipoRol : TipoRol.values()) {
             if (!rolRepository.findByNombreRol(tipoRol.getNombre()).isPresent()) {
@@ -39,14 +37,13 @@ public class DataInitializer implements CommandLineRunner {
                 rol.setDescripcion(tipoRol.getDescripcion());
                 rol.setEstado(EstadoRol.Activo);
                 rolRepository.save(rol);
-                log.info("Rol {} creado", tipoRol.getNombre());
+                log.info("Rol {} creado exitosamente", tipoRol.getNombre());
             }
         }
 
         // Buscar el rol ADMINISTRADOR
         RolEntity rolAdmin = rolRepository.findByNombreRol(TipoRol.ADMINISTRADOR.getNombre())
                 .orElseThrow(() -> new RuntimeException("Rol ADMINISTRADOR no encontrado"));
-        log.info("Rol ADMINISTRADOR encontrado con ID: {}", rolAdmin.getIdRol());
 
         // Verificar si el usuario admin existe
         UsuarioDto usuarioExistente = usuarioService.findByEmail("admin@gmail.com");
@@ -54,10 +51,6 @@ public class DataInitializer implements CommandLineRunner {
         String encodedPassword = passwordEncoder.encode(password);
 
         if (usuarioExistente == null) {
-            log.info("Creando usuario admin...");
-            log.info("Contraseña original: {}", password);
-            log.info("Contraseña encriptada: {}", encodedPassword);
-
             UsuarioDto admin = new UsuarioDto();
             admin.setNombreUsuario("admin");
             admin.setEmail("admin@gmail.com");
@@ -70,27 +63,11 @@ public class DataInitializer implements CommandLineRunner {
             admin.setEstado(EstadoUsuario.Activo);
 
             usuarioService.save(admin);
-            log.info("Usuario admin creado con éxito");
+            log.info("Usuario admin creado exitosamente");
         } else {
-            log.info("Usuario admin ya existe, actualizando contraseña...");
             usuarioExistente.setContraseña(encodedPassword);
             usuarioService.save(usuarioExistente);
-            log.info("Contraseña actualizada");
-        }
-
-        // Verificar que la contraseña se guardó correctamente
-        UsuarioDto usuarioVerificado = usuarioService.findByEmail("admin@gmail.com");
-        if (usuarioVerificado != null) {
-            log.info("Usuario verificado - Email: {}", usuarioVerificado.getEmail());
-            log.info("Usuario verificado - Contraseña: {}", usuarioVerificado.getContraseña());
-
-            boolean matches = passwordEncoder.matches(password, usuarioVerificado.getContraseña());
-            log.info("Verificación de contraseña: {}", matches);
-
-            if (!matches) {
-                log.error("Error: La contraseña no coincide después de la actualización");
-                throw new RuntimeException("No se pudo establecer la contraseña correctamente");
-            }
+            log.info("Contraseña del usuario admin actualizada exitosamente");
         }
     }
 }
