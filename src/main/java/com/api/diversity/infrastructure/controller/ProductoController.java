@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.api.diversity.application.dto.Producto;
+import com.api.diversity.application.dto.ProductoDto;
 import com.api.diversity.application.service.interfaces.ICategoriaService;
 import com.api.diversity.application.service.interfaces.IProductoService;
 
@@ -32,21 +32,21 @@ public class ProductoController {
 
     @GetMapping("")
     public String listarProductos(Model model) {
-        List<Producto> productos = productoService.findAll();
+        List<ProductoDto> productos = productoService.findAll();
         model.addAttribute("productos", productos);
         return "productos/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
-        model.addAttribute("producto", new Producto());
+        model.addAttribute("producto", new ProductoDto());
         model.addAttribute("categorias", categoriaService.findAll());
         return "productos/form";
     }
 
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
-        Producto producto = productoService.findById(id)
+        ProductoDto producto = productoService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
         model.addAttribute("producto", producto);
         model.addAttribute("categorias", categoriaService.findAll());
@@ -54,7 +54,7 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarProducto(@Valid Producto producto,
+    public String guardarProducto(@Valid ProductoDto producto,
             BindingResult result,
             @RequestParam("imagen") MultipartFile imagen,
             RedirectAttributes flash,

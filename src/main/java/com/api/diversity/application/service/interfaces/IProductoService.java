@@ -5,16 +5,16 @@ import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.api.diversity.application.dto.Producto;
+import com.api.diversity.application.dto.ProductoDto;
 
 public interface IProductoService {
-    List<Producto> findAll();
+    List<ProductoDto> findAll();
 
-    Optional<Producto> findById(Long id);
+    Optional<ProductoDto> findById(Long id);
 
-    Producto save(Producto producto, MultipartFile imagen);
+    ProductoDto save(ProductoDto producto, MultipartFile imagen);
 
     void deleteById(Long id);
 
-    List<Producto> findByCategoria(Long categoriaId);
+    List<ProductoDto> findByCategoria(Long categoriaId);
 }

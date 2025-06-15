@@ -2,7 +2,7 @@ package com.api.diversity.application.mappers;
 
 import org.springframework.stereotype.Component;
 
-import com.api.diversity.application.dto.Producto;
+import com.api.diversity.application.dto.ProductoDto;
 import com.api.diversity.domain.model.ProductoEntity;
 
 import lombok.RequiredArgsConstructor;
@@ -14,12 +14,12 @@ public class ProductMapper {
     private final CategoryMapper categoryMapper;
     private final UsuarioMapper usuarioMapper;
 
-    public Producto toModel(ProductoEntity entity) {
+    public ProductoDto toModel(ProductoEntity entity) {
         if (entity == null) {
             return null;
         }
 
-        return Producto.builder()
+        return ProductoDto.builder()
                 .idProducto(entity.getIdProducto())
                 .codigoProducto(entity.getCodigoProducto())
                 .nombreProducto(entity.getNombreProducto())
@@ -40,11 +40,11 @@ public class ProductMapper {
                 .build();
     }
 
-    public ProductoEntity toEntity(Producto model) {
+    public ProductoEntity toEntity(ProductoDto model) {
         if (model == null) {
             return null;
         }
-
+ 
         ProductoEntity entity = new ProductoEntity();
         entity.setIdProducto(model.getIdProducto());
         entity.setCodigoProducto(model.getCodigoProducto());

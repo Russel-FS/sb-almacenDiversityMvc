@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.api.diversity.application.dto.Producto;
+import com.api.diversity.application.dto.ProductoDto;
 import com.api.diversity.application.mappers.ProductMapper;
 import com.api.diversity.application.service.impl.CloudinaryService.CloudinaryResponse;
 import com.api.diversity.application.service.interfaces.IProductoService;
@@ -29,7 +29,7 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Producto> findAll() {
+    public List<ProductoDto> findAll() {
         return productoRepository.findAll()
                 .stream()
                 .map(productoMapper::toModel)
@@ -38,14 +38,14 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Producto> findById(Long id) {
+    public Optional<ProductoDto> findById(Long id) {
         return productoRepository.findById(id)
                 .map(productoMapper::toModel);
     }
 
     @Override
     @Transactional
-    public Producto save(Producto producto, MultipartFile imagen) {
+    public ProductoDto save(ProductoDto producto, MultipartFile imagen) {
         if (imagen != null && !imagen.isEmpty()) {
             CloudinaryResponse response = cloudinaryService.uploadFile(imagen, "productos");
             producto.setUrlImagen(response.getUrl());
@@ -74,7 +74,7 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Producto> findByCategoria(Long categoriaId) {
+    public List<ProductoDto> findByCategoria(Long categoriaId) {
         return productoRepository.findByCategoria(categoriaId)
                 .stream()
                 .map(productoMapper::toModel)
