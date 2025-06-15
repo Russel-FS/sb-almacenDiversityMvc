@@ -31,11 +31,17 @@ public class DataInitializer implements CommandLineRunner {
     private final IRolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
 
+        /**
+         * Metodo que se encarga de inicializar los datos por defecto, tales como roles y rubros.
+         * Ademas, crea un usuario administrador si es que no existe.
+         * @param args argumentos que se reciben desde la linea de comandos
+         * @throws Exception
+         */
     @Override
     @Transactional
     public void run(String... args) throws Exception {
         try {
-            // Crear roles si no existen
+            // creacion de roles por defecto
             for (TipoRol tipoRol : TipoRol.values()) {
                 if (!rolRepository.findByNombreRol(tipoRol.getNombre()).isPresent()) {
                     RolEntity rol = new RolEntity();
