@@ -112,6 +112,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
         if (categoria.getIdCategoria() == null) {
             categoria.setCreatedBy(currentUser);
             categoria.setUpdatedBy(currentUser);
+            categoria.setEstado(EstadoCategoria.Activo); 
             categoria.setFechaCreacion(LocalDateTime.now());
             categoria.setFechaModificacion(LocalDateTime.now());
         } else {

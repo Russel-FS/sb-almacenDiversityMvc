@@ -42,7 +42,7 @@ public class CategoryEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Estado", nullable = false)
-    private EstadoCategoria estado;
+    private EstadoCategoria estado = EstadoCategoria.Activo;
 
     @CreationTimestamp
     @Column(name = "Fecha_Creacion", nullable = false, updatable = false)
