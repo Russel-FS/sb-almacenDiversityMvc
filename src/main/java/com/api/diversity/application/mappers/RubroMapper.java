@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.domain.model.RubroEntity;
-import com.api.diversity.domain.model.UsuarioEntity;
 import com.api.diversity.domain.enums.EstadoRubro;
 
 @Component
@@ -25,8 +24,6 @@ public class RubroMapper {
                 .imagenUrl(entity.getImagenUrl())
                 .fechaCreacion(entity.getFechaCreacion())
                 .fechaModificacion(entity.getFechaModificacion())
-                .createdBy(entity.getCreatedBy() != null ? entity.getCreatedBy().getIdUsuario() : null)
-                .updatedBy(entity.getUpdatedBy() != null ? entity.getUpdatedBy().getIdUsuario() : null)
                 .build();
     }
 
@@ -45,19 +42,6 @@ public class RubroMapper {
         entity.setImagenUrl(dto.getImagenUrl());
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());
-        // informacion de usuario
-        if (dto.getCreatedBy() != null) {
-            UsuarioEntity createdBy = new UsuarioEntity();
-            createdBy.setIdUsuario(dto.getCreatedBy());
-            entity.setCreatedBy(createdBy);
-        }
-
-        if (dto.getUpdatedBy() != null) {
-            UsuarioEntity updatedBy = new UsuarioEntity();
-            updatedBy.setIdUsuario(dto.getUpdatedBy());
-            entity.setUpdatedBy(updatedBy);
-        }
-
         return entity;
     }
 }

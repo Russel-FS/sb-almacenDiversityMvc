@@ -21,6 +21,4 @@ public class RubroDto {
     private String imagenUrl;
     private java.time.LocalDateTime fechaCreacion;
     private java.time.LocalDateTime fechaModificacion;
-    private Long createdBy;
-    private Long updatedBy;
 }

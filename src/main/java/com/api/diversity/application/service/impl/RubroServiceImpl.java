@@ -57,11 +57,7 @@ public class RubroServiceImpl implements IRubroService {
         if (rubroDto.getEstado() == null) {
             rubroDto.setEstado(EstadoRubro.Activo);
         }
-
-        if (rubroDto.getCreatedBy() == null) {
-            rubroDto.setCreatedBy(1L);
-        }
-
+  
         RubroEntity rubro = rubroMapper.toEntity(rubroDto);
         return rubroMapper.toDto(rubroRepository.save(rubro));
     }
