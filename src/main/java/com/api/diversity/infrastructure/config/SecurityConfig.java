@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .loginPage("/auth/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/dashboard", true)
                         .failureUrl("/auth/login?error=true")
                         .permitAll())
                 .rememberMe(remember -> remember
@@ -49,7 +49,8 @@ public class SecurityConfig {
                         .logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/auth/login")
                         .deleteCookies("JSESSIONID", "remember-me")
-                        .permitAll());
+                        .permitAll())
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
@@ -57,8 +58,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        builder
-                .userDetailsService(userDetailsService)
+        builder.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
         return builder.build();
     }

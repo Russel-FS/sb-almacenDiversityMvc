@@ -33,7 +33,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
                 throw new RuntimeException("El nombre de usuario ya está registrado");
             }
 
-            usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
+            if (usuarioDto.getContraseña() != null && !usuarioDto.getContraseña().startsWith("$2a$")) {
+                usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
+            }
+
             UsuarioEntity usuario = usuarioMapper.toEntity(usuarioDto);
             return usuarioMapper.toDto(usuarioRepository.save(usuario));
         } catch (Exception e) {
@@ -49,7 +52,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
             UsuarioEntity usuarioExistente = usuarioRepository.findById(usuarioDto.getIdUsuario())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-            // Si la contraseña ha cambiado, encriptarla
             if (usuarioDto.getContraseña() != null && !usuarioDto.getContraseña().isEmpty()) {
                 usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
             } else {

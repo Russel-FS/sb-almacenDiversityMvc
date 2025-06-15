@@ -72,16 +72,50 @@
               <!-- Mensajes de alerta -->
               <div
                 th:if="${param.error}"
-                class="p-4 rounded-xl mb-6 text-sm bg-red-50 text-red-800"
+                class="p-4 mb-6 rounded-xl bg-red-50 border border-red-200"
               >
-                <p>Credenciales inválidas. Por favor, intente nuevamente.</p>
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <i
+                      class="fas fa-exclamation-circle text-red-500 text-xl"
+                    ></i>
+                  </div>
+                  <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">
+                      Error de autenticación
+                    </h3>
+                    <p
+                      th:text="${param.message != null ? param.message : 'Credenciales inválidas. Por favor, intente nuevamente.'}"
+                      class="mt-1 text-sm text-red-700"
+                    ></p>
+                  </div>
+                </div>
               </div>
               <div
                 th:if="${mensaje}"
-                th:class="${tipoMensaje == 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}"
-                class="p-4 rounded-xl mb-6 text-sm"
+                th:class="${tipoMensaje == 'success' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}"
+                class="p-4 mb-6 rounded-xl border"
               >
-                <p th:text="${mensaje}"></p>
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <i
+                      th:class="${tipoMensaje == 'success' ? 'fas fa-check-circle text-green-500' : 'fas fa-exclamation-circle text-red-500'}"
+                      class="text-xl"
+                    ></i>
+                  </div>
+                  <div class="ml-3">
+                    <h3
+                      th:text="${tipoMensaje == 'success' ? 'Éxito' : 'Error'}"
+                      class="text-sm font-medium"
+                      th:class="${tipoMensaje == 'success' ? 'text-green-800' : 'text-red-800'}"
+                    ></h3>
+                    <p
+                      th:text="${mensaje}"
+                      class="mt-1 text-sm"
+                      th:class="${tipoMensaje == 'success' ? 'text-green-700' : 'text-red-700'}"
+                    ></p>
+                  </div>
+                </div>
               </div>
 
               <form th:action="@{/auth/login}" method="POST" class="space-y-6">

@@ -26,31 +26,29 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            log.info("Iniciando búsqueda de usuario por email: {}", email);
             UsuarioDto usuario = usuarioService.findByEmail(email);
 
             if (usuario == null) {
-                log.error("Usuario no encontrado con email: {}", email);
                 throw new UsernameNotFoundException("Usuario no encontrado con email: " + email);
             }
 
-            log.info("Usuario encontrado: {}", usuario.getEmail());
-            log.info("Rol del usuario: {}", usuario.getRol().getNombreRol());
-            log.info("Estado del usuario: {}", usuario.getEstado());
-            log.info("Contraseña del usuario: {}", usuario.getContraseña());
+            if (!"Activo".equalsIgnoreCase(usuario.getEstado().toString())) {
+                throw new UsernameNotFoundException("Usuario no está activo");
+            }
 
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombreRol());
-            log.info("Autoridad creada: {}", authority.getAuthority());
+            if (usuario.getContraseña() == null || usuario.getContraseña().trim().isEmpty()) {
+                throw new UsernameNotFoundException("Error en la contraseña del usuario");
+            }
 
-            CustomUser customUser = new CustomUser(
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
+                    "ROLE_" + usuario.getRol().getNombreRol().toUpperCase());
+
+            return new CustomUser(
                     usuario.getIdUsuario(),
                     usuario.getEmail(),
                     usuario.getContraseña(),
                     usuario.getNombreCompleto(),
                     Collections.singletonList(authority));
-
-            log.info("CustomUser creado exitosamente para: {}", usuario.getEmail());
-            return customUser;
         } catch (Exception e) {
             log.error("Error al cargar usuario por email: {}", email, e);
             throw e;
