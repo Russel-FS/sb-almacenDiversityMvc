@@ -119,6 +119,7 @@
                         </svg>
                         Nombre del Producto
                       </label>
+                      <!-- Input para nombre del producto -->
                       <div class="relative group">
                         <div
                           class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -166,6 +167,7 @@
                         </svg>
                         Descripción
                       </label>
+                      <!-- Textarea para descripción -->
                       <div class="relative group">
                         <div
                           class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -213,6 +215,7 @@
                         </svg>
                         Categoría
                       </label>
+                      <!-- Select para categoría -->
                       <div class="relative group">
                         <div
                           class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -268,6 +271,7 @@
                           </svg>
                           Precio de Compra
                         </label>
+                        <!-- Input para precio de compra -->
                         <div class="relative group">
                           <div
                             class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -275,8 +279,8 @@
                           <div class="relative">
                             <input
                               type="number"
-                              step="0.01"
                               th:field="*{precioCompra}"
+                              step="0.01"
                               class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
                               required
                             />
@@ -310,6 +314,7 @@
                           </svg>
                           Precio de Venta
                         </label>
+                        <!-- Input para precio de venta -->
                         <div class="relative group">
                           <div
                             class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -317,8 +322,8 @@
                           <div class="relative">
                             <input
                               type="number"
-                              step="0.01"
                               th:field="*{precioVenta}"
+                              step="0.01"
                               class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
                               required
                             />
@@ -352,6 +357,7 @@
                           </svg>
                           Stock Actual
                         </label>
+                        <!-- Input para stock actual -->
                         <div class="relative group">
                           <div
                             class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -393,6 +399,7 @@
                           </svg>
                           Stock Mínimo
                         </label>
+                        <!-- Input para stock mínimo -->
                         <div class="relative group">
                           <div
                             class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -434,6 +441,7 @@
                           </svg>
                           Stock Máximo
                         </label>
+                        <!-- Input para stock máximo -->
                         <div class="relative group">
                           <div
                             class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -476,6 +484,7 @@
                         </svg>
                         Imagen del Producto
                       </label>
+                      <!-- Input para imagen -->
                       <div class="relative group">
                         <div
                           class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -490,6 +499,7 @@
                           />
                         </div>
                       </div>
+                      <!-- Vista previa de imagen -->
                       <div
                         class="mt-4"
                         th:if="*{urlImagen != null}"
@@ -530,6 +540,7 @@
                         Volver
                       </a>
                       <div class="flex items-center gap-3">
+                        <!-- Botón de guardar -->
                         <button
                           type="submit"
                           class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-gray-900 border border-transparent rounded-lg shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
