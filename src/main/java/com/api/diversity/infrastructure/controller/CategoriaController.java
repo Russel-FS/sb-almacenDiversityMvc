@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.api.diversity.application.dto.CategoriaDto;
 import com.api.diversity.application.service.interfaces.ICategoriaService;
+import com.api.diversity.application.service.interfaces.IRubroService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class CategoriaController {
 
     private final ICategoriaService categoriaService;
+    private final IRubroService rubroService;
 
     @GetMapping("")
     public String listarCategorias(Model model) {
@@ -36,6 +38,7 @@ public class CategoriaController {
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("categoria", new CategoriaDto());
+        model.addAttribute("rubros", rubroService.findAll());
         return "categorias/form";
     }
 
@@ -44,12 +47,15 @@ public class CategoriaController {
         CategoriaDto categoria = categoriaService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
         model.addAttribute("categoria", categoria);
+        model.addAttribute("rubros", rubroService.findAll());
         return "categorias/form";
     }
 
     @PostMapping("/guardar")
-    public String guardarCategoria(@Valid CategoriaDto categoria, BindingResult result, RedirectAttributes flash) {
+    public String guardarCategoria(@Valid CategoriaDto categoria, BindingResult result, Model model,
+            RedirectAttributes flash) {
         if (result.hasErrors()) {
+            model.addAttribute("rubros", rubroService.findAll());
             return "categorias/form";
         }
         categoriaService.save(categoria);
