@@ -37,6 +37,7 @@ public class ProductoServiceImpl implements IProductoService {
     public List<ProductoDto> findAll() {
         return productoRepository.findAll()
                 .stream()
+                .filter(producto -> producto.getEstado() != EstadoProducto.Eliminado && producto.getEstado() != null)
                 .map(productoMapper::toModel)
                 .collect(Collectors.toList());
     }
