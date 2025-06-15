@@ -3,19 +3,10 @@ package com.api.diversity.infrastructure.controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/auth")
-@RequiredArgsConstructor
-@Slf4j
 public class AuthController {
 
     @GetMapping("/login")
@@ -24,26 +15,5 @@ public class AuthController {
             return "redirect:/";
         }
         return "auth/login";
-    }
-
-    @PostMapping("/login")
-    public String processLogin(@RequestParam String username, @RequestParam String password) {
-        log.info("Intento de login para usuario: {}", username);
-        return "redirect:/";
-    }
-
-    /**
-     * Método para manejar el cierre de sesión.
-     *
-     * @param session            la sesión HTTP actual
-     * @param redirectAttributes atributos para redirección
-     * @return la vista de redirección al login
-     */
-    @GetMapping("/logout")
-    public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
-        session.invalidate();
-        redirectAttributes.addFlashAttribute("mensaje", "Sesión cerrada exitosamente");
-        redirectAttributes.addFlashAttribute("tipoMensaje", "success");
-        return "redirect:/auth/login";
     }
 }
