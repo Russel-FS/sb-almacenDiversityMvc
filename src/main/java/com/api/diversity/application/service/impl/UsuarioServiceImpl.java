@@ -8,8 +8,7 @@ import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.mappers.UsuarioMapper;
 import com.api.diversity.application.service.interfaces.IUsuarioService;
 import com.api.diversity.domain.model.UsuarioEntity;
-import com.api.diversity.domain.ports.IUsuarioRepository;
-
+import com.api.diversity.domain.ports.IUsuarioRepository; 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
