@@ -12,6 +12,7 @@ import com.api.diversity.application.dto.CategoriaDto;
 import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.mappers.CategoryMapper;
 import com.api.diversity.application.service.interfaces.ICategoriaService;
+import com.api.diversity.domain.enums.EstadoCategoria;
 import com.api.diversity.domain.ports.ICategoriaRepository;
 import com.api.diversity.infrastructure.security.SecurityContext;
 
@@ -32,7 +33,65 @@ public class CategoriaServiceImpl implements ICategoriaService {
         return categoriaRepository.findAll()
                 .stream()
                 .map(categoriaMapper::toDto)
+                .filter(cat -> cat.getEstado() == EstadoCategoria.Activo)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CategoriaDto> findAllIncludingInactive() {
+        return categoriaRepository.findAll()
+                .stream()
+                .map(categoriaMapper::toDto)
+                .filter(cat -> cat.getEstado() != EstadoCategoria.Eliminado)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+
+    @Transactional(readOnly = true)
+    public List<CategoriaDto> findAllArchived() {
+        return categoriaRepository.findAll()
+                .stream()
+                .map(categoriaMapper::toDto)
+                .filter(cat -> cat.getEstado() == EstadoCategoria.Eliminado)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void deactivateCategory(Long id) {
+        CategoriaDto categoria = findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontró la categoría"));
+
+        UsuarioDto currentUser = securityContext.getCurrentUserDatabase();
+        if (currentUser == null) {
+            throw new RuntimeException("No se puede desactivar la categoría sin un usuario autenticado");
+        }
+
+        categoria.setEstado(EstadoCategoria.Inactivo);
+        categoria.setUpdatedBy(currentUser);
+        categoria.setFechaModificacion(LocalDateTime.now());
+
+        categoriaMapper.toDto(categoriaRepository.save(categoriaMapper.toEntity(categoria)));
+    }
+
+    @Override
+    @Transactional
+    public void activateCategory(Long id) {
+        CategoriaDto categoria = findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontró la categoría"));
+
+        UsuarioDto currentUser = securityContext.getCurrentUserDatabase();
+        if (currentUser == null) {
+            throw new RuntimeException("No se puede activar la categoría sin un usuario autenticado");
+        }
+
+        categoria.setEstado(EstadoCategoria.Activo);
+        categoria.setUpdatedBy(currentUser);
+        categoria.setFechaModificacion(LocalDateTime.now());
+
+        categoriaMapper.toDto(categoriaRepository.save(categoriaMapper.toEntity(categoria)));
     }
 
     @Override
@@ -70,9 +129,22 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
     @Override
     public void deleteById(Long id) {
-        categoriaRepository.deleteById(id);
-    }
+        CategoriaDto categoria = findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontró la categoría a eliminar"));
+        // usuario del contexto
+        UsuarioDto currentUser = securityContext.getCurrentUserDatabase();
+        if (currentUser == null) {
+            throw new RuntimeException("No se puede eliminar la categoría sin un usuario autenticado");
+        } 
+        // Actualizar estado y usuario que modificoo
+        categoria.setEstado(EstadoCategoria.Eliminado);
+        categoria.setUpdatedBy(currentUser);
+        categoria.setFechaModificacion(LocalDateTime.now());
 
+        // Guardar los cambios
+        categoriaMapper.toDto(categoriaRepository.save(categoriaMapper.toEntity(categoria)));
+    }
+ 
     @Override
     @Transactional(readOnly = true)
     public boolean existsById(Long id) {

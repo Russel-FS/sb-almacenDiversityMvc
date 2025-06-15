@@ -9,13 +9,44 @@ import com.api.diversity.application.dto.CategoriaDto;
 
 public interface ICategoriaService {
  
-    /**
-     * Obtiene una lista de todas las categorías existentes.
+    /**     * Obtiene una lista de todas las categorías activas.
      *
-     * @return lista de categorías
+     * @return lista de categorías activas
      */
     @Transactional(readOnly = true)
     List<CategoriaDto> findAll();
+
+    /**
+     * Obtiene una lista de todas las categorías activas e inactivas (no eliminadas).
+     *
+     * @return lista de categorías no eliminadas
+     */
+    @Transactional(readOnly = true)
+    List<CategoriaDto> findAllIncludingInactive();
+
+    /**
+     * Obtiene una lista de todas las categorías archivadas (eliminadas).
+     *
+     * @return lista de categorías archivadas
+     */
+    @Transactional(readOnly = true)
+    List<CategoriaDto> findAllArchived();
+
+    /**
+     * Desactiva temporalmente una categoría.
+     *
+     * @param id id de la categoría a desactivar
+     */
+    @Transactional
+    void deactivateCategory(Long id);
+
+    /**
+     * Activa una categoría previamente desactivada.
+     *
+     * @param id id de la categoría a activar
+     */
+    @Transactional
+    void activateCategory(Long id);
 
     /** 
      * Busca una categoría por su id.
