@@ -69,7 +69,10 @@ public class RubroServiceImpl implements IRubroService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        rubroRepository.deleteById(id);
+        rubroRepository.findById(id).ifPresent(rubro -> {
+            rubro.setEstado(EstadoRubro.Inactivo);
+            rubroRepository.save(rubro);
+        });
     }
 
     @Override
