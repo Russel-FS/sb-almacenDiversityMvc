@@ -8,7 +8,7 @@
     <div th:replace="~{layout :: layout(~{::section})}">
       <section>
         <!-- Hero Section -->
-        <div class="relative min-h-screen bg-[#f5f5f7]">
+        <div class="relative min-h-screen bg-[#F5F5F7]">
           <div class="absolute inset-0 bg-gradient-to-b from-white to-transparent opacity-70"></div>
           
           <!-- Contenido principal -->
@@ -17,26 +17,26 @@
               <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                 <!-- Contenido -->
                 <div class="text-left max-w-2xl">
-                  <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 mb-8">
-                    <span class="text-sm font-medium text-blue-600 tracking-wide">
+                  <div class="inline-flex items-center px-4 py-2 rounded-full bg-[#F5F5F7] border border-[#1D1D1F]/10 mb-8">
+                    <span class="text-sm font-medium text-[#1D1D1F] tracking-wide">
                       Panel de Control
                     </span>
                   </div>
 
-                  <h1 class="text-4xl lg:text-6xl font-semibold tracking-tight text-gray-900 mb-8">
+                  <h1 class="text-4xl lg:text-6xl font-semibold tracking-tight text-[#1D1D1F] mb-8">
                     Bienvenido a
-                    <span class="bg-gradient-to-r from-[#0066CC] to-[#2997FF] bg-clip-text text-transparent">
+                    <span class="bg-gradient-to-r from-[#1D1D1F] to-[#2997FF] bg-clip-text text-transparent">
                       J&C Diversity
                     </span>
                   </h1>
 
-                  <p class="text-xl text-gray-600 leading-relaxed mb-12">
+                  <p class="text-xl text-[#86868B] leading-relaxed mb-12">
                     Sistema integral de gestión para nuestras líneas de Piñatería, Librería y Cámaras de Seguridad.
                   </p>
 
                   <div class="flex flex-col sm:flex-row gap-6">
                     <a href="/inventario" 
-                      class="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-[#0066CC] rounded-xl hover:bg-[#0077ED] transition-all duration-300 shadow-lg hover:shadow-xl">
+                      class="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-[#1D1D1F] rounded-xl hover:bg-[#2997FF] transition-all duration-300 shadow-lg hover:shadow-xl">
                       Gestionar Inventario
                       <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -45,9 +45,9 @@
                   </div>
                 </div>
 
-                <!-- Imagen -->
+                <!-- Imagen lateral con efecto de cristal -->
                 <div class="relative hidden lg:block">
-                  <div class="absolute -inset-4 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-3xl opacity-50 blur-2xl"></div>
+                  <div class="absolute -inset-4 bg-gradient-to-br from-[#F5F5F7] to-[#E8E8ED] rounded-3xl opacity-50 blur-2xl"></div>
                   <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white p-1">
                     <img
                       src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80"
@@ -65,13 +65,13 @@
         <div class="relative bg-white">
           <div class="max-w-7xl mx-auto px-4 py-24">
             <div class="text-center max-w-3xl mx-auto mb-20">
-              <span class="inline-block px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-8">
+              <span class="inline-block px-4 py-2 rounded-full bg-[#F5F5F7] text-[#1D1D1F] text-sm font-medium mb-8 border border-[#1D1D1F]/10">
                 Nuestras Líneas de Negocio
               </span>
-              <h2 class="text-4xl font-semibold text-gray-900 mb-8">
+              <h2 class="text-4xl font-semibold text-[#1D1D1F] mb-8">
                 Gestión Integral
               </h2>
-              <p class="text-xl text-gray-600">
+              <p class="text-xl text-[#86868B]">
                 Control total de inventario para nuestras tres líneas principales
               </p>
             </div>
@@ -86,7 +86,7 @@
                       class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
                       alt="Piñatería"
                     />
-                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#1D1D1F]/60 to-transparent"></div>
                     <div class="absolute bottom-6 left-6 right-6">
                       <h3 class="text-2xl font-semibold text-white mb-2">Piñatería</h3>
                       <p class="text-gray-200">Artículos para fiestas y celebraciones</p>
@@ -94,9 +94,9 @@
                   </div>
                   <div class="p-6 bg-white">
                     <div class="flex justify-between items-center">
-                      <a href="/productos" class="text-blue-600 font-medium hover:text-blue-700">Ver productos</a>
-                      <span class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <a href="/productos" class="text-[#2997FF] font-medium hover:text-[#147CE5]">Ver productos</a>
+                      <span class="w-10 h-10 rounded-full bg-[#F5F5F7] flex items-center justify-center">
+                        <svg class="w-6 h-6 text-[#1D1D1F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                       </span>
@@ -114,7 +114,7 @@
                       class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
                       alt="Librería"
                     />
-                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#1D1D1F]/60 to-transparent"></div>
                     <div class="absolute bottom-6 left-6 right-6">
                       <h3 class="text-2xl font-semibold text-white mb-2">Librería</h3>
                       <p class="text-gray-200">Útiles escolares y de oficina</p>
@@ -122,9 +122,9 @@
                   </div>
                   <div class="p-6 bg-white">
                     <div class="flex justify-between items-center">
-                      <a href="/productos" class="text-blue-600 font-medium hover:text-blue-700">Ver productos</a>
-                      <span class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <a href="/productos" class="text-[#2997FF] font-medium hover:text-[#147CE5]">Ver productos</a>
+                      <span class="w-10 h-10 rounded-full bg-[#F5F5F7] flex items-center justify-center">
+                        <svg class="w-6 h-6 text-[#1D1D1F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                       </span>
@@ -142,7 +142,7 @@
                       class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
                       alt="Cámaras de Seguridad"
                     />
-                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#1D1D1F]/60 to-transparent"></div>
                     <div class="absolute bottom-6 left-6 right-6">
                       <h3 class="text-2xl font-semibold text-white mb-2">Cámaras de Seguridad</h3>
                       <p class="text-gray-200">Equipos y sistemas de vigilancia</p>
@@ -150,9 +150,9 @@
                   </div>
                   <div class="p-6 bg-white">
                     <div class="flex justify-between items-center">
-                      <a href="/productos" class="text-blue-600 font-medium hover:text-blue-700">Ver productos</a>
-                      <span class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <a href="/productos" class="text-[#2997FF] font-medium hover:text-[#147CE5]">Ver productos</a>
+                      <span class="w-10 h-10 rounded-full bg-[#F5F5F7] flex items-center justify-center">
+                        <svg class="w-6 h-6 text-[#1D1D1F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                       </span>
