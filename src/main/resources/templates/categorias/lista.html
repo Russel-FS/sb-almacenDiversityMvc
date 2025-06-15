@@ -103,16 +103,17 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="text-sm text-gray-900" th:text="${categoria.rubro?.nombreRubro}"></div>
-                                                </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span th:if="${categoria.estado == T(com.api.diversity.domain.enums.EstadoCategoria).Activo}"
-                                                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Activo
-                                                    </span>
-                                                    <span th:if="${categoria.estado == T(com.api.diversity.domain.enums.EstadoCategoria).Inactivo}"
-                                                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                        Inactivo
-                                                    </span>
+                                                </td>                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span th:switch="${categoria.estado?.name()}">
+                                                        <span th:case="Activo"
+                                                              class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                            Activo
+                                                        </span>
+                                                        <span th:case="Inactivo"
+                                                              class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                            Inactivo
+                                                        </span>  
+                                                    </span> 
                                                 </td>
                                                 <td class="px-6 py-4">
                                                     <div class="text-sm text-gray-900" th:text="${categoria.descripcion}"></div>
