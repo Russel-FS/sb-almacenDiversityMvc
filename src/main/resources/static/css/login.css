@@ -1,0 +1,63 @@
+body {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.hero-gradient {
+  background: linear-gradient(150deg, #ffffff 0%, #f5f5f7 40%, #f0f0f3 100%);
+}
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+@keyframes floatReverse {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(-2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+@keyframes floatSide {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+.float-normal {
+  animation: float 6s ease-in-out infinite;
+}
+.float-reverse {
+  animation: floatReverse 7s ease-in-out infinite;
+}
+.float-side {
+  animation: floatSide 8s ease-in-out infinite;
+}
+.input-underline {
+  border: none;
+  border-bottom: 1px solid #e5e5e5;
+  background: transparent;
+  transition: all 0.3s;
+}
+.input-underline:focus {
+  border-color: #1d1d1f;
+  background: transparent;
+}
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}

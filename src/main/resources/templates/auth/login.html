@@ -6,58 +6,53 @@
     <title>J&C Diversity S.A.C. - Sistema de Gestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@200;300;400;500&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        .hero-gradient {
-            background: linear-gradient(150deg, #ffffff 0%, #f5f5f7 40%, #f0f0f3 100%);
-        }
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-        .float-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-        .input-underline {
-            border: none;
-            border-bottom: 1px solid #e5e5e5;
-            background: transparent;
-            transition: all 0.3s;
-        }
-        .input-underline:focus {
-            border-color: #1d1d1f;
-            background: transparent;
-        }
-        .background-shapes::before {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, rgba(255,182,193,0.1), rgba(255,218,185,0.1));
-            top: -100px;
-            right: -100px;
-            z-index: -1;
-        }
-        .background-shapes::after {
-            content: '';
-            position: absolute;
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, rgba(176,196,222,0.1), rgba(173,216,230,0.1));
-            bottom: -50px;
-            left: -100px;
-            z-index: -1;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body class="hero-gradient min-h-screen text-[#1d1d1f]">
-    <div class="relative min-h-screen flex flex-col justify-between overflow-hidden background-shapes">
-        <!-- Header Minimal -->
+    <!-- Elementos decorativos flotantes -->
+    <div class="fixed inset-0 pointer-events-none" style="z-index: 0;">
+        <!-- Elemento Piñatería -->
+        <div class="absolute top-20 left-[15%] w-24 h-24 float-normal opacity-20">
+            <svg class="w-full h-full text-pink-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L9 7H3L6 12L3 17H9L12 22L15 17H21L18 12L21 7H15L12 2Z"/>
+            </svg>
+        </div>
+        <div class="absolute bottom-20 right-[10%] w-16 h-16 float-reverse opacity-10">
+            <svg class="w-full h-full text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                <path d="M12 8l-3 6h6z"/>
+            </svg>
+        </div>
+
+        <!-- Elemento Libreríaaa -->
+        <div class="absolute top-[30%] right-[20%] w-20 h-20 float-side opacity-15">
+            <svg class="w-full h-full text-blue-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z"/>
+                <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/>
+            </svg>
+        </div>
+        <div class="absolute bottom-[25%] left-[20%] w-16 h-16 float-normal opacity-10">
+            <svg class="w-full h-full text-indigo-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h6v5H9V4zm-3 15V4h2v15H6zm4 0v-5h6v5h-6z"/>
+            </svg>
+        </div>
+
+        <!-- Elemento Cámaras de Seguridad -->
+        <div class="absolute top-[15%] right-[30%] w-20 h-20 float-reverse opacity-15">
+            <svg class="w-full h-full text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+            </svg>
+        </div>
+        <div class="absolute bottom-[40%] left-[25%] w-16 h-16 float-side opacity-10">
+            <svg class="w-full h-full text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/>
+                <path d="M12 3L4 9v12h16V9l-8-6zm6 16H6v-9l6-4.5 6 4.5v9z"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="relative min-h-screen flex flex-col justify-between z-10">
+        <!-- Header -->
         <header class="fixed w-full top-0 z-50">
             <div class="max-w-screen-xl mx-auto px-6">
                 <div class="py-4 flex justify-between items-center">
@@ -76,44 +71,43 @@
             <div class="w-full max-w-[380px] mx-auto">
                 <!-- Logo Section -->
                 <div class="mb-16 flex justify-center">
-                    <div class="relative w-24 h-24 float-animation">
+                    <div class="relative w-24 h-24 float-normal">
                         <div class="absolute inset-0 bg-gradient-to-tr from-[#1d1d1f] to-[#363639] rounded-[38px] rotate-12 opacity-90"></div>
                         <div class="absolute inset-0 bg-white rounded-[34px] flex items-center justify-center transform -rotate-12">
-                            <!-- Logo iconography representing the three business areas -->
                             <div class="relative w-12 h-12 flex items-center justify-center">
-                                <svg class="w-full h-full" viewBox="0 0 48 48" fill="none">
-                                    <path d="M24 12L34 18V30L24 36L14 30V18L24 12Z" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M24 12V36M14 18L34 30M34 18L14 30" stroke="currentColor" stroke-width="2"/>
+                                <svg class="w-full h-full" viewBox="0 0 48 48" fill="none" stroke="currentColor">
+                                    <path d="M24 12L34 18V30L24 36L14 30V18L24 12Z" stroke-width="2"/>
+                                    <path d="M24 12V36M14 18L34 30M34 18L14 30" stroke-width="2"/>
                                 </svg>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Title Section -->
-                <div class="text-center mb-16">
-                    <h1 class="text-[38px] leading-tight font-normal tracking-tight">
-                        Sistema de Gestión
-                    </h1>
-                    <div class="mt-4 flex justify-center gap-6 text-gray-500">
-                        <span class="text-sm">Piñatería</span>
-                        <span class="text-sm">Librería</span>
-                        <span class="text-sm">Seguridad</span>
+
+                <!-- Main formulario contenedor -->
+                <div class="glass-effect rounded-3xl p-8 shadow-xl">
+                    <!-- titulo  -->
+                    <div class="text-center mb-12">
+                        <h1 class="text-[38px] leading-tight font-normal tracking-tight">
+                            Sistema de Gestión
+                        </h1>
+                        <div class="mt-4 flex justify-center gap-6 text-gray-500">
+                            <span class="text-sm">Piñatería</span>
+                            <span class="text-sm">Librería</span>
+                            <span class="text-sm">Seguridad</span>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Alert Messages -->
-                <div th:if="${param.error}" 
-                     class="mb-8 py-3 text-center">
-                    <p class="text-sm text-red-500 font-light" 
-                       th:text="${param.message != null ? param.message : 'Credenciales incorrectas'}">
-                    </p>
-                </div>
+                    <!-- mensajes de error -->
+                    <div th:if="${param.error}" 
+                         class="mb-8 py-3 text-center">
+                        <p class="text-sm text-red-500 font-light" 
+                           th:text="${param.message != null ? param.message : 'Credenciales incorrectas'}">
+                        </p>
+                    </div>
 
-                <!-- Main Form -->
-                <div class="space-y-8">
+                    <!-- Form -->
                     <form th:action="@{/auth/login}" method="POST" class="space-y-6">
-                        <!-- Inputs Container -->
                         <div class="space-y-7">
                             <div class="relative group">
                                 <input type="email" 
@@ -134,7 +128,7 @@
                             </div>
                         </div>
 
-                        <!-- Remember Session -->
+                        <!-- checkbox recordarme -->
                         <div class="flex items-center justify-between pt-2">
                             <label class="flex items-center space-x-3 group cursor-pointer">
                                 <div class="relative">
@@ -154,7 +148,7 @@
                             </label>
                         </div>
 
-                        <!-- Sign In Button -->
+                        <!-- button de inciar sesion-->
                         <button type="submit"
                                 class="relative w-full group mt-8">
                             <div class="absolute inset-0 bg-[#1d1d1f] rounded-2xl opacity-5 group-hover:opacity-10 transition-opacity duration-300"></div>
@@ -166,22 +160,11 @@
                             </div>
                         </button>
                     </form>
-
-                    <!-- Help Link -->
-                    <div class="pt-6 text-center">
-                        <a href="#" class="inline-flex items-center space-x-2 text-sm text-gray-500 hover:text-[#1d1d1f] transition-colors duration-300">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path d="M12 14l9-5-9-5-9 5 9 5z"/>
-                                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
-                            </svg>
-                            <span>Contactar a soporte técnico</span>
-                        </a>
-                    </div>
                 </div>
             </div>
         </main>
 
-        <!-- Minimal Footer -->
+        <!-- Footer -->
         <footer class="py-6 px-6">
             <div class="max-w-screen-xl mx-auto">
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
