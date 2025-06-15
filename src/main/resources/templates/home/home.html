@@ -18,7 +18,7 @@
                 <!-- Contenido -->
                 <div class="text-left max-w-2xl">
                   <div
-                    class="inline-flex items-center px-4 py-2 rounded-full bg-[#1b2432]/5 mb-8 border border-[#1b2432]/10"
+                    class="inline-flex items-center px-4 py-2 rounded-full bg-[#1b2432]/5 mb-8 border border-[#1b2432]/10 animate-badge"
                   >
                     <span
                       class="text-sm font-medium text-[#1b2432] tracking-wide"
@@ -28,6 +28,7 @@
                   </div>
 
                   <h1
+                    id="heroTitle"
                     class="text-3xl lg:text-5xl font-medium tracking-tight text-[#1b2432] mb-8"
                   >
                     Bienvenido a tu
@@ -39,6 +40,7 @@
                   </h1>
 
                   <p
+                    id="heroDescription"
                     class="text-lg text-[#1b2432]/80 leading-relaxed mb-12 max-w-xl"
                   >
                     Accede rápidamente a todas tus herramientas de gestión.
@@ -46,7 +48,7 @@
                     operaciones desde un solo lugar.
                   </p>
 
-                  <div class="flex flex-col sm:flex-row gap-6">
+                  <div id="heroButtons" class="flex flex-col sm:flex-row gap-6">
                     <a
                       href="/inventario"
                       class="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-[#1b2432] rounded-xl hover:bg-[#1b2432]/90 transition-all duration-300 shadow-lg hover:shadow-xl"
@@ -125,15 +127,24 @@
                   Sistema Central
                 </span>
               </div>
-              <h2 class="text-4xl md:text-5xl font-medium text-[#1b2432] mb-8">
+              <h2
+                id="sectionTitle"
+                class="text-4xl md:text-5xl font-medium text-[#1b2432] mb-8"
+              >
                 Centro de Control
               </h2>
-              <p class="text-xl text-[#1b2432]/80 leading-relaxed">
+              <p
+                id="sectionDescription"
+                class="text-xl text-[#1b2432]/80 leading-relaxed"
+              >
                 Accede a todas tus herramientas desde un solo lugar
               </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div
+              id="quickAccessCards"
+              class="grid grid-cols-1 md:grid-cols-3 gap-10"
+            >
               <!-- Card de Categorías -->
               <a th:href="@{/categorias}" class="group relative">
                 <div
@@ -142,7 +153,7 @@
                 <div
                   class="relative h-full bg-white/80 backdrop-blur-sm rounded-3xl transition duration-300 overflow-hidden shadow-lg hover:shadow-xl border border-[#1b2432]/10"
                 >
-                  <div class="relative aspect-[16/9] overflow-hidden">
+                  <div class="relative aspect-[4/3] overflow-hidden">
                     <div
                       class="absolute inset-0 bg-gradient-to-br from-[#1b2432]/5 to-transparent group-hover:from-[#1b2432]/10 group-hover:to-transparent transition-colors duration-300"
                     ></div>
@@ -198,7 +209,7 @@
                 <div
                   class="relative h-full bg-white/80 backdrop-blur-sm rounded-3xl transition duration-300 overflow-hidden shadow-lg hover:shadow-xl border border-[#1b2432]/10"
                 >
-                  <div class="relative aspect-[16/9] overflow-hidden">
+                  <div class="relative aspect-[4/3] overflow-hidden">
                     <div
                       class="absolute inset-0 bg-gradient-to-br from-[#1b2432]/5 to-transparent group-hover:from-[#1b2432]/10 group-hover:to-transparent transition-colors duration-300"
                     ></div>
@@ -254,7 +265,7 @@
                 <div
                   class="relative h-full bg-white/80 backdrop-blur-sm rounded-3xl transition duration-300 overflow-hidden shadow-lg hover:shadow-xl border border-[#1b2432]/10"
                 >
-                  <div class="relative aspect-[16/9] overflow-hidden">
+                  <div class="relative aspect-[4/3] overflow-hidden">
                     <div
                       class="absolute inset-0 bg-gradient-to-br from-[#1b2432]/5 to-transparent group-hover:from-[#1b2432]/10 group-hover:to-transparent transition-colors duration-300"
                     ></div>
