@@ -15,6 +15,7 @@ import com.api.diversity.application.service.impl.CloudinaryService.CloudinaryRe
 import com.api.diversity.application.service.interfaces.IProductoService;
 import com.api.diversity.domain.model.ProductoEntity;
 import com.api.diversity.domain.ports.IProductoRepository;
+import com.api.diversity.infrastructure.security.SecurityContext;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +27,7 @@ public class ProductoServiceImpl implements IProductoService {
     private final IProductoRepository productoRepository;
     private final ProductMapper productoMapper;
     private final CloudinaryService cloudinaryService;
+    private final SecurityContext securityContext;
 
     @Override
     @Transactional(readOnly = true)
@@ -46,14 +48,23 @@ public class ProductoServiceImpl implements IProductoService {
     @Override
     @Transactional
     public ProductoDto save(ProductoDto producto, MultipartFile imagen) {
-        if (imagen != null && !imagen.isEmpty()) {
+
+        // validar campos de producto
+        if (imagen != null && !imagen.isEmpty()
+                && (producto.getUrlImagen() == null || producto.getUrlImagen().isEmpty())) {
             CloudinaryResponse response = cloudinaryService.uploadFile(imagen, "productos");
             producto.setUrlImagen(response.getUrl());
             producto.setPublicId(response.getPublicId());
         }
-        if (producto.getIdProducto() == null || producto.getIdProducto() == 0) {
+        // establecer el usuario que crea o actualiza el producto de la sesión actual
+        if (producto.getIdProducto() == null) {
+            producto.setCreatedBy(securityContext.getCurrentUserDatabase());
             producto.setFechaCreacion(LocalDateTime.now());
+        } else {
+            producto.setUpdatedBy(securityContext.getCurrentUserDatabase());
+            producto.setFechaModificacion(LocalDateTime.now());
         }
+
         ProductoEntity entity = productoMapper.toEntity(producto);
         ProductoEntity savedEntity = productoRepository.save(entity);
         return productoMapper.toModel(savedEntity);

@@ -147,7 +147,6 @@
                   </div>
                 </div>
 
-                <!-- Formulario -->
                 <form
                   th:action="@{/productos/guardar}"
                   th:object="${producto}"
@@ -159,50 +158,99 @@
                   <input type="hidden" th:field="*{urlImagen}" />
                   <input type="hidden" th:field="*{publicId}" />
 
-                  <!-- Nombre -->
-                  <div class="relative">
-                    <div
-                      class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
-                    ></div>
+                  <!-- Código y Nombre en dos columnas -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Código de Producto -->
                     <div class="relative">
-                      <label
-                        for="nombreProducto"
-                        class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
-                      >
-                        <svg
-                          class="w-4 h-4"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
+                      <div
+                        class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
+                      ></div>
+                      <div class="relative">
+                        <label
+                          for="codigoProducto"
+                          class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
                         >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                          />
-                        </svg>
-                        Nombre del Producto
-                      </label>
-                      <!-- Input para nombre del producto -->
-                      <div class="relative group">
+                          <svg
+                            class="w-4 h-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                            />
+                          </svg>
+                          Código del Producto
+                        </label>
+                        <div class="relative group">
+                          <div
+                            class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
+                          ></div>
+                          <div class="relative">
+                            <input
+                              type="text"
+                              th:field="*{codigoProducto}"
+                              class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                              required
+                            />
+                          </div>
+                        </div>
                         <div
-                          class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
-                        ></div>
-                        <div class="relative">
-                          <input
-                            type="text"
-                            th:field="*{nombreProducto}"
-                            class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
-                            required
-                          />
+                          class="mt-2 text-sm text-red-600 flex items-center gap-1.5"
+                          th:if="${#fields.hasErrors('codigoProducto')}"
+                        >
+                          <span th:errors="*{codigoProducto}"></span>
                         </div>
                       </div>
+                    </div>
+
+                    <!-- Nombre -->
+                    <div class="relative">
                       <div
-                        class="mt-2 text-sm text-red-600 flex items-center gap-1.5"
-                        th:if="${#fields.hasErrors('nombreProducto')}"
-                      >
-                        <span th:errors="*{nombreProducto}"></span>
+                        class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
+                      ></div>
+                      <div class="relative">
+                        <label
+                          for="nombreProducto"
+                          class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
+                        >
+                          <svg
+                            class="w-4 h-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                            />
+                          </svg>
+                          Nombre del Producto
+                        </label>
+                        <div class="relative group">
+                          <div
+                            class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
+                          ></div>
+                          <div class="relative">
+                            <input
+                              type="text"
+                              th:field="*{nombreProducto}"
+                              class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div
+                          class="mt-2 text-sm text-red-600 flex items-center gap-1.5"
+                          th:if="${#fields.hasErrors('nombreProducto')}"
+                        >
+                          <span th:errors="*{nombreProducto}"></span>
+                        </div>
                       </div>
                     </div>
                   </div>
