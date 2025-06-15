@@ -37,7 +37,7 @@ public class RubroController {
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevoRubro(Model model) {
         RubroDto rubro = new RubroDto();
-        rubro.setEstado(EstadoRubro.Activo); 
+        rubro.setEstado(EstadoRubro.Activo);
         model.addAttribute("rubro", rubro);
         return "rubros/form";
     }
@@ -50,23 +50,30 @@ public class RubroController {
     }
 
     @PostMapping("/guardar")
-    public String guardarRubro(@ModelAttribute @Valid RubroDto rubro, BindingResult result,
+    public String guardarRubro(@ModelAttribute @Valid RubroDto rubro,
+            BindingResult result,
             @RequestParam("imagen") MultipartFile imagen,
+            Model model,
             RedirectAttributes redirectAttributes) {
         try {
             if (result.hasErrors()) {
-                redirectAttributes.addFlashAttribute("mensaje", "Error en los datos del rubro");
-                redirectAttributes.addFlashAttribute("tipoMensaje", "error");
+                model.addAttribute("mensaje", "Error en los datos del rubro");
+                model.addAttribute("tipoMensaje", "error");
+                model.addAttribute("rubro", rubro);
+                if (rubro.getIdRubro() != null) {
+                    model.addAttribute("rubro", rubroService.findById(rubro.getIdRubro()));
+                }
                 return "rubros/form";
             }
             rubroService.save(rubro, imagen);
             redirectAttributes.addFlashAttribute("mensaje", "Rubro guardado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+            return "redirect:/rubros";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensaje", "Error al guardar el rubro: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("tipoMensaje", "error");
+            model.addAttribute("mensaje", "Error al guardar el rubro: " + e.getMessage());
+            model.addAttribute("tipoMensaje", "error");
+            return "rubros/form";
         }
-        return "redirect:/rubros";
     }
 
     @GetMapping("/eliminar/{id}")
