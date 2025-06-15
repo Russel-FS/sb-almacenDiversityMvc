@@ -14,7 +14,7 @@ public class CustomUser extends User {
 
     public CustomUser(Long idUsuario, String username, String password, String nombreCompleto,
             Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
+        super(username, password, true, true, true, true, authorities);
         this.idUsuario = idUsuario;
         this.nombreCompleto = nombreCompleto;
     }

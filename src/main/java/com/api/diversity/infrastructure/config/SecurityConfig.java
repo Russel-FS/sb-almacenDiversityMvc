@@ -28,6 +28,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login", "/css/**", "/js/**", "/images/**").permitAll()
@@ -37,11 +38,13 @@ public class SecurityConfig {
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/")
+                        .failureUrl("/auth/login?error=true")
                         .permitAll())
                 .rememberMe(remember -> remember
                         .tokenRepository(persistentTokenRepository())
                         .tokenValiditySeconds(86400 * 30)
-                        .rememberMeParameter("remember-me"))
+                        .rememberMeParameter("remember-me")
+                        .key("diversityKey"))
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/auth/login")

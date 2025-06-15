@@ -71,6 +71,12 @@
 
               <!-- Mensajes de alerta -->
               <div
+                th:if="${param.error}"
+                class="p-4 rounded-xl mb-6 text-sm bg-red-50 text-red-800"
+              >
+                <p>Credenciales inválidas. Por favor, intente nuevamente.</p>
+              </div>
+              <div
                 th:if="${mensaje}"
                 th:class="${tipoMensaje == 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}"
                 class="p-4 rounded-xl mb-6 text-sm"
