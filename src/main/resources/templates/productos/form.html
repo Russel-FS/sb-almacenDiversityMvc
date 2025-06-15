@@ -101,20 +101,20 @@
                     ></div>
                     <div class="relative">
                       <label
-                        for="nombre"
+                        for="nombreProducto"
                         class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
                       >
                         <svg
-                          class="w-4 h-4 text-gray-600"
+                          class="w-4 h-4"
+                          viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          viewBox="0 0 24 24"
                         >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"
+                            stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                           />
                         </svg>
                         Nombre del Producto
@@ -126,31 +126,17 @@
                         <div class="relative">
                           <input
                             type="text"
-                            th:field="*{nombre}"
-                            id="nombre"
-                            class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
+                            th:field="*{nombreProducto}"
+                            class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
                             required
                           />
                         </div>
                       </div>
                       <div
                         class="mt-2 text-sm text-red-600 flex items-center gap-1.5"
-                        th:if="${#fields.hasErrors('nombre')}"
+                        th:if="${#fields.hasErrors('nombreProducto')}"
                       >
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                          />
-                        </svg>
-                        <span th:errors="*{nombre}"></span>
+                        <span th:errors="*{nombreProducto}"></span>
                       </div>
                     </div>
                   </div>
@@ -166,16 +152,16 @@
                         class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
                       >
                         <svg
-                          class="w-4 h-4 text-gray-600"
+                          class="w-4 h-4"
+                          viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          viewBox="0 0 24 24"
                         >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M4 6h16M4 12h16M4 18h7"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"
                           />
                         </svg>
                         Descripción
@@ -187,9 +173,9 @@
                         <div class="relative">
                           <textarea
                             th:field="*{descripcion}"
-                            id="descripcion"
                             rows="3"
-                            class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6 resize-none"
+                            class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                            required
                           ></textarea>
                         </div>
                       </div>
@@ -197,19 +183,6 @@
                         class="mt-2 text-sm text-red-600 flex items-center gap-1.5"
                         th:if="${#fields.hasErrors('descripcion')}"
                       >
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                          />
-                        </svg>
                         <span th:errors="*{descripcion}"></span>
                       </div>
                     </div>
@@ -226,16 +199,16 @@
                         class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
                       >
                         <svg
-                          class="w-4 h-4 text-gray-600"
+                          class="w-4 h-4"
+                          viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          viewBox="0 0 24 24"
                         >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"
+                            stroke-width="2"
+                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
                           />
                         </svg>
                         Categoría
@@ -247,8 +220,7 @@
                         <div class="relative">
                           <select
                             th:field="*{categoria.idCategoria}"
-                            id="categoria"
-                            class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
+                            class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
                             required
                           >
                             <option value="">Seleccione una categoría</option>
@@ -264,111 +236,37 @@
                         class="mt-2 text-sm text-red-600 flex items-center gap-1.5"
                         th:if="${#fields.hasErrors('categoria')}"
                       >
-                        <svg
-                          class="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                          />
-                        </svg>
                         <span th:errors="*{categoria}"></span>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Stock y Precio -->
+                  <!-- Precios y Stock -->
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Stock -->
+                    <!-- Precio de Compra -->
                     <div class="relative">
                       <div
                         class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
                       ></div>
                       <div class="relative">
                         <label
-                          for="stock"
+                          for="precioCompra"
                           class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
                         >
                           <svg
-                            class="w-4 h-4 text-gray-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="1.5"
-                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                            />
-                          </svg>
-                          Stock
-                        </label>
-                        <div class="relative group">
-                          <div
-                            class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
-                          ></div>
-                          <div class="relative">
-                            <input
-                              type="number"
-                              th:field="*{stock}"
-                              id="stock"
-                              min="1"
-                              class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
-                            />
-                          </div>
-                        </div>
-                        <div
-                          class="mt-2 text-sm text-red-600 flex items-center gap-1.5"
-                          th:if="${#fields.hasErrors('stock')}"
-                        >
-                          <svg
                             class="w-4 h-4"
+                            viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
-                            viewBox="0 0 24 24"
                           >
                             <path
                               stroke-linecap="round"
                               stroke-linejoin="round"
                               stroke-width="2"
-                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                            />
-                          </svg>
-                          <span th:errors="*{stock}"></span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Precio Unitario -->
-                    <div class="relative">
-                      <div
-                        class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
-                      ></div>
-                      <div class="relative">
-                        <label
-                          for="precioUnitario"
-                          class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
-                        >
-                          <svg
-                            class="w-4 h-4 text-gray-600"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="1.5"
                               d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                             />
                           </svg>
-                          Precio Unitario
+                          Precio de Compra
                         </label>
                         <div class="relative group">
                           <div
@@ -377,33 +275,177 @@
                           <div class="relative">
                             <input
                               type="number"
-                              th:field="*{precioUnitario}"
-                              id="precioUnitario"
                               step="0.01"
-                              min="1"
-                              class="block w-full rounded-lg border-0 px-4 py-3.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-900 transition-all duration-300 sm:text-sm sm:leading-6"
+                              th:field="*{precioCompra}"
+                              class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
                               required
                             />
                           </div>
                         </div>
-                        <div
-                          class="mt-2 text-sm text-red-600 flex items-center gap-1.5"
-                          th:if="${#fields.hasErrors('precioUnitario')}"
+                      </div>
+                    </div>
+
+                    <!-- Precio de Venta -->
+                    <div class="relative">
+                      <div
+                        class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
+                      ></div>
+                      <div class="relative">
+                        <label
+                          for="precioVenta"
+                          class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
                         >
                           <svg
                             class="w-4 h-4"
+                            viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
-                            viewBox="0 0 24 24"
                           >
                             <path
                               stroke-linecap="round"
                               stroke-linejoin="round"
                               stroke-width="2"
-                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                             />
                           </svg>
-                          <span th:errors="*{precioUnitario}"></span>
+                          Precio de Venta
+                        </label>
+                        <div class="relative group">
+                          <div
+                            class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
+                          ></div>
+                          <div class="relative">
+                            <input
+                              type="number"
+                              step="0.01"
+                              th:field="*{precioVenta}"
+                              class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Stock Actual -->
+                    <div class="relative">
+                      <div
+                        class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
+                      ></div>
+                      <div class="relative">
+                        <label
+                          for="stockActual"
+                          class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
+                        >
+                          <svg
+                            class="w-4 h-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                            />
+                          </svg>
+                          Stock Actual
+                        </label>
+                        <div class="relative group">
+                          <div
+                            class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
+                          ></div>
+                          <div class="relative">
+                            <input
+                              type="number"
+                              th:field="*{stockActual}"
+                              class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Stock Mínimo -->
+                    <div class="relative">
+                      <div
+                        class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
+                      ></div>
+                      <div class="relative">
+                        <label
+                          for="stockMinimo"
+                          class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
+                        >
+                          <svg
+                            class="w-4 h-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                            />
+                          </svg>
+                          Stock Mínimo
+                        </label>
+                        <div class="relative group">
+                          <div
+                            class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
+                          ></div>
+                          <div class="relative">
+                            <input
+                              type="number"
+                              th:field="*{stockMinimo}"
+                              class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Stock Máximo -->
+                    <div class="relative">
+                      <div
+                        class="absolute -inset-1.5 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl blur-lg opacity-75"
+                      ></div>
+                      <div class="relative">
+                        <label
+                          for="stockMaximo"
+                          class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
+                        >
+                          <svg
+                            class="w-4 h-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                            />
+                          </svg>
+                          Stock Máximo
+                        </label>
+                        <div class="relative group">
+                          <div
+                            class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
+                          ></div>
+                          <div class="relative">
+                            <input
+                              type="number"
+                              th:field="*{stockMaximo}"
+                              class="block w-full rounded-lg border-gray-300 bg-white/50 py-2 px-3 shadow-sm focus:border-gray-500 focus:ring-gray-500 sm:text-sm"
+                              required
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -420,15 +462,15 @@
                         class="flex items-center gap-2 text-sm font-medium text-gray-900 mb-3"
                       >
                         <svg
-                          class="w-4 h-4 text-gray-600"
+                          class="w-4 h-4"
+                          viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          viewBox="0 0 24 24"
                         >
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            stroke-width="1.5"
+                            stroke-width="2"
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                           />
                         </svg>
@@ -444,18 +486,19 @@
                             name="imagen"
                             id="imagen"
                             accept="image/*"
-                            dropzone="true"
-                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-900/5 file:text-gray-700 hover:file:bg-gray-900/10"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-gray-900 file:text-white hover:file:bg-gray-700"
                           />
                         </div>
                       </div>
-                      <div class="mt-4">
+                      <div
+                        class="mt-4"
+                        th:if="*{urlImagen != null}"
+                      >
                         <img
+                          th:src="*{urlImagen}"
+                          alt="Vista previa"
                           id="vistaPreviaImagen"
-                          th:src="${producto.urlImagen != null ? producto.urlImagen : ''}"
-                          alt="Vista previa de la imagen"
-                          class="h-32 w-32 object-cover rounded-lg shadow-lg"
-                          style="display: none"
+                          class="max-w-xs rounded-lg shadow-lg"
                         />
                       </div>
                     </div>
@@ -473,9 +516,9 @@
                       >
                         <svg
                           class="w-4 h-4 mr-2"
+                          viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          viewBox="0 0 24 24"
                         >
                           <path
                             stroke-linecap="round"
@@ -484,32 +527,27 @@
                             d="M10 19l-7-7m0 0l7-7m-7 7h18"
                           />
                         </svg>
-                        Volver a la Lista
+                        Volver
                       </a>
                       <div class="flex items-center gap-3">
                         <button
                           type="submit"
-                          class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 active:scale-[0.98]"
+                          class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-gray-900 border border-transparent rounded-lg shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
                         >
-                          <div
-                            class="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-950 transition-transform duration-300 hover:scale-105"
-                          ></div>
-                          <span class="relative flex items-center">
-                            <svg
-                              class="w-4 h-4 mr-2"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                            Guardar Producto
-                          </span>
+                          <svg
+                            class="w-4 h-4 mr-2"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          Guardar
                         </button>
                       </div>
                     </div>
