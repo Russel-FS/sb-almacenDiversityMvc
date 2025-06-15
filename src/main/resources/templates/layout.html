@@ -2,19 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content)">
   <head>
     <meta charset="UTF-8" />
-    <title>Diversity System</title>
+    <title>J&C Diversity S.A.C.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
     <style>
       body {
-        font-family: "Inter", sans-serif;
+        font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
       }
       .nav-link {
         position: relative;
@@ -23,10 +19,10 @@
         content: "";
         position: absolute;
         width: 0;
-        height: 1px;
+        height: 2px;
         bottom: -2px;
         left: 0;
-        background-color: currentColor;
+        background-color: #0066CC;
         transition: width 0.3s ease;
       }
       .nav-link:hover::after {
@@ -43,123 +39,104 @@
         visibility: visible;
         transform: translateY(0);
       }
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
     </style>
   </head>
-  <body class="bg-gray-50">
-    <nav
-      class="fixed w-full bg-white/70 backdrop-blur-xl z-50 border-b border-gray-100/50 supports-[backdrop-filter]:bg-white/50"
-    >
-      <div class="max-w-5xl mx-auto px-4">
+  <body class="bg-[#f5f5f7]">
+    <nav class="fixed w-full glass-effect z-50 border-b border-gray-200/50">
+      <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">
-          <a
-            href="/"
-            class="text-xl font-medium tracking-tight text-gray-900 hover:text-gray-700 transition-colors"
-          >
-            Diversity
+          <a href="/" class="flex items-center space-x-2">
+            <span class="text-2xl font-semibold bg-gradient-to-r from-[#0066CC] to-[#2997FF] bg-clip-text text-transparent">J&C</span>
+            <span class="text-xl font-medium text-gray-900">Diversity</span>
           </a>
+          
           <div class="flex items-center space-x-8">
-            <a
-              href="/"
-              class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
-              >Inicio</a
-            >
-            <a
-              th:href="@{/rubros}"
-              class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
-              >Rubros</a
-            >
-            <a
-              th:href="@{/categorias}"
-              class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
-              >Categorías</a
-            >
-            <a
-              th:href="@{/productos}"
-              class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
-              >Productos</a
-            >
-            <a
-              th:href="@{/inventario}"
-              class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
-              >Inventario</a
-            >
-
-            <!-- Menú desplegable -->
-            <div class="dropdown relative">
-              <button
-                class="flex items-center space-x-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200"
-              >
-                <svg
-                  class="w-6 h-6"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M20.5899 22C20.5899 18.13 16.7399 15 11.9999 15C7.25991 15 3.40991 18.13 3.40991 22"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Mi cuenta</span>
-                <svg
-                  class="w-4 h-4 transition-transform duration-200"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M6 9L12 15L18 9"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
+            <a href="/" class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900">
+              Inicio
+            </a>
+            
+            <!-- Dropdown Piñatería -->
+            <div class="dropdown relative group">
+              <button class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 flex items-center">
+                Piñatería
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
-              <div
-                class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2"
-              >
-                <a
-                  th:href="@{/auth/logout}"
-                  class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200"
-                >
-                  <svg
-                    class="w-5 h-5 mr-3"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M16 17L21 12L16 7"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M21 12H9"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+              <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2">
+                <a th:href="@{/categorias}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  Categorías
+                </a>
+                <a th:href="@{/productos}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  Productos
+                </a>
+                <a th:href="@{/inventario}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  Inventario
+                </a>
+              </div>
+            </div>
+
+            <!-- Dropdown Librería -->
+            <div class="dropdown relative group">
+              <button class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 flex items-center">
+                Librería
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2">
+                <a th:href="@{/categorias}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  Categorías
+                </a>
+                <a th:href="@{/productos}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  Productos
+                </a>
+                <a th:href="@{/inventario}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  Inventario
+                </a>
+              </div>
+            </div>
+
+            <!-- Dropdown Cámaras -->
+            <div class="dropdown relative group">
+              <button class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 flex items-center">
+                Cámaras
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2">
+                <a th:href="@{/categorias}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  Categorías
+                </a>
+                <a th:href="@{/productos}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  Productos
+                </a>
+                <a th:href="@{/inventario}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  Inventario
+                </a>
+              </div>
+            </div>
+
+            <!-- Perfil -->
+            <div class="dropdown relative">
+              <button class="flex items-center space-x-2 text-sm font-medium text-gray-600 hover:text-gray-900">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M20.5899 22C20.5899 18.13 16.7399 15 11.9999 15C7.25991 15 3.40991 18.13 3.40991 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="dropdown-menu absolute right-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2">
+                <a th:href="@{/auth/logout}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+                  <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 17L21 12L16 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21 12H9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                   <span>Cerrar sesión</span>
                 </a>

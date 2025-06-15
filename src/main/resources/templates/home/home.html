@@ -2,316 +2,164 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Home</title>
+    <title>J&C Diversity - Panel de Control</title>
   </head>
   <body>
     <div th:replace="~{layout :: layout(~{::section})}">
       <section>
         <!-- Hero Section -->
-        <div
-          class="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-white"
-        >
+        <div class="relative min-h-screen bg-[#f5f5f7]">
+          <div class="absolute inset-0 bg-gradient-to-b from-white to-transparent opacity-70"></div>
+          
           <!-- Contenido principal -->
           <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="py-24 md:py-32">
               <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                 <!-- Contenido -->
                 <div class="text-left max-w-2xl">
-                  <div
-                    class="inline-flex items-center px-4 py-2 rounded-full bg-[#1b2432]/5 mb-8 border border-[#1b2432]/10 animate-badge"
-                  >
-                    <span
-                      class="text-sm font-medium text-[#1b2432] tracking-wide"
-                    >
+                  <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 mb-8">
+                    <span class="text-sm font-medium text-blue-600 tracking-wide">
                       Panel de Control
                     </span>
                   </div>
 
-                  <h1
-                    id="heroTitle"
-                    class="text-3xl lg:text-5xl font-medium tracking-tight text-[#1b2432] mb-8"
-                  >
-                    Bienvenido a tu
-                    <span
-                      class="text-transparent bg-clip-text bg-gradient-to-r from-[#1b2432] to-[#1b2432]/80"
-                    >
-                      Espacio de Trabajo
+                  <h1 class="text-4xl lg:text-6xl font-semibold tracking-tight text-gray-900 mb-8">
+                    Bienvenido a
+                    <span class="bg-gradient-to-r from-[#0066CC] to-[#2997FF] bg-clip-text text-transparent">
+                      J&C Diversity
                     </span>
                   </h1>
 
-                  <p
-                    id="heroDescription"
-                    class="text-lg text-[#1b2432]/80 leading-relaxed mb-12 max-w-xl"
-                  >
-                    Accede rápidamente a todas tus herramientas de gestión.
-                    Monitorea tu inventario, administra productos y optimiza tus
-                    operaciones desde un solo lugar.
+                  <p class="text-xl text-gray-600 leading-relaxed mb-12">
+                    Sistema integral de gestión para nuestras líneas de Piñatería, Librería y Cámaras de Seguridad.
                   </p>
 
-                  <div id="heroButtons" class="flex flex-col sm:flex-row gap-6">
-                    <a
-                      href="/inventario"
-                      class="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-[#1b2432] rounded-xl hover:bg-[#1b2432]/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-                    >
-                      Ver Inventario
-                      <svg
-                        class="w-5 h-5 ml-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        />
+                  <div class="flex flex-col sm:flex-row gap-6">
+                    <a href="/inventario" 
+                      class="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-[#0066CC] rounded-xl hover:bg-[#0077ED] transition-all duration-300 shadow-lg hover:shadow-xl">
+                      Gestionar Inventario
+                      <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                       </svg>
-                    </a>
-                    <a
-                      href="/productos"
-                      class="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-[#1b2432] bg-white/80 backdrop-blur-sm rounded-xl hover:bg-white/90 transition-all duration-300 border border-[#1b2432]/10"
-                    >
-                      Gestionar Productos
                     </a>
                   </div>
                 </div>
 
-                <!-- Imagen lateral -->
+                <!-- Imagen -->
                 <div class="relative hidden lg:block">
-                  <div
-                    class="absolute -inset-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl opacity-50 blur-2xl"
-                  ></div>
-                  <div
-                    class="relative aspect-[16/9] w-[600px] mx-auto rounded-3xl overflow-hidden shadow-2xl"
-                  >
+                  <div class="absolute -inset-4 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-3xl opacity-50 blur-2xl"></div>
+                  <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white p-1">
                     <img
                       src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80"
-                      class="w-full h-full object-cover transform hover:scale-[1.02] transition-transform duration-700 ease-out will-change-transform"
-                      alt="Espacio de trabajo acogedor"
+                      class="w-full aspect-[4/3] object-cover rounded-2xl"
+                      alt="J&C Diversity Workspace"
                     />
-                    <div
-                      class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"
-                    ></div>
                   </div>
-                  <!-- Elementos decorativos -->
-                  <div
-                    class="absolute -bottom-7 -right-7 w-36 h-36 bg-gradient-to-br from-amber-200 to-orange-200 rounded-full opacity-20 blur-xl"
-                  ></div>
-                  <div
-                    class="absolute -top-7 -left-7 w-28 h-28 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full opacity-20 blur-xl"
-                  ></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Acceso Rápido -->
-        <div class="relative bg-gradient-to-b from-white to-gray-50/50">
-          <div
-            class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(0,0,0,0.02)_0%,_transparent_60%)]"
-          ></div>
-          <div
-            class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_rgba(0,0,0,0.02)_0%,_transparent_60%)]"
-          ></div>
-
-          <div class="relative max-w-7xl mx-auto px-4 py-32">
-            <div class="text-center max-w-3xl mx-auto mb-24">
-              <div
-                class="inline-flex items-center justify-center p-1.5 mb-8 rounded-full bg-[#1b2432]/5"
-              >
-                <span
-                  class="px-4 py-1.5 text-sm font-medium text-[#1b2432] rounded-full bg-white shadow-sm border border-[#1b2432]/10 tracking-wide"
-                >
-                  Sistema Central
-                </span>
-              </div>
-              <h2
-                id="sectionTitle"
-                class="text-4xl md:text-5xl font-medium text-[#1b2432] mb-8"
-              >
-                Centro de Control
+        <!-- Secciones de Negocio -->
+        <div class="relative bg-white">
+          <div class="max-w-7xl mx-auto px-4 py-24">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+              <span class="inline-block px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-8">
+                Nuestras Líneas de Negocio
+              </span>
+              <h2 class="text-4xl font-semibold text-gray-900 mb-8">
+                Gestión Integral
               </h2>
-              <p
-                id="sectionDescription"
-                class="text-xl text-[#1b2432]/80 leading-relaxed"
-              >
-                Accede a todas tus herramientas desde un solo lugar
+              <p class="text-xl text-gray-600">
+                Control total de inventario para nuestras tres líneas principales
               </p>
             </div>
 
-            <div
-              id="quickAccessCards"
-              class="grid grid-cols-1 md:grid-cols-3 gap-10"
-            >
-              <!-- Card de Categorías -->
-              <a th:href="@{/categorias}" class="group relative">
-                <div
-                  class="absolute -inset-0.5 bg-gradient-to-r from-amber-100 to-orange-100 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"
-                ></div>
-                <div
-                  class="relative h-full bg-white/80 backdrop-blur-sm rounded-3xl transition duration-300 overflow-hidden shadow-lg hover:shadow-xl border border-[#1b2432]/10"
-                >
-                  <div class="relative aspect-[4/3] overflow-hidden">
-                    <div
-                      class="absolute inset-0 bg-gradient-to-br from-[#1b2432]/5 to-transparent group-hover:from-[#1b2432]/10 group-hover:to-transparent transition-colors duration-300"
-                    ></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+              <!-- Piñatería -->
+              <div class="group relative">
+                <div class="relative rounded-2xl overflow-hidden bg-white shadow-lg transition duration-300 hover:shadow-xl">
+                  <div class="relative aspect-[4/3]">
                     <img
-                      src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80"
-                      class="w-full h-full object-cover transform group-hover:scale-[1.02] transition-transform duration-700 ease-out will-change-transform"
-                      alt="Categorías"
+                      src="https://images.unsplash.com/photo-1558985590-e84f133009b2?auto=format&fit=crop&q=80"
+                      class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                      alt="Piñatería"
                     />
-                    <div
-                      class="absolute inset-0 bg-gradient-to-t from-[#1b2432]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    ></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                      <h3 class="text-2xl font-semibold text-white mb-2">Piñatería</h3>
+                      <p class="text-gray-200">Artículos para fiestas y celebraciones</p>
+                    </div>
                   </div>
-
-                  <div class="p-8">
-                    <div class="flex items-center justify-between mb-6">
-                      <h3
-                        class="text-2xl font-medium text-[#1b2432] group-hover:text-[#1b2432]/80"
-                      >
-                        Categorías
-                      </h3>
-                      <span
-                        class="flex items-center justify-center w-14 h-14 rounded-full bg-amber-50 group-hover:bg-amber-100 transition-colors duration-300"
-                      >
-                        <svg
-                          class="w-7 h-7 text-amber-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M5 12h14M12 5l7 7-7 7"
-                          />
+                  <div class="p-6 bg-white">
+                    <div class="flex justify-between items-center">
+                      <a href="/productos" class="text-blue-600 font-medium hover:text-blue-700">Ver productos</a>
+                      <span class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                       </span>
                     </div>
-                    <p
-                      class="text-lg text-[#1b2432]/80 leading-relaxed group-hover:text-[#1b2432]/90 line-clamp-2"
-                    >
-                      Organiza y clasifica tu inventario de forma eficiente
-                    </p>
                   </div>
                 </div>
-              </a>
+              </div>
 
-              <!-- Card de Productos -->
-              <a th:href="@{/productos}" class="group relative">
-                <div
-                  class="absolute -inset-0.5 bg-gradient-to-r from-amber-100 to-orange-100 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"
-                ></div>
-                <div
-                  class="relative h-full bg-white/80 backdrop-blur-sm rounded-3xl transition duration-300 overflow-hidden shadow-lg hover:shadow-xl border border-[#1b2432]/10"
-                >
-                  <div class="relative aspect-[4/3] overflow-hidden">
-                    <div
-                      class="absolute inset-0 bg-gradient-to-br from-[#1b2432]/5 to-transparent group-hover:from-[#1b2432]/10 group-hover:to-transparent transition-colors duration-300"
-                    ></div>
+              <!-- Librería -->
+              <div class="group relative">
+                <div class="relative rounded-2xl overflow-hidden bg-white shadow-lg transition duration-300 hover:shadow-xl">
+                  <div class="relative aspect-[4/3]">
                     <img
-                      src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&q=80"
-                      class="w-full h-full object-cover transform group-hover:scale-[1.02] transition-transform duration-700 ease-out will-change-transform"
-                      alt="Productos"
+                      src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80"
+                      class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                      alt="Librería"
                     />
-                    <div
-                      class="absolute inset-0 bg-gradient-to-t from-[#1b2432]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    ></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                      <h3 class="text-2xl font-semibold text-white mb-2">Librería</h3>
+                      <p class="text-gray-200">Útiles escolares y de oficina</p>
+                    </div>
                   </div>
-
-                  <div class="p-8">
-                    <div class="flex items-center justify-between mb-6">
-                      <h3
-                        class="text-2xl font-medium text-[#1b2432] group-hover:text-[#1b2432]/80"
-                      >
-                        Productos
-                      </h3>
-                      <span
-                        class="flex items-center justify-center w-14 h-14 rounded-full bg-amber-50 group-hover:bg-amber-100 transition-colors duration-300"
-                      >
-                        <svg
-                          class="w-7 h-7 text-amber-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M5 12h14M12 5l7 7-7 7"
-                          />
+                  <div class="p-6 bg-white">
+                    <div class="flex justify-between items-center">
+                      <a href="/productos" class="text-blue-600 font-medium hover:text-blue-700">Ver productos</a>
+                      <span class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                       </span>
                     </div>
-                    <p
-                      class="text-lg text-[#1b2432]/80 leading-relaxed group-hover:text-[#1b2432]/90 line-clamp-2"
-                    >
-                      Gestiona tu catálogo completo de productos
-                    </p>
                   </div>
                 </div>
-              </a>
+              </div>
 
-              <!-- Card de Inventario -->
-              <a th:href="@{/inventario}" class="group relative">
-                <div
-                  class="absolute -inset-0.5 bg-gradient-to-r from-amber-100 to-orange-100 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"
-                ></div>
-                <div
-                  class="relative h-full bg-white/80 backdrop-blur-sm rounded-3xl transition duration-300 overflow-hidden shadow-lg hover:shadow-xl border border-[#1b2432]/10"
-                >
-                  <div class="relative aspect-[4/3] overflow-hidden">
-                    <div
-                      class="absolute inset-0 bg-gradient-to-br from-[#1b2432]/5 to-transparent group-hover:from-[#1b2432]/10 group-hover:to-transparent transition-colors duration-300"
-                    ></div>
+              <!-- Cámaras de Seguridad -->
+              <div class="group relative">
+                <div class="relative rounded-2xl overflow-hidden bg-white shadow-lg transition duration-300 hover:shadow-xl">
+                  <div class="relative aspect-[4/3]">
                     <img
-                      src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80"
-                      class="w-full h-full object-cover transform group-hover:scale-[1.02] transition-transform duration-700 ease-out will-change-transform"
-                      alt="Inventario"
+                      src="https://images.unsplash.com/photo-1557862921-37829c790f19?auto=format&fit=crop&q=80"
+                      class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                      alt="Cámaras de Seguridad"
                     />
-                    <div
-                      class="absolute inset-0 bg-gradient-to-t from-[#1b2432]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    ></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                      <h3 class="text-2xl font-semibold text-white mb-2">Cámaras de Seguridad</h3>
+                      <p class="text-gray-200">Equipos y sistemas de vigilancia</p>
+                    </div>
                   </div>
-
-                  <div class="p-8">
-                    <div class="flex items-center justify-between mb-6">
-                      <h3
-                        class="text-2xl font-medium text-[#1b2432] group-hover:text-[#1b2432]/80"
-                      >
-                        Inventario
-                      </h3>
-                      <span
-                        class="flex items-center justify-center w-14 h-14 rounded-full bg-amber-50 group-hover:bg-amber-100 transition-colors duration-300"
-                      >
-                        <svg
-                          class="w-7 h-7 text-amber-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.5"
-                            d="M5 12h14M12 5l7 7-7 7"
-                          />
+                  <div class="p-6 bg-white">
+                    <div class="flex justify-between items-center">
+                      <a href="/productos" class="text-blue-600 font-medium hover:text-blue-700">Ver productos</a>
+                      <span class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                       </span>
                     </div>
-                    <p
-                      class="text-lg text-[#1b2432]/80 leading-relaxed group-hover:text-[#1b2432]/90 line-clamp-2"
-                    >
-                      Monitorea tu stock de productos
-                    </p>
                   </div>
                 </div>
-              </a>
+              </div>
             </div>
           </div>
         </div>
