@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.api.diversity.application.dto.RolDto;
 import com.api.diversity.application.dto.UsuarioDto;
@@ -16,20 +17,23 @@ import com.api.diversity.application.service.interfaces.IRolService;
 import com.api.diversity.application.service.interfaces.IUsuarioService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final IUsuarioService usuarioService;
     private final IRolService rolService;
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        log.info("Buscando usuario por email: {}", email);
         UsuarioDto usuario = usuarioService.findByEmail(email);
-        System.out.println("Buscando usuario por email: " + email);
         if (usuario == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado: " + email);
+            throw new UsernameNotFoundException("Usuario no encontrado con email: " + email);
         }
 
         System.out.println("Usuario encontrado: " + usuario.getEmail());

@@ -2,7 +2,9 @@ package com.api.diversity.infrastructure.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
@@ -18,6 +20,12 @@ public class AuthController {
     @GetMapping("/login")
     public String mostrarLogin() {
         return "auth/login";
+    }
+
+    @PostMapping("/login")
+    public String processLogin(@RequestParam String username, @RequestParam String password) {
+        log.info("Intento de login para usuario: {}", username);
+        return "redirect:/";
     }
 
     /**
