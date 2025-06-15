@@ -12,8 +12,8 @@ import com.api.diversity.application.dto.CategoriaDto;
 import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.mappers.CategoryMapper;
 import com.api.diversity.application.service.interfaces.ICategoriaService;
-import com.api.diversity.application.service.utils.SecurityUtils;
 import com.api.diversity.domain.ports.ICategoriaRepository;
+import com.api.diversity.infrastructure.security.SecurityContext;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
     private final ICategoriaRepository categoriaRepository;
     private final CategoryMapper categoriaMapper;
-    private final SecurityUtils securityUtils;
+    private final SecurityContext securityContext;
 
     @Override
     @Transactional(readOnly = true)
@@ -40,24 +40,24 @@ public class CategoriaServiceImpl implements ICategoriaService {
     public Optional<CategoriaDto> findById(Long id) {
         return categoriaRepository.findById(id)
                 .map(categoriaMapper::toDto);
-    }    @Override
+    }
+
+    @Override
     public CategoriaDto save(CategoriaDto categoria) {
-        UsuarioDto currentUser = securityUtils.getCurrentUser();
-        
+        UsuarioDto currentUser = securityContext.getCurrentUserDatabase();
+
         if (currentUser == null) {
             throw new RuntimeException("No se puede guardar la categoría sin un usuario autenticado");
         }
 
         // Si es una nueva categoría
         if (categoria.getIdCategoria() == null) {
-            categoria.setCreatedBy(currentUser);
-            categoria.setFechaCreacion(LocalDateTime.now());
+            categoria.setCreatedBy(currentUser); 
+        } else {
+            categoria.setUpdatedBy(currentUser);
         }
-        
-        // Siempre actualizar estos campos
-        categoria.setUpdatedBy(currentUser);
         categoria.setFechaModificacion(LocalDateTime.now());
-        
+
         return categoriaMapper.toDto(categoriaRepository.save(categoriaMapper.toEntity(categoria)));
     }
 
