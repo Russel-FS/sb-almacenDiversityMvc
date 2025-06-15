@@ -92,7 +92,7 @@ public class DataInitializer implements CommandLineRunner {
                         .nombreRol(rolAdmin.getNombreRol())
                         .build());
                 admin.setEstado(EstadoUsuario.Activo);
-
+                admin.setRubro(rubroDefault);
                 usuarioService.save(admin);
                 log.info("Usuario admin creado exitosamente");
             }
