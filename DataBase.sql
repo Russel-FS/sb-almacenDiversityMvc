@@ -14,6 +14,20 @@ CREATE TABLE Roles (
     CONSTRAINT UQ_Rol_Nombre UNIQUE (Nombre_Rol)
 );
 
+-- Tabla de Rubros
+CREATE TABLE Rubros (
+    ID_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(80) NOT NULL,
+    Code VARCHAR(50) NOT NULL,
+    Descripcion VARCHAR(255),
+    Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
+    PublicId VARCHAR(100),
+    ImagenUrl VARCHAR(255),
+    Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT UQ_Rubros_Code_Nombre UNIQUE (Code, Nombre)
+);
+
 -- Tabla de Usuarios
 CREATE TABLE Usuarios (
     ID_Usuario BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -21,6 +35,7 @@ CREATE TABLE Usuarios (
     Email VARCHAR(100) NOT NULL,
     Nombre_Completo VARCHAR(100) NOT NULL,
     ID_Rol BIGINT NOT NULL,
+    ID_Rubro BIGINT NOT NULL,
     Contraseña VARCHAR(255) NOT NULL,
     UrlImagen VARCHAR(255),
     PublicId VARCHAR(100),
@@ -33,26 +48,9 @@ CREATE TABLE Usuarios (
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (ID_Rol) REFERENCES Roles (ID_Rol),
+    FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro),
     CONSTRAINT UQ_Usuario_Nombre UNIQUE (Nombre_Usuario),
     CONSTRAINT UQ_Usuario_Email UNIQUE (Email)
-);
-
--- Tabla de Rubros
-CREATE TABLE Rubros (
-    ID_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(80) NOT NULL,
-    Code VARCHAR(50) NOT NULL,
-    Descripcion VARCHAR(255),
-    Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
-    PublicId VARCHAR(100),
-    ImagenUrl VARCHAR(255),
-    Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    created_by BIGINT NOT NULL,
-    updated_by BIGINT,
-    CONSTRAINT UQ_Rubros_Code_Nombre UNIQUE (Code, Nombre),
-    FOREIGN KEY (created_by) REFERENCES Usuarios (ID_Usuario),
-    FOREIGN KEY (updated_by) REFERENCES Usuarios (ID_Usuario)
 );
 
 -- Tabla de Categorías
@@ -61,7 +59,11 @@ CREATE TABLE Categorias (
     ID_Rubro BIGINT NOT NULL,
     Nombre_Categoria VARCHAR(100) NOT NULL,
     Descripcion TEXT,
-    Estado ENUM('Activo', 'Inactivo', 'Eliminado') DEFAULT 'Activo',
+    Estado ENUM(
+        'Activo',
+        'Inactivo',
+        'Eliminado'
+    ) DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_by BIGINT NOT NULL,
@@ -71,7 +73,6 @@ CREATE TABLE Categorias (
     FOREIGN KEY (updated_by) REFERENCES Usuarios (ID_Usuario),
     CONSTRAINT UQ_Categoria_Nombre_Rubro UNIQUE (Nombre_Categoria, ID_Rubro)
 );
- 
 
 -- Tabla de Productos
 CREATE TABLE Productos (
