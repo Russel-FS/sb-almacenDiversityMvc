@@ -26,6 +26,4 @@ public class UsuarioDto {
     private LocalDateTime ultimoAcceso;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
-    private Long idRol;
-    private boolean activo;
 }

@@ -4,9 +4,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.api.diversity.application.dto.RolDto;
 import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.service.interfaces.IUsuarioService;
 import com.api.diversity.domain.enums.EstadoRol;
+import com.api.diversity.domain.enums.EstadoUsuario;
 import com.api.diversity.domain.enums.TipoRol;
 import com.api.diversity.domain.model.RolEntity;
 import com.api.diversity.domain.ports.IRolRepository;
@@ -48,8 +50,8 @@ public class DataInitializer implements CommandLineRunner {
             admin.setEmail("admin@gmail.com");
             admin.setNombreCompleto("Administrador del Sistema");
             admin.setContraseña(passwordEncoder.encode("admin123"));
-            admin.setIdRol(rolAdmin.getIdRol());
-            admin.setActivo(true);
+            admin.setRol(RolDto.builder().idRol(rolAdmin.getIdRol()).build());
+            admin.setEstado(EstadoUsuario.Activo);
 
             usuarioService.save(admin);
             log.info("Usuario admin creado con éxito");
