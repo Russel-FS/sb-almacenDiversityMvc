@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .loginPage("/auth/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .defaultSuccessUrl("/", true)
                         .failureUrl("/auth/login?error=true")
                         .permitAll())
                 .rememberMe(remember -> remember
