@@ -18,10 +18,12 @@ import com.api.diversity.domain.ports.IProductoRepository;
 import com.api.diversity.infrastructure.security.SecurityContext;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class ProductoServiceImpl implements IProductoService {
 
     private final IProductoRepository productoRepository;
@@ -49,13 +51,13 @@ public class ProductoServiceImpl implements IProductoService {
     @Transactional
     public ProductoDto save(ProductoDto producto, MultipartFile imagen) {
 
+        log.info("Guardando producto: {}", producto.getNombreProducto());
         // validar campos de producto
-        if (imagen != null && !imagen.isEmpty()
-                && (producto.getUrlImagen() == null || producto.getUrlImagen().isEmpty())) {
+        if (imagen != null && !imagen.isEmpty())  {
             CloudinaryResponse response = cloudinaryService.uploadFile(imagen, "productos");
             producto.setUrlImagen(response.getUrl());
             producto.setPublicId(response.getPublicId());
-        }
+        }  
         // establecer el usuario que crea o actualiza el producto de la sesión actual
         if (producto.getIdProducto() == null) {
             producto.setCreatedBy(securityContext.getCurrentUserDatabase());
