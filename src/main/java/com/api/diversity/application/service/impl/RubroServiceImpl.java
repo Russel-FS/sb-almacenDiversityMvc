@@ -14,6 +14,7 @@ import com.api.diversity.application.mappers.RubroMapper;
 import com.api.diversity.application.service.impl.CloudinaryService.CloudinaryResponse;
 import com.api.diversity.application.service.interfaces.IRubroService;
 import com.api.diversity.domain.enums.EstadoRubro;
+import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.model.RubroEntity;
 import com.api.diversity.domain.ports.RubroRepository;
 
@@ -34,6 +35,8 @@ public class RubroServiceImpl implements IRubroService {
     @Transactional(readOnly = true)
     public List<RubroDto> findAll() {
         return rubroRepository.findAll().stream()
+                .filter(rubro -> rubro.getEstado() == EstadoRubro.Activo)
+                .filter(rubro -> rubro.getCode() != null && !rubro.getCode().contains(TipoRubro.SIN_RUBRO.getCode()))
                 .map(rubroMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -58,7 +61,7 @@ public class RubroServiceImpl implements IRubroService {
         if (rubroDto.getEstado() == null) {
             rubroDto.setEstado(EstadoRubro.Activo);
         }
-  
+
         RubroEntity rubro = rubroMapper.toEntity(rubroDto);
         return rubroMapper.toDto(rubroRepository.save(rubro));
     }

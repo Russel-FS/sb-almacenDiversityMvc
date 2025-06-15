@@ -9,6 +9,7 @@ import com.api.diversity.application.mappers.UsuarioMapper;
 import com.api.diversity.application.service.interfaces.IUsuarioService;
 import com.api.diversity.domain.model.UsuarioEntity;
 import com.api.diversity.domain.ports.IUsuarioRepository; 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +26,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Transactional
     public UsuarioDto save(UsuarioDto usuarioDto) {
         try {
-            // Validaciones existentes
+            // Validaciones existentes 
             if (usuarioRepository.existsByEmail(usuarioDto.getEmail())) {
                 throw new RuntimeException("El email ya está registrado");
             }
@@ -42,7 +43,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
                 throw new RuntimeException("El rol es requerido");
             }
 
-            // Encriptación de contraseña
+            // Encriptación de contraseñaa
             if (usuarioDto.getContraseña() != null && !usuarioDto.getContraseña().startsWith("$2a$")) {
                 usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
             }
@@ -61,8 +62,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
         try {
             UsuarioEntity usuarioExistente = usuarioRepository.findById(usuarioDto.getIdUsuario())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-            // Validaciones adicionales
+ 
             if (usuarioDto.getRubro() == null || usuarioDto.getRubro().getIdRubro() == null) {
                 throw new RuntimeException("El rubro es requerido");
             }
