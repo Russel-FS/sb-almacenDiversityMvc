@@ -68,7 +68,7 @@ public class ProductoServiceImpl implements IProductoService {
             producto.setUpdatedBy(securityContext.getCurrentUserDatabase());
             producto.setFechaModificacion(LocalDateTime.now());
         }
-
+        producto.setEstado(EstadoProducto.Activo); 
         ProductoEntity entity = productoMapper.toEntity(producto);
         ProductoEntity savedEntity = productoRepository.save(entity);
         return productoMapper.toModel(savedEntity);
