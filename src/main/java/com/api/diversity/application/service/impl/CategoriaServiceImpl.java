@@ -40,7 +40,9 @@ public class CategoriaServiceImpl implements ICategoriaService {
     public Optional<CategoriaDto> findById(Long id) {
         return categoriaRepository.findById(id)
                 .map(categoriaMapper::toDto);
-    }    @Override
+    }
+
+    @Override
     public CategoriaDto save(CategoriaDto categoria) {
         UsuarioDto currentUser = securityContext.getCurrentUserDatabase();
 
@@ -48,17 +50,17 @@ public class CategoriaServiceImpl implements ICategoriaService {
             throw new RuntimeException("No se puede guardar la categoría sin un usuario autenticado");
         }
 
-        if (categoria.getIdCategoria() == null) { 
+        if (categoria.getIdCategoria() == null) {
             categoria.setCreatedBy(currentUser);
             categoria.setUpdatedBy(currentUser);
             categoria.setFechaCreacion(LocalDateTime.now());
             categoria.setFechaModificacion(LocalDateTime.now());
-        } else { 
+        } else {
             CategoriaDto categoriaExistente = findById(categoria.getIdCategoria())
-                .orElseThrow(() -> new RuntimeException("No se encontró la categoría a editar"));
-             
+                    .orElseThrow(() -> new RuntimeException("No se encontró la categoría a editar"));
+
             categoria.setCreatedBy(categoriaExistente.getCreatedBy());
-            categoria.setFechaCreacion(categoriaExistente.getFechaCreacion());  
+            categoria.setFechaCreacion(categoriaExistente.getFechaCreacion());
             categoria.setUpdatedBy(currentUser);
             categoria.setFechaModificacion(LocalDateTime.now());
         }
