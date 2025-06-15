@@ -47,7 +47,7 @@ public class DataInitializer implements CommandLineRunner {
                 }
             }
 
-            // craacion por defecto de ruros
+            // creacion de rubros por defecto
             for(TipoRubro tipoRubro : TipoRubro.values()) {
                 if(!rubroService.existsByNombreRubro(tipoRubro.getNombre())) {
                     rubroService.save(RubroDto.builder()
