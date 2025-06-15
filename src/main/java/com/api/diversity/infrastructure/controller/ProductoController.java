@@ -56,26 +56,37 @@ public class ProductoController {
     @PostMapping("/guardar")
     public String guardarProducto(@Valid ProductoDto producto,
             BindingResult result,
-            @RequestParam("imagen") MultipartFile imagen,
-            RedirectAttributes flash,
-            Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("categorias", categoriaService.findAll());
-            return "productos/form";
-        }
-
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen,
+            Model model,
+            RedirectAttributes redirectAttributes) {
         try {
-            productoService.save(producto, imagen);
-            flash.addFlashAttribute("mensaje", "Producto guardado exitosamente.");
-            flash.addFlashAttribute("tipoMensaje", "success");
-        } catch (Exception e) {
-            flash.addFlashAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
-            flash.addFlashAttribute("tipoMensaje", "error");
+            // Siempre agregar las categorías al modelo en caso de error
             model.addAttribute("categorias", categoriaService.findAll());
+
+            if (result.hasErrors()) {
+                model.addAttribute("mensaje", "Error en los datos del producto");
+                model.addAttribute("tipoMensaje", "error");
+                return "productos/form";
+            }
+ 
+            if (producto.getIdProducto() != null) {
+                ProductoDto productoExistente = productoService.findById(producto.getIdProducto())
+                        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                producto.setUrlImagen(productoExistente.getUrlImagen());
+                producto.setPublicId(productoExistente.getPublicId());
+            }
+
+            productoService.save(producto, imagen);
+            redirectAttributes.addFlashAttribute("mensaje", "Producto guardado exitosamente");
+            redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+            return "redirect:/productos";
+
+        } catch (Exception e) {
+            model.addAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
+            model.addAttribute("tipoMensaje", "error");
+            model.addAttribute("producto", producto);
             return "productos/form";
         }
-
-        return "redirect:/productos";
     }
 
     @GetMapping("/eliminar/{id}")
