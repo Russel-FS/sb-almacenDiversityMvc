@@ -37,14 +37,18 @@ public class DataInitializer implements CommandLineRunner {
             }
         }
 
+        // Buscar el rol ADMINISTRADOR
+        RolEntity rolAdmin = rolRepository.findByNombreRol(TipoRol.ADMINISTRADOR.getNombre())
+                .orElseThrow(() -> new RuntimeException("Rol ADMINISTRADOR no encontrado"));
+
         // Crear usuario admin si no existe
         if (!usuarioService.existsByEmail("admin@gmail.com")) {
             UsuarioDto admin = new UsuarioDto();
             admin.setNombreUsuario("admin");
             admin.setEmail("admin@gmail.com");
             admin.setNombreCompleto("Administrador del Sistema");
-            admin.setContraseña("admin123");
-            admin.setIdRol(1L); // ID del rol ADMINISTRADOR
+            admin.setContraseña(passwordEncoder.encode("admin123"));
+            admin.setIdRol(rolAdmin.getIdRol());
             admin.setActivo(true);
 
             usuarioService.save(admin);
