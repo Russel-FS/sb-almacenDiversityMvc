@@ -1,7 +1,5 @@
 package com.api.diversity.domain.enums;
 
-import com.api.diversity.application.dto.RubroDto;
-
 public enum TipoRubro {
 
     PIÑATERIA("PIÑAT", "Piñatería", "Venta de piñatas y artículos para fiestas"),
@@ -30,12 +28,5 @@ public enum TipoRubro {
         return descripcion;
     }
  
-    public RubroDto toRubroDto() {
-        return RubroDto.builder()
-                .code(this.code)
-                .nombreRubro(this.nombre)
-                .descripcion(this.descripcion)
-                .estado(EstadoRubro.Activo)
-                .build();
-    }
+   
 }

@@ -6,13 +6,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.diversity.application.dto.RolDto;
+import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.dto.UsuarioDto;
+import com.api.diversity.application.service.interfaces.IRubroService;
 import com.api.diversity.application.service.interfaces.IUsuarioService;
 import com.api.diversity.domain.enums.EstadoRol;
+import com.api.diversity.domain.enums.EstadoRubro;
 import com.api.diversity.domain.enums.EstadoUsuario;
 import com.api.diversity.domain.enums.TipoRol;
+import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.model.RolEntity;
-import com.api.diversity.domain.ports.IRolRepository;
+import com.api.diversity.domain.ports.IRolRepository; 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DataInitializer implements CommandLineRunner {
 
     private final IUsuarioService usuarioService;
+    private final IRubroService rubroService;
     private final IRolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -39,6 +44,19 @@ public class DataInitializer implements CommandLineRunner {
                     rol.setEstado(EstadoRol.Activo);
                     rolRepository.save(rol);
                     log.info("Rol {} creado exitosamente", tipoRol.getNombre());
+                }
+            }
+
+            // craacion por defecto de ruros
+            for(TipoRubro tipoRubro : TipoRubro.values()) {
+                if(!rubroService.existsByNombreRubro(tipoRubro.getNombre())) {
+                    rubroService.save(RubroDto.builder()
+                            .nombreRubro(tipoRubro.getNombre())
+                            .code(tipoRubro.getCode())
+                            .descripcion(tipoRubro.getDescripcion())
+                            .estado(EstadoRubro.Activo) 
+                            .build(), null);
+                    log.info("Rubro {} creado exitosamente", tipoRubro.getNombre());
                 }
             }
 
