@@ -16,7 +16,7 @@ public interface ICategoriaService {
      * @return lista de categorías activas del rubro especificado
      */
     @Transactional(readOnly = true)
-    List<CategoriaDto> findAllByRubro(TipoRubro rubro);
+    List<CategoriaDto> findByRubro(TipoRubro rubro);
 
     /**
      * Obtiene una lista de todas las categorías activas e inactivas (no

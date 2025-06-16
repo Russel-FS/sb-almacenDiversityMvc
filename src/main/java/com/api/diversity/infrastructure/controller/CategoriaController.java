@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.api.diversity.application.dto.CategoriaDto;
+import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.service.interfaces.ICategoriaService;
 import com.api.diversity.application.service.interfaces.IRubroService;
 import com.api.diversity.domain.enums.TipoRubro;
@@ -30,47 +31,84 @@ public class CategoriaController {
     private final IRubroService rubroService;
 
     @GetMapping("")
-    public String findAllByRubro(Model model, @RequestParam TipoRubro rubro) {
-        List<CategoriaDto> categorias = categoriaService.findAllByRubro(rubro);
+    public String listarCategorias(@RequestParam TipoRubro rubro, Model model) {
+        List<CategoriaDto> categorias = categoriaService.findByRubro(rubro);
         model.addAttribute("categorias", categorias);
-        return "categorias/lista"; 
-    } 
-  
+        model.addAttribute("rubroActual", rubro);
+        return "categorias/lista";
+    }
+
     @GetMapping("/nuevo")
-    public String mostrarFormularioNuevo(Model model) {
-        model.addAttribute("categoria", new CategoriaDto());
-        model.addAttribute("rubros", rubroService.findAll());
+    public String mostrarFormularioNuevo(@RequestParam TipoRubro rubro, Model model) {
+        CategoriaDto categoria = new CategoriaDto();
+        RubroDto rubroDto = rubroService.findAll().stream()
+                .filter(r -> r.getCode().equals(rubro.getCode()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
+
+        categoria.setRubro(rubroDto);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("rubroActual", rubro);
         return "categorias/form";
     }
 
     @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+    public String mostrarFormularioEditar(@PathVariable Long id,
+            @RequestParam TipoRubro rubro,
+            Model model) {
         CategoriaDto categoria = categoriaService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
+
+        // Verificar que la categoría pertenece al rubro actual
+        if (!categoria.getRubro().getCode().equals(rubro.getCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría no pertenece al rubro especificado");
+        }
+
         model.addAttribute("categoria", categoria);
-        model.addAttribute("rubros", rubroService.findAll());
+        model.addAttribute("rubroActual", rubro);
         return "categorias/form";
     }
 
     @PostMapping("/guardar")
-    public String guardarCategoria(@Valid CategoriaDto categoria, BindingResult result, Model model,
+    public String guardarCategoria(@Valid CategoriaDto categoria,
+            BindingResult result,
+            @RequestParam TipoRubro rubro,
+            Model model,
             RedirectAttributes flash) {
         if (result.hasErrors()) {
-            model.addAttribute("rubros", rubroService.findAll());
+            model.addAttribute("rubroActual", rubro);
             return "categorias/form";
+        }
+
+        // Verificar que el rubro de la categoría coincide con el rubro actual
+        if (!categoria.getRubro().getCode().equals(rubro.getCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "El rubro de la categoría no coincide con el rubro especificado");
         }
 
         categoriaService.save(categoria);
         flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "success");
-        return "redirect:/categorias";
+        return "redirect:/categorias?rubro=" + rubro;
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminarCategoria(@PathVariable Long id, RedirectAttributes flash) {
+    public String eliminarCategoria(@PathVariable Long id,
+            @RequestParam TipoRubro rubro,
+            RedirectAttributes flash) {
+        CategoriaDto categoria = categoriaService.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
+
+        // Verificar que la categoría pertenece al rubro actual
+        if (!categoria.getRubro().getCode().equals(rubro.getCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría no pertenece al rubro especificado");
+        }
+
         categoriaService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Categoría eliminada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "error");
-        return "redirect:/categorias";
+        return "redirect:/categorias?rubro=" + rubro;
     }
 }

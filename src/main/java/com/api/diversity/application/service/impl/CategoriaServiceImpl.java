@@ -30,7 +30,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategoriaDto> findAllByRubro(TipoRubro rubro) {
+    public List<CategoriaDto> findByRubro(TipoRubro rubro) {
         return categoriaRepository.findAllByRubroAndEstado(rubro, EstadoCategoria.Activo)
                 .stream()
                 .map(categoriaMapper::toDto)

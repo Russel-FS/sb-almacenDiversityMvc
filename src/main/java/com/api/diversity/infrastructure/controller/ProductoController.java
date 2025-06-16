@@ -41,7 +41,7 @@ public class ProductoController {
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(@RequestParam TipoRubro rubro, Model model) {
         model.addAttribute("producto", new ProductoDto());
-        model.addAttribute("categorias", categoriaService.findAllByRubro(rubro));
+        model.addAttribute("categorias", categoriaService.findByRubro(rubro));
         return "productos/form";
     }
 
@@ -52,7 +52,7 @@ public class ProductoController {
         ProductoDto producto = productoService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
         model.addAttribute("producto", producto);
-        model.addAttribute("categorias", categoriaService.findAllByRubro(rubro));
+        model.addAttribute("categorias", categoriaService.findByRubro(rubro));
         return "productos/form";
     }
 
@@ -64,7 +64,7 @@ public class ProductoController {
             Model model,
             RedirectAttributes redirectAttributes) {
         try {
-            model.addAttribute("categorias", categoriaService.findAllByRubro(rubro));
+            model.addAttribute("categorias", categoriaService.findByRubro(rubro));
             if (result.hasErrors()) {
                 model.addAttribute("mensaje", "Error en los datos del producto");
                 model.addAttribute("tipoMensaje", "error");
