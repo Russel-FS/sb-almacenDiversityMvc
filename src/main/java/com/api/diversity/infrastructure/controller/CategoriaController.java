@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,27 +29,13 @@ public class CategoriaController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
-    @GetMapping("/libreria")
-    public String findAllByRubroLibreria(Model model) {
-        List<CategoriaDto> categorias = categoriaService.findAllByRubro(TipoRubro.LIBRERIA);
+    @GetMapping("/")
+    public String findAllByRubro(Model model, @RequestParam TipoRubro rubro) {
+        List<CategoriaDto> categorias = categoriaService.findAllByRubro(rubro);
         model.addAttribute("categorias", categorias);
-        return "categorias/lista";
-    }
-
-    @GetMapping("/pinateria")
-    public String findAllByRubroPiñateria(Model model) {
-        List<CategoriaDto> categorias = categoriaService.findAllByRubro(TipoRubro.PIÑATERIA);
-        model.addAttribute("categorias", categorias);
-        return "categorias/lista";
-    }
-
-    @GetMapping("/camara-seguridad")
-    public String findAllByRubroCamaraSeguridad(Model model) {
-        List<CategoriaDto> categorias = categoriaService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
-        model.addAttribute("categorias", categorias);
-        return "categorias/lista";
-    }
-
+        return "categorias/lista"; 
+    } 
+  
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("categoria", new CategoriaDto());
