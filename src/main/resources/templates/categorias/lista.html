@@ -109,7 +109,8 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="text-sm text-gray-900" th:text="${categoria.rubro?.nombreRubro}"></div>
-                                                </td>                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
                                                     <span th:switch="${categoria.estado?.name()}">
                                                         <span th:case="Activo"
                                                               class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -126,18 +127,18 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     <div class="flex space-x-3">
-                                                        <a th:href="${rubroActual?.name() == 'PINATERIA' ? '/pinateria/categorias/editar/' + categoria.idCategoria :
-                                                            (rubroActual?.name() == 'LIBRERIA' ? '/libreria/categorias/editar/' + categoria.idCategoria : 
-                                                            '/camaras/categorias/editar/' + categoria.idCategoria)}"
+                                                        <a th:href="@{${rubroActual.code == 'PIÑAT' ? '/pinateria/categorias/editar/' : 
+                                                                    (rubroActual.code == 'LIBR' ? '/libreria/categorias/editar/' : 
+                                                                    '/camaras/categorias/editar/') + categoria.idCategoria}}"
                                                            class="text-gray-600 hover:text-gray-900 transition-colors duration-200">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                             </svg>
                                                         </a>
-                                                        <a th:href="${rubroActual?.name() == 'PINATERIA' ? '/pinateria/categorias/eliminar/' + categoria.idCategoria :
-                                                            (rubroActual?.name() == 'LIBRERIA' ? '/libreria/categorias/eliminar/' + categoria.idCategoria :
-                                                            '/camaras/categorias/eliminar/' + categoria.idCategoria)}"
+                                                        <a th:href="@{${rubroActual.code == 'PIÑAT' ? '/pinateria/categorias/eliminar/' : 
+                                                                    (rubroActual.code == 'LIBR' ? '/libreria/categorias/eliminar/' : 
+                                                                    '/camaras/categorias/eliminar/') + categoria.idCategoria}}"
                                                            class="text-red-600 hover:text-red-900 transition-colors duration-200"
                                                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?')">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
