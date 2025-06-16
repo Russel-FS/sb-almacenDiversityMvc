@@ -32,14 +32,14 @@ public class LibreriaProductoController {
     @GetMapping("")
     public String listarProductos(Model model) {
         model.addAttribute("productos", productoService.findAllByRubro(TipoRubro.LIBRERIA));
-        return "productos/lista";
+        return "productos/libreria/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("producto", new ProductoDto());
         model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.LIBRERIA));
-        return "productos/form";
+        return "productos/libreria/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -48,7 +48,7 @@ public class LibreriaProductoController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
         model.addAttribute("producto", producto);
         model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.LIBRERIA));
-        return "productos/form";
+        return "productos/libreria/form";
     }
 
     @PostMapping("/guardar")
@@ -62,7 +62,7 @@ public class LibreriaProductoController {
             if (result.hasErrors()) {
                 model.addAttribute("mensaje", "Error en los datos del producto");
                 model.addAttribute("tipoMensaje", "error");
-                return "productos/form";
+                return "productos/libreria/form";
             }
 
             productoService.save(producto, imagen);
@@ -74,7 +74,7 @@ public class LibreriaProductoController {
             model.addAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
             model.addAttribute("tipoMensaje", "error");
             model.addAttribute("producto", producto);
-            return "productos/form";
+            return "productos/libreria/form";
         }
     }
 
