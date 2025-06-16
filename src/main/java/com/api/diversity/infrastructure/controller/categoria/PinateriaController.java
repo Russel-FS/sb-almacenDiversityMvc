@@ -40,11 +40,8 @@ public class PinateriaController {
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         CategoriaDto categoria = new CategoriaDto();
-        RubroDto rubroDto = rubroService.findAll().stream()
-                .filter(r -> r.getCode().equals(TipoRubro.PIÑATERIA.getCode()))
-                .findFirst()
+        RubroDto rubroDto = rubroService.findByNombreRubro(TipoRubro.PIÑATERIA.getNombre())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
-
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);

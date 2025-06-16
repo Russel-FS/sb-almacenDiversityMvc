@@ -34,15 +34,15 @@ public class LibreriaController {
         List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.LIBRERIA);
         model.addAttribute("categorias", categorias);
         model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-        return "categorias/libreria/lista"; 
-    } 
-  
+        return "categorias/libreria/lista";
+    }
+
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         CategoriaDto categoria = new CategoriaDto();
-        RubroDto rubroDto = rubroService. findByNombreRubro(TipoRubro.LIBRERIA.getNombre())
+        RubroDto rubroDto = rubroService.findByNombreRubro(TipoRubro.LIBRERIA.getNombre())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
-            
+
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
@@ -53,23 +53,29 @@ public class LibreriaController {
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         CategoriaDto categoria = categoriaService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
-                
+
         // Verificar que la categoría pertenece a este rubro
         if (!categoria.getRubro().getCode().equals(TipoRubro.LIBRERIA.getCode())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría no pertenece a este rubro");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría no pertenece a este rubro");
         }
-        
+
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
         return "categorias/libreria/form";
     }
 
     @PostMapping("/guardar")
-    public String guardarCategoria(@Valid CategoriaDto categoria, 
+    public String guardarCategoria(@Valid CategoriaDto categoria,
             BindingResult result,
             Model model,
             RedirectAttributes flash) {
+
+        if (categoria.getRubro() == null || categoria.getRubro().getCode() == null) {
+            RubroDto rubroDto = rubroService.findByNombreRubro(TipoRubro.LIBRERIA.getNombre())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
+            categoria.setRubro(rubroDto);
+        }
         if (result.hasErrors()) {
             model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
             return "categorias/libreria/form";
@@ -77,8 +83,8 @@ public class LibreriaController {
 
         // Verificar que el rubro de la categoría es correcto
         if (!categoria.getRubro().getCode().equals(TipoRubro.LIBRERIA.getCode())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría debe pertenecer al rubro de Librería");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría debe pertenecer al rubro de Librería");
         }
 
         categoriaService.save(categoria);
@@ -91,13 +97,13 @@ public class LibreriaController {
     public String eliminarCategoria(@PathVariable Long id, RedirectAttributes flash) {
         CategoriaDto categoria = categoriaService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
-        
+
         // Verificar que la categoría pertenece a este rubro
         if (!categoria.getRubro().getCode().equals(TipoRubro.LIBRERIA.getCode())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría no pertenece a este rubro");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría no pertenece a este rubro");
         }
-        
+
         categoriaService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Categoría eliminada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "error");
