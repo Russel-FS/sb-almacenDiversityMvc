@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
+import com.api.diversity.domain.enums.EstadoCategoria;
+import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.model.CategoryEntity;
 import com.api.diversity.domain.ports.ICategoriaRepository;
 
@@ -44,5 +46,10 @@ public class CategoryRepositoryImpl implements ICategoriaRepository {
     @Override
     public boolean existsByNombreCategoria(String nombreCategoria) {
         return categoryJpaRepository.existsByNombreCategoria(nombreCategoria);
+    }
+
+    @Override
+    public List<CategoryEntity> findAllByRubroAndEstado(TipoRubro rubro, EstadoCategoria estado) {
+        return categoryJpaRepository.findByRubro_CodeContainingAndEstado(rubro.getCode(), estado);
     }
 }

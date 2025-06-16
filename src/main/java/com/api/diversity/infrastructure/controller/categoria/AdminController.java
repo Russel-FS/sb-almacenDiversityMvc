@@ -1,4 +1,4 @@
-package com.api.diversity.infrastructure.controller;
+package com.api.diversity.infrastructure.controller.categoria;
 
 import java.util.List;
 
@@ -21,23 +21,24 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/categorias")
+@RequestMapping("/admin/categorias")
 @RequiredArgsConstructor
-public class CategoriaController {
+public class AdminController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
     @GetMapping("")
     public String listarCategorias(Model model) {
-        List<CategoriaDto> categorias = categoriaService.findAll();
+        List<CategoriaDto> categorias = categoriaService.findAllIncludingInactive();
         model.addAttribute("categorias", categorias);
-        return "categorias/lista";
-    }
-
+        return "categorias/lista"; 
+    } 
+  
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("categoria", new CategoriaDto());
         model.addAttribute("rubros", rubroService.findAll());
+        model.addAttribute("esAdmin", true);
         return "categorias/form";
     }
 
@@ -47,21 +48,25 @@ public class CategoriaController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubros", rubroService.findAll());
+        model.addAttribute("esAdmin", true);
         return "categorias/form";
     }
 
     @PostMapping("/guardar")
-    public String guardarCategoria(@Valid CategoriaDto categoria, BindingResult result, Model model,
+    public String guardarCategoria(@Valid CategoriaDto categoria, 
+            BindingResult result, 
+            Model model,
             RedirectAttributes flash) {
         if (result.hasErrors()) {
             model.addAttribute("rubros", rubroService.findAll());
+            model.addAttribute("esAdmin", true);
             return "categorias/form";
         }
 
         categoriaService.save(categoria);
         flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "success");
-        return "redirect:/categorias";
+        return "redirect:/admin/categorias";
     }
 
     @GetMapping("/eliminar/{id}")
@@ -69,6 +74,6 @@ public class CategoriaController {
         categoriaService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Categoría eliminada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "error");
-        return "redirect:/categorias";
+        return "redirect:/admin/categorias";
     }
 }

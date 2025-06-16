@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.api.diversity.domain.model.RubroEntity;
 
 @Repository
-public interface RubroRepository extends JpaRepository<RubroEntity, Long> {
-    boolean existsByNombreRubro(String nombreRubro);
+public interface RubroRepository extends JpaRepository<RubroEntity, Long> {    boolean existsByNombreRubro(String nombreRubro);
     Optional<RubroEntity> findByNombreRubro(String nombreRubro);
 }

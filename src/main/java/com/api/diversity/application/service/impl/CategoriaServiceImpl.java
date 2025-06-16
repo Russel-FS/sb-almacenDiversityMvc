@@ -13,6 +13,7 @@ import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.mappers.CategoryMapper;
 import com.api.diversity.application.service.interfaces.ICategoriaService;
 import com.api.diversity.domain.enums.EstadoCategoria;
+import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.ports.ICategoriaRepository;
 import com.api.diversity.infrastructure.security.SecurityContext;
 
@@ -29,11 +30,10 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategoriaDto> findAll() {
-        return categoriaRepository.findAll()
+    public List<CategoriaDto> findByRubro(TipoRubro rubro) {
+        return categoriaRepository.findAllByRubroAndEstado(rubro, EstadoCategoria.Activo)
                 .stream()
                 .map(categoriaMapper::toDto)
-                .filter(cat -> cat.getEstado() == EstadoCategoria.Activo)
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +48,6 @@ public class CategoriaServiceImpl implements ICategoriaService {
     }
 
     @Override
-
     @Transactional(readOnly = true)
     public List<CategoriaDto> findAllArchived() {
         return categoriaRepository.findAll()
@@ -112,7 +111,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
         if (categoria.getIdCategoria() == null) {
             categoria.setCreatedBy(currentUser);
             categoria.setUpdatedBy(currentUser);
-            categoria.setEstado(EstadoCategoria.Activo); 
+            categoria.setEstado(EstadoCategoria.Activo);
             categoria.setFechaCreacion(LocalDateTime.now());
             categoria.setFechaModificacion(LocalDateTime.now());
         } else {
@@ -132,20 +131,19 @@ public class CategoriaServiceImpl implements ICategoriaService {
     public void deleteById(Long id) {
         CategoriaDto categoria = findById(id)
                 .orElseThrow(() -> new RuntimeException("No se encontró la categoría a eliminar"));
-        // usuario del contexto
+        
         UsuarioDto currentUser = securityContext.getCurrentUserDatabase();
         if (currentUser == null) {
             throw new RuntimeException("No se puede eliminar la categoría sin un usuario autenticado");
-        } 
-        // Actualizar estado y usuario que modificoo
+        }
+        
         categoria.setEstado(EstadoCategoria.Eliminado);
         categoria.setUpdatedBy(currentUser);
         categoria.setFechaModificacion(LocalDateTime.now());
 
-        // Guardar los cambios
         categoriaMapper.toDto(categoriaRepository.save(categoriaMapper.toEntity(categoria)));
     }
- 
+
     @Override
     @Transactional(readOnly = true)
     public boolean existsById(Long id) {

@@ -34,7 +34,7 @@ public class RubroServiceImpl implements IRubroService {
     @Override
     @Transactional(readOnly = true)
     public List<RubroDto> findAll() {
-        return rubroRepository.findAll().stream() 
+        return rubroRepository.findAll().stream()
                 .filter(rubro -> rubro.getCode() != null && !rubro.getCode().contains(TipoRubro.SIN_RUBRO.getCode()))
                 .map(rubroMapper::toDto)
                 .collect(Collectors.toList());
