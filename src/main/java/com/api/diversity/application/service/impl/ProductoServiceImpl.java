@@ -14,6 +14,7 @@ import com.api.diversity.application.mappers.ProductMapper;
 import com.api.diversity.application.service.impl.CloudinaryService.CloudinaryResponse;
 import com.api.diversity.application.service.interfaces.IProductoService;
 import com.api.diversity.domain.enums.EstadoProducto;
+import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.model.ProductoEntity;
 import com.api.diversity.domain.ports.IProductoRepository;
 import com.api.diversity.infrastructure.security.SecurityContext;
@@ -44,6 +45,17 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<ProductoDto> findAllByRubro(TipoRubro rubro) {
+        return productoRepository.findAll()
+                .stream()
+                .filter(producto -> producto.getEstado() != EstadoProducto.Eliminado && producto.getEstado() != null)
+                .filter(producto -> producto.getCategoria().getRubro().getCode().contains(rubro.getCode()))
+                .map(productoMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<ProductoDto> findById(Long id) {
         return productoRepository.findById(id)
                 .map(productoMapper::toModel);
@@ -53,7 +65,8 @@ public class ProductoServiceImpl implements IProductoService {
     @Transactional
     public ProductoDto save(ProductoDto producto, MultipartFile imagen) {
 
-        // validar si el producto ya existe y asignar la imagen existente si es una actualización
+        // validar si el producto ya existe y asignar la imagen existente si es una
+        // actualización
         if (producto.getIdProducto() != null) {
             var productoExistente = productoRepository.findById(producto.getIdProducto())
                     .orElseThrow(() -> new RuntimeException("Producto no encontrado"));

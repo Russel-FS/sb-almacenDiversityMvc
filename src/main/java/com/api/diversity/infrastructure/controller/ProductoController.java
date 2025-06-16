@@ -33,8 +33,8 @@ public class ProductoController {
 
     @GetMapping("")
     public String listarProductos(@RequestParam(required = false) TipoRubro rubro, Model model) {
-        List<ProductoDto> productos = productoService.findAll();
-        model.addAttribute("productos", productos);
+        List<ProductoDto> productos = productoService.findAllByRubro(rubro);
+        model.addAttribute("productos", productos); 
         return "productos/lista";
     }
 
