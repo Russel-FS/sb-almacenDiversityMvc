@@ -49,7 +49,12 @@
                 </div>
 
                 <!-- Formulario -->
-                <form th:action="@{/categorias/guardar(rubro=${rubroActual})}" th:object="${categoria}" method="post" class="space-y-8">
+                <form th:action="${rubroActual == T(com.api.diversity.domain.enums.TipoRubro).PIÑATERIA ? '/pinateria/categorias/guardar' :
+                    (rubroActual == T(com.api.diversity.domain.enums.TipoRubro).LIBRERIA ? '/libreria/categorias/guardar' : 
+                    '/camaras/categorias/guardar')}" 
+                    th:object="${categoria}" 
+                    method="post" 
+                    class="space-y-8">
                   <!-- Campos ocultos -->
                   <input type="hidden" th:field="*{idCategoria}" />
                   <input type="hidden" th:field="*{estado}" />
@@ -89,7 +94,9 @@
 
                   <!-- Botones de acción -->
                   <div class="flex justify-end space-x-4 pt-6">
-                    <a th:href="@{/categorias(rubro=${rubroActual})}"
+                    <a th:href="${rubroActual == T(com.api.diversity.domain.enums.TipoRubro).PIÑATERIA ? '/pinateria/categorias' :
+                        (rubroActual == T(com.api.diversity.domain.enums.TipoRubro).LIBRERIA ? '/libreria/categorias' : 
+                        '/camaras/categorias')}"
                        class="inline-flex justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                       Cancelar
                     </a>

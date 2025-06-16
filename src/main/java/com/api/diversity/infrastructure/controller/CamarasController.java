@@ -14,31 +14,40 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.api.diversity.application.dto.CategoriaDto;
+import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.service.interfaces.ICategoriaService;
 import com.api.diversity.application.service.interfaces.IRubroService;
+import com.api.diversity.domain.enums.TipoRubro;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/admin/categorias")
+@RequestMapping("/camaras/categorias")
 @RequiredArgsConstructor
-public class CategoriaController {
+public class CamarasController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
     @GetMapping("")
     public String listarCategorias(Model model) {
-        List<CategoriaDto> categorias = categoriaService.findAllIncludingInactive();
+        List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.CAMARA_SEGURIDAD);
         model.addAttribute("categorias", categorias);
+        model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
         return "categorias/lista"; 
     } 
   
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
-        model.addAttribute("categoria", new CategoriaDto());
-        model.addAttribute("rubros", rubroService.findAll());
-        model.addAttribute("esAdmin", true);
+        CategoriaDto categoria = new CategoriaDto();
+        RubroDto rubroDto = rubroService.findAll().stream()
+            .filter(r -> r.getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode()))
+            .findFirst()
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
+            
+        categoria.setRubro(rubroDto);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
         return "categorias/form";
     }
 
@@ -46,34 +55,54 @@ public class CategoriaController {
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         CategoriaDto categoria = categoriaService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
+                
+        // Verificar que la categoría pertenece a este rubro
+        if (!categoria.getRubro().getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                "La categoría no pertenece a este rubro");
+        }
+        
         model.addAttribute("categoria", categoria);
-        model.addAttribute("rubros", rubroService.findAll());
-        model.addAttribute("esAdmin", true);
+        model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
         return "categorias/form";
     }
 
     @PostMapping("/guardar")
     public String guardarCategoria(@Valid CategoriaDto categoria, 
-            BindingResult result, 
+            BindingResult result,
             Model model,
             RedirectAttributes flash) {
         if (result.hasErrors()) {
-            model.addAttribute("rubros", rubroService.findAll());
-            model.addAttribute("esAdmin", true);
+            model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
             return "categorias/form";
+        }
+
+        // Verificar que el rubro de la categoría es correcto
+        if (!categoria.getRubro().getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                "La categoría debe pertenecer al rubro de Cámaras de Seguridad");
         }
 
         categoriaService.save(categoria);
         flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "success");
-        return "redirect:/admin/categorias";
+        return "redirect:/camaras/categorias";
     }
 
     @GetMapping("/eliminar/{id}")
     public String eliminarCategoria(@PathVariable Long id, RedirectAttributes flash) {
+        CategoriaDto categoria = categoriaService.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
+        
+        // Verificar que la categoría pertenece a este rubro
+        if (!categoria.getRubro().getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                "La categoría no pertenece a este rubro");
+        }
+
         categoriaService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Categoría eliminada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "error");
-        return "redirect:/admin/categorias";
+        return "redirect:/camaras/categorias";
     }
 }
