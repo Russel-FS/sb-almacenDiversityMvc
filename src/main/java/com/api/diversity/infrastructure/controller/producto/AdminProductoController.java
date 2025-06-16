@@ -31,14 +31,14 @@ public class AdminProductoController {
     @GetMapping("")
     public String listarProductos(Model model) {
         model.addAttribute("productos", productoService.findAll());
-        return "productos/lista";
+        return "productos/admin/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("producto", new ProductoDto());
         model.addAttribute("categorias", categoriaService.findAllIncludingInactive());
-        return "productos/form";
+        return "productos/admin/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -47,7 +47,7 @@ public class AdminProductoController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
         model.addAttribute("producto", producto);
         model.addAttribute("categorias", categoriaService.findAllIncludingInactive());
-        return "productos/form";
+        return "productos/admin/form";
     }
 
     @PostMapping("/guardar")
@@ -61,7 +61,7 @@ public class AdminProductoController {
             if (result.hasErrors()) {
                 model.addAttribute("mensaje", "Error en los datos del producto");
                 model.addAttribute("tipoMensaje", "error");
-                return "productos/form";
+                return "productos/admin/form";
             }
 
             productoService.save(producto, imagen);
@@ -73,7 +73,7 @@ public class AdminProductoController {
             model.addAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
             model.addAttribute("tipoMensaje", "error");
             model.addAttribute("producto", producto);
-            return "productos/form";
+            return "productos/admin/form";
         }
     }
 
