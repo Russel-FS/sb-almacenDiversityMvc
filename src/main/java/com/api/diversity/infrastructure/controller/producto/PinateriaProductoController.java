@@ -32,14 +32,14 @@ public class PinateriaProductoController {
     @GetMapping("")
     public String listarProductos(Model model) {
         model.addAttribute("productos", productoService.findAllByRubro(TipoRubro.PIÑATERIA));
-        return "productos/lista";
+        return "productos/pinateria/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("producto", new ProductoDto());
         model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.PIÑATERIA));
-        return "productos/form";
+        return "productos/pinateria/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -48,7 +48,7 @@ public class PinateriaProductoController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
         model.addAttribute("producto", producto);
         model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.PIÑATERIA));
-        return "productos/form";
+        return "productos/pinateria/form";
     }
 
     @PostMapping("/guardar")
@@ -62,7 +62,7 @@ public class PinateriaProductoController {
             if (result.hasErrors()) {
                 model.addAttribute("mensaje", "Error en los datos del producto");
                 model.addAttribute("tipoMensaje", "error");
-                return "productos/form";
+                return "productos/pinateria/form";
             }
 
             productoService.save(producto, imagen);
@@ -74,7 +74,7 @@ public class PinateriaProductoController {
             model.addAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
             model.addAttribute("tipoMensaje", "error");
             model.addAttribute("producto", producto);
-            return "productos/form";
+            return "productos/pinateria/form";
         }
     }
 

@@ -6,7 +6,7 @@
   </head>
   <body>
     <div th:replace="~{layout :: layout(~{::section})}">
-      <section>
+      <section th:fragment="content(formAction, titulo)">
         <!-- Contenedor principal -->
         <div
           class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50"
@@ -145,10 +145,8 @@
                       </p>
                     </div>
                   </div>
-                </div>
-
-                <form
-                  th:action="@{/productos/guardar}"
+                </div>                  <form
+                  th:action="@{${formAction}}"
                   th:object="${producto}"
                   method="post"
                   enctype="multipart/form-data"
