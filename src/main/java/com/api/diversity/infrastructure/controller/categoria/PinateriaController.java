@@ -34,17 +34,17 @@ public class PinateriaController {
         List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.PIÑATERIA);
         model.addAttribute("categorias", categorias);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
-        return "categorias/pinateria/lista"; 
-    } 
-  
+        return "categorias/pinateria/lista";
+    }
+
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         CategoriaDto categoria = new CategoriaDto();
         RubroDto rubroDto = rubroService.findAll().stream()
-            .filter(r -> r.getCode().equals(TipoRubro.PIÑATERIA.getCode()))
-            .findFirst()
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
-            
+                .filter(r -> r.getCode().equals(TipoRubro.PIÑATERIA.getCode()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
+
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
@@ -55,34 +55,42 @@ public class PinateriaController {
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         CategoriaDto categoria = categoriaService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
-                
+
         // Verificar que la categoría pertenece a este rubro
         if (!categoria.getRubro().getCode().equals(TipoRubro.PIÑATERIA.getCode())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría no pertenece a este rubro");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría no pertenece a este rubro");
         }
-        
+
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
         return "categorias/pinateria/form";
     }
 
     @PostMapping("/guardar")
-    public String guardarCategoria(@Valid CategoriaDto categoria, 
+    public String guardarCategoria(@Valid CategoriaDto categoria,
             BindingResult result,
             Model model,
             RedirectAttributes flash) {
+
+        if (categoria.getRubro() == null || categoria.getRubro().getCode() == null) {
+            RubroDto rubroDto = rubroService.findAll().stream()
+                    .filter(r -> r.getCode().equals(TipoRubro.LIBRERIA.getCode()))
+                    .findFirst()
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
+            categoria.setRubro(rubroDto);
+        }
+
         if (result.hasErrors()) {
-            model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
-            return "categorias/form";
+            model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
+            return "categorias/libreria/form";
         }
 
         // Verificar que el rubro de la categoría es correcto
-        if (!categoria.getRubro().getCode().equals(TipoRubro.PIÑATERIA.getCode())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría debe pertenecer al rubro de Piñatería");
+        if (!TipoRubro.LIBRERIA.getCode().equals(categoria.getRubro().getCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría debe pertenecer al rubro de Librería");
         }
-
         categoriaService.save(categoria);
         flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "success");
@@ -93,13 +101,13 @@ public class PinateriaController {
     public String eliminarCategoria(@PathVariable Long id, RedirectAttributes flash) {
         CategoriaDto categoria = categoriaService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
-        
+
         // Verificar que la categoría pertenece a este rubro
         if (!categoria.getRubro().getCode().equals(TipoRubro.PIÑATERIA.getCode())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría no pertenece a este rubro");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría no pertenece a este rubro");
         }
-        
+
         categoriaService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Categoría eliminada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "error");
