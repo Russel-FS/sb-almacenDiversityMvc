@@ -34,15 +34,15 @@ public class CamarasController {
         List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.CAMARA_SEGURIDAD);
         model.addAttribute("categorias", categorias);
         model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
-        return "categorias/camaras/lista"; 
-    } 
-  
+        return "categorias/camaras/lista";
+    }
+
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         CategoriaDto categoria = new CategoriaDto();
         RubroDto rubroDto = rubroService.findByNombreRubro(TipoRubro.CAMARA_SEGURIDAD.getNombre())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
-            
+
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
@@ -53,34 +53,39 @@ public class CamarasController {
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         CategoriaDto categoria = categoriaService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
-                
+
         // Verificar que la categoría pertenece a este rubro
         if (!categoria.getRubro().getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría no pertenece a este rubro");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría no pertenece a este rubro");
         }
-        
+
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
         return "categorias/camaras/form";
     }
 
     @PostMapping("/guardar")
-    public String guardarCategoria(@Valid CategoriaDto categoria, 
+    public String guardarCategoria(@Valid CategoriaDto categoria,
             BindingResult result,
             Model model,
             RedirectAttributes flash) {
+
+        if (categoria.getRubro() == null || categoria.getRubro().getCode() == null) {
+            RubroDto rubroDto = rubroService.findByNombreRubro(TipoRubro.CAMARA_SEGURIDAD.getNombre())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
+            categoria.setRubro(rubroDto);
+        }
         if (result.hasErrors()) {
             model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
-            return "categorias/form";
+            return "categorias/camaras/form";
         }
 
         // Verificar que el rubro de la categoría es correcto
         if (!categoria.getRubro().getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría debe pertenecer al rubro de Cámaras de Seguridad");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría debe pertenecer al rubro de Cámaras de Seguridad");
         }
-
         categoriaService.save(categoria);
         flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "success");
@@ -91,11 +96,11 @@ public class CamarasController {
     public String eliminarCategoria(@PathVariable Long id, RedirectAttributes flash) {
         CategoriaDto categoria = categoriaService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
-        
+
         // Verificar que la categoría pertenece a este rubro
         if (!categoria.getRubro().getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría no pertenece a este rubro");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La categoría no pertenece a este rubro");
         }
 
         categoriaService.deleteById(id);
