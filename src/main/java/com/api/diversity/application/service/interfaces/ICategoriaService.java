@@ -6,18 +6,21 @@ import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.diversity.application.dto.CategoriaDto;
+import com.api.diversity.domain.enums.TipoRubro;
 
 public interface ICategoriaService {
- 
-    /**     * Obtiene una lista de todas las categorías activas.
+    /**
+     * Obtiene una lista de todas las categorías activas filtradas por rubro.
      *
-     * @return lista de categorías activas
+     * @param rubro el tipo de rubro por el cual filtrar las categorías
+     * @return lista de categorías activas del rubro especificado
      */
     @Transactional(readOnly = true)
-    List<CategoriaDto> findAll();
+    List<CategoriaDto> findAllByRubro(TipoRubro rubro);
 
     /**
-     * Obtiene una lista de todas las categorías activas e inactivas (no eliminadas).
+     * Obtiene una lista de todas las categorías activas e inactivas (no
+     * eliminadas).
      *
      * @return lista de categorías no eliminadas
      */
@@ -48,7 +51,7 @@ public interface ICategoriaService {
     @Transactional
     void activateCategory(Long id);
 
-    /** 
+    /**
      * Busca una categoría por su id.
      *
      * @param id category id

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.api.diversity.application.dto.CategoriaDto;
 import com.api.diversity.application.service.interfaces.ICategoriaService;
 import com.api.diversity.application.service.interfaces.IRubroService;
+import com.api.diversity.domain.enums.TipoRubro;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,23 @@ public class CategoriaController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
-    @GetMapping("")
-    public String listarCategorias(Model model) {
-        List<CategoriaDto> categorias = categoriaService.findAll();
+    @GetMapping("/libreria")
+    public String findAllByRubroLibreria(Model model) {
+        List<CategoriaDto> categorias = categoriaService.findAllByRubro(TipoRubro.LIBRERIA);
+        model.addAttribute("categorias", categorias);
+        return "categorias/lista";
+    }
+
+    @GetMapping("/pinateria")
+    public String findAllByRubroPiñateria(Model model) {
+        List<CategoriaDto> categorias = categoriaService.findAllByRubro(TipoRubro.PIÑATERIA);
+        model.addAttribute("categorias", categorias);
+        return "categorias/lista";
+    }
+
+    @GetMapping("/camara-seguridad")
+    public String findAllByRubroCamaraSeguridad(Model model) {
+        List<CategoriaDto> categorias = categoriaService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
         model.addAttribute("categorias", categorias);
         return "categorias/lista";
     }
