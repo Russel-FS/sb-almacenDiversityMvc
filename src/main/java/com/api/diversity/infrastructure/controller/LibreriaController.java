@@ -34,7 +34,7 @@ public class LibreriaController {
         List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.LIBRERIA);
         model.addAttribute("categorias", categorias);
         model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-        return "categorias/lista"; 
+        return "categorias/libreria/lista"; 
     } 
   
     @GetMapping("/nuevo")
@@ -48,7 +48,7 @@ public class LibreriaController {
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-        return "categorias/form";
+        return "categorias/libreria/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -64,7 +64,7 @@ public class LibreriaController {
         
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-        return "categorias/form";
+        return "categorias/libreria/form";
     }
 
     @PostMapping("/guardar")
@@ -74,7 +74,7 @@ public class LibreriaController {
             RedirectAttributes flash) {
         if (result.hasErrors()) {
             model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-            return "categorias/form";
+            return "categorias/libreria/form";
         }
 
         // Verificar que el rubro de la categoría es correcto
