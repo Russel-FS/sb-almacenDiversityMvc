@@ -47,8 +47,8 @@
                                             <p class="mt-1 text-sm text-gray-500">Gestiona las categorías de tus productos</p>
                                         </div>
                                     </div>
-                                    <a th:href="${rubroActual == T(com.api.diversity.domain.enums.TipoRubro).PIÑATERIA ? '/pinateria/categorias/nuevo' :
-                                        (rubroActual == T(com.api.diversity.domain.enums.TipoRubro).LIBRERIA ? '/libreria/categorias/nuevo' : 
+                                    <a th:href="${rubroActual?.name() == 'PINATERIA' ? '/pinateria/categorias/nuevo' :
+                                        (rubroActual?.name() == 'LIBRERIA' ? '/libreria/categorias/nuevo' :
                                         '/camaras/categorias/nuevo')}"
                                        class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 active:scale-[0.98]">
                                         <div class="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-950 transition-transform duration-300 hover:scale-105"></div>
@@ -126,8 +126,8 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     <div class="flex space-x-3">
-                                                        <a th:href="${rubroActual == T(com.api.diversity.domain.enums.TipoRubro).PIÑATERIA ? '/pinateria/categorias/editar/' + categoria.idCategoria :
-                                                            (rubroActual == T(com.api.diversity.domain.enums.TipoRubro).LIBRERIA ? '/libreria/categorias/editar/' + categoria.idCategoria : 
+                                                        <a th:href="${rubroActual?.name() == 'PINATERIA' ? '/pinateria/categorias/editar/' + categoria.idCategoria :
+                                                            (rubroActual?.name() == 'LIBRERIA' ? '/libreria/categorias/editar/' + categoria.idCategoria : 
                                                             '/camaras/categorias/editar/' + categoria.idCategoria)}"
                                                            class="text-gray-600 hover:text-gray-900 transition-colors duration-200">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,8 +135,8 @@
                                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                             </svg>
                                                         </a>
-                                                        <a th:href="${rubroActual == T(com.api.diversity.domain.enums.TipoRubro).PIÑATERIA ? '/pinateria/categorias/eliminar/' + categoria.idCategoria :
-                                                            (rubroActual == T(com.api.diversity.domain.enums.TipoRubro).LIBRERIA ? '/libreria/categorias/eliminar/' + categoria.idCategoria : 
+                                                        <a th:href="${rubroActual?.name() == 'PINATERIA' ? '/pinateria/categorias/eliminar/' + categoria.idCategoria :
+                                                            (rubroActual?.name() == 'LIBRERIA' ? '/libreria/categorias/eliminar/' + categoria.idCategoria :
                                                             '/camaras/categorias/eliminar/' + categoria.idCategoria)}"
                                                            class="text-red-600 hover:text-red-900 transition-colors duration-200"
                                                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?')">
