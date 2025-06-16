@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Categorías - Diversity</title>
+    <title>Categorías - Panel Administrativo - Diversity</title>
 </head>
 <body>
     <div th:replace="~{layout :: layout(~{::section})}">
@@ -25,7 +25,7 @@
                         <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-gray-900 to-gray-700 rounded-l-2xl"></div>
 
                         <div class="p-8">
-                            <!-- Encabezado con estadísticas -->
+                            <!-- Encabezado -->
                             <div class="mb-8">
                                 <div class="flex items-center justify-between mb-6">
                                     <div class="flex items-start gap-4">
@@ -40,16 +40,13 @@
                                         </div>
                                         <div>
                                             <div class="flex items-center gap-3">
-                                                <h1 class="text-2xl font-medium text-gray-900">Categorías</h1>
-                                                <span class="px-3 py-1 text-sm font-medium text-gray-600 bg-gray-100 rounded-full" 
-                                                      th:text="${rubroActual.nombre}">Rubro</span>
+                                                <h1 class="text-2xl font-medium text-gray-900">Gestión de Categorías</h1>
+                                                <span class="px-3 py-1 text-sm font-medium text-gray-600 bg-gray-100 rounded-full">Panel Administrativo</span>
                                             </div>
-                                            <p class="mt-1 text-sm text-gray-500">Gestiona las categorías de tus productos</p>
+                                            <p class="mt-1 text-sm text-gray-500">Administra todas las categorías de todos los rubros</p>
                                         </div>
                                     </div>
-                                    <a th:with="baseUrl = ${rubroActual.code == 'PIÑAT' ? '/pinateria' : 
-                                        (rubroActual.code == 'LIBR' ? '/libreria' : '/camaras')}"
-                                       th:href="@{${baseUrl + '/categorias/nuevo'}}"
+                                    <a th:href="@{/admin/categorias/nuevo}"
                                        class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 active:scale-[0.98]">
                                         <div class="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-950 transition-transform duration-300 hover:scale-105"></div>
                                         <span class="relative flex items-center">
@@ -108,7 +105,12 @@
                                                     <div class="text-sm text-gray-900" th:text="${categoria.nombreCategoria}"></div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="text-sm text-gray-900" th:text="${categoria.rubro?.nombreRubro}"></div>
+                                                    <span th:class="${'px-3 py-1 text-sm font-medium rounded-full ' + 
+                                                        (categoria.rubro.code == 'PIÑAT' ? 'bg-purple-100 text-purple-800' : 
+                                                        (categoria.rubro.code == 'LIBR' ? 'bg-blue-100 text-blue-800' : 
+                                                        'bg-green-100 text-green-800'))}"
+                                                          th:text="${categoria.rubro?.nombreRubro}">
+                                                    </span>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <span th:switch="${categoria.estado?.name()}">
@@ -127,18 +129,14 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     <div class="flex space-x-3">
-                                                        <a th:with="baseUrl = ${rubroActual.code == 'PIÑAT' ? '/pinateria' : 
-                                                                    (rubroActual.code == 'LIBR' ? '/libreria' : '/camaras')}"
-                                                           th:href="@{${baseUrl + '/categorias/editar/' + categoria.idCategoria}}"
+                                                        <a th:href="@{/admin/categorias/editar/{id}(id=${categoria.idCategoria})}"
                                                            class="text-gray-600 hover:text-gray-900 transition-colors duration-200">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                             </svg>
                                                         </a>
-                                                        <a th:with="baseUrl = ${rubroActual.code == 'PIÑAT' ? '/pinateria' : 
-                                                                    (rubroActual.code == 'LIBR' ? '/libreria' : '/camaras')}"
-                                                           th:href="@{${baseUrl + '/categorias/eliminar/' + categoria.idCategoria}}"
+                                                        <a th:href="@{/admin/categorias/eliminar/{id}(id=${categoria.idCategoria})}"
                                                            class="text-red-600 hover:text-red-900 transition-colors duration-200"
                                                            onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?')">
                                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

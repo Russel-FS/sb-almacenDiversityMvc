@@ -34,7 +34,7 @@ public class CamarasController {
         List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.CAMARA_SEGURIDAD);
         model.addAttribute("categorias", categorias);
         model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
-        return "categorias/lista"; 
+        return "categorias/camaras/lista"; 
     } 
   
     @GetMapping("/nuevo")
@@ -48,7 +48,7 @@ public class CamarasController {
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
-        return "categorias/form";
+        return "categorias/camaras/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -64,7 +64,7 @@ public class CamarasController {
         
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
-        return "categorias/form";
+        return "categorias/camaras/form";
     }
 
     @PostMapping("/guardar")

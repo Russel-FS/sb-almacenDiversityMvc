@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Categoría - Diversity</title>
+    <title>Categoría - Diversity Admin</title>
   </head>
   <body>
     <div th:replace="~{layout :: layout(~{::section})}">
@@ -65,19 +65,12 @@
                       </div>
                     </div>
                     <div class="flex-1">
-                      <div class="flex items-center gap-3">
-                        <h2
-                          class="text-3xl font-medium text-gray-900"
-                          th:text="${categoria.idCategoria == null ? 'Nueva Categoría' : 'Editar Categoría'}"
-                        ></h2>
-                        <span
-                          class="px-3 py-1 text-sm font-medium text-gray-600 bg-gray-100 rounded-full"
-                          th:text="${rubroActual.nombre}"
-                          >Rubro</span
-                        >
-                      </div>
+                      <h2
+                        class="text-3xl font-medium text-gray-900"
+                        th:text="${categoria.idCategoria == null ? 'Nueva Categoría' : 'Editar Categoría'}"
+                      ></h2>
                       <p class="mt-2 text-gray-500">
-                        Ingresa la información de la categoría
+                        Administra las categorías de todos los rubros
                       </p>
                     </div>
                   </div>
@@ -85,9 +78,7 @@
 
                 <!-- Formulario -->
                 <form
-                  th:action="${rubroActual?.name() == 'PINATERIA' ? '/pinateria/categorias/guardar' :
-                    (rubroActual?.name() == 'LIBRERIA' ? '/libreria/categorias/guardar' : 
-                    '/camaras/categorias/guardar')}"
+                  th:action="@{/admin/categorias/guardar}"
                   th:object="${categoria}"
                   method="post"
                   class="space-y-8"
@@ -95,67 +86,79 @@
                   <!-- Campos ocultos -->
                   <input type="hidden" th:field="*{idCategoria}" />
                   <input type="hidden" th:field="*{estado}" />
-                  <input type="hidden" th:field="*{rubro.idRubro}" />
+
+                  <!-- Selección de Rubro -->
+                  <div>
+                    <label
+                      for="rubro"
+                      class="block text-sm font-medium text-gray-700"
+                      >Rubro</label
+                    >
+                    <div class="mt-1">
+                      <select
+                        id="rubro"
+                        th:field="*{rubro.idRubro}"
+                        class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent sm:text-sm"
+                        required
+                      >
+                        <option value="">Seleccione un rubro</option>
+                        <option
+                          th:each="rubro : ${rubros}"
+                          th:value="${rubro.idRubro}"
+                          th:text="${rubro.nombre}"
+                        ></option>
+                      </select>
+                    </div>
+                  </div>
 
                   <!-- Nombre de la Categoría -->
-                  <div class="relative">
+                  <div>
                     <label
-                      for="nombreCategoria"
-                      class="block text-sm font-medium text-gray-700 mb-2"
+                      for="nombre"
+                      class="block text-sm font-medium text-gray-700"
+                      >Nombre de la categoría</label
                     >
-                      Nombre de la Categoría
-                    </label>
-                    <div class="relative">
+                    <div class="mt-1">
                       <input
                         type="text"
-                        th:field="*{nombreCategoria}"
-                        class="block w-full rounded-lg border-gray-300 bg-white/50 py-3 px-4 text-gray-900 shadow-sm focus:border-gray-900 focus:ring-gray-900 sm:text-sm"
+                        id="nombre"
+                        th:field="*{nombre}"
+                        class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent sm:text-sm"
+                        placeholder="Ingrese el nombre de la categoría"
                         required
                       />
                     </div>
-                    <div
-                      th:if="${#fields.hasErrors('nombreCategoria')}"
-                      class="mt-2 text-sm text-red-600"
-                      th:errors="*{nombreCategoria}"
-                    ></div>
                   </div>
 
                   <!-- Descripción -->
-                  <div class="relative">
+                  <div>
                     <label
                       for="descripcion"
-                      class="block text-sm font-medium text-gray-700 mb-2"
+                      class="block text-sm font-medium text-gray-700"
+                      >Descripción</label
                     >
-                      Descripción
-                    </label>
-                    <div class="relative">
+                    <div class="mt-1">
                       <textarea
+                        id="descripcion"
                         th:field="*{descripcion}"
-                        rows="4"
-                        class="block w-full rounded-lg border-gray-300 bg-white/50 py-3 px-4 text-gray-900 shadow-sm focus:border-gray-900 focus:ring-gray-900 sm:text-sm"
-                        placeholder="Describe el propósito de la categoría..."
+                        rows="3"
+                        class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent sm:text-sm"
+                        placeholder="Describa brevemente la categoría"
                       ></textarea>
                     </div>
-                    <div
-                      th:if="${#fields.hasErrors('descripcion')}"
-                      class="mt-2 text-sm text-red-600"
-                      th:errors="*{descripcion}"
-                    ></div>
                   </div>
 
                   <!-- Botones de acción -->
                   <div class="flex justify-end space-x-4 pt-6">
                     <a
-                      th:href="${rubroActual?.name() == 'PINATERIA' ? '/pinateria/categorias' :
-                        (rubroActual?.name() == 'LIBRERIA' ? '/libreria/categorias' : 
-                        '/camaras/categorias')}"
-                      class="inline-flex justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                      th:href="@{/admin/categorias}"
+                      class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                     >
                       Cancelar
                     </a>
                     <button
                       type="submit"
-                      class="inline-flex justify-center rounded-lg border border-transparent bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                     >
                       Guardar
                     </button>
