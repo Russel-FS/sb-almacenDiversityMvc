@@ -1,4 +1,4 @@
-package com.api.diversity.infrastructure.controller;
+package com.api.diversity.infrastructure.controller.categoria;
 
 import java.util.List;
 
@@ -23,32 +23,32 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/camaras/categorias")
+@RequestMapping("/libreria/categorias")
 @RequiredArgsConstructor
-public class CamarasController {
+public class LibreriaController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
     @GetMapping("")
     public String listarCategorias(Model model) {
-        List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.CAMARA_SEGURIDAD);
+        List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.LIBRERIA);
         model.addAttribute("categorias", categorias);
-        model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
-        return "categorias/camaras/lista"; 
+        model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
+        return "categorias/libreria/lista"; 
     } 
   
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         CategoriaDto categoria = new CategoriaDto();
         RubroDto rubroDto = rubroService.findAll().stream()
-            .filter(r -> r.getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode()))
+            .filter(r -> r.getCode().equals(TipoRubro.LIBRERIA.getCode()))
             .findFirst()
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
             
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
-        model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
-        return "categorias/camaras/form";
+        model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
+        return "categorias/libreria/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -57,14 +57,14 @@ public class CamarasController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
                 
         // Verificar que la categoría pertenece a este rubro
-        if (!categoria.getRubro().getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode())) {
+        if (!categoria.getRubro().getCode().equals(TipoRubro.LIBRERIA.getCode())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
                 "La categoría no pertenece a este rubro");
         }
         
         model.addAttribute("categoria", categoria);
-        model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
-        return "categorias/camaras/form";
+        model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
+        return "categorias/libreria/form";
     }
 
     @PostMapping("/guardar")
@@ -73,20 +73,20 @@ public class CamarasController {
             Model model,
             RedirectAttributes flash) {
         if (result.hasErrors()) {
-            model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
-            return "categorias/form";
+            model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
+            return "categorias/libreria/form";
         }
 
         // Verificar que el rubro de la categoría es correcto
-        if (!categoria.getRubro().getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode())) {
+        if (!categoria.getRubro().getCode().equals(TipoRubro.LIBRERIA.getCode())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "La categoría debe pertenecer al rubro de Cámaras de Seguridad");
+                "La categoría debe pertenecer al rubro de Librería");
         }
 
         categoriaService.save(categoria);
         flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "success");
-        return "redirect:/camaras/categorias";
+        return "redirect:/libreria/categorias";
     }
 
     @GetMapping("/eliminar/{id}")
@@ -95,14 +95,14 @@ public class CamarasController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoría no encontrada"));
         
         // Verificar que la categoría pertenece a este rubro
-        if (!categoria.getRubro().getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode())) {
+        if (!categoria.getRubro().getCode().equals(TipoRubro.LIBRERIA.getCode())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
                 "La categoría no pertenece a este rubro");
         }
-
+        
         categoriaService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Categoría eliminada exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "error");
-        return "redirect:/camaras/categorias";
+        return "redirect:/libreria/categorias";
     }
 }

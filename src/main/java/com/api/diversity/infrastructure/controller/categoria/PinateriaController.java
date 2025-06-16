@@ -1,4 +1,4 @@
-package com.api.diversity.infrastructure.controller;
+package com.api.diversity.infrastructure.controller.categoria;
 
 import java.util.List;
 
