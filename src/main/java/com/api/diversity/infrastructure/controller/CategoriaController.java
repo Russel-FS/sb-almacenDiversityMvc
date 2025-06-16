@@ -29,7 +29,7 @@ public class CategoriaController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String findAllByRubro(Model model, @RequestParam TipoRubro rubro) {
         List<CategoriaDto> categorias = categoriaService.findAllByRubro(rubro);
         model.addAttribute("categorias", categorias);
