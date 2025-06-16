@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/admin/categorias")
 @RequiredArgsConstructor
-public class CategoriaController {
+public class AdminController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 

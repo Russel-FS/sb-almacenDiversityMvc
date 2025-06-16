@@ -40,10 +40,8 @@ public class CamarasController {
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         CategoriaDto categoria = new CategoriaDto();
-        RubroDto rubroDto = rubroService.findAll().stream()
-            .filter(r -> r.getCode().equals(TipoRubro.CAMARA_SEGURIDAD.getCode()))
-            .findFirst()
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
+        RubroDto rubroDto = rubroService.findByNombreRubro(TipoRubro.CAMARA_SEGURIDAD.getNombre())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
             
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
