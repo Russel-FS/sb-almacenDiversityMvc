@@ -74,22 +74,20 @@ public class PinateriaController {
             RedirectAttributes flash) {
 
         if (categoria.getRubro() == null || categoria.getRubro().getCode() == null) {
-            RubroDto rubroDto = rubroService.findAll().stream()
-                    .filter(r -> r.getCode().equals(TipoRubro.LIBRERIA.getCode()))
-                    .findFirst()
+            RubroDto rubroDto = rubroService.findByNombreRubro(TipoRubro.PIÑATERIA.getNombre())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rubro no encontrado"));
             categoria.setRubro(rubroDto);
         }
 
         if (result.hasErrors()) {
-            model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-            return "categorias/libreria/form";
+            model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
+            return "categorias/pinateria/form";
         }
 
         // Verificar que el rubro de la categoría es correcto
-        if (!TipoRubro.LIBRERIA.getCode().equals(categoria.getRubro().getCode())) {
+        if (!TipoRubro.PIÑATERIA.getCode().equals(categoria.getRubro().getCode())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "La categoría debe pertenecer al rubro de Librería");
+                    "La categoría debe pertenecer al rubro de Piñatería");
         }
         categoriaService.save(categoria);
         flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
