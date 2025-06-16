@@ -34,7 +34,7 @@ public class PinateriaController {
         List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.PIÑATERIA);
         model.addAttribute("categorias", categorias);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
-        return "categorias/lista"; 
+        return "categorias/pinateria/lista"; 
     } 
   
     @GetMapping("/nuevo")
@@ -48,7 +48,7 @@ public class PinateriaController {
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
-        return "categorias/form";
+        return "categorias/pinateria/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -64,7 +64,7 @@ public class PinateriaController {
         
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
-        return "categorias/form";
+        return "categorias/pinateria/form";
     }
 
     @PostMapping("/guardar")
