@@ -77,16 +77,15 @@ public class DataInitializer implements CommandLineRunner {
                     .orElseThrow(() -> new RuntimeException("Rubro SIN_RUBRO no encontrado"));
 
             // Verificar si el usuario admin existe
-            UsuarioDto usuarioExistente = usuarioService.findByEmail("admin@gmail.com");
+            String email = "admin@gmail.com";
             String password = "admin123";
-            String encodedPassword = passwordEncoder.encode(password);
 
-            if (usuarioExistente == null) {
+            if (!usuarioService.existsByEmail(email)) {
                 UsuarioDto admin = new UsuarioDto();
                 admin.setNombreUsuario("admin");
-                admin.setEmail("admin@gmail.com");
+                admin.setEmail(email);
                 admin.setNombreCompleto("Administrador del Sistema");
-                admin.setContraseña(encodedPassword);
+                admin.setContraseña(passwordEncoder.encode(password));
                 admin.setRol(RolDto.builder()
                         .idRol(rolAdmin.getIdRol())
                         .nombreRol(rolAdmin.getNombreRol())
