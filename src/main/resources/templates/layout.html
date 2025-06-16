@@ -91,19 +91,19 @@
                 class="dropdown-menu absolute left-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2"
               >
                 <a
-                  th:href="@{/categorias}"
+                  th:href="@{/categorias?rubro=PIÑATERIA}"
                   class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
                 >
                   Categorías
                 </a>
                 <a
-                  th:href="@{/productos}"
+                  th:href="@{/productos?rubro=PIÑATERIA}"
                   class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
                 >
                   Productos
                 </a>
                 <a
-                  th:href="@{/inventario}"
+                  th:href="@{/inventario?rubro=PIÑATERIA}"
                   class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
                 >
                   Inventario
@@ -135,19 +135,19 @@
                 class="dropdown-menu absolute left-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2"
               >
                 <a
-                  th:href="@{/categorias}"
+                  th:href="@{/categorias?rubro=LIBRERIA}"
                   class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
                 >
                   Categorías
                 </a>
                 <a
-                  th:href="@{/productos}"
+                  th:href="@{/productos?rubro=LIBRERIA}"
                   class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
                 >
                   Productos
                 </a>
                 <a
-                  th:href="@{/inventario}"
+                  th:href="@{/inventario?rubro=LIBRERIA}"
                   class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
                 >
                   Inventario
@@ -198,6 +198,8 @@
                 </a>
               </div>
             </div>
+
+            <!-- Rubros y Perfil -->
             <div>
               <a
                 th:href="@{/rubros}"
@@ -220,7 +222,8 @@
                 <span>Rubros</span>
               </a>
             </div>
-            <!-- Perfil -->
+
+            <!-- Perfil dropdown -->
             <div class="dropdown relative">
               <button
                 class="flex items-center space-x-2 text-sm font-medium text-gray-600 hover:text-gray-900"
