@@ -39,27 +39,27 @@ public class ProveedorRepositoryImpl implements IProveedorRepository {
 
     @Override
     public Optional<ProveedorEntity> findByRuc(String ruc) {
-        return proveedorJpaRepository.findByRuc(ruc);
+        return proveedorJpaRepository.findByNumeroDocumento(ruc);
     }
 
     @Override
     public Optional<ProveedorEntity> findByEmail(String email) {
-        return proveedorJpaRepository.findByEmail(email);
+        return proveedorJpaRepository.findByEmailContainingIgnoreCase(email).stream().findFirst();
     }
 
     @Override
     public List<ProveedorEntity> findByRazonSocialContainingIgnoreCase(String razonSocial) {
-        return proveedorJpaRepository.findByRazonSocialContainingIgnoreCase(razonSocial);
+        return proveedorJpaRepository.findByNombreEmpresaContainingIgnoreCase(razonSocial);
     }
 
     @Override
     public List<ProveedorEntity> findByRepresentanteLegalContainingIgnoreCase(String representanteLegal) {
-        return proveedorJpaRepository.findByRepresentanteLegalContainingIgnoreCase(representanteLegal);
+        return proveedorJpaRepository.findByNombreContactoContainingIgnoreCase(representanteLegal);
     }
 
     @Override
     public List<ProveedorEntity> findTop10ByOrderByFechaCreacionDesc() {
-        return proveedorJpaRepository.findTop10ByOrderByFechaCreacionDesc();
+        return proveedorJpaRepository.findTop10ByOrderByIdDesc();
     }
 
     @Override
@@ -69,12 +69,12 @@ public class ProveedorRepositoryImpl implements IProveedorRepository {
 
     @Override
     public boolean existsByRuc(String ruc) {
-        return proveedorJpaRepository.findByRuc(ruc).isPresent();
+        return proveedorJpaRepository.existsByNumeroDocumento(ruc);
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return proveedorJpaRepository.findByEmail(email).isPresent();
+        return proveedorJpaRepository.existsByEmail(email);
     }
 
     @Override

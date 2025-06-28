@@ -18,7 +18,7 @@ public interface ISalidaJpaRepository extends JpaRepository<SalidaEntity, Long> 
 
     List<SalidaEntity> findByFechaSalidaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
 
-    List<SalidaEntity> findByClienteId(Long clienteId);
+    List<SalidaEntity> findByClienteIdCliente(Long idCliente);
 
     List<SalidaEntity> findByUsuarioRegistroIdUsuario(Long idUsuario);
 

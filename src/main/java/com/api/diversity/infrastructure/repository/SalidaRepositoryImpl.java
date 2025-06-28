@@ -45,7 +45,7 @@ public class SalidaRepositoryImpl implements ISalidaRepository {
 
     @Override
     public List<SalidaEntity> findByClienteId(Long clienteId) {
-        return salidaJpaRepository.findByClienteId(clienteId);
+        return salidaJpaRepository.findByClienteIdCliente(clienteId);
     }
 
     @Override

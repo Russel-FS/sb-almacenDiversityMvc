@@ -40,12 +40,12 @@ public class ClienteRepositoryImpl implements IClienteRepository {
 
     @Override
     public Optional<ClienteEntity> findByDni(String dni) {
-        return clienteJpaRepository.findByDni(dni);
+        return clienteJpaRepository.findByNumeroDocumento(dni);
     }
 
     @Override
     public Optional<ClienteEntity> findByEmail(String email) {
-        return clienteJpaRepository.findByEmail(email);
+        return clienteJpaRepository.findByEmailContainingIgnoreCase(email).stream().findFirst();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ClienteRepositoryImpl implements IClienteRepository {
 
     @Override
     public List<ClienteEntity> findTop10ByOrderByFechaCreacionDesc() {
-        return clienteJpaRepository.findTop10ByOrderByFechaCreacionDesc();
+        return clienteJpaRepository.findTop10ByOrderByIdDesc();
     }
 
     @Override
@@ -70,12 +70,12 @@ public class ClienteRepositoryImpl implements IClienteRepository {
 
     @Override
     public boolean existsByDni(String dni) {
-        return clienteJpaRepository.findByDni(dni).isPresent();
+        return clienteJpaRepository.existsByNumeroDocumento(dni);
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return clienteJpaRepository.findByEmail(email).isPresent();
+        return clienteJpaRepository.existsByEmail(email);
     }
 
     @Override
