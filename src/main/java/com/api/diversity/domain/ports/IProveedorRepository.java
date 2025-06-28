@@ -25,7 +25,6 @@ public interface IProveedorRepository {
 
     List<ProveedorEntity> findTop10ByOrderByFechaCreacionDesc();
 
-    List<ProveedorEntity> findByNombreContainingIgnoreCase(String nombre);
 
     boolean existsById(Long id);
 

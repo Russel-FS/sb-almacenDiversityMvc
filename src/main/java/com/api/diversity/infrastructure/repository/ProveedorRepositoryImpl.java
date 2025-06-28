@@ -63,11 +63,6 @@ public class ProveedorRepositoryImpl implements IProveedorRepository {
     }
 
     @Override
-    public List<ProveedorEntity> findByNombreContainingIgnoreCase(String nombre) {
-        return proveedorJpaRepository.findByNombreContainingIgnoreCase(nombre);
-    }
-
-    @Override
     public boolean existsById(Long id) {
         return proveedorJpaRepository.existsById(id);
     }
