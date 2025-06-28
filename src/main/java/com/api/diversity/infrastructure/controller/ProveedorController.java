@@ -55,6 +55,7 @@ public class ProveedorController {
             Long proveedoresActivos = proveedorService.countByEstado(EstadoProveedor.Activo);
             Long proveedoresInactivos = proveedorService.countByEstado(EstadoProveedor.Inactivo);
 
+            // datos
             model.addAttribute("titulo", "Gestión de Proveedores");
             model.addAttribute("subtitulo", "Administrar proveedores del sistema");
             model.addAttribute("proveedores", proveedores);
@@ -75,7 +76,7 @@ public class ProveedorController {
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public String listarProveedoresAdmin(
             @RequestParam(required = false) String busqueda,
             @RequestParam(required = false) EstadoProveedor estado,
@@ -91,7 +92,7 @@ public class ProveedorController {
             } else if (estado != null) {
                 proveedores = proveedorService.findByEstado(estado);
             } else {
-                // Para admin, mostrar TODOS los proveedores (incluidos eliminados)
+                // Para admin
                 proveedores = proveedorService.findAll();
             }
 
@@ -119,7 +120,7 @@ public class ProveedorController {
             model.addAttribute("proveedores", List.of());
         }
 
-        return "proveedores/lista";
+        return "admin/proveedores/lista";
     }
 
     @GetMapping("/nuevo")
