@@ -12,8 +12,8 @@
           <div class="max-w-6xl mx-auto px-4 py-16">
             <!-- Header -->
             <div class="mb-16">
-              <div class="flex items-center justify-between mb-12">
-                <div class="flex items-center gap-6">
+              <div class="flex flex-wrap items-center justify-between mb-12">
+                <div class="flex flex-wrap items-center gap-6">
                   <div
                     class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg"
                   >
@@ -620,6 +620,8 @@
 
         if (isHidden) {
           dropdown.classList.remove("hidden");
+        } else {
+          dropdown.classList.add("hidden");
         }
       }
 
