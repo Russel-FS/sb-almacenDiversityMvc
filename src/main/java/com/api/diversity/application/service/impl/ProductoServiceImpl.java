@@ -19,6 +19,7 @@ import com.api.diversity.domain.model.ProductoEntity;
 import com.api.diversity.domain.ports.IProductoRepository;
 import com.api.diversity.infrastructure.security.SecurityContext;
 
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,9 +66,9 @@ public class ProductoServiceImpl implements IProductoService {
     @Transactional
     public ProductoDto save(ProductoDto producto, MultipartFile imagen) {
 
-        // validacion de codigo de producto
-        if (producto.getCodigoProducto() == null || producto.getCodigoProducto().isEmpty()) {
-            throw new RuntimeException("El código del producto no puede estar vacío");
+        // validacion de codigo de producto duplicado
+        if (productoRepository.existsByCodigoProducto(producto.getCodigoProducto())) {
+            throw new EntityExistsException("El código del producto ya existe");
         }
 
         // validar si el producto ya existe y asignar la imagen existente si es una

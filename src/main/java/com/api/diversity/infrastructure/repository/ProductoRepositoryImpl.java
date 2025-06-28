@@ -40,4 +40,9 @@ public class ProductoRepositoryImpl implements IProductoRepository {
     public List<ProductoEntity> findByCategoria(Long categoriaId) {
         return productoJpaRepository.findByCategoria_IdCategoria(categoriaId);
     }
+
+    @Override
+    public boolean existsByCodigoProducto(String codigoProducto) {
+        return productoJpaRepository.existsByCodigoProducto(codigoProducto);
+    }
 }
