@@ -70,7 +70,7 @@ public class ClienteRepositoryImpl implements IClienteRepository {
 
     @Override
     public boolean existsByDni(String dni) {
-        return clienteJpaRepository.existsByNumeroDocumento(dni);
+        return clienteJpaRepository.existsByDni(dni);
     }
 
     @Override

@@ -36,7 +36,7 @@ public interface IClienteJpaRepository extends JpaRepository<ClienteEntity, Long
 
     Long countByTipoCliente(TipoCliente tipoCliente);
 
-    boolean existsByNumeroDocumento(String numeroDocumento);
+    boolean existsByDni(String dni);
 
     boolean existsByEmail(String email);
 }
