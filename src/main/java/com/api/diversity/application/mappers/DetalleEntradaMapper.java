@@ -63,9 +63,6 @@ public class DetalleEntradaMapper {
         entity.setPrecioUnitario(dto.getPrecioUnitario());
         entity.setSubtotal(dto.getSubtotal());
         entity.setEstado(dto.getEstado());
-
-        // Las relaciones se establecen en el servicio
-
         return entity;
     }
 

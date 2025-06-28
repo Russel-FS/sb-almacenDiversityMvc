@@ -85,9 +85,6 @@ public class SalidaMapper {
         entity.setEstado(dto.getEstado());
         entity.setFechaAprobacion(dto.getFechaAprobacion());
         entity.setObservaciones(dto.getObservaciones());
-
-        // Los detalles se mapean en el servicio para evitar referencias circulares
-
         return entity;
     }
 
