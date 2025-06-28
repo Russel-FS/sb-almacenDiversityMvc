@@ -30,7 +30,7 @@ public class EntradaDto {
     private String observaciones;
     private List<DetalleEntradaDto> detalles;
 
-    // Campos adicionales para estadísticas
+    // para estadísticas
     private Integer totalProductos;
     private String estadoDescripcion;
 }
