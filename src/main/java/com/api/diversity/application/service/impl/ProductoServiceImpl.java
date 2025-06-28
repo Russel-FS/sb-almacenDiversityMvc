@@ -65,6 +65,11 @@ public class ProductoServiceImpl implements IProductoService {
     @Transactional
     public ProductoDto save(ProductoDto producto, MultipartFile imagen) {
 
+        // validacion de codigo de producto
+        if (producto.getCodigoProducto() == null || producto.getCodigoProducto().isEmpty()) {
+            throw new RuntimeException("El código del producto no puede estar vacío");
+        }
+
         // validar si el producto ya existe y asignar la imagen existente si es una
         // actualización
         if (producto.getIdProducto() != null) {
