@@ -17,13 +17,25 @@ public interface IProveedorRepository {
 
     Optional<ProveedorEntity> findByRuc(String ruc);
 
+    Optional<ProveedorEntity> findByEmail(String email);
+
+    List<ProveedorEntity> findByRazonSocialContainingIgnoreCase(String razonSocial);
+
+    List<ProveedorEntity> findByRepresentanteLegalContainingIgnoreCase(String representanteLegal);
+
+    List<ProveedorEntity> findTop10ByOrderByFechaCreacionDesc();
+
     List<ProveedorEntity> findByNombreContainingIgnoreCase(String nombre);
 
     boolean existsById(Long id);
 
     boolean existsByRuc(String ruc);
 
+    boolean existsByEmail(String email);
+
     void deleteById(Long id);
 
     Long countByEstado(EstadoProveedor estado);
+
+    Long count();
 }

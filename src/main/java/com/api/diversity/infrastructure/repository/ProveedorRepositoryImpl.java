@@ -43,6 +43,26 @@ public class ProveedorRepositoryImpl implements IProveedorRepository {
     }
 
     @Override
+    public Optional<ProveedorEntity> findByEmail(String email) {
+        return proveedorJpaRepository.findByEmail(email);
+    }
+
+    @Override
+    public List<ProveedorEntity> findByRazonSocialContainingIgnoreCase(String razonSocial) {
+        return proveedorJpaRepository.findByRazonSocialContainingIgnoreCase(razonSocial);
+    }
+
+    @Override
+    public List<ProveedorEntity> findByRepresentanteLegalContainingIgnoreCase(String representanteLegal) {
+        return proveedorJpaRepository.findByRepresentanteLegalContainingIgnoreCase(representanteLegal);
+    }
+
+    @Override
+    public List<ProveedorEntity> findTop10ByOrderByFechaCreacionDesc() {
+        return proveedorJpaRepository.findTop10ByOrderByFechaCreacionDesc();
+    }
+
+    @Override
     public List<ProveedorEntity> findByNombreContainingIgnoreCase(String nombre) {
         return proveedorJpaRepository.findByNombreContainingIgnoreCase(nombre);
     }
@@ -58,6 +78,11 @@ public class ProveedorRepositoryImpl implements IProveedorRepository {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return proveedorJpaRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
     public void deleteById(Long id) {
         proveedorJpaRepository.deleteById(id);
     }
@@ -65,5 +90,10 @@ public class ProveedorRepositoryImpl implements IProveedorRepository {
     @Override
     public Long countByEstado(EstadoProveedor estado) {
         return proveedorJpaRepository.countByEstado(estado);
+    }
+
+    @Override
+    public Long count() {
+        return proveedorJpaRepository.count();
     }
 }
