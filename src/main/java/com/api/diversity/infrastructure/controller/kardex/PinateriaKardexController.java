@@ -384,7 +384,7 @@ public class PinateriaKardexController {
             entradaDto.setObservaciones(entradaForm.getObservaciones());
             entradaDto.setUsuarioRegistroId(usuarioId);
 
-            // Crear DetalleEntradaDto para cada producto
+            // detalle de entrada
             List<DetalleEntradaDto> detalles = entradaForm.getProductos().stream()
                     .map(productoForm -> {
                         DetalleEntradaDto detalle = new DetalleEntradaDto();
@@ -399,7 +399,6 @@ public class PinateriaKardexController {
 
             entradaDto.setDetalles(detalles);
 
-            // Guardar entrada usando el servicio
             EntradaDto entradaGuardada = entradaService.save(entradaDto);
 
             log.info("Entrada guardada exitosamente con ID: {}", entradaGuardada.getIdEntrada());
@@ -407,7 +406,6 @@ public class PinateriaKardexController {
             redirectAttributes.addFlashAttribute("success",
                     "Entrada registrada exitosamente. Número: " + entradaForm.getNumeroFactura());
             return "redirect:/pinateria/kardex/dashboard";
-
         } catch (Exception e) {
             log.error("Error al guardar entrada: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Error al guardar la entrada: " + e.getMessage());
