@@ -15,8 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.api.diversity.application.dto.ProveedorDto;
 import com.api.diversity.application.service.interfaces.IProveedorService;
 import com.api.diversity.domain.enums.EstadoProveedor;
-import com.api.diversity.infrastructure.security.SecurityContext;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ProveedorController {
 
     private final IProveedorService proveedorService;
-    private final SecurityContext securityContext;
 
     @GetMapping("")
     public String listarProveedores(
@@ -77,6 +75,7 @@ public class ProveedorController {
     }
 
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public String listarProveedoresAdmin(
             @RequestParam(required = false) String busqueda,
             @RequestParam(required = false) EstadoProveedor estado,
@@ -85,22 +84,6 @@ public class ProveedorController {
         log.info("Listando proveedores (ADMIN) - búsqueda: {}, estado: {}", busqueda, estado);
 
         try {
-            var user = securityContext.getCurrentUser();
-            boolean isAdmin = false;
-            if (user != null) {
-                for (GrantedAuthority auth : user.getAuthorities()) {
-                    if (auth.getAuthority().equals("ROLE_ADMIN")) {
-                        isAdmin = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!isAdmin) {
-                log.warn("Usuario no autorizado intentando acceder a vista de administrador");
-                return "redirect:/proveedores";
-            }
-
             List<ProveedorDto> proveedores;
 
             if (busqueda != null && !busqueda.trim().isEmpty()) {
