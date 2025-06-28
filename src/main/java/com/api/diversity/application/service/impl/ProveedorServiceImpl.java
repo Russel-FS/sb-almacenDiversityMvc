@@ -48,7 +48,6 @@ public class ProveedorServiceImpl implements IProveedorService {
 
             ProveedorEntity proveedor = proveedorMapper.toEntity(proveedorDto);
             proveedor.setEstado(EstadoProveedor.Activo);
-            // La fecha de creación se maneja automáticamente con @CreationTimestamp
 
             return proveedorMapper.toDto(proveedorRepository.save(proveedor));
         } catch (Exception e) {
@@ -66,7 +65,7 @@ public class ProveedorServiceImpl implements IProveedorService {
             ProveedorEntity proveedorExistente = proveedorRepository.findById(proveedorDto.getIdProveedor())
                     .orElseThrow(() -> new EntityNotFoundException("Proveedor no encontrado"));
 
-            // Validar que el RUC no esté duplicado en otros proveedores
+            // Validar que el rucc no esté duplicado en otros proveedores
             if (proveedorDto.getRuc() != null && !proveedorDto.getRuc().trim().isEmpty()) {
                 ProveedorEntity proveedorConRuc = proveedorRepository.findByRuc(proveedorDto.getRuc()).orElse(null);
                 if (proveedorConRuc != null
@@ -76,7 +75,7 @@ public class ProveedorServiceImpl implements IProveedorService {
                 }
             }
 
-            // Validar que el email no esté duplicado en otros proveedores
+            // validacion que el email no esté duplicado en otros proveedores
             ProveedorEntity proveedorConEmail = proveedorRepository.findByEmail(proveedorDto.getEmail()).orElse(null);
             if (proveedorConEmail != null
                     && !proveedorConEmail.getIdProveedor().equals(proveedorDto.getIdProveedor())) {
@@ -91,7 +90,7 @@ public class ProveedorServiceImpl implements IProveedorService {
             proveedorExistente.setTelefono(proveedorDto.getTelefono());
             proveedorExistente.setDireccion(proveedorDto.getDireccion());
             proveedorExistente.setRepresentanteLegal(proveedorDto.getRepresentanteLegal());
-
+            proveedorExistente.setEstado(proveedorDto.getEstado());
             return proveedorMapper.toDto(proveedorRepository.save(proveedorExistente));
         } catch (Exception e) {
             log.error("Error al actualizar proveedor: {}", e.getMessage(), e);
