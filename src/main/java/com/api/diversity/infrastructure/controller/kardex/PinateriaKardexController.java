@@ -202,6 +202,17 @@ public class PinateriaKardexController {
             List<EntradaDto> entradas = entradaService.findTop10ByOrderByFechaEntradaDesc();
             List<SalidaDto> salidas = salidaService.findTop10ByOrderByFechaSalidaDesc();
 
+            log.info("Entradas encontradas: {}", entradas != null ? entradas.size() : 0);
+            log.info("Salidas encontradas: {}", salidas != null ? salidas.size() : 0);
+
+            // Validar que las listas no sean null
+            if (entradas == null) {
+                entradas = new ArrayList<>();
+            }
+            if (salidas == null) {
+                salidas = new ArrayList<>();
+            }
+
             model.addAttribute("titulo", "Movimientos - Piñatería");
             model.addAttribute("subtitulo", "Historial de movimientos de Piñatería");
             model.addAttribute("rubro", "Piñatería");
@@ -209,7 +220,7 @@ public class PinateriaKardexController {
             model.addAttribute("salidas", salidas);
 
         } catch (Exception e) {
-            log.error("Error al cargar movimientos de Piñatería: {}", e.getMessage());
+            log.error("Error al cargar movimientos de Piñatería: {}", e.getMessage(), e);
 
             model.addAttribute("titulo", "Movimientos - Piñatería");
             model.addAttribute("subtitulo", "Historial de movimientos de Piñatería");
