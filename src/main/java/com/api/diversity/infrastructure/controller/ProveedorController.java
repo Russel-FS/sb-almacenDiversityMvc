@@ -83,6 +83,7 @@ public class ProveedorController {
             model.addAttribute("subtitulo", "Registrar nuevo proveedor");
             model.addAttribute("proveedor", new ProveedorDto());
             model.addAttribute("tiposDocumento", TipoDocumento.values());
+            model.addAttribute("estados", EstadoProveedor.values());
             model.addAttribute("esNuevo", true);
 
         } catch (Exception e) {
@@ -134,6 +135,7 @@ public class ProveedorController {
             model.addAttribute("subtitulo", "Modificar datos del proveedor");
             model.addAttribute("proveedor", proveedor);
             model.addAttribute("tiposDocumento", TipoDocumento.values());
+            model.addAttribute("estados", EstadoProveedor.values());
             model.addAttribute("esNuevo", false);
 
         } catch (Exception e) {
