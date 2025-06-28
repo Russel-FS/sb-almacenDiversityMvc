@@ -221,12 +221,13 @@ public class PinateriaKardexController {
 
         } catch (Exception e) {
             log.error("Error al cargar movimientos de Piñatería: {}", e.getMessage(), e);
-
+            List<EntradaDto> entradas = new ArrayList<>();
+            List<SalidaDto> salidas = new ArrayList<>();
             model.addAttribute("titulo", "Movimientos - Piñatería");
             model.addAttribute("subtitulo", "Historial de movimientos de Piñatería");
             model.addAttribute("rubro", "Piñatería");
-            model.addAttribute("entradas", new ArrayList<>());
-            model.addAttribute("salidas", new ArrayList<>());
+            model.addAttribute("entradas", entradas);
+            model.addAttribute("salidas", salidas);
             model.addAttribute("error", "Error al cargar los movimientos. Por favor, intente nuevamente.");
         }
 
