@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.api.diversity.application.service.interfaces.IEntradaService;
 import com.api.diversity.application.service.interfaces.ISalidaService;
@@ -53,13 +55,13 @@ public class PinateriaKardexController {
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            // Obtener últimas entradas de Piñatería (top 5)
+            // Obtener últimas entradas de Piñatería
             List<EntradaDto> ultimasEntradas = entradaService.findTop10ByOrderByFechaEntradaDesc()
                     .stream()
                     .limit(5)
                     .toList();
 
-            // Obtener últimas salidas de Piñatería (top 5)
+            // Obtener últimas salidas de Piñatería
             List<SalidaDto> ultimasSalidas = salidaService.findTop10ByOrderByFechaSalidaDesc()
                     .stream()
                     .limit(5)
@@ -107,9 +109,13 @@ public class PinateriaKardexController {
             List<String> tiposDocumento = List.of("FACTURA", "BOLETA", "NOTA DE CRÉDITO", "NOTA DE DÉBITO",
                     "GUÍA DE REMISIÓN");
 
-            // TODO: Cargar proveedores (necesitaríamos un servicio de proveedores)
-            // Por ahora usamos una lista vacía
-            List<Object> proveedores = new ArrayList<>();
+            // Lista de ejemplo para proveedores
+            List<Map<String, Object>> proveedores = new ArrayList<>();
+            Map<String, Object> proveedorEjemplo = new HashMap<>();
+            proveedorEjemplo.put("id", 1L);
+            proveedorEjemplo.put("razonSocial", "Proveedor Demo");
+            proveedorEjemplo.put("ruc", "12345678901");
+            proveedores.add(proveedorEjemplo);
 
             model.addAttribute("titulo", "Nueva Entrada - Piñatería");
             model.addAttribute("subtitulo", "Registrar entrada de productos de Piñatería");
