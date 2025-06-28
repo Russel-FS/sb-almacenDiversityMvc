@@ -325,16 +325,31 @@ public class PinateriaKardexController {
     @PostMapping("/entrada/guardar")
     public String guardarEntrada(
             @RequestParam(value = "numeroFactura", required = false) String numeroFactura,
-            @RequestParam("tipoDocumento") TipoDocumento tipoDocumento,
+            @RequestParam("tipoDocumento") String tipoDocumentoStr,
             @RequestParam("proveedorId") Long proveedorId,
             @RequestParam("fechaEntrada") String fechaEntrada,
             @RequestParam("observaciones") String observaciones,
-            @RequestParam("productos") List<Map<String, Object>> productos,
+            @RequestParam Map<String, String> allParams,
             RedirectAttributes redirectAttributes) {
 
         log.info("Procesando nueva entrada - Piñatería: {}", numeroFactura);
+        log.info("Tipo documento (string): {}", tipoDocumentoStr);
+        log.info("Proveedor ID: {}", proveedorId);
+        log.info("Fecha entrada: {}", fechaEntrada);
+        log.info("Observaciones: {}", observaciones);
+        log.info("Todos los parámetros: {}", allParams);
 
         try {
+            // Convertir string a enum
+            TipoDocumento tipoDocumento;
+            try {
+                tipoDocumento = TipoDocumento.valueOf(tipoDocumentoStr);
+            } catch (IllegalArgumentException e) {
+                log.error("Tipo de documento inválido: {}", tipoDocumentoStr);
+                redirectAttributes.addFlashAttribute("error", "Tipo de documento inválido: " + tipoDocumentoStr);
+                return "redirect:/pinateria/kardex/entrada/nueva";
+            }
+
             // Validar fecha de entrada
             LocalDate fechaEntradaDate = LocalDate.parse(fechaEntrada);
             LocalDate fechaActual = LocalDate.now();
@@ -360,6 +375,35 @@ public class PinateriaKardexController {
                 }
             }
 
+            // Extraer productos del formulario
+            List<Map<String, Object>> productos = new ArrayList<>();
+            int index = 0;
+
+            while (allParams.containsKey("productos[" + index + "].productoId")) {
+                String productoId = allParams.get("productos[" + index + "].productoId");
+                String cantidad = allParams.get("productos[" + index + "].cantidad");
+                String precioUnitario = allParams.get("productos[" + index + "].precioUnitario");
+
+                if (productoId != null && !productoId.trim().isEmpty() &&
+                        cantidad != null && !cantidad.trim().isEmpty() &&
+                        precioUnitario != null && !precioUnitario.trim().isEmpty()) {
+
+                    Map<String, Object> producto = new HashMap<>();
+                    producto.put("productoId", Long.parseLong(productoId));
+                    producto.put("cantidad", Integer.parseInt(cantidad));
+                    producto.put("precioUnitario", new BigDecimal(precioUnitario));
+                    productos.add(producto);
+                }
+                index++;
+            }
+
+            if (productos.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Debe agregar al menos un producto");
+                return "redirect:/pinateria/kardex/entrada/nueva";
+            }
+
+            log.info("Productos a procesar: {}", productos);
+
             // TODO: Implementar lógica para guardar entrada
             // 1. Crear EntradaDto con los datos del formulario
             // 2. Crear DetalleEntradaDto para cada producto
@@ -369,6 +413,11 @@ public class PinateriaKardexController {
                     "Entrada registrada exitosamente. Número: " + numeroFactura);
             return "redirect:/pinateria/kardex/dashboard";
 
+        } catch (NumberFormatException e) {
+            log.error("Error de formato en datos numéricos: {}", e.getMessage());
+            redirectAttributes.addFlashAttribute("error",
+                    "Error en el formato de los datos. Verifique que los valores numéricos sean correctos.");
+            return "redirect:/pinateria/kardex/entrada/nueva";
         } catch (Exception e) {
             log.error("Error al guardar entrada: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Error al guardar la entrada: " + e.getMessage());

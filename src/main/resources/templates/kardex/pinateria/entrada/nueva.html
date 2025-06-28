@@ -93,6 +93,15 @@
         <span th:text="${error}">Error</span>
       </div>
 
+      <!-- Success Alert -->
+      <div
+        th:if="${success}"
+        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6"
+      >
+        <i class="fas fa-check-circle mr-2"></i>
+        <span th:text="${success}">Éxito</span>
+      </div>
+
       <div class="bg-white rounded-lg shadow-md p-6">
         <form
           th:action="@{/pinateria/kardex/entrada/guardar}"
@@ -141,7 +150,7 @@
                 <option value="">Seleccionar tipo</option>
                 <option
                   th:each="tipo : ${tiposDocumento}"
-                  th:value="${tipo}"
+                  th:value="${tipo.name()}"
                   th:text="${tipo.descripcion}"
                 >
                   Tipo
@@ -488,6 +497,41 @@
           calcularTotales();
         }
       });
+
+      // Debug del formulario
+      document
+        .getElementById("entradaForm")
+        .addEventListener("submit", function (e) {
+          console.log("Formulario enviándose...");
+
+          // Validar que al menos un producto tenga datos
+          const productos = document.querySelectorAll(".producto-item");
+          let productosValidos = 0;
+
+          productos.forEach((producto) => {
+            const productoId = producto.querySelector(
+              'select[name*="productoId"]'
+            ).value;
+            const cantidad = producto.querySelector(
+              'input[name*="cantidad"]'
+            ).value;
+            const precio = producto.querySelector(
+              'input[name*="precioUnitario"]'
+            ).value;
+
+            if (productoId && cantidad && precio) {
+              productosValidos++;
+            }
+          });
+
+          if (productosValidos === 0) {
+            e.preventDefault();
+            alert("Debe agregar al menos un producto con todos sus datos");
+            return false;
+          }
+
+          console.log("Formulario válido, enviando...");
+        });
     </script>
   </body>
 </html>
