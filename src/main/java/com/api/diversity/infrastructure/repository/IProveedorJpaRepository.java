@@ -18,18 +18,18 @@ public interface IProveedorJpaRepository extends JpaRepository<ProveedorEntity, 
 
     Optional<ProveedorEntity> findByNumeroDocumento(String numeroDocumento);
 
-    List<ProveedorEntity> findByNombreEmpresaContainingIgnoreCase(String nombreEmpresa);
+    List<ProveedorEntity> findByRazonSocialContainingIgnoreCase(String razonSocial);
 
-    List<ProveedorEntity> findByNombreContactoContainingIgnoreCase(String nombreContacto);
+    List<ProveedorEntity> findByRepresentanteLegalContainingIgnoreCase(String representanteLegal);
 
     List<ProveedorEntity> findByEmailContainingIgnoreCase(String email);
 
     List<ProveedorEntity> findByTelefonoContaining(String telefono);
 
-    @Query("SELECT p FROM ProveedorEntity p WHERE p.nombreEmpresa LIKE %:termino% OR p.nombreContacto LIKE %:termino% OR p.email LIKE %:termino% OR p.numeroDocumento LIKE %:termino%")
+    @Query("SELECT p FROM ProveedorEntity p WHERE p.razonSocial LIKE %:termino% OR p.representanteLegal LIKE %:termino% OR p.email LIKE %:termino% OR p.ruc LIKE %:termino%")
     List<ProveedorEntity> buscarPorTermino(@Param("termino") String termino);
 
-    List<ProveedorEntity> findTop10ByOrderByIdDesc();
+    List<ProveedorEntity> findTop10ByOrderByIdProveedorDesc();
 
     Long countByEstado(EstadoProveedor estado);
 

@@ -60,7 +60,7 @@ public class ClienteRepositoryImpl implements IClienteRepository {
 
     @Override
     public List<ClienteEntity> findTop10ByOrderByFechaCreacionDesc() {
-        return clienteJpaRepository.findTop10ByOrderByIdDesc();
+        return clienteJpaRepository.findTop10ByOrderByIdClienteDesc();
     }
 
     @Override

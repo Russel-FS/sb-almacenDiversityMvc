@@ -49,17 +49,17 @@ public class ProveedorRepositoryImpl implements IProveedorRepository {
 
     @Override
     public List<ProveedorEntity> findByRazonSocialContainingIgnoreCase(String razonSocial) {
-        return proveedorJpaRepository.findByNombreEmpresaContainingIgnoreCase(razonSocial);
+        return proveedorJpaRepository.findByRazonSocialContainingIgnoreCase(razonSocial);
     }
 
     @Override
     public List<ProveedorEntity> findByRepresentanteLegalContainingIgnoreCase(String representanteLegal) {
-        return proveedorJpaRepository.findByNombreContactoContainingIgnoreCase(representanteLegal);
+        return proveedorJpaRepository.findByRepresentanteLegalContainingIgnoreCase(representanteLegal);
     }
 
     @Override
     public List<ProveedorEntity> findTop10ByOrderByFechaCreacionDesc() {
-        return proveedorJpaRepository.findTop10ByOrderByIdDesc();
+        return proveedorJpaRepository.findTop10ByOrderByIdProveedorDesc();
     }
 
     @Override

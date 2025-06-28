@@ -30,7 +30,7 @@ public interface IClienteJpaRepository extends JpaRepository<ClienteEntity, Long
     @Query("SELECT c FROM ClienteEntity c WHERE c.nombreCompleto LIKE %:termino% OR c.email LIKE %:termino% OR c.numeroDocumento LIKE %:termino%")
     List<ClienteEntity> buscarPorTermino(@Param("termino") String termino);
 
-    List<ClienteEntity> findTop10ByOrderByIdDesc();
+    List<ClienteEntity> findTop10ByOrderByIdClienteDesc();
 
     Long countByEstado(EstadoCliente estado);
 
