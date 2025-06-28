@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nueva Salida - Kardex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center">
+            <a
+              href="/kardex/dashboard"
+              class="text-blue-600 hover:text-blue-800 mr-4"
+            >
+              <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <i class="fas fa-shopping-cart text-2xl text-red-600 mr-3"></i>
+            <h1 class="text-2xl font-bold text-gray-900">Nueva Venta</h1>
+          </div>
+          <div class="flex space-x-3">
+            <button
+              type="button"
+              onclick="history.back()"
+              class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              form="salidaForm"
+              class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg"
+            >
+              Procesar Venta
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <form
+        id="salidaForm"
+        th:action="@{/kardex/salida/guardar}"
+        method="post"
+        class="space-y-8"
+      >
+        <!-- Información del Cliente -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">
+            Información del Cliente
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label
+                for="tipoCliente"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Tipo de Cliente *
+              </label>
+              <select
+                id="tipoCliente"
+                name="tipoCliente"
+                required
+                onchange="toggleDocumento()"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              >
+                <option value="">Seleccionar tipo</option>
+                <option value="NATURAL">Persona Natural</option>
+                <option value="JURIDICA">Persona Jurídica</option>
+              </select>
+            </div>
+            <div>
+              <label
+                for="cliente"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Cliente
+              </label>
+              <select
+                id="cliente"
+                name="clienteId"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              >
+                <option value="">Seleccionar cliente</option>
+                <option value="1">Juan Pérez - DNI: 12345678</option>
+                <option value="2">María García - DNI: 87654321</option>
+                <option value="3">Empresa ABC - RUC: 20123456789</option>
+              </select>
+            </div>
+            <div>
+              <label
+                for="documento"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Documento
+              </label>
+              <input
+                type="text"
+                id="documento"
+                name="documento"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                placeholder="DNI o RUC"
+              />
+            </div>
+          </div>
+          <div class="mt-4">
+            <label
+              for="nombreCliente"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Nombre/Razón Social
+            </label>
+            <input
+              type="text"
+              id="nombreCliente"
+              name="nombreCliente"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              placeholder="Nombre completo o razón social"
+            />
+          </div>
+        </div>
+
+        <!-- Información de la Venta -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">
+            Información de la Venta
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label
+                for="fechaVenta"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Fecha de Venta *
+              </label>
+              <input
+                type="date"
+                id="fechaVenta"
+                name="fechaVenta"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              />
+            </div>
+            <div>
+              <label
+                for="tipoDocumento"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Tipo de Documento *
+              </label>
+              <select
+                id="tipoDocumento"
+                name="tipoDocumento"
+                required
+                onchange="validarDocumento()"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+              >
+                <option value="">Seleccionar</option>
+                <option value="BOLETA">Boleta</option>
+                <option value="FACTURA">Factura</option>
+              </select>
+            </div>
+            <div>
+              <label
+                for="montoTotal"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Monto Total
+              </label>
+              <input
+                type="number"
+                id="montoTotal"
+                name="montoTotal"
+                readonly
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
+                placeholder="0.00"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Productos -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold text-gray-900">Productos</h2>
+            <button
+              type="button"
+              onclick="agregarProducto()"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center"
+            >
+              <i class="fas fa-plus mr-2"></i>
+              Agregar Producto
+            </button>
+          </div>
+
+          <div id="productosContainer" class="space-y-4">
+            <!-- Producto 1 -->
+            <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Producto *</label
+                  >
+                  <select
+                    name="productos[0].productoId"
+                    required
+                    onchange="cargarPrecio(this, 0)"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                  >
+                    <option value="">Seleccionar producto</option>
+                    <option value="1" data-precio="25.00" data-stock="50">
+                      Piñata Grande - Stock: 50
+                    </option>
+                    <option value="2" data-precio="18.00" data-stock="30">
+                      Piñata Mediana - Stock: 30
+                    </option>
+                    <option value="3" data-precio="35.00" data-stock="25">
+                      Libro Matemáticas - Stock: 25
+                    </option>
+                    <option value="4" data-precio="150.00" data-stock="10">
+                      Cámara HD - Stock: 10
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Precio Unitario</label
+                  >
+                  <input
+                    type="number"
+                    name="productos[0].precioUnitario"
+                    min="0"
+                    step="0.01"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                    placeholder="0.00"
+                    readonly
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Cantidad *</label
+                  >
+                  <input
+                    type="number"
+                    name="productos[0].cantidad"
+                    min="1"
+                    required
+                    onchange="calcularSubtotal(0)"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                    placeholder="0"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Subtotal</label
+                  >
+                  <input
+                    type="number"
+                    name="productos[0].subtotal"
+                    readonly
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
+                    placeholder="0.00"
+                  />
+                </div>
+                <div class="flex items-end">
+                  <button
+                    type="button"
+                    onclick="eliminarProducto(this)"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumen de la Venta -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">
+            Resumen de la Venta
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+              <p class="text-sm text-gray-600">Total Productos</p>
+              <p class="text-2xl font-bold text-blue-600" id="totalProductos">
+                0
+              </p>
+            </div>
+            <div class="text-center p-4 bg-green-50 rounded-lg">
+              <p class="text-sm text-gray-600">Subtotal</p>
+              <p class="text-2xl font-bold text-green-600" id="subtotal">
+                S/ 0.00
+              </p>
+            </div>
+            <div class="text-center p-4 bg-purple-50 rounded-lg">
+              <p class="text-sm text-gray-600">IGV (18%)</p>
+              <p class="text-2xl font-bold text-purple-600" id="igv">S/ 0.00</p>
+            </div>
+            <div class="text-center p-4 bg-red-50 rounded-lg">
+              <p class="text-sm text-gray-600">Total</p>
+              <p class="text-2xl font-bold text-red-600" id="total">S/ 0.00</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Observaciones -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">
+            Observaciones
+          </h2>
+          <textarea
+            name="observaciones"
+            rows="3"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            placeholder="Observaciones adicionales sobre la venta..."
+          ></textarea>
+        </div>
+      </form>
+    </main>
+
+    <script>
+      let productoIndex = 1;
+
+      function toggleDocumento() {
+        const tipoCliente = document.getElementById("tipoCliente").value;
+        const documento = document.getElementById("documento");
+
+        if (tipoCliente === "NATURAL") {
+          documento.placeholder = "DNI (8 dígitos)";
+          documento.pattern = "[0-9]{8}";
+        } else if (tipoCliente === "JURIDICA") {
+          documento.placeholder = "RUC (11 dígitos)";
+          documento.pattern = "[0-9]{11}";
+        }
+      }
+
+      function validarDocumento() {
+        const tipoDocumento = document.getElementById("tipoDocumento").value;
+        const montoTotal =
+          parseFloat(document.getElementById("montoTotal").value) || 0;
+        const documento = document.getElementById("documento");
+
+        if (tipoDocumento === "FACTURA") {
+          if (!documento.value) {
+            alert("Para facturas es obligatorio el documento del cliente");
+            return false;
+          }
+        } else if (tipoDocumento === "BOLETA" && montoTotal >= 700) {
+          if (!documento.value) {
+            alert("Para boletas con monto mayor a S/700 es obligatorio el DNI");
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function agregarProducto() {
+        const container = document.getElementById("productosContainer");
+        const nuevoProducto = document.createElement("div");
+        nuevoProducto.className =
+          "border border-gray-200 rounded-lg p-4 bg-gray-50";
+        nuevoProducto.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Producto *</label>
+                        <select name="productos[${productoIndex}].productoId" required onchange="cargarPrecio(this, ${productoIndex})"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                            <option value="">Seleccionar producto</option>
+                            <option value="1" data-precio="25.00" data-stock="50">Piñata Grande - Stock: 50</option>
+                            <option value="2" data-precio="18.00" data-stock="30">Piñata Mediana - Stock: 30</option>
+                            <option value="3" data-precio="35.00" data-stock="25">Libro Matemáticas - Stock: 25</option>
+                            <option value="4" data-precio="150.00" data-stock="10">Cámara HD - Stock: 10</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Precio Unitario</label>
+                        <input type="number" name="productos[${productoIndex}].precioUnitario" min="0" step="0.01" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                               placeholder="0.00" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad *</label>
+                        <input type="number" name="productos[${productoIndex}].cantidad" min="1" required onchange="calcularSubtotal(${productoIndex})"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                               placeholder="0">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Subtotal</label>
+                        <input type="number" name="productos[${productoIndex}].subtotal" readonly
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
+                               placeholder="0.00">
+                    </div>
+                    <div class="flex items-end">
+                        <button type="button" onclick="eliminarProducto(this)" 
+                                class="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        container.appendChild(nuevoProducto);
+        productoIndex++;
+      }
+
+      function eliminarProducto(button) {
+        const productoDiv = button.closest(".border");
+        productoDiv.remove();
+        calcularTotales();
+      }
+
+      function cargarPrecio(select, index) {
+        const option = select.options[select.selectedIndex];
+        const precio = option.getAttribute("data-precio");
+        const precioInput = document.querySelector(
+          `[name="productos[${index}].precioUnitario"]`
+        );
+        if (precioInput) {
+          precioInput.value = precio;
+          calcularSubtotal(index);
+        }
+      }
+
+      function calcularSubtotal(index) {
+        const cantidad = document.querySelector(
+          `[name="productos[${index}].cantidad"]`
+        );
+        const precio = document.querySelector(
+          `[name="productos[${index}].precioUnitario"]`
+        );
+        const subtotal = document.querySelector(
+          `[name="productos[${index}].subtotal"]`
+        );
+
+        if (cantidad && precio && subtotal && cantidad.value && precio.value) {
+          const cant = parseInt(cantidad.value);
+          const prec = parseFloat(precio.value);
+          const subt = cant * prec;
+          subtotal.value = subt.toFixed(2);
+          calcularTotales();
+        }
+      }
+
+      function calcularTotales() {
+        let totalProductos = 0;
+        let subtotal = 0;
+
+        // Obtener todos los productos
+        const productos = document.querySelectorAll('[name*="productoId"]');
+        productos.forEach((producto, index) => {
+          const cantidad = document.querySelector(
+            `[name="productos[${index}].cantidad"]`
+          );
+          const subtotalProducto = document.querySelector(
+            `[name="productos[${index}].subtotal"]`
+          );
+
+          if (
+            cantidad &&
+            subtotalProducto &&
+            cantidad.value &&
+            subtotalProducto.value
+          ) {
+            const cant = parseInt(cantidad.value);
+            const subt = parseFloat(subtotalProducto.value);
+            totalProductos += cant;
+            subtotal += subt;
+          }
+        });
+
+        const igv = subtotal * 0.18;
+        const total = subtotal + igv;
+
+        document.getElementById("totalProductos").textContent = totalProductos;
+        document.getElementById(
+          "subtotal"
+        ).textContent = `S/ ${subtotal.toFixed(2)}`;
+        document.getElementById("igv").textContent = `S/ ${igv.toFixed(2)}`;
+        document.getElementById("total").textContent = `S/ ${total.toFixed(2)}`;
+        document.getElementById("montoTotal").value = total.toFixed(2);
+      }
+
+      // Validar antes de enviar
+      document
+        .getElementById("salidaForm")
+        .addEventListener("submit", function (e) {
+          if (!validarDocumento()) {
+            e.preventDefault();
+          }
+        });
+    </script>
+  </body>
+</html>
