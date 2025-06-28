@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS diversity_inventory;
+DROP DATABASE IF EXISTS diversity_inventory_mvc;
 
-CREATE DATABASE IF NOT EXISTS diversity_inventory;
+CREATE DATABASE IF NOT EXISTS diversity_inventory_mvc;
 
 USE diversity_inventory;
 
