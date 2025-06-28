@@ -43,7 +43,7 @@ public class UsuarioRubroEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Estado", nullable = false)
-    private EstadoUsuarioRubro estado = EstadoUsuarioRubro.ACTIVO;
+    private EstadoUsuarioRubro estado = EstadoUsuarioRubro.Activo;
 
     @Column(name = "Fecha_Asignacion", nullable = false)
     private LocalDateTime fechaAsignacion = LocalDateTime.now();

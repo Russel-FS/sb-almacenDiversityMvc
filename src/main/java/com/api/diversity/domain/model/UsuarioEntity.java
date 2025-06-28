@@ -87,7 +87,7 @@ public class UsuarioEntity {
 
     public List<RubroEntity> getRubrosActivos() {
         return usuarioRubros.stream()
-                .filter(ur -> ur.getEstado() == EstadoUsuarioRubro.ACTIVO)
+                .filter(ur -> ur.getEstado() == EstadoUsuarioRubro.Activo)
                 .map(UsuarioRubroEntity::getRubro)
                 .filter(rubro -> rubro.getEstado() == com.api.diversity.domain.enums.EstadoRubro.Activo)
                 .toList();
@@ -109,7 +109,7 @@ public class UsuarioEntity {
         UsuarioRubroEntity usuarioRubro = new UsuarioRubroEntity();
         usuarioRubro.setUsuario(this);
         usuarioRubro.setRubro(rubro);
-        usuarioRubro.setEstado(EstadoUsuarioRubro.ACTIVO);
+        usuarioRubro.setEstado(EstadoUsuarioRubro.Activo);
         usuarioRubros.add(usuarioRubro);
     }
 

@@ -119,7 +119,7 @@ public class DataInitializer implements CommandLineRunner {
                     UsuarioRubroEntity usuarioRubroEntity = new UsuarioRubroEntity();
                     usuarioRubroEntity.setUsuario(usuarioEntity);
                     usuarioRubroEntity.setRubro(rubro);
-                    usuarioRubroEntity.setEstado(EstadoUsuarioRubro.ACTIVO);
+                    usuarioRubroEntity.setEstado(EstadoUsuarioRubro.Activo);
                     usuarioRubroRepository.save(usuarioRubroEntity);
                 }
 

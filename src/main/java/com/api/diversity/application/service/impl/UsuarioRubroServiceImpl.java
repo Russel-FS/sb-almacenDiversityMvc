@@ -180,7 +180,7 @@ public class UsuarioRubroServiceImpl implements IUsuarioRubroService {
             UsuarioRubroEntity entity = new UsuarioRubroEntity();
             entity.setUsuario(usuario);
             entity.setRubro(rubro);
-            entity.setEstado(EstadoUsuarioRubro.ACTIVO);
+            entity.setEstado(EstadoUsuarioRubro.Activo);
 
             usuarioRubroRepository.save(entity);
             log.info("Rubro {} asignado exitosamente al usuario {}", rubroId, usuarioId);
