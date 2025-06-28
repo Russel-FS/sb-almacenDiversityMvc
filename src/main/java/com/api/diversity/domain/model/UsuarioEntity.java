@@ -1,11 +1,15 @@
 package com.api.diversity.domain.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.api.diversity.domain.enums.EstadoRol;
 import com.api.diversity.domain.enums.EstadoUsuario;
+import com.api.diversity.domain.enums.EstadoUserRole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +21,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,10 +47,6 @@ public class UsuarioEntity {
 
     @Column(name = "Nombre_Completo", nullable = false)
     private String nombreCompleto;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Rol", nullable = false)
-    private RolEntity rol;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_Rubro", nullable = false)
@@ -74,4 +75,27 @@ public class UsuarioEntity {
     @UpdateTimestamp
     @Column(name = "Fecha_Modificacion")
     private LocalDateTime fechaModificacion;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<UserRoleEntity> userRoles = new ArrayList<>();
+
+    public List<RolEntity> getRolesActivos() {
+        return userRoles.stream()
+                .filter(ur -> ur.getEstado() == EstadoUserRole.Activo)
+                .map(UserRoleEntity::getRol)
+                .filter(rol -> rol.getEstado() == EstadoRol.Activo)
+                .toList();
+    }
+
+    public void addRole(RolEntity rol) {
+        UserRoleEntity userRole = new UserRoleEntity();
+        userRole.setUsuario(this);
+        userRole.setRol(rol);
+        userRole.setEstado(EstadoUserRole.Activo);
+        userRoles.add(userRole);
+    }
+
+    public void removeRole(RolEntity rol) {
+        userRoles.removeIf(ur -> ur.getRol().getIdRol().equals(rol.getIdRol()));
+    }
 }
