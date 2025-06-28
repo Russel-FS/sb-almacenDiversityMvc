@@ -342,6 +342,50 @@
     <script>
       let productoIndex = 1;
 
+      // Validación de fecha de entrada
+      document
+        .querySelector('input[name="fechaEntrada"]')
+        .addEventListener("change", function () {
+          const fechaEntrada = new Date(this.value);
+          const fechaActual = new Date();
+          const fechaLimite = new Date();
+          fechaLimite.setDate(fechaLimite.getDate() - 30); // 30 días atrás
+
+          // Resetear estilos
+          this.classList.remove("border-red-500", "border-green-500");
+
+          if (fechaEntrada > fechaActual) {
+            this.classList.add("border-red-500");
+            mostrarError("La fecha de entrada no puede ser futura");
+          } else if (fechaEntrada < fechaLimite) {
+            this.classList.add("border-red-500");
+            mostrarError("La fecha de entrada no puede ser anterior a 30 días");
+          } else {
+            this.classList.add("border-green-500");
+            ocultarError();
+          }
+        });
+
+      function mostrarError(mensaje) {
+        let errorDiv = document.getElementById("fechaError");
+        if (!errorDiv) {
+          errorDiv = document.createElement("div");
+          errorDiv.id = "fechaError";
+          errorDiv.className = "text-red-500 text-sm mt-1";
+          document
+            .querySelector('input[name="fechaEntrada"]')
+            .parentNode.appendChild(errorDiv);
+        }
+        errorDiv.textContent = mensaje;
+      }
+
+      function ocultarError() {
+        const errorDiv = document.getElementById("fechaError");
+        if (errorDiv) {
+          errorDiv.remove();
+        }
+      }
+
       document
         .getElementById("agregarProducto")
         .addEventListener("click", function () {

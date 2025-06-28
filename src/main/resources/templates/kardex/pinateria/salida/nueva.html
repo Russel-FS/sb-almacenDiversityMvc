@@ -338,6 +338,50 @@
     <script>
       let productoIndex = 1;
 
+      // Validación de fecha de salida
+      document
+        .querySelector('input[name="fechaSalida"]')
+        .addEventListener("change", function () {
+          const fechaSalida = new Date(this.value);
+          const fechaActual = new Date();
+          const fechaLimite = new Date();
+          fechaLimite.setDate(fechaLimite.getDate() - 7);
+
+          // Resetear estilos
+          this.classList.remove("border-red-500", "border-green-500");
+
+          if (fechaSalida > fechaActual) {
+            this.classList.add("border-red-500");
+            mostrarError("La fecha de salida no puede ser futura");
+          } else if (fechaSalida < fechaLimite) {
+            this.classList.add("border-red-500");
+            mostrarError("La fecha de salida no puede ser anterior a 7 días");
+          } else {
+            this.classList.add("border-green-500");
+            ocultarError();
+          }
+        });
+
+      function mostrarError(mensaje) {
+        let errorDiv = document.getElementById("fechaError");
+        if (!errorDiv) {
+          errorDiv = document.createElement("div");
+          errorDiv.id = "fechaError";
+          errorDiv.className = "text-red-500 text-sm mt-1";
+          document
+            .querySelector('input[name="fechaSalida"]')
+            .parentNode.appendChild(errorDiv);
+        }
+        errorDiv.textContent = mensaje;
+      }
+
+      function ocultarError() {
+        const errorDiv = document.getElementById("fechaError");
+        if (errorDiv) {
+          errorDiv.remove();
+        }
+      }
+
       document
         .getElementById("agregarProducto")
         .addEventListener("click", function () {

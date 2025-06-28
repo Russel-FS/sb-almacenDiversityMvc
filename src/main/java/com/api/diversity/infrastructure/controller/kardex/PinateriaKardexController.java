@@ -16,6 +16,9 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.HashMap;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.api.diversity.application.service.interfaces.IEntradaService;
 import com.api.diversity.application.service.interfaces.ISalidaService;
@@ -323,6 +326,20 @@ public class PinateriaKardexController {
         log.info("Procesando nueva entrada - Piñatería: {}", numeroFactura);
 
         try {
+            // Validar fecha de entrada
+            LocalDate fechaEntradaDate = LocalDate.parse(fechaEntrada);
+            LocalDate fechaActual = LocalDate.now();
+
+            if (fechaEntradaDate.isAfter(fechaActual)) {
+                redirectAttributes.addFlashAttribute("error", "La fecha de entrada no puede ser futura");
+                return "redirect:/pinateria/kardex/entrada/nueva";
+            }
+
+            if (fechaEntradaDate.isBefore(fechaActual.minusDays(30))) {
+                redirectAttributes.addFlashAttribute("error", "La fecha de entrada no puede ser anterior a 30 días");
+                return "redirect:/pinateria/kardex/entrada/nueva";
+            }
+
             // Si el usuario no ingresa número, se genera automáticamente
             if (numeroFactura == null || numeroFactura.trim().isEmpty()) {
                 numeroFactura = entradaService.generarNumeroDocumento(tipoDocumento);
@@ -367,6 +384,20 @@ public class PinateriaKardexController {
         log.info("Procesando nueva salida - Piñatería");
 
         try {
+            // Validar fecha de salida
+            LocalDate fechaSalidaDate = LocalDate.parse(fechaSalida);
+            LocalDate fechaActual = LocalDate.now();
+
+            if (fechaSalidaDate.isAfter(fechaActual)) {
+                redirectAttributes.addFlashAttribute("error", "La fecha de salida no puede ser futura");
+                return "redirect:/pinateria/kardex/salida/nueva";
+            }
+
+            if (fechaSalidaDate.isBefore(fechaActual.minusDays(7))) {
+                redirectAttributes.addFlashAttribute("error", "La fecha de salida no puede ser anterior a 7 días");
+                return "redirect:/pinateria/kardex/salida/nueva";
+            }
+
             // Si el usuario no ingresa número, se genera automáticamente
             if (numeroDocumento == null || numeroDocumento.trim().isEmpty()) {
                 numeroDocumento = salidaService.generarNumeroDocumento(tipoDocumento);
