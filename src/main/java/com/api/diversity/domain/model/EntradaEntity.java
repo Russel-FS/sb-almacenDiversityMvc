@@ -8,6 +8,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.api.diversity.domain.enums.EstadoEntrada;
+import com.api.diversity.domain.enums.TipoDocumento;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,8 +41,9 @@ public class EntradaEntity {
     @Column(name = "Numero_Factura", nullable = false)
     private String numeroFactura;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "Tipo_Documento", nullable = false)
-    private String tipoDocumento;
+    private TipoDocumento tipoDocumento;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_Proveedor", nullable = false)

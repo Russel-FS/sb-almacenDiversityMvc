@@ -64,7 +64,7 @@ public class SalidaMapper {
             dto.setEstadoDescripcion(entity.getEstado().name());
         }
         if (entity.getTipoDocumento() != null) {
-            dto.setTipoDocumentoDescripcion(entity.getTipoDocumento().name());
+            dto.setTipoDocumentoDescripcion(entity.getTipoDocumento().getDescripcion());
         }
 
         return dto;

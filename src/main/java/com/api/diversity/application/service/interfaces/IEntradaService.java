@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.api.diversity.application.dto.EntradaDto;
 import com.api.diversity.domain.enums.EstadoEntrada;
+import com.api.diversity.domain.enums.TipoDocumento;
 
 public interface IEntradaService {
 
@@ -41,5 +42,5 @@ public interface IEntradaService {
 
     EntradaDto anularEntrada(Long id, String motivo);
 
-    String generarNumeroFactura();
+    String generarNumeroDocumento(TipoDocumento tipoDocumento);
 }

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.api.diversity.domain.enums.EstadoEntrada;
+import com.api.diversity.domain.enums.TipoDocumento;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class EntradaDto {
 
     private Long idEntrada;
     private String numeroFactura;
-    private String tipoDocumento;
+    private TipoDocumento tipoDocumento;
     private Long proveedorId;
     private String proveedorNombre;
     private LocalDateTime fechaEntrada;

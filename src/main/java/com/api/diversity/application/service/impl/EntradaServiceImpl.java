@@ -24,6 +24,7 @@ import com.api.diversity.domain.ports.IProductoRepository;
 import com.api.diversity.domain.ports.IUsuarioRepository;
 import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.EstadoDetalleEntrada;
+import com.api.diversity.domain.enums.TipoDocumento;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -327,8 +328,28 @@ public class EntradaServiceImpl implements IEntradaService {
     }
 
     @Override
-    public String generarNumeroFactura() {
-        // Lógica para generar número de factura único
-        return "FAC-" + System.currentTimeMillis();
+    public String generarNumeroDocumento(TipoDocumento tipoDocumento) {
+        String prefijo;
+        switch (tipoDocumento) {
+            case FACTURA:
+                prefijo = "FAC";
+                break;
+            case BOLETA:
+                prefijo = "BOL";
+                break;
+            case NOTA_CREDITO:
+                prefijo = "NCR";
+                break;
+            case NOTA_DEBITO:
+                prefijo = "NDB";
+                break;
+            case GUIA_REMISION:
+                prefijo = "GUI";
+                break;
+            default:
+                prefijo = "DOC";
+                break;
+        }
+        return prefijo + "-" + System.currentTimeMillis();
     }
 }

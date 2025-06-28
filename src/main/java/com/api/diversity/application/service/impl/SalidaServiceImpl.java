@@ -349,7 +349,27 @@ public class SalidaServiceImpl implements ISalidaService {
 
     @Override
     public String generarNumeroDocumento(TipoDocumento tipoDocumento) {
-        String prefijo = tipoDocumento == TipoDocumento.Boleta ? "BOL" : "FAC";
+        String prefijo;
+        switch (tipoDocumento) {
+            case BOLETA:
+                prefijo = "BOL";
+                break;
+            case FACTURA:
+                prefijo = "FAC";
+                break;
+            case NOTA_CREDITO:
+                prefijo = "NCR";
+                break;
+            case NOTA_DEBITO:
+                prefijo = "NDB";
+                break;
+            case GUIA_REMISION:
+                prefijo = "GUI";
+                break;
+            default:
+                prefijo = "DOC";
+                break;
+        }
         return prefijo + "-" + System.currentTimeMillis();
     }
 

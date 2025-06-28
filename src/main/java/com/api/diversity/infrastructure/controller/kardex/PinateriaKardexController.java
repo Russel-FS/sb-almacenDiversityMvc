@@ -3,7 +3,10 @@ package com.api.diversity.infrastructure.controller.kardex;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +24,7 @@ import com.api.diversity.application.dto.EntradaDto;
 import com.api.diversity.application.dto.SalidaDto;
 import com.api.diversity.application.dto.ProductoDto;
 import com.api.diversity.domain.enums.TipoRubro;
+import com.api.diversity.domain.enums.TipoDocumento;
 
 @Controller
 @RequestMapping("/pinateria/kardex")
@@ -106,8 +110,7 @@ public class PinateriaKardexController {
             List<ProductoDto> productosPinateria = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
 
             // Tipos de documento disponibles
-            List<String> tiposDocumento = List.of("FACTURA", "BOLETA", "NOTA DE CRÉDITO", "NOTA DE DÉBITO",
-                    "GUÍA DE REMISIÓN");
+            List<TipoDocumento> tiposDocumento = List.of(TipoDocumento.values());
 
             // Lista de ejemplo para proveedores
             List<Map<String, Object>> proveedores = new ArrayList<>();
@@ -288,5 +291,70 @@ public class PinateriaKardexController {
         }
 
         return "kardex/pinateria/reporte/index";
+    }
+
+    /**
+     * Procesar nueva entrada para Piñatería
+     */
+    @PostMapping("/entrada/guardar")
+    public String guardarEntrada(
+            @RequestParam("numeroFactura") String numeroFactura,
+            @RequestParam("tipoDocumento") TipoDocumento tipoDocumento,
+            @RequestParam("proveedorId") Long proveedorId,
+            @RequestParam("fechaEntrada") String fechaEntrada,
+            @RequestParam("observaciones") String observaciones,
+            @RequestParam("productos") List<Map<String, Object>> productos,
+            RedirectAttributes redirectAttributes) {
+
+        log.info("Procesando nueva entrada - Piñatería: {}", numeroFactura);
+
+        try {
+            // Generar número de documento automáticamente si no se proporciona
+            String numeroDocumento = entradaService.generarNumeroDocumento(tipoDocumento);
+
+            // TODO: Implementar lógica para guardar entrada
+            // 1. Crear EntradaDto con los datos del formulario
+            // 2. Crear DetalleEntradaDto para cada producto
+            // 3. Llamar a entradaService.save()
+
+            redirectAttributes.addFlashAttribute("success",
+                    "Entrada registrada exitosamente. Número: " + numeroDocumento);
+            return "redirect:/pinateria/kardex/dashboard";
+
+        } catch (Exception e) {
+            log.error("Error al guardar entrada: {}", e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error al guardar la entrada: " + e.getMessage());
+            return "redirect:/pinateria/kardex/entrada/nueva";
+        }
+    }
+
+    /**
+     * Procesar nueva salida para Piñatería
+     */
+    @PostMapping("/salida/guardar")
+    public String guardarSalida(
+            @RequestParam("tipoDocumento") TipoDocumento tipoDocumento,
+            @RequestParam("clienteId") Long clienteId,
+            @RequestParam("fechaSalida") String fechaSalida,
+            @RequestParam("motivoSalida") String motivoSalida,
+            @RequestParam("observaciones") String observaciones,
+            @RequestParam("productos") List<Map<String, Object>> productos,
+            RedirectAttributes redirectAttributes) {
+
+        log.info("Procesando nueva salida - Piñatería");
+
+        try {
+            // Generar número de documento automáticamente
+            String numeroDocumento = salidaService.generarNumeroDocumento(tipoDocumento);
+
+            redirectAttributes.addFlashAttribute("success",
+                    "Salida registrada exitosamente. Número: " + numeroDocumento);
+            return "redirect:/pinateria/kardex/dashboard";
+
+        } catch (Exception e) {
+            log.error("Error al guardar salida: {}", e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error al guardar la salida: " + e.getMessage());
+            return "redirect:/pinateria/kardex/salida/nueva";
+        }
     }
 }

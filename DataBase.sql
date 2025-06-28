@@ -183,9 +183,9 @@ CREATE TABLE Entradas (
     Tipo_Documento ENUM(
         'FACTURA',
         'BOLETA',
-        'NOTA DE CRÉDITO',
-        'NOTA DE DÉBITO',
-        'GUÍA DE REMISIÓN'
+        'NOTA_CREDITO',
+        'NOTA_DEBITO',
+        'GUIA_REMISION'
     ) NOT NULL,
     ID_Proveedor BIGINT NOT NULL,
     Fecha_Entrada DATETIME DEFAULT CURRENT_TIMESTAMP,
