@@ -19,8 +19,6 @@ public interface IClienteJpaRepository extends JpaRepository<ClienteEntity, Long
 
     List<ClienteEntity> findByTipoCliente(TipoCliente tipoCliente);
 
-    Optional<ClienteEntity> findByNumeroDocumento(String numeroDocumento);
-
     List<ClienteEntity> findByNombreCompletoContainingIgnoreCase(String nombreCompleto);
 
     List<ClienteEntity> findByEmailContainingIgnoreCase(String email);
@@ -39,4 +37,6 @@ public interface IClienteJpaRepository extends JpaRepository<ClienteEntity, Long
     boolean existsByDni(String dni);
 
     boolean existsByEmail(String email);
+
+    Optional<ClienteEntity> findByDni(String dni);
 }

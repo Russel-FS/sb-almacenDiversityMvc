@@ -40,7 +40,7 @@ public class ClienteRepositoryImpl implements IClienteRepository {
 
     @Override
     public Optional<ClienteEntity> findByDni(String dni) {
-        return clienteJpaRepository.findByNumeroDocumento(dni);
+        return clienteJpaRepository.findByDni(dni);
     }
 
     @Override
