@@ -33,7 +33,6 @@
             <div
               class="relative bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl ring-1 ring-gray-900/5"
             >
-              <!-- Barra lateral decorativa -->
               <div
                 class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-gray-900 to-gray-700 rounded-l-2xl"
               ></div>
@@ -58,7 +57,7 @@
                             clip-rule="evenodd"
                           />
                         </svg>
-                        <!-- Error Icon -->
+                        <!-- icono de errorn -->
                         <svg
                           th:if="${tipoMensaje == 'error'}"
                           class="h-5 w-5 text-red-400"
@@ -145,7 +144,8 @@
                       </p>
                     </div>
                   </div>
-                </div>                  <form
+                </div>
+                <form
                   th:action="@{/camaras/productos/guardar}"
                   th:object="${producto}"
                   method="post"
@@ -156,7 +156,6 @@
                   <input type="hidden" th:field="*{urlImagen}" />
                   <input type="hidden" th:field="*{publicId}" />
 
-                  <!-- Código y Nombre en dos columnas -->
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Código de Producto -->
                     <div class="relative">
@@ -278,7 +277,7 @@
                         </svg>
                         Descripción
                       </label>
-                      <!-- Textarea para descripción -->
+                      <!--  descripción -->
                       <div class="relative group">
                         <div
                           class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -550,9 +549,9 @@
                               d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                             />
                           </svg>
-                          Stock Máximo
+                          Stock Maximo
                         </label>
-                        <!-- Input para stock máximo -->
+                        <!-- Inputt para stock máximo -->
                         <div class="relative group">
                           <div
                             class="absolute -inset-0.5 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg opacity-0 group-hover:opacity-10 transition duration-300"
@@ -628,9 +627,10 @@
                       class="absolute inset-0 bg-gradient-to-b from-transparent via-gray-50/50 to-gray-50/80 backdrop-blur-sm"
                     ></div>
                     <div class="relative flex items-center justify-between">
+                      <!-- Botón de volver -->
                       <a
-                        th:href="@{/productos}"
-                        class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200"
+                        th:href="@{/camaras/productos}"
+                        class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 border border-transparent rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
                       >
                         <svg
                           class="w-4 h-4 mr-2"
@@ -642,7 +642,7 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                            d="M11 17l-5-5m0 0l5-5m-5 5h12"
                           />
                         </svg>
                         Volver
@@ -668,26 +668,6 @@
                           </svg>
                           Guardar
                         </button>
-                        <!-- Botón de volver -->
-                        <a
-                          th:href="@{/camaras/productos}"
-                          class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 border border-transparent rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200"
-                        >
-                          <svg
-                            class="w-4 h-4 mr-2"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M11 17l-5-5m0 0l5-5m-5 5h12"
-                            />
-                          </svg>
-                          Volver
-                        </a>
                       </div>
                     </div>
                   </div>

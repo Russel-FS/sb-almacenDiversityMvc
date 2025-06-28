@@ -29,23 +29,21 @@
           </div>
 
           <div class="relative max-w-4xl mx-auto px-4 py-16">
-            <!-- Panel principal -->
             <div
               class="relative bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl ring-1 ring-gray-900/5"
             >
-              <!-- Barra lateral decorativa -->
               <div
                 class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-gray-900 to-gray-700 rounded-l-2xl"
               ></div>
               <div class="p-8 sm:p-10">
-                <!-- Message Alert -->
+                <!-- mensaje de alertaa -->
                 <div th:if="${mensaje != null}" id="mensajeAlert" class="mb-6">
                   <div
                     th:class="${tipoMensaje == 'error' ? 'rounded-lg bg-red-50 p-4' : 'rounded-lg bg-green-50 p-4'}"
                   >
                     <div class="flex">
                       <div class="flex-shrink-0">
-                        <!-- Success Icon -->
+                        <!-- icono de exito -->
                         <svg
                           th:if="${tipoMensaje != 'error'}"
                           class="h-5 w-5 text-green-400"
@@ -58,7 +56,7 @@
                             clip-rule="evenodd"
                           />
                         </svg>
-                        <!-- Error Icon -->
+                        <!-- icono de error -->
                         <svg
                           th:if="${tipoMensaje == 'error'}"
                           class="h-5 w-5 text-red-400"

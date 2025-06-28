@@ -11,7 +11,6 @@
         <div
           class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50"
         >
-          <!-- Elementoss de fondo decorativos -->
           <div class="absolute inset-0 overflow-hidden">
             <div
               class="absolute -top-[40%] -right-[10%] w-[800px] h-[800px] opacity-[0.15]"
@@ -36,13 +35,11 @@
             <div
               class="relative bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl ring-1 ring-gray-900/5"
             >
-              <!-- Barra lateral decorativa -->
               <div
                 class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-gray-900 to-gray-700 rounded-l-2xl"
               ></div>
 
               <div class="p-8">
-                <!-- Encabezado con estadísticas -->
                 <div class="mb-8">
                   <div class="flex items-center justify-between mb-6">
                     <div class="flex items-start gap-4">
@@ -76,7 +73,8 @@
                           Administra tu catálogo de productos
                         </p>
                       </div>
-                    </div>                    <a
+                    </div>
+                    <a
                       th:href="@{/libreria/productos/nuevo}"
                       class="relative inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-gray-900 rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 active:scale-[0.98]"
                     >
@@ -268,12 +266,18 @@
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">
-                              S/ <span th:text="${#numbers.formatDecimal(producto.precioCompra, 1, 2, 'POINT')}"></span>
+                              S/
+                              <span
+                                th:text="${#numbers.formatDecimal(producto.precioCompra, 1, 2, 'POINT')}"
+                              ></span>
                             </div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">
-                              S/ <span th:text="${#numbers.formatDecimal(producto.precioVenta, 1, 2, 'POINT')}"></span>
+                              S/
+                              <span
+                                th:text="${#numbers.formatDecimal(producto.precioVenta, 1, 2, 'POINT')}"
+                              ></span>
                             </div>
                           </td>
                           <td class="px-6 py-4 whitespace-nowrap">
@@ -312,7 +316,8 @@
                           <td
                             class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                           >
-                            <div class="flex items-center gap-2">                              <a
+                            <div class="flex items-center gap-2">
+                              <a
                                 th:href="@{/libreria/productos/editar/{id}(id=${producto.idProducto})}"
                                 class="inline-flex items-center px-3 py-1.5 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors group-hover:shadow-sm"
                               >
@@ -330,7 +335,8 @@
                                   />
                                 </svg>
                                 Editar
-                              </a>                              <a
+                              </a>
+                              <a
                                 th:href="@{/libreria/productos/eliminar/{id}(id=${producto.idProducto})}"
                                 class="inline-flex items-center px-3 py-1.5 rounded-lg text-red-700 bg-red-50 hover:bg-red-100 transition-colors group-hover:shadow-sm"
                                 onclick="return confirm('¿Está seguro de eliminar este producto?')"
