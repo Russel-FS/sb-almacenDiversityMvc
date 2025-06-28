@@ -14,6 +14,9 @@ import lombok.Data;
 @Service
 public class CloudinaryService {
 
+    private final String rootFolder = "diversity";
+    private final String subFolder = "images";
+
     @Data
     public static class CloudinaryResponse {
         private final String url;
@@ -30,8 +33,9 @@ public class CloudinaryService {
     @SuppressWarnings("unchecked")
     public CloudinaryResponse uploadFile(MultipartFile file, String folder) {
         try {
+            String fullFolderPath = rootFolder + "/" + subFolder + "/" + folder;
             Map<String, Object> params = Map.of(
-                    "folder", folder,
+                    "folder", fullFolderPath,
                     "resource_type", "auto");
             Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), params);
             return new CloudinaryResponse(

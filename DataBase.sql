@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS diversity_inventory_mvc;
 
 CREATE DATABASE IF NOT EXISTS diversity_inventory_mvc;
 
-USE diversity_inventory;
+USE diversity_inventory_mvc;
 
 -- Tabla de Roles
 CREATE TABLE Roles (
