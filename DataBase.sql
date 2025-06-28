@@ -34,7 +34,6 @@ CREATE TABLE Usuarios (
     Nombre_Usuario VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL,
     Nombre_Completo VARCHAR(100) NOT NULL,
-    ID_Rubro BIGINT NOT NULL,
     Contraseña VARCHAR(255) NOT NULL,
     UrlImagen VARCHAR(255),
     PublicId VARCHAR(100),
@@ -46,7 +45,6 @@ CREATE TABLE Usuarios (
     Ultimo_Acceso DATETIME,
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro),
     CONSTRAINT UQ_Usuario_Nombre UNIQUE (Nombre_Usuario),
     CONSTRAINT UQ_Usuario_Email UNIQUE (Email)
 );
