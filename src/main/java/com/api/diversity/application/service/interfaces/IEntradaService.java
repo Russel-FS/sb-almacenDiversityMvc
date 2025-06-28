@@ -43,4 +43,6 @@ public interface IEntradaService {
     EntradaDto anularEntrada(Long id, String motivo);
 
     String generarNumeroDocumento(TipoDocumento tipoDocumento);
+
+    boolean existsByNumeroFactura(String numeroFactura);
 }

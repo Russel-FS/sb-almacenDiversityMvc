@@ -352,4 +352,15 @@ public class EntradaServiceImpl implements IEntradaService {
         }
         return prefijo + "-" + System.currentTimeMillis();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByNumeroFactura(String numeroFactura) {
+        try {
+            return entradaRepository.existsByNumeroFactura(numeroFactura);
+        } catch (Exception e) {
+            log.error("Error al verificar existencia de número de factura: {}", e.getMessage(), e);
+            return false;
+        }
+    }
 }

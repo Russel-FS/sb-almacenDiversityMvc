@@ -82,4 +82,9 @@ public class EntradaRepositoryImpl implements IEntradaRepository {
     public Long countByFechaEntradaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         return entradaJpaRepository.countByFechaEntradaBetween(fechaInicio, fechaFin);
     }
+
+    @Override
+    public boolean existsByNumeroFactura(String numeroFactura) {
+        return entradaJpaRepository.existsByNumeroFactura(numeroFactura);
+    }
 }

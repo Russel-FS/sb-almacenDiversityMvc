@@ -298,7 +298,7 @@ public class PinateriaKardexController {
      */
     @PostMapping("/entrada/guardar")
     public String guardarEntrada(
-            @RequestParam("numeroFactura") String numeroFactura,
+            @RequestParam(value = "numeroFactura", required = false) String numeroFactura,
             @RequestParam("tipoDocumento") TipoDocumento tipoDocumento,
             @RequestParam("proveedorId") Long proveedorId,
             @RequestParam("fechaEntrada") String fechaEntrada,
@@ -309,8 +309,16 @@ public class PinateriaKardexController {
         log.info("Procesando nueva entrada - Piñatería: {}", numeroFactura);
 
         try {
-            // Generar número de documento automáticamente si no se proporciona
-            String numeroDocumento = entradaService.generarNumeroDocumento(tipoDocumento);
+            // Si el usuario no ingresa número, se genera automáticamente
+            if (numeroFactura == null || numeroFactura.trim().isEmpty()) {
+                numeroFactura = entradaService.generarNumeroDocumento(tipoDocumento);
+            } else {
+                // Validar que no exista
+                if (entradaService.existsByNumeroFactura(numeroFactura)) {
+                    redirectAttributes.addFlashAttribute("error", "El número de factura/documento ya existe");
+                    return "redirect:/pinateria/kardex/entrada/nueva";
+                }
+            }
 
             // TODO: Implementar lógica para guardar entrada
             // 1. Crear EntradaDto con los datos del formulario
@@ -318,7 +326,7 @@ public class PinateriaKardexController {
             // 3. Llamar a entradaService.save()
 
             redirectAttributes.addFlashAttribute("success",
-                    "Entrada registrada exitosamente. Número: " + numeroDocumento);
+                    "Entrada registrada exitosamente. Número: " + numeroFactura);
             return "redirect:/pinateria/kardex/dashboard";
 
         } catch (Exception e) {
@@ -333,6 +341,7 @@ public class PinateriaKardexController {
      */
     @PostMapping("/salida/guardar")
     public String guardarSalida(
+            @RequestParam(value = "numeroDocumento", required = false) String numeroDocumento,
             @RequestParam("tipoDocumento") TipoDocumento tipoDocumento,
             @RequestParam("clienteId") Long clienteId,
             @RequestParam("fechaSalida") String fechaSalida,
@@ -344,8 +353,21 @@ public class PinateriaKardexController {
         log.info("Procesando nueva salida - Piñatería");
 
         try {
-            // Generar número de documento automáticamente
-            String numeroDocumento = salidaService.generarNumeroDocumento(tipoDocumento);
+            // Si el usuario no ingresa número, se genera automáticamente
+            if (numeroDocumento == null || numeroDocumento.trim().isEmpty()) {
+                numeroDocumento = salidaService.generarNumeroDocumento(tipoDocumento);
+            } else {
+                // Validar que no exista
+                if (salidaService.existsByNumeroDocumento(numeroDocumento)) {
+                    redirectAttributes.addFlashAttribute("error", "El número de documento ya existe");
+                    return "redirect:/pinateria/kardex/salida/nueva";
+                }
+            }
+
+            // TODO: Implementar lógica para guardar salida
+            // 1. Crear SalidaDto con los datos del formulario
+            // 2. Crear DetalleSalidaDto para cada producto
+            // 3. Llamar a salidaService.save()
 
             redirectAttributes.addFlashAttribute("success",
                     "Salida registrada exitosamente. Número: " + numeroDocumento);

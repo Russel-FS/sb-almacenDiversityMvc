@@ -30,4 +30,6 @@ public interface ISalidaJpaRepository extends JpaRepository<SalidaEntity, Long> 
     Long countByEstado(EstadoSalida estado);
 
     Long countByFechaSalidaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+
+    boolean existsByNumeroDocumento(String numeroDocumento);
 }

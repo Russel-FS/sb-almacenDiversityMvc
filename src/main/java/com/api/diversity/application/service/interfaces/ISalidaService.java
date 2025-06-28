@@ -44,5 +44,7 @@ public interface ISalidaService {
 
     String generarNumeroDocumento(TipoDocumento tipoDocumento);
 
+    boolean existsByNumeroDocumento(String numeroDocumento);
+
     boolean validarStockDisponible(Long productoId, Integer cantidad);
 }

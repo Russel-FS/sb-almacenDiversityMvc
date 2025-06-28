@@ -386,4 +386,15 @@ public class SalidaServiceImpl implements ISalidaService {
             return false;
         }
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByNumeroDocumento(String numeroDocumento) {
+        try {
+            return salidaRepository.existsByNumeroDocumento(numeroDocumento);
+        } catch (Exception e) {
+            log.error("Error al verificar existencia de número de documento: {}", e.getMessage(), e);
+            return false;
+        }
+    }
 }

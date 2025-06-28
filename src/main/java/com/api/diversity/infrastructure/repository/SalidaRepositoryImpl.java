@@ -82,4 +82,9 @@ public class SalidaRepositoryImpl implements ISalidaRepository {
     public Long countByFechaSalidaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         return salidaJpaRepository.countByFechaSalidaBetween(fechaInicio, fechaFin);
     }
+
+    @Override
+    public boolean existsByNumeroDocumento(String numeroDocumento) {
+        return salidaJpaRepository.existsByNumeroDocumento(numeroDocumento);
+    }
 }

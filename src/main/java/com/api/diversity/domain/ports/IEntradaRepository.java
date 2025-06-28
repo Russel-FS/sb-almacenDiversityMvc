@@ -34,4 +34,6 @@ public interface IEntradaRepository {
     Long countByEstado(EstadoEntrada estado);
 
     Long countByFechaEntradaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+
+    boolean existsByNumeroFactura(String numeroFactura);
 }
