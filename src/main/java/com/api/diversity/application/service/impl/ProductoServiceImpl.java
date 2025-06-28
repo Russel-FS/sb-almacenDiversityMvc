@@ -66,9 +66,12 @@ public class ProductoServiceImpl implements IProductoService {
     @Transactional
     public ProductoDto save(ProductoDto producto, MultipartFile imagen) {
 
-        // validacion de codigo de producto duplicado
-        if (productoRepository.existsByCodigoProducto(producto.getCodigoProducto())) {
-            throw new EntityExistsException("El código del producto ya existe");
+        // se valida si es un registro de creacion
+        if (producto.getIdProducto() == null) {
+            // validacion de codigo de producto duplicado
+            if (productoRepository.existsByCodigoProducto(producto.getCodigoProducto())) {
+                throw new EntityExistsException("El código del producto ya existe");
+            }
         }
 
         // validar si el producto ya existe y asignar la imagen existente si es una
@@ -97,6 +100,13 @@ public class ProductoServiceImpl implements IProductoService {
         }
         producto.setEstado(EstadoProducto.Activo);
         ProductoEntity entity = productoMapper.toEntity(producto);
+
+        // valores por defecto si es una actualizacion
+        if (producto.getIdProducto() != null) {
+            entity.setCreatedBy(productoRepository.findById(producto.getIdProducto())
+                    .orElseThrow(() -> new RuntimeException("Hubo un error al obtener el producto"))
+                    .getCreatedBy());
+        }
         ProductoEntity savedEntity = productoRepository.save(entity);
         return productoMapper.toModel(savedEntity);
     }
