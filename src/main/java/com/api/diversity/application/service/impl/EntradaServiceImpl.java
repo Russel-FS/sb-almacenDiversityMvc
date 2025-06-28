@@ -93,6 +93,16 @@ public class EntradaServiceImpl implements IEntradaService {
 
                     // Guardar detalle
                     detalleEntradaRepository.save(detalle);
+
+                    // Actualizar stock del producto
+                    producto.setStockActual(producto.getStockActual() + detalle.getCantidad());
+                    productoRepository.save(producto);
+
+                    log.info("Stock actualizado para producto {}: {} + {} = {}",
+                            producto.getNombreProducto(),
+                            producto.getStockActual() - detalle.getCantidad(),
+                            detalle.getCantidad(),
+                            producto.getStockActual());
                 }
             }
 
@@ -294,14 +304,15 @@ public class EntradaServiceImpl implements IEntradaService {
             entrada.setUsuarioAprobacion(usuarioAprobacion);
             entrada.setFechaAprobacion(LocalDateTime.now());
 
-            // Actualizar stock de productos
-            if (entrada.getDetalles() != null) {
-                for (DetalleEntradaEntity detalle : entrada.getDetalles()) {
-                    ProductoEntity producto = detalle.getProducto();
-                    producto.setStockActual(producto.getStockActual() + detalle.getCantidad());
-                    productoRepository.save(producto);
-                }
-            }
+            // El stock ya se actualizó al momento de guardar la entrada
+            // No es necesario actualizarlo nuevamente aquí
+            // if (entrada.getDetalles() != null) {
+            // for (DetalleEntradaEntity detalle : entrada.getDetalles()) {
+            // ProductoEntity producto = detalle.getProducto();
+            // producto.setStockActual(producto.getStockActual() + detalle.getCantidad());
+            // productoRepository.save(producto);
+            // }
+            // }
 
             return entradaMapper.toDto(entradaRepository.save(entrada));
         } catch (Exception e) {
