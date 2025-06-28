@@ -156,11 +156,23 @@ public class PinateriaKardexController {
                     .filter(p -> p.getStockActual() != null && p.getStockActual() > 0)
                     .toList();
 
+            // Tipos de documento disponibles
+            List<TipoDocumento> tiposDocumento = List.of(TipoDocumento.values());
+
+            // Lista de ejemplo para clientes
+            List<Map<String, Object>> clientes = new ArrayList<>();
+            Map<String, Object> clienteEjemplo = new HashMap<>();
+            clienteEjemplo.put("id", 1L);
+            clienteEjemplo.put("nombreCompleto", "Cliente Demo");
+            clienteEjemplo.put("dni", "12345678");
+            clientes.add(clienteEjemplo);
+
             model.addAttribute("titulo", "Nueva Salida - Piñatería");
             model.addAttribute("subtitulo", "Registrar salida de productos de Piñatería");
             model.addAttribute("rubro", "Piñatería");
             model.addAttribute("productos", productosConStock);
-            // model.addAttribute("clientes", clientes);
+            model.addAttribute("tiposDocumento", tiposDocumento);
+            model.addAttribute("clientes", clientes);
 
         } catch (Exception e) {
             log.error("Error al cargar datos para nueva salida de Piñatería: {}", e.getMessage());
@@ -169,6 +181,8 @@ public class PinateriaKardexController {
             model.addAttribute("subtitulo", "Registrar salida de productos de Piñatería");
             model.addAttribute("rubro", "Piñatería");
             model.addAttribute("productos", new ArrayList<>());
+            model.addAttribute("tiposDocumento", new ArrayList<>());
+            model.addAttribute("clientes", new ArrayList<>());
             model.addAttribute("error", "Error al cargar los datos. Por favor, intente nuevamente.");
         }
 
