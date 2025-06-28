@@ -20,7 +20,7 @@ public interface IEntradaJpaRepository extends JpaRepository<EntradaEntity, Long
 
     List<EntradaEntity> findByProveedorIdProveedor(Long idProveedor);
 
-    List<EntradaEntity> findByUsuarioRegistroId(Long usuarioId);
+    List<EntradaEntity> findByUsuarioRegistroIdUsuario(Long idUsuario);
 
     @Query("SELECT e FROM EntradaEntity e JOIN e.detalles d JOIN d.producto p JOIN p.categoria c JOIN c.rubro r WHERE r.idRubro = :rubroId")
     List<EntradaEntity> findByRubroId(@Param("rubroId") Long rubroId);
