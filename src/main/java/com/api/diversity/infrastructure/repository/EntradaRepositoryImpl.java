@@ -45,7 +45,7 @@ public class EntradaRepositoryImpl implements IEntradaRepository {
 
     @Override
     public List<EntradaEntity> findByProveedorId(Long proveedorId) {
-        return entradaJpaRepository.findByProveedorId(proveedorId);
+        return entradaJpaRepository.findByProveedorIdProveedor(proveedorId);
     }
 
     @Override

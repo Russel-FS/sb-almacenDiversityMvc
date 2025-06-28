@@ -18,7 +18,7 @@ public interface IEntradaJpaRepository extends JpaRepository<EntradaEntity, Long
 
     List<EntradaEntity> findByFechaEntradaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
 
-    List<EntradaEntity> findByProveedorId(Long proveedorId);
+    List<EntradaEntity> findByProveedorIdProveedor(Long idProveedor);
 
     List<EntradaEntity> findByUsuarioRegistroId(Long usuarioId);
 
