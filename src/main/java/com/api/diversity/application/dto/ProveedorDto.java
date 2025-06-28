@@ -3,7 +3,6 @@ package com.api.diversity.application.dto;
 import java.time.LocalDateTime;
 
 import com.api.diversity.domain.enums.EstadoProveedor;
-import com.api.diversity.domain.enums.TipoDocumento;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +20,6 @@ public class ProveedorDto {
     private String telefono;
     private String email;
     private String representanteLegal;
-    private TipoDocumento tipoDocumento;
     private EstadoProveedor estado;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;

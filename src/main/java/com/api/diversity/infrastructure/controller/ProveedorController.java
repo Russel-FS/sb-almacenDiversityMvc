@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.api.diversity.application.dto.ProveedorDto;
 import com.api.diversity.application.service.interfaces.IProveedorService;
 import com.api.diversity.domain.enums.EstadoProveedor;
-import com.api.diversity.domain.enums.TipoDocumento;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -82,7 +81,6 @@ public class ProveedorController {
             model.addAttribute("titulo", "Nuevo Proveedor");
             model.addAttribute("subtitulo", "Registrar nuevo proveedor");
             model.addAttribute("proveedor", new ProveedorDto());
-            model.addAttribute("tiposDocumento", TipoDocumento.values());
             model.addAttribute("estados", EstadoProveedor.values());
             model.addAttribute("esNuevo", true);
 
@@ -134,7 +132,6 @@ public class ProveedorController {
             model.addAttribute("titulo", "Editar Proveedor");
             model.addAttribute("subtitulo", "Modificar datos del proveedor");
             model.addAttribute("proveedor", proveedor);
-            model.addAttribute("tiposDocumento", TipoDocumento.values());
             model.addAttribute("estados", EstadoProveedor.values());
             model.addAttribute("esNuevo", false);
 

@@ -91,8 +91,6 @@ public class ProveedorServiceImpl implements IProveedorService {
             proveedorExistente.setTelefono(proveedorDto.getTelefono());
             proveedorExistente.setDireccion(proveedorDto.getDireccion());
             proveedorExistente.setRepresentanteLegal(proveedorDto.getRepresentanteLegal());
-            proveedorExistente.setTipoDocumento(proveedorDto.getTipoDocumento());
-            // La fecha de modificación se maneja automáticamente con @UpdateTimestamp
 
             return proveedorMapper.toDto(proveedorRepository.save(proveedorExistente));
         } catch (Exception e) {
@@ -126,7 +124,6 @@ public class ProveedorServiceImpl implements IProveedorService {
                     .orElseThrow(() -> new EntityNotFoundException("Proveedor no encontrado"));
 
             proveedor.setEstado(nuevoEstado);
-            // La fecha de modificación se maneja automáticamente con @UpdateTimestamp
 
             return proveedorMapper.toDto(proveedorRepository.save(proveedor));
         } catch (Exception e) {

@@ -24,7 +24,6 @@ public class ProveedorMapper {
         dto.setTelefono(entity.getTelefono());
         dto.setEmail(entity.getEmail());
         dto.setRepresentanteLegal(entity.getRepresentanteLegal());
-        dto.setTipoDocumento(entity.getTipoDocumento());
         dto.setEstado(entity.getEstado());
         dto.setFechaCreacion(entity.getFechaCreacion());
         dto.setFechaModificacion(entity.getFechaModificacion());
@@ -50,7 +49,6 @@ public class ProveedorMapper {
         entity.setTelefono(dto.getTelefono());
         entity.setEmail(dto.getEmail());
         entity.setRepresentanteLegal(dto.getRepresentanteLegal());
-        entity.setTipoDocumento(dto.getTipoDocumento());
         entity.setEstado(dto.getEstado());
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());

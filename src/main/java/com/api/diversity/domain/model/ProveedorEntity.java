@@ -8,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.api.diversity.domain.enums.EstadoProveedor;
-import com.api.diversity.domain.enums.TipoDocumento;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,10 +52,6 @@ public class ProveedorEntity {
 
     @Column(name = "Representante_Legal")
     private String representanteLegal;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "Tipo_Documento")
-    private TipoDocumento tipoDocumento;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Estado", nullable = false)
