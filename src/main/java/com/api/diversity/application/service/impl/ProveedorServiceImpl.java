@@ -1,6 +1,5 @@
 package com.api.diversity.application.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +13,6 @@ import com.api.diversity.application.service.interfaces.IProveedorService;
 import com.api.diversity.domain.model.ProveedorEntity;
 import com.api.diversity.domain.ports.IProveedorRepository;
 import com.api.diversity.domain.enums.EstadoProveedor;
-import com.api.diversity.domain.enums.TipoDocumento;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
