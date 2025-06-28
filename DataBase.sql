@@ -50,7 +50,7 @@ CREATE TABLE Usuarios (
     CONSTRAINT UQ_Usuario_Nombre UNIQUE (Nombre_Usuario),
     CONSTRAINT UQ_Usuario_Email UNIQUE (Email)
 );
-
+-- Tabla de asignación de rubros a usuarios
 CREATE TABLE Usuario_Rubros (
     ID_Usuario_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
     ID_Usuario BIGINT NOT NULL,
