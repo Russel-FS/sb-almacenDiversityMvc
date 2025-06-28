@@ -150,7 +150,7 @@ CREATE TABLE Clientes (
     Razon_Social VARCHAR(100),
     RUC VARCHAR(11),
     DNI VARCHAR(8),
-    Direccion TEXT,
+    Direccion TEXT, 
     Telefono VARCHAR(20),
     Email VARCHAR(100),
     Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
