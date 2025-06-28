@@ -15,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.api.diversity.application.dto.ProveedorDto;
 import com.api.diversity.application.service.interfaces.IProveedorService;
 import com.api.diversity.domain.enums.EstadoProveedor;
+import com.api.diversity.infrastructure.security.SecurityContext;
+import org.springframework.security.core.GrantedAuthority;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProveedorController {
 
     private final IProveedorService proveedorService;
+    private final SecurityContext securityContext;
 
     @GetMapping("")
     public String listarProveedores(
@@ -39,14 +42,14 @@ public class ProveedorController {
             List<ProveedorDto> proveedores;
 
             if (busqueda != null && !busqueda.trim().isEmpty()) {
-                // Buscar por término general
                 proveedores = proveedorService.findByRazonSocialContainingIgnoreCase(busqueda);
             } else if (estado != null) {
-                // Filtrar por estado
                 proveedores = proveedorService.findByEstado(estado);
             } else {
-                // Obtener todos
-                proveedores = proveedorService.findAll();
+                proveedores = proveedorService.findAll()
+                        .stream()
+                        .filter(p -> p.getEstado() != EstadoProveedor.Eliminado)
+                        .toList();
             }
 
             // Estadísticas
@@ -66,6 +69,69 @@ public class ProveedorController {
 
         } catch (Exception e) {
             log.error("Error al listar proveedores: {}", e.getMessage(), e);
+            model.addAttribute("error", "Error al cargar los proveedores: " + e.getMessage());
+            model.addAttribute("proveedores", List.of());
+        }
+
+        return "proveedores/lista";
+    }
+
+    @GetMapping("/admin")
+    public String listarProveedoresAdmin(
+            @RequestParam(required = false) String busqueda,
+            @RequestParam(required = false) EstadoProveedor estado,
+            Model model) {
+
+        log.info("Listando proveedores (ADMIN) - búsqueda: {}, estado: {}", busqueda, estado);
+
+        try {
+            var user = securityContext.getCurrentUser();
+            boolean isAdmin = false;
+            if (user != null) {
+                for (GrantedAuthority auth : user.getAuthorities()) {
+                    if (auth.getAuthority().equals("ROLE_ADMIN")) {
+                        isAdmin = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!isAdmin) {
+                log.warn("Usuario no autorizado intentando acceder a vista de administrador");
+                return "redirect:/proveedores";
+            }
+
+            List<ProveedorDto> proveedores;
+
+            if (busqueda != null && !busqueda.trim().isEmpty()) {
+                proveedores = proveedorService.findByRazonSocialContainingIgnoreCase(busqueda);
+            } else if (estado != null) {
+                proveedores = proveedorService.findByEstado(estado);
+            } else {
+                // Para admin, mostrar TODOS los proveedores (incluidos eliminados)
+                proveedores = proveedorService.findAll();
+            }
+
+            // Estadísticas completas para admin
+            Long totalProveedores = proveedorService.countTotal();
+            Long proveedoresActivos = proveedorService.countByEstado(EstadoProveedor.Activo);
+            Long proveedoresInactivos = proveedorService.countByEstado(EstadoProveedor.Inactivo);
+            Long proveedoresEliminados = proveedorService.countByEstado(EstadoProveedor.Eliminado);
+
+            model.addAttribute("titulo", "Gestión de Proveedores - Administrador");
+            model.addAttribute("subtitulo", "Vista completa de todos los proveedores");
+            model.addAttribute("proveedores", proveedores);
+            model.addAttribute("totalProveedores", totalProveedores);
+            model.addAttribute("proveedoresActivos", proveedoresActivos);
+            model.addAttribute("proveedoresInactivos", proveedoresInactivos);
+            model.addAttribute("proveedoresEliminados", proveedoresEliminados);
+            model.addAttribute("estados", EstadoProveedor.values());
+            model.addAttribute("busqueda", busqueda);
+            model.addAttribute("estadoFiltro", estado);
+            model.addAttribute("isAdmin", true);
+
+        } catch (Exception e) {
+            log.error("Error al listar proveedores (ADMIN): {}", e.getMessage(), e);
             model.addAttribute("error", "Error al cargar los proveedores: " + e.getMessage());
             model.addAttribute("proveedores", List.of());
         }
