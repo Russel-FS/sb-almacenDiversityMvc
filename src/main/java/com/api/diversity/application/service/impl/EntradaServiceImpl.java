@@ -112,6 +112,7 @@ public class EntradaServiceImpl implements IEntradaService {
 
             // Actualizar campos básicos
             entradaExistente.setNumeroFactura(entradaDto.getNumeroFactura());
+            entradaExistente.setTipoDocumento(entradaDto.getTipoDocumento());
             entradaExistente.setObservaciones(entradaDto.getObservaciones());
 
             // Recalcular costo total si hay detalles

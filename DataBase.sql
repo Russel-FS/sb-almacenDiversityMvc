@@ -150,7 +150,7 @@ CREATE TABLE Clientes (
     Razon_Social VARCHAR(100),
     RUC VARCHAR(11),
     DNI VARCHAR(8),
-    Direccion TEXT, 
+    Direccion TEXT,
     Telefono VARCHAR(20),
     Email VARCHAR(100),
     Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
@@ -180,6 +180,13 @@ CREATE TABLE Clientes (
 CREATE TABLE Entradas (
     ID_Entrada BIGINT AUTO_INCREMENT PRIMARY KEY,
     Numero_Factura VARCHAR(50) NOT NULL,
+    Tipo_Documento ENUM(
+        'FACTURA',
+        'BOLETA',
+        'NOTA DE CRÉDITO',
+        'NOTA DE DÉBITO',
+        'GUÍA DE REMISIÓN'
+    ) NOT NULL,
     ID_Proveedor BIGINT NOT NULL,
     Fecha_Entrada DATETIME DEFAULT CURRENT_TIMESTAMP,
     Costo_Total DECIMAL(10, 2) NOT NULL CHECK (Costo_Total >= 0),

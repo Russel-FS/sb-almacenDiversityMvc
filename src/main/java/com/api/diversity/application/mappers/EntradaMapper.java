@@ -24,6 +24,7 @@ public class EntradaMapper {
         EntradaDto dto = new EntradaDto();
         dto.setIdEntrada(entity.getIdEntrada());
         dto.setNumeroFactura(entity.getNumeroFactura());
+        dto.setTipoDocumento(entity.getTipoDocumento());
         dto.setFechaEntrada(entity.getFechaEntrada());
         dto.setCostoTotal(entity.getCostoTotal());
         dto.setEstado(entity.getEstado());
@@ -72,6 +73,7 @@ public class EntradaMapper {
         EntradaEntity entity = new EntradaEntity();
         entity.setIdEntrada(dto.getIdEntrada());
         entity.setNumeroFactura(dto.getNumeroFactura());
+        entity.setTipoDocumento(dto.getTipoDocumento());
         entity.setFechaEntrada(dto.getFechaEntrada());
         entity.setCostoTotal(dto.getCostoTotal());
         entity.setEstado(dto.getEstado());

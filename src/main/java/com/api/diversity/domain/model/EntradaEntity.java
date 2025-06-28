@@ -40,6 +40,9 @@ public class EntradaEntity {
     @Column(name = "Numero_Factura", nullable = false)
     private String numeroFactura;
 
+    @Column(name = "Tipo_Documento", nullable = false)
+    private String tipoDocumento;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_Proveedor", nullable = false)
     private ProveedorEntity proveedor;

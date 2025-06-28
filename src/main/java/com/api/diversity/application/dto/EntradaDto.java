@@ -17,6 +17,7 @@ public class EntradaDto {
 
     private Long idEntrada;
     private String numeroFactura;
+    private String tipoDocumento;
     private Long proveedorId;
     private String proveedorNombre;
     private LocalDateTime fechaEntrada;
