@@ -135,7 +135,11 @@ CREATE TABLE Proveedores (
     Direccion TEXT,
     Telefono VARCHAR(20),
     Email VARCHAR(100),
-    Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
+    Estado ENUM(
+        'Activo',
+        'Inactivo',
+        'Eliminado'
+    ) DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT UQ_Proveedor_RUC UNIQUE (RUC),
