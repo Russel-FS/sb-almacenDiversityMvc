@@ -39,7 +39,7 @@ public class ProveedorRepositoryImpl implements IProveedorRepository {
 
     @Override
     public Optional<ProveedorEntity> findByRuc(String ruc) {
-        return proveedorJpaRepository.findByNumeroDocumento(ruc);
+        return proveedorJpaRepository.findByRuc(ruc);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ProveedorRepositoryImpl implements IProveedorRepository {
 
     @Override
     public boolean existsByRuc(String ruc) {
-        return proveedorJpaRepository.existsByNumeroDocumento(ruc);
+        return proveedorJpaRepository.existsByRuc(ruc);
     }
 
     @Override

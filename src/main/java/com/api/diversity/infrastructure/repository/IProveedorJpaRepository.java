@@ -16,7 +16,7 @@ public interface IProveedorJpaRepository extends JpaRepository<ProveedorEntity, 
 
     List<ProveedorEntity> findByEstado(EstadoProveedor estado);
 
-    Optional<ProveedorEntity> findByNumeroDocumento(String numeroDocumento);
+    Optional<ProveedorEntity> findByRuc(String ruc);
 
     List<ProveedorEntity> findByRazonSocialContainingIgnoreCase(String razonSocial);
 
@@ -33,7 +33,7 @@ public interface IProveedorJpaRepository extends JpaRepository<ProveedorEntity, 
 
     Long countByEstado(EstadoProveedor estado);
 
-    boolean existsByNumeroDocumento(String numeroDocumento);
+    boolean existsByRuc(String ruc);
 
     boolean existsByEmail(String email);
 }
