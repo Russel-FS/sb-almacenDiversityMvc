@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -15,24 +14,28 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.HashMap;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.api.diversity.application.service.interfaces.IEntradaService;
 import com.api.diversity.application.service.interfaces.ISalidaService;
 import com.api.diversity.application.service.interfaces.IProductoService;
 import com.api.diversity.application.service.interfaces.IProveedorService;
+import com.api.diversity.application.service.interfaces.IClienteService;
 import com.api.diversity.application.dto.EntradaDto;
 import com.api.diversity.application.dto.SalidaDto;
 import com.api.diversity.application.dto.ProductoDto;
 import com.api.diversity.application.dto.ProveedorDto;
+import com.api.diversity.application.dto.ClienteDto;
 import com.api.diversity.application.dto.EntradaFormDto;
+import com.api.diversity.application.dto.SalidaFormDto;
+import com.api.diversity.application.dto.DetalleEntradaDto;
+import com.api.diversity.application.dto.DetalleSalidaDto;
 import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.enums.TipoDocumento;
 import com.api.diversity.domain.enums.EstadoProveedor;
+import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.infrastructure.security.SecurityContext;
-import com.api.diversity.application.dto.DetalleEntradaDto;
 
 @Controller
 @RequestMapping("/pinateria/kardex")
@@ -44,6 +47,7 @@ public class PinateriaKardexController {
     private final ISalidaService salidaService;
     private final IProductoService productoService;
     private final IProveedorService proveedorService;
+    private final IClienteService clienteService;
     private final SecurityContext securityContext;
 
     /**
@@ -152,46 +156,31 @@ public class PinateriaKardexController {
      */
     @GetMapping("/salida/nueva")
     public String nuevaSalida(Model model) {
-        log.info("Accediendo al formulario de nueva salida - Piñatería");
-
         try {
-            // Cargar productos de Piñatería con stock
-            List<ProductoDto> productosPinateria = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
-            List<ProductoDto> productosConStock = productosPinateria.stream()
-                    .filter(p -> p.getStockActual() != null && p.getStockActual() > 0)
-                    .toList();
+            log.info("Cargando formulario de nueva salida para Piñatería");
 
-            // Tipos de documento disponibles
-            List<TipoDocumento> tiposDocumento = List.of(TipoDocumento.values());
+            // Obtener productos activos de Piñatería
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+            log.info("Productos encontrados: {}", productos.size());
 
-            // Lista de ejemplo para clientes
-            List<Map<String, Object>> clientes = new ArrayList<>();
-            Map<String, Object> clienteEjemplo = new HashMap<>();
-            clienteEjemplo.put("id", 1L);
-            clienteEjemplo.put("nombreCompleto", "Cliente Demo");
-            clienteEjemplo.put("dni", "12345678");
-            clientes.add(clienteEjemplo);
+            // Obtener clientes activos
+            List<ClienteDto> clientes = clienteService.findByEstado(EstadoCliente.Activo);
+            log.info("Clientes activos encontrados: {}", clientes.size());
 
-            model.addAttribute("titulo", "Nueva Salida - Piñatería");
-            model.addAttribute("subtitulo", "Registrar salida de productos de Piñatería");
-            model.addAttribute("rubro", "Piñatería");
-            model.addAttribute("productos", productosConStock);
-            model.addAttribute("tiposDocumento", tiposDocumento);
+            // Generar número de documento
+            String numeroDocumento = salidaService.generarNumeroDocumento(TipoDocumento.BOLETA);
+
+            model.addAttribute("productos", productos);
             model.addAttribute("clientes", clientes);
+            model.addAttribute("numeroDocumento", numeroDocumento);
+            model.addAttribute("tiposDocumento", TipoDocumento.values());
 
+            return "kardex/pinateria/salida/nueva";
         } catch (Exception e) {
-            log.error("Error al cargar datos para nueva salida de Piñatería: {}", e.getMessage());
-
-            model.addAttribute("titulo", "Nueva Salida - Piñatería");
-            model.addAttribute("subtitulo", "Registrar salida de productos de Piñatería");
-            model.addAttribute("rubro", "Piñatería");
-            model.addAttribute("productos", new ArrayList<>());
-            model.addAttribute("tiposDocumento", new ArrayList<>());
-            model.addAttribute("clientes", new ArrayList<>());
-            model.addAttribute("error", "Error al cargar los datos. Por favor, intente nuevamente.");
+            log.error("Error al cargar formulario de nueva salida: {}", e.getMessage(), e);
+            model.addAttribute("error", "Error al cargar el formulario: " + e.getMessage());
+            return "redirect:/pinateria/kardex/dashboard";
         }
-
-        return "kardex/pinateria/salida/nueva";
     }
 
     /**
@@ -417,57 +406,56 @@ public class PinateriaKardexController {
      * Procesar nueva salida para Piñatería
      */
     @PostMapping("/salida/guardar")
-    public String guardarSalida(
-            @RequestParam(value = "numeroDocumento", required = false) String numeroDocumento,
-            @RequestParam("tipoDocumento") TipoDocumento tipoDocumento,
-            @RequestParam("clienteId") Long clienteId,
-            @RequestParam("fechaSalida") String fechaSalida,
-            @RequestParam("motivoSalida") String motivoSalida,
-            @RequestParam("observaciones") String observaciones,
-            @RequestParam("productos") List<Map<String, Object>> productos,
+    public String guardarSalida(@ModelAttribute SalidaFormDto salidaForm,
             RedirectAttributes redirectAttributes) {
-
-        log.info("Procesando nueva salida - Piñatería");
-
         try {
-            // Validar fecha de salida
-            LocalDate fechaSalidaDate = LocalDate.parse(fechaSalida);
-            LocalDate fechaActual = LocalDate.now();
+            log.info("Salida a procesar: {}", salidaForm);
+            log.info("Productos: {}", salidaForm.getProductos());
 
-            if (fechaSalidaDate.isAfter(fechaActual)) {
-                redirectAttributes.addFlashAttribute("error", "La fecha de salida no puede ser futura");
+            // Obtener usuario actual
+            Long usuarioId = securityContext.getCurrentUserId();
+            if (usuarioId == null) {
+                redirectAttributes.addFlashAttribute("error", "Usuario no autenticado");
                 return "redirect:/pinateria/kardex/salida/nueva";
             }
 
-            if (fechaSalidaDate.isBefore(fechaActual.minusDays(7))) {
-                redirectAttributes.addFlashAttribute("error", "La fecha de salida no puede ser anterior a 7 días");
-                return "redirect:/pinateria/kardex/salida/nueva";
-            }
+            // Crear SalidaDto
+            SalidaDto salidaDto = new SalidaDto();
+            salidaDto.setNumeroDocumento(salidaForm.getNumeroDocumento());
+            salidaDto.setTipoDocumento(salidaForm.getTipoDocumento());
+            salidaDto.setClienteId(salidaForm.getClienteId());
+            salidaDto.setFechaSalida(LocalDateTime.now());
+            salidaDto.setMotivoSalida(salidaForm.getMotivoSalida());
+            salidaDto.setObservaciones(salidaForm.getObservaciones());
+            salidaDto.setUsuarioRegistroId(usuarioId);
 
-            // Si el usuario no ingresa número, se genera automáticamente
-            if (numeroDocumento == null || numeroDocumento.trim().isEmpty()) {
-                numeroDocumento = salidaService.generarNumeroDocumento(tipoDocumento);
-            } else {
-                // Validar que no exista
-                if (salidaService.existsByNumeroDocumento(numeroDocumento)) {
-                    redirectAttributes.addFlashAttribute("error", "El número de documento ya existe");
-                    return "redirect:/pinateria/kardex/salida/nueva";
+            // Convertir productos del formulario a DetalleSalidaDto
+            List<DetalleSalidaDto> detalles = new ArrayList<>();
+            if (salidaForm.getProductos() != null) {
+                for (SalidaFormDto.ProductoFormDto productoForm : salidaForm.getProductos()) {
+                    DetalleSalidaDto detalle = new DetalleSalidaDto();
+                    detalle.setProductoId(productoForm.getProductoId());
+                    detalle.setCantidad(productoForm.getCantidad());
+                    detalle.setPrecioUnitario(productoForm.getPrecioUnitario());
+                    detalle.setSubtotal(productoForm.getSubtotal());
+                    detalles.add(detalle);
                 }
             }
+            salidaDto.setDetalles(detalles);
 
-            // TODO: Implementar lógica para guardar salida
-            // 1. Crear SalidaDto con los datos del formulario
-            // 2. Crear DetalleSalidaDto para cada producto
-            // 3. Llamar a salidaService.save()
+            // Guardar salida
+            SalidaDto salidaGuardada = salidaService.save(salidaDto);
+            log.info("Salida guardada exitosamente: {}", salidaGuardada.getIdSalida());
 
             redirectAttributes.addFlashAttribute("success",
-                    "Salida registrada exitosamente. Número: " + numeroDocumento);
-            return "redirect:/pinateria/kardex/dashboard";
+                    "Salida registrada exitosamente con número: " + salidaForm.getNumeroDocumento());
 
         } catch (Exception e) {
-            log.error("Error al guardar salida: {}", e.getMessage());
-            redirectAttributes.addFlashAttribute("error", "Error al guardar la salida: " + e.getMessage());
-            return "redirect:/pinateria/kardex/salida/nueva";
+            log.error("Error al guardar salida: {}", e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("error",
+                    "Error al guardar la salida: " + e.getMessage());
         }
+
+        return "redirect:/pinateria/kardex/dashboard";
     }
 }

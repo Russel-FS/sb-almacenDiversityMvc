@@ -22,6 +22,7 @@ import com.api.diversity.domain.ports.ISalidaRepository;
 import com.api.diversity.domain.ports.IClienteRepository;
 import com.api.diversity.domain.ports.IProductoRepository;
 import com.api.diversity.domain.ports.IUsuarioRepository;
+import com.api.diversity.domain.ports.IDetalleSalidaRepository;
 import com.api.diversity.domain.enums.EstadoSalida;
 import com.api.diversity.domain.enums.EstadoDetalleSalida;
 import com.api.diversity.domain.enums.TipoDocumento;
@@ -39,6 +40,7 @@ public class SalidaServiceImpl implements ISalidaService {
     private final IClienteRepository clienteRepository;
     private final IProductoRepository productoRepository;
     private final IUsuarioRepository usuarioRepository;
+    private final IDetalleSalidaRepository detalleSalidaRepository;
     private final SalidaMapper salidaMapper;
     private final DetalleSalidaMapper detalleSalidaMapper;
 
@@ -88,6 +90,7 @@ public class SalidaServiceImpl implements ISalidaService {
                     DetalleSalidaEntity detalle = detalleSalidaMapper.toEntity(detalleDto);
                     detalle.setSalida(salida);
                     detalle.setEstado(EstadoDetalleSalida.Activo);
+                    detalle.setUsuarioRegistro(usuarioRegistro);
 
                     // Validar producto
                     ProductoEntity producto = productoRepository.findById(detalleDto.getProductoId())
@@ -97,6 +100,19 @@ public class SalidaServiceImpl implements ISalidaService {
                     // Calcular subtotal
                     detalle.setSubtotal(
                             detalle.getPrecioUnitario().multiply(BigDecimal.valueOf(detalle.getCantidad())));
+
+                    // Guardar detalle
+                    detalleSalidaRepository.save(detalle);
+
+                    // Actualizar stock del producto
+                    producto.setStockActual(producto.getStockActual() - detalle.getCantidad());
+                    productoRepository.save(producto);
+
+                    log.info("Stock actualizado para producto {}: {} - {} = {}",
+                            producto.getNombreProducto(),
+                            producto.getStockActual() + detalle.getCantidad(),
+                            detalle.getCantidad(),
+                            producto.getStockActual());
                 }
             }
 
@@ -307,15 +323,6 @@ public class SalidaServiceImpl implements ISalidaService {
             salida.setEstado(EstadoSalida.Completado);
             salida.setUsuarioAprobacion(usuarioAprobacion);
             salida.setFechaAprobacion(LocalDateTime.now());
-
-            // Actualizar stock de productos
-            if (salida.getDetalles() != null) {
-                for (DetalleSalidaEntity detalle : salida.getDetalles()) {
-                    ProductoEntity producto = detalle.getProducto();
-                    producto.setStockActual(producto.getStockActual() - detalle.getCantidad());
-                    productoRepository.save(producto);
-                }
-            }
 
             return salidaMapper.toDto(salidaRepository.save(salida));
         } catch (Exception e) {
