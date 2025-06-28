@@ -31,6 +31,8 @@ import com.api.diversity.application.dto.EntradaFormDto;
 import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.enums.TipoDocumento;
 import com.api.diversity.domain.enums.EstadoProveedor;
+import com.api.diversity.infrastructure.security.SecurityContext;
+import com.api.diversity.application.dto.DetalleEntradaDto;
 
 @Controller
 @RequestMapping("/pinateria/kardex")
@@ -42,6 +44,7 @@ public class PinateriaKardexController {
     private final ISalidaService salidaService;
     private final IProductoService productoService;
     private final IProveedorService proveedorService;
+    private final SecurityContext securityContext;
 
     /**
      * Dashboard del Kardex para Piñatería
@@ -365,10 +368,41 @@ public class PinateriaKardexController {
             log.info("Entrada a procesar: {}", entradaForm);
             log.info("Productos: {}", entradaForm.getProductos());
 
-            // TODO: Implementar lógica para guardar entrada
-            // 1. Crear EntradaDto con los datos del formulario
-            // 2. Crear DetalleEntradaDto para cada producto
-            // 3. Llamar a entradaService.save()
+            // Obtener usuario actual
+            Long usuarioId = securityContext.getCurrentUserId();
+            if (usuarioId == null) {
+                redirectAttributes.addFlashAttribute("error", "Usuario no autenticado");
+                return "redirect:/pinateria/kardex/entrada/nueva";
+            }
+
+            // Crear EntradaDto
+            EntradaDto entradaDto = new EntradaDto();
+            entradaDto.setNumeroFactura(entradaForm.getNumeroFactura());
+            entradaDto.setTipoDocumento(entradaForm.getTipoDocumento());
+            entradaDto.setProveedorId(entradaForm.getProveedorId());
+            entradaDto.setFechaEntrada(entradaForm.getFechaEntrada().atStartOfDay());
+            entradaDto.setObservaciones(entradaForm.getObservaciones());
+            entradaDto.setUsuarioRegistroId(usuarioId);
+
+            // Crear DetalleEntradaDto para cada producto
+            List<DetalleEntradaDto> detalles = entradaForm.getProductos().stream()
+                    .map(productoForm -> {
+                        DetalleEntradaDto detalle = new DetalleEntradaDto();
+                        detalle.setProductoId(productoForm.getProductoId());
+                        detalle.setCantidad(productoForm.getCantidad());
+                        detalle.setPrecioUnitario(productoForm.getPrecioUnitario());
+                        detalle.setSubtotal(productoForm.getPrecioUnitario()
+                                .multiply(BigDecimal.valueOf(productoForm.getCantidad())));
+                        return detalle;
+                    })
+                    .toList();
+
+            entradaDto.setDetalles(detalles);
+
+            // Guardar entrada usando el servicio
+            EntradaDto entradaGuardada = entradaService.save(entradaDto);
+
+            log.info("Entrada guardada exitosamente con ID: {}", entradaGuardada.getIdEntrada());
 
             redirectAttributes.addFlashAttribute("success",
                     "Entrada registrada exitosamente. Número: " + entradaForm.getNumeroFactura());

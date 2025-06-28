@@ -23,7 +23,7 @@ public class DetalleEntradaDto {
     private BigDecimal subtotal;
     private EstadoDetalleEntrada estado;
 
-    // Campos adicionales para la UI
+    // Campos adicionales
     private String estadoDescripcion;
     private String categoriaNombre;
     private String rubroNombre;

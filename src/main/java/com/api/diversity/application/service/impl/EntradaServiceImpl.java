@@ -22,6 +22,7 @@ import com.api.diversity.domain.ports.IEntradaRepository;
 import com.api.diversity.domain.ports.IProveedorRepository;
 import com.api.diversity.domain.ports.IProductoRepository;
 import com.api.diversity.domain.ports.IUsuarioRepository;
+import com.api.diversity.domain.ports.IDetalleEntradaRepository;
 import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.EstadoDetalleEntrada;
 import com.api.diversity.domain.enums.TipoDocumento;
@@ -39,6 +40,7 @@ public class EntradaServiceImpl implements IEntradaService {
     private final IProveedorRepository proveedorRepository;
     private final IProductoRepository productoRepository;
     private final IUsuarioRepository usuarioRepository;
+    private final IDetalleEntradaRepository detalleEntradaRepository;
     private final EntradaMapper entradaMapper;
     private final DetalleEntradaMapper detalleEntradaMapper;
 
@@ -78,6 +80,7 @@ public class EntradaServiceImpl implements IEntradaService {
                     DetalleEntradaEntity detalle = detalleEntradaMapper.toEntity(detalleDto);
                     detalle.setEntrada(entrada);
                     detalle.setEstado(EstadoDetalleEntrada.Activo);
+                    detalle.setUsuarioRegistro(usuarioRegistro);
 
                     // Validar producto
                     ProductoEntity producto = productoRepository.findById(detalleDto.getProductoId())
@@ -87,6 +90,9 @@ public class EntradaServiceImpl implements IEntradaService {
                     // Calcular subtotal
                     detalle.setSubtotal(
                             detalle.getPrecioUnitario().multiply(BigDecimal.valueOf(detalle.getCantidad())));
+
+                    // Guardar detalle
+                    detalleEntradaRepository.save(detalle);
                 }
             }
 
