@@ -17,8 +17,6 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.HashMap;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import com.api.diversity.application.service.interfaces.IEntradaService;
 import com.api.diversity.application.service.interfaces.ISalidaService;
