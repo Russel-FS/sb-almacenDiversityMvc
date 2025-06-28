@@ -59,8 +59,9 @@ CREATE TABLE Usuario_Rubros (
     Fecha_Asignacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (ID_Usuario, ID_Rubro),
     FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID_Usuario),
-    FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro),
+    FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro)
 );
+
 -- tabla de asignación de roles a usuarios
 CREATE TABLE User_Roles (
     ID_User_Role BIGINT AUTO_INCREMENT PRIMARY KEY,
