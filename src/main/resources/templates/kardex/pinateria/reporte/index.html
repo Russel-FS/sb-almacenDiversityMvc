@@ -87,6 +87,46 @@
     </nav>
 
     <main class="container mx-auto px-6 py-8">
+      <!-- DEBUG: Sección temporal de debug -->
+      <div
+        class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6"
+        th:if="${false}"
+      >
+        <h4 class="font-bold">DEBUG INFO:</h4>
+        <p>Total Productos: <span th:text="${totalProductos}">0</span></p>
+        <p>
+          Productos Con Stock: <span th:text="${productosConStock}">0</span>
+        </p>
+        <p>
+          Productos Sin Stock: <span th:text="${productosSinStock}">0</span>
+        </p>
+        <p>
+          Productos Stock Bajo Size:
+          <span
+            th:text="${productosStockBajo != null ? productosStockBajo.size() : 'NULL'}"
+            >0</span
+          >
+        </p>
+        <p>
+          Valor Total Inventario:
+          <span th:text="${valorTotalInventario}">0</span>
+        </p>
+        <p>
+          Entradas Recientes Size:
+          <span
+            th:text="${entradasRecientes != null ? entradasRecientes.size() : 'NULL'}"
+            >0</span
+          >
+        </p>
+        <p>
+          Salidas Recientes Size:
+          <span
+            th:text="${salidasRecientes != null ? salidasRecientes.size() : 'NULL'}"
+            >0</span
+          >
+        </p>
+      </div>
+
       <div
         th:if="${error}"
         class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6"
@@ -96,7 +136,9 @@
       </div>
 
       <!-- Statistics Cards -->
+      <!-- DEBUG: Inicio de tarjetas de estadísticas -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- DEBUG: Tarjeta 1 - Total Productos -->
         <div
           class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500"
         >
@@ -116,6 +158,7 @@
           </div>
         </div>
 
+        <!-- DEBUG: Tarjeta 2 - Productos Con Stock -->
         <div
           class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500"
         >
@@ -137,6 +180,7 @@
           </div>
         </div>
 
+        <!-- DEBUG: Tarjeta 3 - Stock Bajo -->
         <div
           class="bg-white rounded-lg shadow-md p-6 border-l-4 border-yellow-500"
         >
@@ -158,6 +202,7 @@
           </div>
         </div>
 
+        <!-- DEBUG: Tarjeta 4 - Sin Stock -->
         <div
           class="bg-white rounded-lg shadow-md p-6 border-l-4 border-red-500"
         >
@@ -177,8 +222,10 @@
           </div>
         </div>
       </div>
+      <!-- DEBUG: Fin de tarjetas de estadísticas -->
 
       <!-- Value Summary -->
+      <!-- DEBUG: Inicio de valorización -->
       <div class="bg-white rounded-lg shadow-md p-6 mb-8">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">
           <i class="fas fa-dollar-sign mr-2 text-green-500"></i>Valorización del
@@ -196,8 +243,10 @@
           </p>
         </div>
       </div>
+      <!-- DEBUG: Fin de valorización -->
 
       <!-- Products with Low Stock -->
+      <!-- DEBUG: Inicio de productos con stock bajo -->
       <div class="bg-white rounded-lg shadow-md mb-8">
         <div
           class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-4 rounded-t-lg"
@@ -208,6 +257,7 @@
           </h3>
         </div>
         <div class="p-6">
+          <!-- DEBUG: Verificación de lista vacía -->
           <div
             th:if="${productosStockBajo.empty}"
             class="text-center text-gray-500 py-8"
@@ -215,6 +265,7 @@
             <i class="fas fa-check-circle text-4xl mb-4 text-green-500"></i>
             <p>No hay productos con stock bajo</p>
           </div>
+          <!-- DEBUG: Tabla de productos con stock bajo -->
           <div th:if="${!productosStockBajo.empty}" class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
@@ -247,6 +298,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
+                <!-- DEBUG: Iteración de productos -->
                 <tr
                   th:each="producto : ${productosStockBajo}"
                   class="hover:bg-gray-50"
@@ -254,7 +306,7 @@
                 >
                   <td
                     class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                    th:text="${producto.nombre != null ? producto.nombre : 'N/A'}"
+                    th:text="${producto.nombreProducto != null ? producto.nombreProducto : 'N/A'}"
                   >
                     Producto
                   </td>
@@ -278,7 +330,7 @@
                   </td>
                   <td
                     class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                    th:text="${producto.stockActual != null and producto.precioVenta != null ? 'S/ ' + #numbers.formatDecimal(producto.precioVenta.multiply(java.math.BigDecimal.valueOf(producto.stockActual)), 1, 2) : 'S/ 0.00'}"
+                    th:text="${producto.stockActual != null and producto.precioVenta != null ? 'S/ ' + #numbers.formatDecimal(producto.precioVenta * producto.stockActual, 1, 2) : 'S/ 0.00'}"
                   >
                     S/ 0.00
                   </td>
@@ -288,6 +340,7 @@
           </div>
         </div>
       </div>
+      <!-- DEBUG: Fin de productos con stock bajo -->
 
       <!-- Recent Movements -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
