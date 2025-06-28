@@ -1,6 +1,7 @@
 package com.api.diversity.application.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.api.diversity.domain.enums.EstadoUsuario;
 
@@ -18,7 +19,6 @@ public class UsuarioDto {
     private String nombreUsuario;
     private String email;
     private String nombreCompleto;
-    private RolDto rol;
     private RubroDto rubro;
     private String urlImagen;
     private String publicId;
@@ -27,4 +27,5 @@ public class UsuarioDto {
     private LocalDateTime ultimoAcceso;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
+    private List<UserRoleDto> roles;
 }

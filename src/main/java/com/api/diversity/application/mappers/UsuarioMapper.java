@@ -1,5 +1,8 @@
 package com.api.diversity.application.mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.api.diversity.application.dto.UsuarioDto;
@@ -11,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsuarioMapper {
 
-    private final RolMapper rolMapper;
     private final RubroMapper rubroMapper;
+    private final UserRoleMapper userRoleMapper;
 
     public UsuarioDto toDto(UsuarioEntity entity) {
         if (entity == null) {
@@ -24,7 +27,6 @@ public class UsuarioMapper {
                 .nombreUsuario(entity.getNombreUsuario())
                 .email(entity.getEmail())
                 .nombreCompleto(entity.getNombreCompleto())
-                .rol(rolMapper.toDto(entity.getRol()))
                 .rubro(rubroMapper.toDto(entity.getRubro()))
                 .urlImagen(entity.getUrlImagen())
                 .publicId(entity.getPublicId())
@@ -33,6 +35,7 @@ public class UsuarioMapper {
                 .ultimoAcceso(entity.getUltimoAcceso())
                 .fechaCreacion(entity.getFechaCreacion())
                 .fechaModificacion(entity.getFechaModificacion())
+                .roles(userRoleMapper.toDtoList(entity.getUserRoles()))
                 .build();
     }
 
@@ -46,7 +49,6 @@ public class UsuarioMapper {
         entity.setNombreUsuario(dto.getNombreUsuario());
         entity.setEmail(dto.getEmail());
         entity.setNombreCompleto(dto.getNombreCompleto());
-        entity.setRol(rolMapper.toEntity(dto.getRol()));
         entity.setRubro(rubroMapper.toEntity(dto.getRubro()));
         entity.setUrlImagen(dto.getUrlImagen());
         entity.setPublicId(dto.getPublicId());
@@ -56,5 +58,14 @@ public class UsuarioMapper {
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());
         return entity;
+    }
+
+    public List<UsuarioDto> toDtoList(List<UsuarioEntity> entities) {
+        if (entities == null) {
+            return null;
+        }
+        return entities.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 }
