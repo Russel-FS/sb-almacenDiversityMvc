@@ -61,9 +61,16 @@ public class SalidaServiceImpl implements ISalidaService {
             // Validar stock disponible para todos los productos
             if (salidaDto.getDetalles() != null) {
                 for (DetalleSalidaDto detalleDto : salidaDto.getDetalles()) {
-                    if (!validarStockDisponible(detalleDto.getProductoId(), detalleDto.getCantidad())) {
+                    // Obtener producto para validar stock
+                    ProductoEntity producto = productoRepository.findById(detalleDto.getProductoId())
+                            .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado"));
+
+                    // Validar stock disponible
+                    if (!validarStockDisponible(producto, detalleDto.getCantidad())) {
                         throw new IllegalStateException(
-                                "Stock insuficiente para el producto ID: " + detalleDto.getProductoId());
+                                "Stock insuficiente para el producto '" + producto.getNombreProducto() +
+                                        "'. Stock disponible: " + producto.getStockActual() +
+                                        ", Cantidad solicitada: " + detalleDto.getCantidad());
                     }
                 }
             }
@@ -313,7 +320,7 @@ public class SalidaServiceImpl implements ISalidaService {
             // Validar stock disponible antes de aprobar
             if (salida.getDetalles() != null) {
                 for (DetalleSalidaEntity detalle : salida.getDetalles()) {
-                    if (!validarStockDisponible(detalle.getProducto().getIdProducto(), detalle.getCantidad())) {
+                    if (!validarStockDisponible(detalle.getProducto(), detalle.getCantidad())) {
                         throw new IllegalStateException(
                                 "Stock insuficiente para el producto: " + detalle.getProducto().getNombreProducto());
                     }
@@ -387,6 +394,19 @@ public class SalidaServiceImpl implements ISalidaService {
             ProductoEntity producto = productoRepository.findById(productoId)
                     .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado"));
 
+            return validarStockDisponible(producto, cantidad);
+        } catch (Exception e) {
+            log.error("Error al validar stock disponible: {}", e.getMessage(), e);
+            return false;
+        }
+    }
+
+    /**
+     * Método sobrecargado para validar stock disponible utilizando el producto
+     * directamente
+     */
+    private boolean validarStockDisponible(ProductoEntity producto, Integer cantidad) {
+        try {
             return producto.getStockActual() >= cantidad;
         } catch (Exception e) {
             log.error("Error al validar stock disponible: {}", e.getMessage(), e);
