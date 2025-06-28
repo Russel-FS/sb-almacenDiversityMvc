@@ -102,11 +102,21 @@ public class PinateriaKardexController {
         try {
             // Cargar productos de Piñatería
             List<ProductoDto> productosPinateria = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+
+            // Tipos de documento disponibles
+            List<String> tiposDocumento = List.of("FACTURA", "BOLETA", "NOTA DE CRÉDITO", "NOTA DE DÉBITO",
+                    "GUÍA DE REMISIÓN");
+
+            // TODO: Cargar proveedores (necesitaríamos un servicio de proveedores)
+            // Por ahora usamos una lista vacía
+            List<Object> proveedores = new ArrayList<>();
+
             model.addAttribute("titulo", "Nueva Entrada - Piñatería");
             model.addAttribute("subtitulo", "Registrar entrada de productos de Piñatería");
             model.addAttribute("rubro", "Piñatería");
             model.addAttribute("productos", productosPinateria);
-            // model.addAttribute("proveedores", proveedoresPinateria);
+            model.addAttribute("tiposDocumento", tiposDocumento);
+            model.addAttribute("proveedores", proveedores);
 
         } catch (Exception e) {
             log.error("Error al cargar datos para nueva entrada de Piñatería: {}", e.getMessage());
@@ -115,6 +125,8 @@ public class PinateriaKardexController {
             model.addAttribute("subtitulo", "Registrar entrada de productos de Piñatería");
             model.addAttribute("rubro", "Piñatería");
             model.addAttribute("productos", new ArrayList<>());
+            model.addAttribute("tiposDocumento", new ArrayList<>());
+            model.addAttribute("proveedores", new ArrayList<>());
             model.addAttribute("error", "Error al cargar los datos. Por favor, intente nuevamente.");
         }
 
