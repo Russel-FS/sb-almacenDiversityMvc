@@ -10,9 +10,9 @@ import com.api.diversity.domain.enums.EstadoDetalleSalida;
 
 @Repository
 public interface IDetalleSalidaJpaRepository extends JpaRepository<DetalleSalidaEntity, Long> {
-    List<DetalleSalidaEntity> findBySalidaId(Long salidaId);
+    List<DetalleSalidaEntity> findBySalidaIdSalida(Long salidaId);
 
-    List<DetalleSalidaEntity> findByProductoId(Long productoId);
+    List<DetalleSalidaEntity> findByProductoIdProducto(Long productoId);
 
     List<DetalleSalidaEntity> findByEstado(EstadoDetalleSalida estado);
 }

@@ -34,12 +34,12 @@ public class DetalleSalidaRepositoryImpl implements IDetalleSalidaRepository {
 
     @Override
     public List<DetalleSalidaEntity> findBySalidaId(Long salidaId) {
-        return detalleSalidaJpaRepository.findBySalidaId(salidaId);
+        return detalleSalidaJpaRepository.findBySalidaIdSalida(salidaId);
     }
 
     @Override
     public List<DetalleSalidaEntity> findByProductoId(Long productoId) {
-        return detalleSalidaJpaRepository.findByProductoId(productoId);
+        return detalleSalidaJpaRepository.findByProductoIdProducto(productoId);
     }
 
     @Override
