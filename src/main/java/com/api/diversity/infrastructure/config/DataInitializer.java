@@ -5,7 +5,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.api.diversity.application.dto.RolDto;
 import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.service.interfaces.IRubroService;
@@ -13,10 +12,15 @@ import com.api.diversity.application.service.interfaces.IUsuarioService;
 import com.api.diversity.domain.enums.EstadoRol;
 import com.api.diversity.domain.enums.EstadoRubro;
 import com.api.diversity.domain.enums.EstadoUsuario;
+import com.api.diversity.domain.enums.EstadoUserRole;
 import com.api.diversity.domain.enums.TipoRol;
 import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.model.RolEntity;
+import com.api.diversity.domain.model.UserRoleEntity;
+import com.api.diversity.domain.model.UsuarioEntity;
 import com.api.diversity.domain.ports.IRolRepository;
+import com.api.diversity.domain.ports.IUserRoleRepository;
+import com.api.diversity.domain.ports.IUsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +33,8 @@ public class DataInitializer implements CommandLineRunner {
     private final IUsuarioService usuarioService;
     private final IRubroService rubroService;
     private final IRolRepository rolRepository;
+    private final IUserRoleRepository userRoleRepository;
+    private final IUsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -68,7 +74,7 @@ public class DataInitializer implements CommandLineRunner {
                 }
             }
 
-            // Buscar el rol ADMINISTRADOR
+            // rol administrador por defecto
             RolEntity rolAdmin = rolRepository.findByNombreRol(TipoRol.ADMINISTRADOR.getNombre())
                     .orElseThrow(() -> new RuntimeException("Rol ADMINISTRADOR no encontrado"));
 
@@ -81,23 +87,29 @@ public class DataInitializer implements CommandLineRunner {
             String password = "admin123";
 
             if (!usuarioService.existsByEmail(email)) {
+                // Crear usuario administrador
                 UsuarioDto admin = new UsuarioDto();
                 admin.setNombreUsuario("admin");
                 admin.setEmail(email);
                 admin.setNombreCompleto("Administrador del Sistema");
                 admin.setContraseña(passwordEncoder.encode(password));
-                admin.setRol(RolDto.builder()
-                        .idRol(rolAdmin.getIdRol())
-                        .nombreRol(rolAdmin.getNombreRol())
-                        .build());
                 admin.setEstado(EstadoUsuario.Activo);
                 admin.setRubro(rubroDefault);
-                usuarioService.save(admin);
-                log.info("Usuario admin creado exitosamente");
+                UsuarioDto savedAdmin = usuarioService.save(admin);
+
+                UsuarioEntity usuarioEntity = usuarioRepository.findById(savedAdmin.getIdUsuario())
+                        .orElseThrow(() -> new RuntimeException("Usuario no encontrado después de guardar"));
+                // asignacion de roles
+                UserRoleEntity userRoleEntity = new UserRoleEntity();
+                userRoleEntity.setUsuario(usuarioEntity);
+                userRoleEntity.setRol(rolAdmin);
+                userRoleEntity.setEstado(EstadoUserRole.Activo);
+                userRoleRepository.save(userRoleEntity);
+
+                log.info("Usuario admin creado exitosamente con rol ADMINISTRADOR");
             }
         } catch (Exception e) {
             log.error("Error durante la inicialización de datos: {}", e.getMessage());
-
         }
     }
 }
