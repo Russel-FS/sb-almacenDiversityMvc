@@ -34,7 +34,6 @@ CREATE TABLE Usuarios (
     Nombre_Usuario VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL,
     Nombre_Completo VARCHAR(100) NOT NULL,
-    ID_Rol BIGINT NOT NULL,
     ID_Rubro BIGINT NOT NULL,
     Contraseña VARCHAR(255) NOT NULL,
     UrlImagen VARCHAR(255),
@@ -47,10 +46,25 @@ CREATE TABLE Usuarios (
     Ultimo_Acceso DATETIME,
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (ID_Rol) REFERENCES Roles (ID_Rol),
     FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro),
     CONSTRAINT UQ_Usuario_Nombre UNIQUE (Nombre_Usuario),
     CONSTRAINT UQ_Usuario_Email UNIQUE (Email)
+);
+
+-- tabla de asignación de roles a usuarios
+CREATE TABLE User_Roles (
+    ID_User_Role BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ID_Usuario BIGINT NOT NULL,
+    ID_Rol BIGINT NOT NULL,
+    Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
+    Fecha_Asignacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID_Usuario) ON DELETE CASCADE,
+    FOREIGN KEY (ID_Rol) REFERENCES Roles (ID_Rol) ON DELETE CASCADE,
+    CONSTRAINT UQ_User_Role UNIQUE (ID_Usuario, ID_Rol),
+    CONSTRAINT CK_User_Role_Estado CHECK (
+        Estado IN ('Activo', 'Inactivo')
+    )
 );
 
 -- Tabla de Categorías
@@ -239,18 +253,29 @@ FROM
 WHERE
     p.Estado != 'Inactivo';
 
--- Inserción de roles básicos
-INSERT INTO
-    Roles (Nombre_Rol, Descripcion)
-VALUES (
-        'Administrador',
-        'Acceso total al sistema'
-    ),
-    (
-        'Supervisor',
-        'Puede aprobar entradas y salidas'
-    ),
-    (
-        'Operador',
-        'Puede registrar entradas y salidas'
-    );
+-- Vista para consultar usuarios con sus roles
+CREATE VIEW Vista_Usuarios_Roles AS
+SELECT
+    u.ID_Usuario,
+    u.Nombre_Usuario,
+    u.Email,
+    u.Nombre_Completo,
+    u.Estado as Estado_Usuario,
+    r.ID_Rol,
+    r.Nombre_Rol,
+    r.Descripcion as Descripcion_Rol,
+    ur.Estado as Estado_Rol_Asignado,
+    ur.Fecha_Asignacion,
+    GROUP_CONCAT(r.Nombre_Rol SEPARATOR ', ') as Roles_Asignados
+FROM
+    Usuarios u
+    LEFT JOIN User_Roles ur ON u.ID_Usuario = ur.ID_Usuario
+    AND ur.Estado = 'Activo'
+    LEFT JOIN Roles r ON ur.ID_Rol = r.ID_Rol
+    AND r.Estado = 'Activo'
+GROUP BY
+    u.ID_Usuario,
+    u.Nombre_Usuario,
+    u.Email,
+    u.Nombre_Completo,
+    u.Estado;
