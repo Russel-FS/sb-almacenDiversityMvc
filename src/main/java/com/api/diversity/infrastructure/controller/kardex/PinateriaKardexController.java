@@ -21,11 +21,14 @@ import java.time.LocalDate;
 import com.api.diversity.application.service.interfaces.IEntradaService;
 import com.api.diversity.application.service.interfaces.ISalidaService;
 import com.api.diversity.application.service.interfaces.IProductoService;
+import com.api.diversity.application.service.interfaces.IProveedorService;
 import com.api.diversity.application.dto.EntradaDto;
 import com.api.diversity.application.dto.SalidaDto;
 import com.api.diversity.application.dto.ProductoDto;
+import com.api.diversity.application.dto.ProveedorDto;
 import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.enums.TipoDocumento;
+import com.api.diversity.domain.enums.EstadoProveedor;
 
 @Controller
 @RequestMapping("/pinateria/kardex")
@@ -36,6 +39,7 @@ public class PinateriaKardexController {
     private final IEntradaService entradaService;
     private final ISalidaService salidaService;
     private final IProductoService productoService;
+    private final IProveedorService proveedorService;
 
     /**
      * Dashboard del Kardex para Piñatería
@@ -113,13 +117,8 @@ public class PinateriaKardexController {
             // Tipos de documento disponibles
             List<TipoDocumento> tiposDocumento = List.of(TipoDocumento.values());
 
-            // Lista de ejemplo para proveedores
-            List<Map<String, Object>> proveedores = new ArrayList<>();
-            Map<String, Object> proveedorEjemplo = new HashMap<>();
-            proveedorEjemplo.put("id", 1L);
-            proveedorEjemplo.put("razonSocial", "Proveedor Demo");
-            proveedorEjemplo.put("ruc", "12345678901");
-            proveedores.add(proveedorEjemplo);
+            // Obtener proveedores activos
+            List<ProveedorDto> proveedores = proveedorService.findByEstado(EstadoProveedor.Activo);
 
             model.addAttribute("titulo", "Nueva Entrada - Piñatería");
             model.addAttribute("subtitulo", "Registrar entrada de productos de Piñatería");
