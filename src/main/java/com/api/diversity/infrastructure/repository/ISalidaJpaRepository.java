@@ -20,7 +20,7 @@ public interface ISalidaJpaRepository extends JpaRepository<SalidaEntity, Long> 
 
     List<SalidaEntity> findByClienteId(Long clienteId);
 
-    List<SalidaEntity> findByUsuarioRegistroId(Long usuarioId);
+    List<SalidaEntity> findByUsuarioRegistroIdUsuario(Long idUsuario);
 
     @Query("SELECT s FROM SalidaEntity s JOIN s.detalles d JOIN d.producto p JOIN p.categoria c JOIN c.rubro r WHERE r.idRubro = :rubroId")
     List<SalidaEntity> findByRubroId(@Param("rubroId") Long rubroId);
