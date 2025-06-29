@@ -94,7 +94,7 @@
           </div>
 
           <form
-            th:action="${cliente.idCliente != null ? '/clientes/actualizar' : '/clientes/guardar'}"
+            th:action="@{/clientes/guardar}"
             th:object="${cliente}"
             method="post"
             class="p-6 space-y-6"
