@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo}">Gestión de Clientes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header
+      class="bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
+    >
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <i class="fas fa-users text-3xl"></i>
+            <div>
+              <h1 class="text-2xl font-bold" th:text="${titulo}">
+                Gestión de Clientes
+              </h1>
+              <p class="text-blue-200" th:text="${subtitulo}">
+                Administrar clientes del sistema
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/clientes/nuevo"
+              class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition-colors"
+            >
+              <i class="fas fa-plus mr-2"></i>Nuevo Cliente
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+      <div class="container mx-auto px-6 py-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-8">
+            <a
+              href="/"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <i class="fas fa-home mr-2"></i>Inicio
+            </a>
+            <a
+              href="/proveedores"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <i class="fas fa-truck mr-2"></i>Proveedores
+            </a>
+            <a
+              href="/clientes"
+              class="text-blue-600 font-semibold border-b-2 border-blue-600 pb-2"
+            >
+              <i class="fas fa-users mr-2"></i>Clientes
+            </a>
+            <a
+              href="/productos"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <i class="fas fa-box mr-2"></i>Productos
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-8">
+      <!-- Mensajes -->
+      <div
+        th:if="${success}"
+        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6"
+      >
+        <i class="fas fa-check-circle mr-2"></i>
+        <span th:text="${success}">Éxito</span>
+      </div>
+
+      <div
+        th:if="${error}"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6"
+      >
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        <span th:text="${error}">Error</span>
+      </div>
+
+      <!-- Estadísticas -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+              <i class="fas fa-users text-2xl"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Total Clientes</p>
+              <p
+                class="text-2xl font-semibold text-gray-900"
+                th:text="${totalClientes}"
+              >
+                0
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-green-100 text-green-600">
+              <i class="fas fa-user-check text-2xl"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Activos</p>
+              <p
+                class="text-2xl font-semibold text-gray-900"
+                th:text="${clientesActivos}"
+              >
+                0
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-red-100 text-red-600">
+              <i class="fas fa-user-times text-2xl"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Inactivos</p>
+              <p
+                class="text-2xl font-semibold text-gray-900"
+                th:text="${clientesInactivos}"
+              >
+                0
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+              <i class="fas fa-user text-2xl"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">
+                Personas Naturales
+              </p>
+              <p
+                class="text-2xl font-semibold text-gray-900"
+                th:text="${personasNaturales}"
+              >
+                0
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex items-center">
+            <div class="p-3 rounded-full bg-orange-100 text-orange-600">
+              <i class="fas fa-building text-2xl"></i>
+            </div>
+            <div class="ml-4">
+              <p class="text-sm font-medium text-gray-600">Empresas</p>
+              <p
+                class="text-2xl font-semibold text-gray-900"
+                th:text="${empresas}"
+              >
+                0
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros y Búsqueda -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <form method="get" class="flex flex-wrap gap-4 items-end">
+          <div class="flex-1 min-w-64">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              <i class="fas fa-search mr-2"></i>Buscar Cliente
+            </label>
+            <input
+              type="text"
+              name="busqueda"
+              th:value="${busqueda}"
+              placeholder="Nombre, email o DNI..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              <i class="fas fa-filter mr-2"></i>Estado
+            </label>
+            <select
+              name="estado"
+              class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Todos</option>
+              <option
+                th:each="estado : ${estados}"
+                th:value="${estado}"
+                th:text="${estado}"
+                th:selected="${estado == estadoFiltro}"
+              >
+                Estado
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              <i class="fas fa-tag mr-2"></i>Tipo
+            </label>
+            <select
+              name="tipoCliente"
+              class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Todos</option>
+              <option
+                th:each="tipo : ${tiposCliente}"
+                th:value="${tipo}"
+                th:text="${tipo.descripcion}"
+                th:selected="${tipo == tipoClienteFiltro}"
+              >
+                Tipo
+              </option>
+            </select>
+          </div>
+
+          <div class="flex gap-2">
+            <button
+              type="submit"
+              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
+            >
+              <i class="fas fa-search mr-2"></i>Buscar
+            </button>
+            <a
+              href="/clientes"
+              class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors"
+            >
+              <i class="fas fa-times mr-2"></i>Limpiar
+            </a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Lista de Clientes -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h2 class="text-lg font-semibold text-gray-900">
+            <i class="fas fa-list mr-2"></i>Lista de Clientes
+          </h2>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Cliente
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Tipo
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Contacto
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Estado
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Fecha Registro
+                </th>
+                <th
+                  class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr th:each="cliente : ${clientes}" class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <div
+                        class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center"
+                      >
+                        <i class="fas fa-user text-blue-600"></i>
+                      </div>
+                    </div>
+                    <div class="ml-4">
+                      <div
+                        class="text-sm font-medium text-gray-900"
+                        th:text="${cliente.nombreCompleto}"
+                      >
+                        Nombre
+                      </div>
+                      <div
+                        class="text-sm text-gray-500"
+                        th:text="${cliente.dni}"
+                      >
+                        DNI
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    th:class="${cliente.tipoCliente == T(com.api.diversity.domain.enums.TipoCliente).Persona_Natural ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800'}"
+                    class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                    th:text="${cliente.tipoClienteDescripcion}"
+                  >
+                    Tipo
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900" th:text="${cliente.email}">
+                    Email
+                  </div>
+                  <div
+                    class="text-sm text-gray-500"
+                    th:text="${cliente.telefono}"
+                  >
+                    Teléfono
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    th:class="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
+                    class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                    th:text="${cliente.estadoDescripcion}"
+                  >
+                    Estado
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <span
+                    th:text="${#temporals.format(cliente.fechaCreacion, 'dd/MM/yyyy')}"
+                  >
+                    Fecha
+                  </span>
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <div class="flex justify-end space-x-2">
+                    <a
+                      th:href="@{/clientes/detalle/{id}(id=${cliente.idCliente})}"
+                      class="text-blue-600 hover:text-blue-900 transition-colors"
+                      title="Ver detalle"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <a
+                      th:href="@{/clientes/editar/{id}(id=${cliente.idCliente})}"
+                      class="text-yellow-600 hover:text-yellow-900 transition-colors"
+                      title="Editar"
+                    >
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <form
+                      th:action="@{/clientes/cambiar-estado/{id}(id=${cliente.idCliente})}"
+                      method="post"
+                      class="inline"
+                      th:if="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Activo}"
+                    >
+                      <button
+                        type="submit"
+                        name="nuevoEstado"
+                        th:value="Inactivo"
+                        class="text-red-600 hover:text-red-900 transition-colors"
+                        title="Desactivar"
+                        onclick="return confirm('¿Estás seguro de desactivar este cliente?')"
+                      >
+                        <i class="fas fa-user-times"></i>
+                      </button>
+                    </form>
+                    <form
+                      th:action="@{/clientes/cambiar-estado/{id}(id=${cliente.idCliente})}"
+                      method="post"
+                      class="inline"
+                      th:if="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Inactivo}"
+                    >
+                      <button
+                        type="submit"
+                        name="nuevoEstado"
+                        th:value="Activo"
+                        class="text-green-600 hover:text-green-900 transition-colors"
+                        title="Activar"
+                        onclick="return confirm('¿Estás seguro de activar este cliente?')"
+                      >
+                        <i class="fas fa-user-check"></i>
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mensaje cuando no hay clientes -->
+        <div th:if="${#lists.isEmpty(clientes)}" class="text-center py-12">
+          <i class="fas fa-users text-4xl text-gray-300 mb-4"></i>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">
+            No se encontraron clientes
+          </h3>
+          <p class="text-gray-500 mb-4">
+            No hay clientes que coincidan con los criterios de búsqueda.
+          </p>
+          <a
+            href="/clientes/nuevo"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
+          >
+            <i class="fas fa-plus mr-2"></i>Registrar Primer Cliente
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+      <div class="container mx-auto px-6 text-center">
+        <p>
+          &copy; 2024 Sistema de Gestión de Inventarios - J&C Diversity S.A.C.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
