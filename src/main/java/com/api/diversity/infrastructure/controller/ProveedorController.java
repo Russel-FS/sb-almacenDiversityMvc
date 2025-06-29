@@ -163,7 +163,7 @@ public class ProveedorController {
 
         } catch (Exception e) {
             log.error("Error al guardar proveedor: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error", "Error al guardar proveedor: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
             redirectAttributes.addFlashAttribute("proveedor", proveedor);
             return "redirect:/proveedores/nuevo";
         }
