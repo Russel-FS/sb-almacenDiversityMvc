@@ -1,146 +1,14 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head
-    th:replace="~{pinateria/kardex/layout :: kardexLayout(~{::section}, 'Dashboard Kardex - Piñatería', 'Piñatería')}"
+    th:replace="~{pinateria/kardex/layout :: kardexLayout(~{::section}, 'Dashboard', 'Piñatería')}"
   >
   </head>
   <body>
-    <section class="bg-white/50">
+    <section>
       <!-- Contenedor principal -->
-      <div class="min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 py-16">
-          <!-- Header -->
-          <div
-            class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm mb-8"
-          >
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <div
-                  class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mr-4"
-                >
-                  <svg
-                    class="w-6 h-6 text-purple-800"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    ></path>
-                  </svg>
-                </div>
-                <div>
-                  <h1 class="text-2xl font-bold text-gray-900">
-                    Dashboard - Piñatería
-                  </h1>
-                  <p class="text-gray-600 mt-1">
-                    Panel de control del inventario
-                  </p>
-                </div>
-              </div>
-              <div class="flex items-center gap-4">
-                <a
-                  href="/"
-                  class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm flex items-center"
-                >
-                  <svg
-                    class="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
-                  </svg>
-                  Inicio
-                </a>
-                <a
-                  href="/pinateria/kardex/movimientos"
-                  class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm flex items-center"
-                >
-                  <svg
-                    class="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
-                  Ver Movimientos
-                </a>
-                <a
-                  href="/pinateria/kardex/entrada/nueva"
-                  class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-colors duration-200 shadow-sm rounded-2xl flex items-center"
-                >
-                  <svg
-                    class="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
-                  Nueva Entrada
-                </a>
-                <a
-                  href="/pinateria/kardex/dashboard/descargar/pdf"
-                  class="px-6 py-4 bg-red-600 text-white rounded-2xl hover:bg-red-700 transition-colors duration-200 text-sm font-medium shadow-sm flex items-center"
-                >
-                  <svg
-                    class="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    ></path>
-                  </svg>
-                  PDF
-                </a>
-                <a
-                  href="/pinateria/kardex/dashboard/descargar/excel"
-                  class="px-6 py-4 bg-green-600 text-white rounded-2xl hover:bg-green-700 transition-colors duration-200 text-sm font-medium shadow-sm flex items-center"
-                >
-                  <svg
-                    class="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    ></path>
-                  </svg>
-                  Excel
-                </a>
-              </div>
-            </div>
-          </div>
-
+      <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+        <div class="max-w-7xl mx-auto px-4 py-8">
           <!-- Mensajes -->
           <div th:if="${error}" id="mensajeError" class="mb-8">
             <div
@@ -204,16 +72,16 @@
 
           <!-- Estadísticas -->
           <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
           >
             <!-- Total Productos -->
             <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <div class="flex items-center justify-between">
                 <div>
                   <p
-                    class="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                    class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide"
                   >
                     Total Productos
                   </p>
@@ -246,12 +114,12 @@
 
             <!-- Stock Bajo -->
             <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <div class="flex items-center justify-between">
                 <div>
                   <p
-                    class="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                    class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide"
                   >
                     Stock Bajo
                   </p>
@@ -284,12 +152,12 @@
 
             <!-- Valor Total -->
             <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <div class="flex items-center justify-between">
                 <div>
                   <p
-                    class="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                    class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide"
                   >
                     Valor Total
                   </p>
@@ -322,12 +190,12 @@
 
             <!-- Rubro -->
             <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <div class="flex items-center justify-between">
                 <div>
                   <p
-                    class="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                    class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide"
                   >
                     Rubro
                   </p>
@@ -360,12 +228,12 @@
           </div>
 
           <!-- Actividad reciente -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             <!-- Últimas Entradas -->
             <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm"
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
             >
-              <div class="border-b border-gray-100 px-8 py-6">
+              <div class="border-b border-gray-100 px-6 py-4">
                 <h3
                   class="text-xl font-semibold text-gray-900 flex items-center"
                 >
@@ -385,7 +253,7 @@
                   Últimas Entradas
                 </h3>
               </div>
-              <div class="p-8">
+              <div class="p-6">
                 <div
                   th:if="${ultimasEntradas.empty}"
                   class="text-center text-gray-500 py-12"
@@ -415,7 +283,7 @@
                 >
                   <div
                     th:each="entrada : ${ultimasEntradas}"
-                    class="border-b border-gray-100 py-6 last:border-b-0"
+                    class="border-b border-gray-100 py-4 last:border-b-0"
                   >
                     <div class="flex items-center justify-between">
                       <div class="flex-1">
@@ -471,9 +339,9 @@
 
             <!-- Últimas Salidas -->
             <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm"
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
             >
-              <div class="border-b border-gray-100 px-8 py-6">
+              <div class="border-b border-gray-100 px-6 py-4">
                 <h3
                   class="text-xl font-semibold text-gray-900 flex items-center"
                 >
@@ -493,7 +361,7 @@
                   Últimas Salidas
                 </h3>
               </div>
-              <div class="p-8">
+              <div class="p-6">
                 <div
                   th:if="${ultimasSalidas.empty}"
                   class="text-center text-gray-500 py-12"
@@ -523,7 +391,7 @@
                 >
                   <div
                     th:each="salida : ${ultimasSalidas}"
-                    class="border-b border-gray-100 py-6 last:border-b-0"
+                    class="border-b border-gray-100 py-4 last:border-b-0"
                   >
                     <div class="flex items-center justify-between">
                       <div class="flex-1">
@@ -589,7 +457,7 @@
 
           <!-- Acciones rápidas -->
           <div
-            class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-10 shadow-sm"
+            class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all duration-300"
           >
             <div class="flex items-center justify-between mb-8">
               <h3
@@ -752,7 +620,7 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="1.5"
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
                 </div>
@@ -764,6 +632,48 @@
                 <p class="text-sm text-gray-600 relative z-10">
                   Análisis detallado
                 </p>
+              </a>
+            </div>
+
+            <!-- Botones de Descarga -->
+            <div class="flex justify-center gap-4 mb-8">
+              <a
+                href="/pinateria/kardex/dashboard/descargar/pdf"
+                class="px-8 py-4 bg-red-600 text-white rounded-2xl hover:bg-red-700 transition-colors duration-200 text-sm font-medium shadow-sm flex items-center group"
+              >
+                <svg
+                  class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                Descargar PDF
+              </a>
+              <a
+                href="/pinateria/kardex/dashboard/descargar/excel"
+                class="px-8 py-4 bg-green-600 text-white rounded-2xl hover:bg-green-700 transition-colors duration-200 text-sm font-medium shadow-sm flex items-center group"
+              >
+                <svg
+                  class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                Descargar Excel
               </a>
             </div>
 
@@ -894,7 +804,7 @@
       });
     </script>
 
-    <!-- Script para el mensaje de éxitoooooooo -->
+    <!-- Script para el mensaje de éxito -->
     <script th:if="${success}">
       document.addEventListener("DOMContentLoaded", function () {
         const mensaje = document.getElementById("mensajeSuccess");
