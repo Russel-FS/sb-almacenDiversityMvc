@@ -476,7 +476,7 @@ public class PinateriaKardexController {
             return "redirect:/pinateria/kardex/dashboard";
         } catch (Exception e) {
             log.error("Error al guardar entrada: {}", e.getMessage());
-            redirectAttributes.addFlashAttribute("error", "Error al guardar la entrada: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/pinateria/kardex/entrada/nueva";
         }
     }
