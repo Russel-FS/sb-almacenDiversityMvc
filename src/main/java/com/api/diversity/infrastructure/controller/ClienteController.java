@@ -19,6 +19,8 @@ import com.api.diversity.domain.enums.TipoCliente;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.api.diversity.infrastructure.security.CustomUser;
 
 @Controller
 @RequestMapping("/clientes")
@@ -103,10 +105,20 @@ public class ClienteController {
     }
 
     @PostMapping("/guardar")
-    public String guardarCliente(@ModelAttribute ClienteDto cliente, RedirectAttributes redirectAttributes) {
-        log.info("Guardando cliente: {}", cliente.getNombreCompleto());
+    public String guardarCliente(
+            @ModelAttribute ClienteDto cliente,
+            @AuthenticationPrincipal CustomUser usuarioActual,
+            RedirectAttributes redirectAttributes) {
+
+        log.info("Guardando cliente: {} por usuario: {}",
+                cliente.getNombreCompleto(), usuarioActual != null ? usuarioActual.getUsername() : "Sistema");
 
         try {
+            // Asignar el usuario que crea el cliente
+            if (usuarioActual != null) {
+                cliente.setCreatedBy(usuarioActual.getId());
+            }
+
             clienteService.save(cliente);
             redirectAttributes.addFlashAttribute("success",
                     "Cliente '" + cliente.getNombreCompleto() + "' registrado exitosamente");
@@ -143,10 +155,20 @@ public class ClienteController {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarCliente(@ModelAttribute ClienteDto cliente, RedirectAttributes redirectAttributes) {
-        log.info("Actualizando cliente ID: {}", cliente.getIdCliente());
+    public String actualizarCliente(
+            @ModelAttribute ClienteDto cliente,
+            @AuthenticationPrincipal CustomUser usuarioActual,
+            RedirectAttributes redirectAttributes) {
+
+        log.info("Actualizando cliente ID: {} por usuario: {}",
+                cliente.getIdCliente(), usuarioActual != null ? usuarioActual.getUsername() : "Sistema");
 
         try {
+            // Asignar el usuario que actualiza el cliente
+            if (usuarioActual != null) {
+                cliente.setUpdatedBy(usuarioActual.getId());
+            }
+
             clienteService.update(cliente);
             redirectAttributes.addFlashAttribute("success",
                     "Cliente '" + cliente.getNombreCompleto() + "' actualizado exitosamente");

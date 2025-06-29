@@ -29,8 +29,9 @@ public class ClienteMapper {
         dto.setEstado(entity.getEstado());
         dto.setFechaCreacion(entity.getFechaCreacion());
         dto.setFechaModificacion(entity.getFechaModificacion());
+        dto.setCreatedBy(entity.getCreatedBy() != null ? entity.getCreatedBy().getIdUsuario() : null);
+        dto.setUpdatedBy(entity.getUpdatedBy() != null ? entity.getUpdatedBy().getIdUsuario() : null);
 
-        // Mapear descripciones
         if (entity.getEstado() != null) {
             dto.setEstadoDescripcion(entity.getEstado().name());
         }

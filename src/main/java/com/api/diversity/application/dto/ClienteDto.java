@@ -26,6 +26,8 @@ public class ClienteDto {
     private EstadoCliente estado;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
+    private Long createdBy;
+    private Long updatedBy;
 
     // Campos adicionales para la UI
     private String estadoDescripcion;

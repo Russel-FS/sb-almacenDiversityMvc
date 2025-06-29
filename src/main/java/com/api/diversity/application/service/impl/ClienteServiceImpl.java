@@ -12,6 +12,7 @@ import com.api.diversity.application.mappers.ClienteMapper;
 import com.api.diversity.application.service.interfaces.IClienteService;
 import com.api.diversity.domain.model.ClienteEntity;
 import com.api.diversity.domain.ports.IClienteRepository;
+import com.api.diversity.infrastructure.repository.UsuarioJpaRepository;
 import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.domain.enums.TipoCliente;
 
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClienteServiceImpl implements IClienteService {
 
+    private final UsuarioJpaRepository usuarioJpaRepository;
     private final IClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;
 
@@ -49,6 +51,14 @@ public class ClienteServiceImpl implements IClienteService {
 
             ClienteEntity cliente = clienteMapper.toEntity(clienteDto);
             cliente.setEstado(EstadoCliente.Activo);
+
+            // Asignar el usuario que crea el cliente si se proporciona
+            if (clienteDto.getCreatedBy() != null) {
+                cliente.setCreatedBy(usuarioJpaRepository.findById(clienteDto.getCreatedBy())
+                        .orElseThrow(() -> new EntityNotFoundException("Usuario creador no encontrado")));
+            } else {
+                log.warn("No se proporcionó usuario creador para el cliente: {}", clienteDto.getNombreCompleto());
+            }
 
             return clienteMapper.toDto(clienteRepository.save(cliente));
         } catch (Exception e) {
@@ -80,6 +90,14 @@ public class ClienteServiceImpl implements IClienteService {
             if (clienteConEmail != null && !clienteConEmail.getIdCliente().equals(clienteDto.getIdCliente())) {
                 throw new DataIntegrityViolationException(
                         "Ya existe otro cliente con el email: " + clienteDto.getEmail());
+            }
+
+            // Asignar el usuario que actualiza el cliente si se proporciona
+            if (clienteDto.getUpdatedBy() != null) {
+                clienteExistente.setUpdatedBy(usuarioJpaRepository.findById(clienteDto.getUpdatedBy())
+                        .orElseThrow(() -> new EntityNotFoundException("Usuario actualizador no encontrado")));
+            } else {
+                log.warn("No se proporcionó usuario actualizador para el cliente ID: {}", clienteDto.getIdCliente());
             }
 
             // Actualizar campos
