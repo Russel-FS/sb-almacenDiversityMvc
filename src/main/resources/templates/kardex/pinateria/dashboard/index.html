@@ -9,6 +9,31 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
+    <style>
+      /* scroll */
+      .overflow-y-auto::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .overflow-y-auto::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 8px;
+      }
+
+      .overflow-y-auto::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 8px;
+      }
+
+      .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .overflow-y-auto {
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 #f1f5f9;
+      }
+    </style>
   </head>
   <body class="bg-white/50">
     <!-- Contenedor principal -->
@@ -48,6 +73,25 @@
               </div>
             </div>
             <div class="flex items-center gap-4">
+              <a
+                href="/"
+                class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+              >
+                <svg
+                  class="w-5 h-5 mr-2 inline"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  />
+                </svg>
+                Inicio
+              </a>
               <a
                 href="/pinateria/kardex/movimientos"
                 class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
@@ -165,7 +209,7 @@
                   Total Productos
                 </p>
                 <p
-                  class="text-4xl font-bold text-gray-900"
+                  class="text-3xl font-bold text-gray-900"
                   th:text="${totalProductos}"
                 >
                   0
@@ -203,7 +247,7 @@
                   Stock Bajo
                 </p>
                 <p
-                  class="text-4xl font-bold text-gray-900"
+                  class="text-3xl font-bold text-gray-900"
                   th:text="${productosStockBajo}"
                 >
                   0
@@ -241,7 +285,7 @@
                   Valor Total
                 </p>
                 <p
-                  class="text-4xl font-bold text-gray-900"
+                  class="text-3xl font-bold text-gray-900"
                   th:text="${'S/ ' + #numbers.formatDecimal(valorTotalInventario, 1, 2)}"
                 >
                   S/ 0.00
@@ -278,7 +322,7 @@
                 >
                   Rubro
                 </p>
-                <p class="text-4xl font-bold text-gray-900" th:text="${rubro}">
+                <p class="text-3xl font-bold text-gray-900" th:text="${rubro}">
                   Piñatería
                 </p>
               </div>
@@ -352,37 +396,59 @@
                 <p class="text-lg font-medium">No hay entradas recientes</p>
               </div>
               <div
-                th:each="entrada : ${ultimasEntradas}"
-                class="border-b border-gray-100 py-6 last:border-b-0"
+                th:if="${!ultimasEntradas.empty}"
+                class="max-h-96 overflow-y-auto pr-2 space-y-4"
               >
-                <div class="flex items-center justify-between">
-                  <div>
-                    <p
-                      class="font-semibold text-gray-900 text-lg"
-                      th:text="${entrada.numeroFactura}"
-                    >
-                      F001-001
-                    </p>
-                    <p
-                      class="text-gray-600"
-                      th:text="${entrada.proveedorNombre}"
-                    >
-                      Proveedor
-                    </p>
-                  </div>
-                  <div class="text-right">
-                    <p
-                      class="text-lg font-semibold text-emerald-600"
-                      th:text="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal, 1, 2)}"
-                    >
-                      S/ 0.00
-                    </p>
-                    <p
-                      class="text-sm text-gray-500"
-                      th:text="${#temporals.format(entrada.fechaEntrada, 'dd/MM/yyyy')}"
-                    >
-                      01/01/2024
-                    </p>
+                <div
+                  th:each="entrada : ${ultimasEntradas}"
+                  class="border-b border-gray-100 py-6 last:border-b-0"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                      <div class="flex items-center gap-3 mb-2">
+                        <p
+                          class="font-semibold text-gray-900 text-lg"
+                          th:text="${entrada.numeroFactura}"
+                        >
+                          F001-001
+                        </p>
+                        <span
+                          class="px-2 py-1 text-xs font-medium rounded-full"
+                          th:classappend="${entrada.tipoDocumento?.name() == 'FACTURA' ? 'bg-blue-100 text-blue-800' : 
+                                         entrada.tipoDocumento?.name() == 'BOLETA' ? 'bg-green-100 text-green-800' : 
+                                         'bg-gray-100 text-gray-800'}"
+                          th:text="${entrada.tipoDocumento?.name()}"
+                        >
+                          FACTURA
+                        </span>
+                      </div>
+                      <p
+                        class="text-gray-600 mb-1"
+                        th:text="${entrada.proveedorNombre}"
+                      >
+                        Proveedor
+                      </p>
+                      <p
+                        class="text-sm text-gray-500"
+                        th:text="${'Productos: ' + (entrada.detalles != null ? entrada.detalles.size() : 0) + ' items'}"
+                      >
+                        Productos: 0 items
+                      </p>
+                    </div>
+                    <div class="text-right">
+                      <p
+                        class="text-lg font-semibold text-emerald-600"
+                        th:text="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal, 1, 2)}"
+                      >
+                        S/ 0.00
+                      </p>
+                      <p
+                        class="text-sm text-gray-500"
+                        th:text="${#temporals.format(entrada.fechaEntrada, 'dd/MM/yyyy')}"
+                      >
+                        01/01/2024
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -436,34 +502,68 @@
                 <p class="text-lg font-medium">No hay salidas recientes</p>
               </div>
               <div
-                th:each="salida : ${ultimasSalidas}"
-                class="border-b border-gray-100 py-6 last:border-b-0"
+                th:if="${!ultimasSalidas.empty}"
+                class="max-h-96 overflow-y-auto pr-2 space-y-4"
               >
-                <div class="flex items-center justify-between">
-                  <div>
-                    <p
-                      class="font-semibold text-gray-900 text-lg"
-                      th:text="${salida.numeroDocumento}"
-                    >
-                      S001-001
-                    </p>
-                    <p class="text-gray-600" th:text="${salida.clienteNombre}">
-                      Cliente
-                    </p>
-                  </div>
-                  <div class="text-right">
-                    <p
-                      class="text-lg font-semibold text-red-600"
-                      th:text="${'S/ ' + #numbers.formatDecimal(salida.totalVenta, 1, 2)}"
-                    >
-                      S/ 0.00
-                    </p>
-                    <p
-                      class="text-sm text-gray-500"
-                      th:text="${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy')}"
-                    >
-                      01/01/2024
-                    </p>
+                <div
+                  th:each="salida : ${ultimasSalidas}"
+                  class="border-b border-gray-100 py-6 last:border-b-0"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                      <div class="flex items-center gap-3 mb-2">
+                        <p
+                          class="font-semibold text-gray-900 text-lg"
+                          th:text="${salida.numeroDocumento}"
+                        >
+                          S001-001
+                        </p>
+                        <span
+                          class="px-2 py-1 text-xs font-medium rounded-full"
+                          th:classappend="${salida.tipoDocumento?.name() == 'FACTURA' ? 'bg-blue-100 text-blue-800' : 
+                                         salida.tipoDocumento?.name() == 'BOLETA' ? 'bg-green-100 text-green-800' : 
+                                         'bg-gray-100 text-gray-800'}"
+                          th:text="${salida.tipoDocumento?.name()}"
+                        >
+                          BOLETA
+                        </span>
+                      </div>
+                      <p
+                        class="text-gray-600 mb-1"
+                        th:text="${salida.clienteNombre}"
+                      >
+                        Cliente
+                      </p>
+                      <div
+                        class="flex items-center gap-4 text-sm text-gray-500"
+                      >
+                        <span
+                          th:text="${'Productos: ' + (salida.detalles != null ? salida.detalles.size() : 0) + ' items'}"
+                        >
+                          Productos: 0 items
+                        </span>
+                        <span
+                          th:if="${salida.motivoSalida != null}"
+                          th:text="${'Motivo: ' + salida.motivoSalida}"
+                        >
+                          Motivo: Venta
+                        </span>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <p
+                        class="text-lg font-semibold text-red-600"
+                        th:text="${'S/ ' + #numbers.formatDecimal(salida.totalVenta, 1, 2)}"
+                      >
+                        S/ 0.00
+                      </p>
+                      <p
+                        class="text-sm text-gray-500"
+                        th:text="${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy')}"
+                      >
+                        01/01/2024
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
