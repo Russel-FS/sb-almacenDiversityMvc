@@ -377,7 +377,7 @@
             </a>
 
             <form
-              th:action="@{/clientes/cambiar-estado/{id}(id=${cliente.idCliente})}"
+              th:action="@{/clientes/{id}/cambiar-estado(id=${cliente.idCliente})}"
               method="post"
               class="inline"
               th:if="${cliente.estado.name() == 'Activo'}"
@@ -394,7 +394,7 @@
             </form>
 
             <form
-              th:action="@{/clientes/cambiar-estado/{id}(id=${cliente.idCliente})}"
+              th:action="@{/clientes/{id}/cambiar-estado(id=${cliente.idCliente})}"
               method="post"
               class="inline"
               th:if="${cliente.estado.name() == 'Inactivo'}"
