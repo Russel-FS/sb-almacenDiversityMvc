@@ -2,6 +2,7 @@ package com.api.diversity.infrastructure.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import com.api.diversity.application.dto.ClienteDto;
 import com.api.diversity.application.service.interfaces.IClienteService;
 import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.domain.enums.TipoCliente;
+import com.api.diversity.infrastructure.security.CustomUser;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -118,18 +120,23 @@ public class ClienteController {
     @PostMapping("/guardar")
     public String guardarCliente(
             @ModelAttribute ClienteDto cliente,
+            @AuthenticationPrincipal CustomUser user,
             RedirectAttributes redirectAttributes) {
 
         log.info("Guardando cliente: {}", cliente.getNombreCompleto());
 
         try {
+
             if (cliente.getIdCliente() == null) {
                 // Nuevo cliente
+
+                cliente.setCreatedBy(user.getId());
                 clienteService.save(cliente);
                 redirectAttributes.addFlashAttribute("mensaje", "Cliente registrado exitosamente");
                 log.info("Cliente registrado exitosamente: {}", cliente.getNombreCompleto());
             } else {
                 // Actualizar cliente existente
+                cliente.setUpdatedBy(user.getId());
                 clienteService.update(cliente);
                 redirectAttributes.addFlashAttribute("mensaje", "Cliente actualizado exitosamente");
                 log.info("Cliente actualizado exitosamente: {}", cliente.getNombreCompleto());
