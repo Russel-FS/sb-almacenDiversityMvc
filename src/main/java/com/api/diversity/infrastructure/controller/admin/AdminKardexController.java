@@ -1,4 +1,4 @@
-package com.api.diversity.infrastructure.controller.kardex;
+package com.api.diversity.infrastructure.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

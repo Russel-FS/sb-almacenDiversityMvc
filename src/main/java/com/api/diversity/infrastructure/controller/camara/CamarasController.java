@@ -1,4 +1,4 @@
-package com.api.diversity.infrastructure.controller.categoria;
+package com.api.diversity.infrastructure.controller.camara;
 
 import java.util.List;
 

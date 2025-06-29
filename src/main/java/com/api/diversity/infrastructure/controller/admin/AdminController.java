@@ -1,4 +1,4 @@
-package com.api.diversity.infrastructure.controller.categoria;
+package com.api.diversity.infrastructure.controller.admin;
 
 import java.util.List;
 
@@ -31,9 +31,9 @@ public class AdminController {
     public String listarCategorias(Model model) {
         List<CategoriaDto> categorias = categoriaService.findAllIncludingInactive();
         model.addAttribute("categorias", categorias);
-        return "categorias/lista"; 
-    } 
-  
+        return "categorias/lista";
+    }
+
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("categoria", new CategoriaDto());
@@ -53,8 +53,8 @@ public class AdminController {
     }
 
     @PostMapping("/guardar")
-    public String guardarCategoria(@Valid CategoriaDto categoria, 
-            BindingResult result, 
+    public String guardarCategoria(@Valid CategoriaDto categoria,
+            BindingResult result,
             Model model,
             RedirectAttributes flash) {
         if (result.hasErrors()) {
