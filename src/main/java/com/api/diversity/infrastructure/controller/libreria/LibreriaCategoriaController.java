@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/libreria/categorias")
 @RequiredArgsConstructor
-public class LibreriaController {
+public class LibreriaCategoriaController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
@@ -34,7 +34,7 @@ public class LibreriaController {
         List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.LIBRERIA);
         model.addAttribute("categorias", categorias);
         model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-        return "categorias/libreria/lista";
+        return "libreria/categorias/lista";
     }
 
     @GetMapping("/nuevo")
@@ -46,7 +46,7 @@ public class LibreriaController {
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-        return "categorias/libreria/form";
+        return "libreria/categorias/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -62,7 +62,7 @@ public class LibreriaController {
 
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-        return "categorias/libreria/form";
+        return "libreria/categorias/form";
     }
 
     @PostMapping("/guardar")
@@ -78,7 +78,7 @@ public class LibreriaController {
         }
         if (result.hasErrors()) {
             model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
-            return "categorias/libreria/form";
+            return "libreria/categorias/form";
         }
 
         // Verificar que el rubro de la categoría es correcto
