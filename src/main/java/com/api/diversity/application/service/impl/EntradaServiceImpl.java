@@ -3,6 +3,8 @@ package com.api.diversity.application.service.impl;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -57,6 +59,18 @@ public class EntradaServiceImpl implements IEntradaService {
             // Validar usuario registro
             UsuarioEntity usuarioRegistro = usuarioRepository.findById(entradaDto.getUsuarioRegistroId())
                     .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+
+            // Validar que no haya productos duplicados en los detalles
+            if (entradaDto.getDetalles() != null) {
+                Set<Long> productosIds = new HashSet<>();
+                for (DetalleEntradaDto detalleDto : entradaDto.getDetalles()) {
+                    if (!productosIds.add(detalleDto.getProductoId())) {
+                        throw new IllegalStateException(
+                                "No se puede agregar el mismo producto más de una vez en la misma entrada. " +
+                                        "Producto ID: " + detalleDto.getProductoId());
+                    }
+                }
+            }
 
             // Crear entidad
             EntradaEntity entrada = entradaMapper.toEntity(entradaDto);
