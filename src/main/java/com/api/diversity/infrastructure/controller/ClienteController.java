@@ -137,7 +137,7 @@ public class ClienteController {
 
         } catch (Exception e) {
             log.error("Error al guardar cliente: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error", "Error al guardar cliente: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
             redirectAttributes.addFlashAttribute("cliente", cliente);
             return "redirect:/clientes/nuevo";
         }
