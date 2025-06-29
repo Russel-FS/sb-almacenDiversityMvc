@@ -101,11 +101,11 @@ public class ClienteServiceImpl implements IClienteService {
     @Transactional
     public void deleteById(Long id) {
         try {
-            if (!clienteRepository.existsById(id)) {
-                throw new EntityNotFoundException("Cliente no encontrado");
-            }
-            clienteRepository.deleteById(id);
-            log.info("Cliente eliminado ID: {}", id);
+            ClienteEntity cliente = clienteRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
+            cliente.setEstado(EstadoCliente.Eliminado);
+            clienteRepository.save(cliente);
+            log.info("Cliente eliminado lógicamente ID: {}", id);
         } catch (Exception e) {
             log.error("Error al eliminar cliente: {}", e.getMessage(), e);
             throw new RuntimeException("Error al eliminar cliente: " + e.getMessage(), e);
