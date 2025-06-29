@@ -67,6 +67,30 @@
         color: #9ca3af;
         font-weight: 500;
       }
+
+      /* scroll */
+      .overflow-y-auto::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .overflow-y-auto::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 8px;
+      }
+
+      .overflow-y-auto::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 8px;
+      }
+
+      .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      .overflow-y-auto {
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 #f1f5f9;
+      }
     </style>
   </head>
   <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
@@ -151,8 +175,7 @@
           <!-- Dashboard -->
           <a
             th:href="@{/pinateria/kardex/dashboard}"
-            th:class="${#httpServletRequest.requestURI.contains('/dashboard')} ? 'nav-tab active' : 'nav-tab'"
-            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
               class="w-4 h-4 mr-2"
@@ -173,8 +196,7 @@
           <!-- Movimientos -->
           <a
             th:href="@{/pinateria/kardex/movimientos}"
-            th:class="${#httpServletRequest.requestURI.contains('/movimientos')} ? 'nav-tab active' : 'nav-tab'"
-            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
               class="w-4 h-4 mr-2"
@@ -195,8 +217,7 @@
           <!-- Entradas -->
           <a
             th:href="@{/pinateria/kardex/entrada/nueva}"
-            th:class="${#httpServletRequest.requestURI.contains('/entrada')} ? 'nav-tab active' : 'nav-tab'"
-            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
               class="w-4 h-4 mr-2"
@@ -217,8 +238,7 @@
           <!-- Salidas -->
           <a
             th:href="@{/pinateria/kardex/salida/nueva}"
-            th:class="${#httpServletRequest.requestURI.contains('/salida')} ? 'nav-tab active' : 'nav-tab'"
-            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
               class="w-4 h-4 mr-2"
@@ -239,8 +259,7 @@
           <!-- Reportes -->
           <a
             th:href="@{/pinateria/kardex/reportes}"
-            th:class="${#httpServletRequest.requestURI.contains('/reportes')} ? 'nav-tab active' : 'nav-tab'"
-            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
               class="w-4 h-4 mr-2"
