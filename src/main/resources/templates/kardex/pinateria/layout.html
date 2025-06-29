@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  th:fragment="kardexLayout(content, titulo, rubro)"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo}">Kardex - J&C Diversity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont,
+          sans-serif;
+      }
+
+      .nav-tab {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .nav-tab.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      }
+
+      .nav-tab:hover:not(.active) {
+        background: rgba(102, 126, 234, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .rubro-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      .breadcrumb-item {
+        position: relative;
+      }
+
+      .breadcrumb-item:not(:last-child)::after {
+        content: ">";
+        position: absolute;
+        right: -12px;
+        color: #9ca3af;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <!-- Header Principal -->
+    <header class="glass-effect border-b border-gray-200/50 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4">
+        <!-- Header Superior -->
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo y Rubro -->
+          <div class="flex items-center space-x-4">
+            <a href="/" class="flex items-center space-x-2">
+              <span
+                class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+              >
+                J&C
+              </span>
+              <span class="text-xl font-medium text-gray-800">Diversity</span>
+            </a>
+
+            <!-- Separador -->
+            <div class="w-px h-8 bg-gray-300"></div>
+
+            <!-- Rubro Activo -->
+            <div class="flex items-center space-x-2">
+              <div
+                class="rubro-badge px-3 py-1 rounded-full text-white text-sm font-semibold"
+              >
+                <span th:text="${rubro}">Piñatería</span>
+              </div>
+              <span class="text-gray-600 font-medium">Kardex</span>
+            </div>
+          </div>
+
+          <!-- Acciones del Usuario -->
+          <div class="flex items-center space-x-4">
+            <a
+              href="/"
+              class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors flex items-center"
+            >
+              <svg
+                class="w-4 h-4 mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+              Inicio
+            </a>
+
+            <!-- Usuario -->
+            <div class="flex items-center space-x-2">
+              <div
+                class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+              >
+                <svg
+                  class="w-4 h-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              </div>
+              <span class="text-sm font-medium text-gray-700">Usuario</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Menú de Navegación del Kardex -->
+        <nav class="flex items-center space-x-2 py-4">
+          <!-- Dashboard -->
+          <a
+            th:href="@{/pinateria/kardex/dashboard}"
+            th:class="${#httpServletRequest.requestURI.contains('/dashboard')} ? 'nav-tab active' : 'nav-tab'"
+            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+          >
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              />
+            </svg>
+            Dashboard
+          </a>
+
+          <!-- Movimientos -->
+          <a
+            th:href="@{/pinateria/kardex/movimientos}"
+            th:class="${#httpServletRequest.requestURI.contains('/movimientos')} ? 'nav-tab active' : 'nav-tab'"
+            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+          >
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+            Movimientos
+          </a>
+
+          <!-- Entradas -->
+          <a
+            th:href="@{/pinateria/kardex/entrada/nueva}"
+            th:class="${#httpServletRequest.requestURI.contains('/entrada')} ? 'nav-tab active' : 'nav-tab'"
+            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+          >
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
+            </svg>
+            Entradas
+          </a>
+
+          <!-- Salidas -->
+          <a
+            th:href="@{/pinateria/kardex/salida/nueva}"
+            th:class="${#httpServletRequest.requestURI.contains('/salida')} ? 'nav-tab active' : 'nav-tab'"
+            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+          >
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M20 12H4"
+              />
+            </svg>
+            Salidas
+          </a>
+
+          <!-- Reportes -->
+          <a
+            th:href="@{/pinateria/kardex/reportes}"
+            th:class="${#httpServletRequest.requestURI.contains('/reportes')} ? 'nav-tab active' : 'nav-tab'"
+            class="px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+          >
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Reportes
+          </a>
+        </nav>
+
+        <!-- Breadcrumbs -->
+        <div class="flex items-center space-x-2 py-2 text-sm text-gray-600">
+          <span class="breadcrumb-item">Kardex</span>
+          <span class="breadcrumb-item" th:text="${rubro}">Piñatería</span>
+          <span class="breadcrumb-item" th:text="${titulo}">Dashboard</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1">
+      <div th:replace="${content}"></div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  </body>
+</html>
