@@ -328,7 +328,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span
-                    th:class="${cliente.tipoCliente == T(com.api.diversity.domain.enums.TipoCliente).Persona_Natural ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800'}"
+                    th:class="${cliente.tipoCliente.name() == 'Persona_Natural' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800'}"
                     class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
                     th:text="${cliente.tipoClienteDescripcion}"
                   >
@@ -348,7 +348,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span
-                    th:class="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
+                    th:class="${cliente.estado.name() == 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
                     class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
                     th:text="${cliente.estadoDescripcion}"
                   >
@@ -384,7 +384,7 @@
                       th:action="@{/clientes/cambiar-estado/{id}(id=${cliente.idCliente})}"
                       method="post"
                       class="inline"
-                      th:if="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Activo}"
+                      th:if="${cliente.estado.name() == 'Activo'}"
                     >
                       <button
                         type="submit"
@@ -401,7 +401,7 @@
                       th:action="@{/clientes/cambiar-estado/{id}(id=${cliente.idCliente})}"
                       method="post"
                       class="inline"
-                      th:if="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Inactivo}"
+                      th:if="${cliente.estado.name() == 'Inactivo'}"
                     >
                       <button
                         type="submit"
