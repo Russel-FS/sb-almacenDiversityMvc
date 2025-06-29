@@ -39,25 +39,29 @@ public class ClienteController {
 
         try {
             List<ClienteDto> clientes;
+            List<ClienteDto> todosClientes = clienteService.findAll()
+                    .stream()
+                    .filter(c -> c.getEstado() != EstadoCliente.Eliminado)
+                    .toList();
 
             if (busqueda != null && !busqueda.trim().isEmpty()) {
-                clientes = clienteService.findByNombreCompletoContainingIgnoreCase(busqueda);
+                clientes = clienteService.findByNombreCompletoContainingIgnoreCase(busqueda)
+                        .stream()
+                        .filter(c -> c.getEstado() != EstadoCliente.Eliminado)
+                        .toList();
             } else {
-                if (estado != null && tipoCliente != null) {
-                    clientes = clienteService.findAll()
-                            .stream()
-                            .filter(c -> c.getEstado() == estado && c.getTipoCliente() == tipoCliente)
-                            .toList();
-                } else if (estado != null) {
-                    clientes = clienteService.findByEstado(estado);
-                } else if (tipoCliente != null) {
-                    clientes = clienteService.findByTipoCliente(tipoCliente);
-                } else {
-                    clientes = clienteService.findAll()
-                            .stream()
-                            .filter(c -> c.getEstado() != EstadoCliente.Eliminado)
-                            .toList();
-                }
+                clientes = todosClientes;
+            }
+
+            if (estado != null) {
+                clientes = clientes.stream()
+                        .filter(c -> c.getEstado() == estado)
+                        .toList();
+            }
+            if (tipoCliente != null) {
+                clientes = clientes.stream()
+                        .filter(c -> c.getTipoCliente() == tipoCliente)
+                        .toList();
             }
 
             // Estadísticas
