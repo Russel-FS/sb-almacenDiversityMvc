@@ -699,10 +699,11 @@
 
         // Eliminar producto
         document.addEventListener("click", function (e) {
-          if (e.target.classList.contains("remove-producto")) {
+          const removeButton = e.target.closest(".remove-producto");
+          if (removeButton) {
             const productos = document.querySelectorAll(".producto-item");
             if (productos.length > 1) {
-              e.target.closest(".producto-item").remove();
+              removeButton.closest(".producto-item").remove();
               calcularTotales();
             }
           }
