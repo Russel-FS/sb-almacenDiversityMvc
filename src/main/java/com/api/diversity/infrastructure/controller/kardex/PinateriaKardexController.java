@@ -492,16 +492,11 @@ public class PinateriaKardexController {
 
             redirectAttributes.addFlashAttribute("success",
                     "Salida registrada exitosamente con número: " + salidaForm.getNumeroDocumento());
-
-        } catch (IllegalStateException e) {
-            log.error("Error de validación al guardar salida: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/pinateria/kardex/dashboard";
         } catch (Exception e) {
             log.error("Error al guardar salida: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error",
-                    "Error al guardar la salida: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/pinateria/kardex/salida/nueva";
         }
-
-        return "redirect:/pinateria/kardex/dashboard";
     }
 }
