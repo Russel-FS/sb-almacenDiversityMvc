@@ -237,13 +237,13 @@
               <option value="">Todos los estados</option>
               <option
                 value="Activo"
-                th:selected="${estadoFiltro == T(com.api.diversity.domain.enums.EstadoCliente).Activo}"
+                th:selected="${estadoFiltro != null && estadoFiltro.name() == 'Activo'}"
               >
                 Activos
               </option>
               <option
                 value="Inactivo"
-                th:selected="${estadoFiltro == T(com.api.diversity.domain.enums.EstadoCliente).Inactivo}"
+                th:selected="${estadoFiltro != null && estadoFiltro.name() == 'Inactivo'}"
               >
                 Inactivos
               </option>

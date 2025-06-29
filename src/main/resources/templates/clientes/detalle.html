@@ -40,7 +40,7 @@
       </div>
     </header>
 
-    <!-- Navigation -->
+    <!-- navegacion -->
     <nav class="bg-white shadow-md">
       <div class="container mx-auto px-6 py-3">
         <div class="flex items-center justify-between">
@@ -115,7 +115,7 @@
               </div>
               <div class="flex items-center space-x-4">
                 <span
-                  th:class="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
+                  th:class="${cliente.estado.name() == 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
                   class="inline-flex px-3 py-1 text-sm font-semibold rounded-full"
                   th:text="${cliente.estadoDescripcion}"
                 >
@@ -281,7 +281,7 @@
                         Tipo de Cliente
                       </p>
                       <span
-                        th:class="${cliente.tipoCliente == T(com.api.diversity.domain.enums.TipoCliente).Persona_Natural ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800'}"
+                        th:class="${cliente.tipoCliente.name() == 'Persona_Natural' ? 'bg-purple-100 text-purple-800' : 'bg-orange-100 text-orange-800'}"
                         class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
                         th:text="${cliente.tipoClienteDescripcion}"
                       >
@@ -295,7 +295,7 @@
                     <div>
                       <p class="text-sm font-medium text-gray-500">Estado</p>
                       <span
-                        th:class="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
+                        th:class="${cliente.estado.name() == 'Activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
                         class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
                         th:text="${cliente.estadoDescripcion}"
                       >
@@ -380,7 +380,7 @@
               th:action="@{/clientes/cambiar-estado/{id}(id=${cliente.idCliente})}"
               method="post"
               class="inline"
-              th:if="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Activo}"
+              th:if="${cliente.estado.name() == 'Activo'}"
             >
               <button
                 type="submit"
@@ -397,7 +397,7 @@
               th:action="@{/clientes/cambiar-estado/{id}(id=${cliente.idCliente})}"
               method="post"
               class="inline"
-              th:if="${cliente.estado == T(com.api.diversity.domain.enums.EstadoCliente).Inactivo}"
+              th:if="${cliente.estado.name() == 'Inactivo'}"
             >
               <button
                 type="submit"
