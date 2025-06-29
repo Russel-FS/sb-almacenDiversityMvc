@@ -35,6 +35,8 @@ public class EntradaMapper {
         if (entity.getProveedor() != null) {
             dto.setProveedorId(entity.getProveedor().getIdProveedor());
             dto.setProveedorNombre(entity.getProveedor().getRazonSocial());
+            dto.setProveedorRuc(entity.getProveedor().getRuc());
+            dto.setProveedorDireccion(entity.getProveedor().getDireccion());
         }
 
         // Mapear usuario registro

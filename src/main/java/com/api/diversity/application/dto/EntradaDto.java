@@ -21,6 +21,8 @@ public class EntradaDto {
     private TipoDocumento tipoDocumento;
     private Long proveedorId;
     private String proveedorNombre;
+    private String proveedorRuc;
+    private String proveedorDireccion;
     private LocalDateTime fechaEntrada;
     private BigDecimal costoTotal;
     private EstadoEntrada estado;

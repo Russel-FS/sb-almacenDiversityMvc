@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -228,23 +229,101 @@ public class PinateriaKardexController {
     }
 
     /**
-     * Detalle de movimiento de Piñatería
+     * Detalle de movimiento de Piñatería (general - mantiene compatibilidad)
      */
     @GetMapping("/movimientos/{id}")
-    public String detalleMovimiento(Long id, Model model) {
+    public String detalleMovimiento(@PathVariable Long id, Model model) {
         log.info("Accediendo al detalle del movimiento ID: {} - Piñatería", id);
 
-        // TODO: Agregar lógica para cargar:
-        // - Detalles del movimiento de piñatería
-        // - Lista de productos involucrados
-        // - Información del proveedor/cliente
+        try {
+            // Intentar buscar como entrada primero
+            EntradaDto entrada = entradaService.findById(id);
+            if (entrada != null) {
+                log.info("Movimiento encontrado como entrada: {}", entrada.getNumeroFactura());
+                return "redirect:/pinateria/kardex/entrada/" + id;
+            }
 
-        model.addAttribute("titulo", "Detalle de Movimiento - Piñatería");
-        model.addAttribute("subtitulo", "Información detallada del movimiento");
-        model.addAttribute("movimientoId", id);
-        model.addAttribute("rubro", "Piñatería");
+            // Si no es entrada, buscar como salida
+            SalidaDto salida = salidaService.findById(id);
+            if (salida != null) {
+                log.info("Movimiento encontrado como salida: {}", salida.getNumeroDocumento());
+                return "redirect:/pinateria/kardex/salida/" + id;
+            }
 
-        return "kardex/pinateria/movimiento/detalle";
+            // Si no se encuentra, mostrar error
+            log.warn("Movimiento no encontrado con ID: {}", id);
+            model.addAttribute("error", "Movimiento no encontrado");
+            return "redirect:/pinateria/kardex/movimientos";
+
+        } catch (Exception e) {
+            log.error("Error al cargar detalle del movimiento ID {}: {}", id, e.getMessage(), e);
+            model.addAttribute("error", "Error al cargar el detalle del movimiento: " + e.getMessage());
+            return "redirect:/pinateria/kardex/movimientos";
+        }
+    }
+
+    /**
+     * Detalle específico de entrada de Piñatería
+     */
+    @GetMapping("/entrada/{id}")
+    public String detalleEntrada(@PathVariable Long id, Model model) {
+        log.info("Accediendo al detalle de entrada ID: {} - Piñatería", id);
+
+        try {
+            EntradaDto entrada = entradaService.findById(id);
+            if (entrada == null) {
+                log.warn("Entrada no encontrada con ID: {}", id);
+                model.addAttribute("error", "Entrada no encontrada");
+                return "redirect:/pinateria/kardex/movimientos";
+            }
+
+            log.info("Entrada encontrada: {}", entrada.getNumeroFactura());
+
+            model.addAttribute("titulo", "Detalle de Entrada - Piñatería");
+            model.addAttribute("subtitulo", "Información detallada de la entrada");
+            model.addAttribute("movimientoId", id);
+            model.addAttribute("rubro", "Piñatería");
+            model.addAttribute("entrada", entrada);
+
+            return "kardex/pinateria/movimiento/entrada-detalle";
+
+        } catch (Exception e) {
+            log.error("Error al cargar detalle de entrada ID {}: {}", id, e.getMessage(), e);
+            model.addAttribute("error", "Error al cargar el detalle de la entrada: " + e.getMessage());
+            return "redirect:/pinateria/kardex/movimientos";
+        }
+    }
+
+    /**
+     * Detalle específico de salida de Piñatería
+     */
+    @GetMapping("/salida/{id}")
+    public String detalleSalida(@PathVariable Long id, Model model) {
+        log.info("Accediendo al detalle de salida ID: {} - Piñatería", id);
+
+        try {
+            SalidaDto salida = salidaService.findById(id);
+            if (salida == null) {
+                log.warn("Salida no encontrada con ID: {}", id);
+                model.addAttribute("error", "Salida no encontrada");
+                return "redirect:/pinateria/kardex/movimientos";
+            }
+
+            log.info("Salida encontrada: {}", salida.getNumeroDocumento());
+
+            model.addAttribute("titulo", "Detalle de Salida - Piñatería");
+            model.addAttribute("subtitulo", "Información detallada de la salida");
+            model.addAttribute("movimientoId", id);
+            model.addAttribute("rubro", "Piñatería");
+            model.addAttribute("salida", salida);
+
+            return "kardex/pinateria/movimiento/salida-detalle";
+
+        } catch (Exception e) {
+            log.error("Error al cargar detalle de salida ID {}: {}", id, e.getMessage(), e);
+            model.addAttribute("error", "Error al cargar el detalle de la salida: " + e.getMessage());
+            return "redirect:/pinateria/kardex/movimientos";
+        }
     }
 
     /**

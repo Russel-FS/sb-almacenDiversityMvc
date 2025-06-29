@@ -22,6 +22,7 @@ public class SalidaDto {
     private Long clienteId;
     private String clienteNombre;
     private String clienteDni;
+    private String clienteTipo;
     private LocalDateTime fechaSalida;
     private String motivoSalida;
     private BigDecimal totalVenta;

@@ -153,7 +153,7 @@
                   </td>
                   <td
                     class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                    th:text="${entrada.fechaEntrada != null ? #temporals.format(entrada.fechaEntrada, 'dd/MM/yyyy') : 'N/A'}"
+                    th:text="${entrada.fechaEntrada != null ? #temporals.format(entrada.fechaEntrada, 'dd/MM/yyyy HH:mm') : 'N/A'}"
                   >
                     01/01/2024
                   </td>
@@ -193,12 +193,19 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <a
-                      th:href="@{/pinateria/kardex/movimientos/{id}(id=${entrada.idEntrada})}"
+                      th:href="@{/pinateria/kardex/entrada/{id}(id=${entrada.idEntrada})}"
                       class="text-blue-600 hover:text-blue-900 mr-3"
                       th:if="${entrada.idEntrada != null}"
+                      title="Ver detalle de entrada"
                     >
                       <i class="fas fa-eye"></i>
                     </a>
+                    <span
+                      class="text-gray-400"
+                      th:if="${entrada.idEntrada == null}"
+                    >
+                      <i class="fas fa-eye-slash"></i>
+                    </span>
                   </td>
                 </tr>
               </tbody>
@@ -271,7 +278,7 @@
                   </td>
                   <td
                     class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                    th:text="${salida.fechaSalida != null ? #temporals.format(salida.fechaSalida, 'dd/MM/yyyy') : 'N/A'}"
+                    th:text="${salida.fechaSalida != null ? #temporals.format(salida.fechaSalida, 'dd/MM/yyyy HH:mm') : 'N/A'}"
                   >
                     01/01/2024
                   </td>
@@ -311,12 +318,19 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <a
-                      th:href="@{/pinateria/kardex/movimientos/{id}(id=${salida.idSalida})}"
+                      th:href="@{/pinateria/kardex/salida/{id}(id=${salida.idSalida})}"
                       class="text-blue-600 hover:text-blue-900 mr-3"
                       th:if="${salida.idSalida != null}"
+                      title="Ver detalle de salida"
                     >
                       <i class="fas fa-eye"></i>
                     </a>
+                    <span
+                      class="text-gray-400"
+                      th:if="${salida.idSalida == null}"
+                    >
+                      <i class="fas fa-eye-slash"></i>
+                    </span>
                   </td>
                 </tr>
               </tbody>
