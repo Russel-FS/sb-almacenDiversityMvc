@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +60,18 @@ public class SalidaServiceImpl implements ISalidaService {
             UsuarioEntity usuarioRegistro = usuarioRepository.findById(salidaDto.getUsuarioRegistroId())
                     .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 
+            // Validar que no haya productos duplicados en los detalles
+            if (salidaDto.getDetalles() != null) {
+                Set<Long> productosIds = new HashSet<>();
+                for (DetalleSalidaDto detalleDto : salidaDto.getDetalles()) {
+                    if (!productosIds.add(detalleDto.getProductoId())) {
+                        throw new IllegalStateException(
+                                "No se puede agregar el mismo producto más de una vez en la misma salida. " +
+                                        "Producto ID: " + detalleDto.getProductoId());
+                    }
+                }
+            }
+
             // Validar stock disponible para todos los productos
             if (salidaDto.getDetalles() != null) {
                 for (DetalleSalidaDto detalleDto : salidaDto.getDetalles()) {
@@ -107,6 +121,8 @@ public class SalidaServiceImpl implements ISalidaService {
                     // Calcular subtotal
                     detalle.setSubtotal(
                             detalle.getPrecioUnitario().multiply(BigDecimal.valueOf(detalle.getCantidad())));
+
+                    // validar que el producto no tenga
 
                     // Guardar detalle
                     detalleSalidaRepository.save(detalle);
