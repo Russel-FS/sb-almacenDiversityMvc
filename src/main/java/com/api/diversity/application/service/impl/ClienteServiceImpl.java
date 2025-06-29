@@ -107,7 +107,7 @@ public class ClienteServiceImpl implements IClienteService {
             clienteExistente.setTelefono(clienteDto.getTelefono());
             clienteExistente.setDireccion(clienteDto.getDireccion());
             clienteExistente.setTipoCliente(clienteDto.getTipoCliente());
-
+            clienteExistente.setEstado(clienteDto.getEstado() != null ? clienteDto.getEstado() : EstadoCliente.Activo);
             return clienteMapper.toDto(clienteRepository.save(clienteExistente));
         } catch (Exception e) {
             log.error("Error al actualizar cliente: {}", e.getMessage(), e);
