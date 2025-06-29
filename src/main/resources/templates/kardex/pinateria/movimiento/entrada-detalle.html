@@ -10,7 +10,6 @@
       rel="stylesheet"
     />
     <style>
-      /* scroll */
       .overflow-y-auto::-webkit-scrollbar {
         width: 6px;
       }
@@ -67,128 +66,17 @@
       }
     </style>
   </head>
-  <body
-    class="bg-gradient-to-br from-emerald-50 via-white to-green-50 min-h-screen"
-  >
-    <!-- Header -->
-    <header
-      class="bg-white/80 backdrop-blur-sm border-b border-white/20 shadow-lg sticky top-0 z-50"
-    >
-      <div class="max-w-7xl mx-auto px-6 py-6">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-6">
-            <div
-              class="w-16 h-16 bg-gradient-to-br from-emerald-600 to-green-600 rounded-2xl flex items-center justify-center shadow-lg"
-            >
-              <svg
-                class="w-8 h-8 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+  <body class="bg-white/50">
+    <!-- Contenedor principal -->
+    <div class="min-h-screen">
+      <div class="max-w-7xl mx-auto px-4 py-16">
+        <!-- Header -->
+        <div class="mb-16">
+          <div class="flex flex-wrap items-center justify-between mb-12">
+            <div class="flex flex-wrap items-center gap-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-emerald-600 to-green-600 rounded-3xl flex items-center justify-center shadow-sm"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-                />
-              </svg>
-            </div>
-            <div>
-              <h1 class="text-3xl font-bold text-gray-900" th:text="${titulo}">
-                Detalle de Entrada - Piñatería
-              </h1>
-              <p class="text-lg text-gray-600 mt-1" th:text="${subtitulo}">
-                Información detallada de la entrada
-              </p>
-            </div>
-          </div>
-          <div class="flex items-center space-x-4">
-            <a
-              href="/pinateria/kardex/movimientos"
-              class="px-6 py-3 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl hover:bg-gray-50 transition-all duration-200 shadow-sm"
-            >
-              <svg
-                class="w-5 h-5 mr-2 inline"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
-              </svg>
-              Volver
-            </a>
-            <a
-              href="/pinateria/kardex/dashboard"
-              class="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 transition-all duration-200 shadow-lg rounded-xl"
-            >
-              <svg
-                class="w-5 h-5 mr-2 inline"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                />
-              </svg>
-              Dashboard
-            </a>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- Contenido Principal -->
-    <div class="max-w-7xl mx-auto px-6 py-8">
-      <!-- Alerta de error -->
-      <div
-        th:if="${error}"
-        class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-2xl p-6 mb-8 shadow-sm"
-      >
-        <div class="flex items-center">
-          <div
-            class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mr-4"
-          >
-            <svg
-              class="w-6 h-6 text-red-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-          </div>
-          <p class="text-base font-medium text-red-800" th:text="${error}">
-            Error
-          </p>
-        </div>
-      </div>
-
-      <!-- Detalle de Entrada -->
-      <div
-        class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8"
-      >
-        <!-- Header de Entrada -->
-        <div
-          class="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-8 py-6 rounded-2xl -mt-8 -mx-8 mb-8"
-        >
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-              <div class="p-3 bg-white/20 rounded-xl">
                 <svg
                   class="w-8 h-8 text-white"
                   fill="none"
@@ -198,39 +86,30 @@
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
+                    stroke-width="1.5"
                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
                   />
                 </svg>
               </div>
               <div>
-                <h3 class="text-2xl font-bold">Detalle de Entrada</h3>
-                <p class="text-emerald-100">
-                  Información completa del movimiento
+                <h1
+                  class="text-5xl font-light text-gray-900 tracking-tight"
+                  th:text="${titulo}"
+                >
+                  Detalle de Entrada - Piñatería
+                </h1>
+                <p class="text-xl text-gray-600 mt-2" th:text="${subtitulo}">
+                  Información detallada de la entrada
                 </p>
               </div>
             </div>
-            <div class="text-right">
-              <div class="text-sm text-emerald-100">Número de Factura</div>
-              <div
-                class="text-xl font-bold"
-                th:text="${entrada?.numeroFactura}"
+            <div class="flex items-center gap-4">
+              <a
+                href="/pinateria/kardex/movimientos"
+                class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
               >
-                F001-001
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Información General -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <div
-            class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200/50"
-          >
-            <div class="flex items-center space-x-3 mb-6">
-              <div class="p-3 bg-blue-100 rounded-xl">
                 <svg
-                  class="w-6 h-6 text-blue-600"
+                  class="w-5 h-5 mr-2 inline"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -239,73 +118,192 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                Volver
+              </a>
+              <a
+                href="/pinateria/kardex/dashboard"
+                class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+              >
+                <svg
+                  class="w-5 h-5 mr-2 inline"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
+                </svg>
+                Dashboard
+              </a>
+            </div>
+          </div>
+
+          <!-- Alerta de error -->
+          <div
+            th:if="${error}"
+            class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 mb-8 shadow-sm"
+          >
+            <div class="flex items-center">
+              <div
+                class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4"
+              >
+                <svg
+                  class="w-6 h-6 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                   />
                 </svg>
               </div>
-              <h4 class="text-xl font-bold text-gray-900">
-                Información General
-              </h4>
+              <p class="text-base font-medium text-red-800" th:text="${error}">
+                Error
+              </p>
             </div>
-            <div class="space-y-4">
-              <div
-                class="flex justify-between items-center py-3 border-b border-blue-100"
-              >
-                <span class="text-gray-600 font-medium"
-                  >Número de Factura:</span
-                >
-                <span
-                  class="font-bold text-gray-900"
+          </div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="flex-1 p-8">
+          <!-- Información General -->
+          <div
+            class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 mb-8"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center space-x-3">
+                <div class="p-3 bg-emerald-100 rounded-xl">
+                  <svg
+                    class="w-6 h-6 text-emerald-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">
+                    Información General
+                  </h3>
+                  <p class="text-sm text-gray-600">
+                    Datos básicos del movimiento
+                  </p>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm text-gray-600">Número de Factura</div>
+                <div
+                  class="text-xl font-bold text-emerald-600"
                   th:text="${entrada?.numeroFactura}"
-                  >F001-001</span
                 >
+                  F001-001
+                </div>
               </div>
-              <div
-                class="flex justify-between items-center py-3 border-b border-blue-100"
-              >
-                <span class="text-gray-600 font-medium">Fecha de Entrada:</span>
-                <span
-                  class="font-bold text-gray-900"
-                  th:text="${#temporals.format(entrada?.fechaEntrada, 'dd/MM/yyyy HH:mm')}"
-                  >01/01/2024</span
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-4">
+                <div
+                  class="flex justify-between items-center py-3 border-b border-gray-100"
                 >
+                  <span class="text-gray-600 font-medium"
+                    >Número de Factura</span
+                  >
+                  <span
+                    class="font-bold text-gray-900"
+                    th:text="${entrada?.numeroFactura}"
+                    >F001-001</span
+                  >
+                </div>
+                <div
+                  class="flex justify-between items-center py-3 border-b border-gray-100"
+                >
+                  <span class="text-gray-600 font-medium"
+                    >Fecha de Entrada</span
+                  >
+                  <span
+                    class="font-bold text-gray-900"
+                    th:text="${#temporals.format(entrada?.fechaEntrada, 'dd/MM/yyyy HH:mm')}"
+                    >01/01/2024</span
+                  >
+                </div>
+                <div class="flex justify-between items-center py-3">
+                  <span class="text-gray-600 font-medium"
+                    >Tipo de Documento</span
+                  >
+                  <span
+                    class="font-bold text-gray-900"
+                    th:text="${entrada?.tipoDocumento?.descripcion}"
+                    >Factura</span
+                  >
+                </div>
               </div>
-              <div
-                class="flex justify-between items-center py-3 border-b border-blue-100"
-              >
-                <span class="text-gray-600 font-medium"
-                  >Tipo de Documento:</span
+              <div class="space-y-4">
+                <div
+                  class="flex justify-between items-center py-3 border-b border-gray-100"
                 >
-                <span
-                  class="font-bold text-gray-900"
-                  th:text="${entrada?.tipoDocumento?.descripcion}"
-                  >Factura</span
+                  <span class="text-gray-600 font-medium">Estado</span>
+                  <span
+                    th:if="${entrada?.estado?.name() == 'Pendiente'}"
+                    class="px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                    >Pendiente</span
+                  >
+                  <span
+                    th:if="${entrada?.estado?.name() == 'Completado'}"
+                    class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800"
+                    >Completado</span
+                  >
+                  <span
+                    th:if="${entrada?.estado?.name() == 'Anulado'}"
+                    class="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800"
+                    >Anulado</span
+                  >
+                </div>
+                <div
+                  class="flex justify-between items-center py-3 border-b border-gray-100"
                 >
-              </div>
-              <div class="flex justify-between items-center py-3">
-                <span class="text-gray-600 font-medium">Estado:</span>
-                <span
-                  th:if="${entrada?.estado?.name() == 'Pendiente'}"
-                  class="px-4 py-2 inline-flex text-sm font-semibold rounded-full bg-yellow-100 text-yellow-800"
-                  >Pendiente</span
-                >
-                <span
-                  th:if="${entrada?.estado?.name() == 'Completado'}"
-                  class="px-4 py-2 inline-flex text-sm font-semibold rounded-full bg-emerald-100 text-emerald-800"
-                  >Completado</span
-                >
-                <span
-                  th:if="${entrada?.estado?.name() == 'Anulado'}"
-                  class="px-4 py-2 inline-flex text-sm font-semibold rounded-full bg-red-100 text-red-800"
-                  >Anulado</span
-                >
+                  <span class="text-gray-600 font-medium"
+                    >Usuario Registro</span
+                  >
+                  <span
+                    class="font-bold text-gray-900"
+                    th:text="${entrada?.usuarioRegistroNombre}"
+                    >Usuario</span
+                  >
+                </div>
+                <div class="flex justify-between items-center py-3">
+                  <span class="text-gray-600 font-medium"
+                    >Usuario Aprobación</span
+                  >
+                  <span
+                    class="font-bold text-gray-900"
+                    th:text="${entrada?.usuarioAprobacionNombre ?: 'N/A'}"
+                    >N/A</span
+                  >
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Información del Proveedor -->
           <div
-            class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200/50"
+            class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 mb-8"
           >
             <div class="flex items-center space-x-3 mb-6">
               <div class="p-3 bg-purple-100 rounded-xl">
@@ -323,142 +321,50 @@
                   />
                 </svg>
               </div>
-              <h4 class="text-xl font-bold text-gray-900">
-                Información del Proveedor
-              </h4>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900">
+                  Información del Proveedor
+                </h3>
+                <p class="text-sm text-gray-600">
+                  Datos del proveedor asociado
+                </p>
+              </div>
             </div>
-            <div class="space-y-4">
-              <div
-                class="flex justify-between items-center py-3 border-b border-purple-100"
-              >
-                <span class="text-gray-600 font-medium">Razón Social:</span>
-                <span
-                  class="font-bold text-gray-900"
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="space-y-2">
+                <div class="text-sm text-gray-500">Razón Social</div>
+                <div
+                  class="font-medium text-gray-900"
                   th:text="${entrada?.proveedorNombre}"
-                  >Proveedor</span
                 >
+                  Proveedor
+                </div>
               </div>
-              <div
-                class="flex justify-between items-center py-3 border-b border-purple-100"
-              >
-                <span class="text-gray-600 font-medium">RUC:</span>
-                <span
-                  class="font-bold text-gray-900"
+              <div class="space-y-2">
+                <div class="text-sm text-gray-500">RUC</div>
+                <div
+                  class="font-medium text-gray-900"
                   th:text="${entrada?.proveedorRuc ?: 'N/A'}"
-                  >12345678</span
                 >
+                  12345678
+                </div>
               </div>
-              <div class="flex justify-between items-center py-3">
-                <span class="text-gray-600 font-medium">Dirección:</span>
-                <span
-                  class="font-bold text-gray-900 text-right"
+              <div class="space-y-2">
+                <div class="text-sm text-gray-500">Dirección</div>
+                <div
+                  class="font-medium text-gray-900"
                   th:text="${entrada?.proveedorDireccion ?: 'N/A'}"
-                  >Dirección</span
                 >
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Información de Usuarios -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <div
-            class="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-6 border border-emerald-200/50"
-          >
-            <div class="flex items-center space-x-3 mb-6">
-              <div class="p-3 bg-emerald-100 rounded-xl">
-                <svg
-                  class="w-6 h-6 text-emerald-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-              </div>
-              <h4 class="text-xl font-bold text-gray-900">Usuario Registro</h4>
-            </div>
-            <div class="space-y-4">
-              <div
-                class="flex justify-between items-center py-3 border-b border-emerald-100"
-              >
-                <span class="text-gray-600 font-medium">Nombre:</span>
-                <span
-                  class="font-bold text-gray-900"
-                  th:text="${entrada?.usuarioRegistroNombre}"
-                  >Usuario</span
-                >
-              </div>
-              <div class="flex justify-between items-center py-3">
-                <span class="text-gray-600 font-medium">Fecha:</span>
-                <span
-                  class="font-bold text-gray-900"
-                  th:text="${#temporals.format(entrada?.fechaEntrada, 'dd/MM/yyyy HH:mm')}"
-                  >01/01/2024</span
-                >
+                  Dirección
+                </div>
               </div>
             </div>
           </div>
 
+          <!-- Productos -->
           <div
-            th:if="${entrada?.usuarioAprobacionNombre != null}"
-            class="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-6 border border-orange-200/50"
-          >
-            <div class="flex items-center space-x-3 mb-6">
-              <div class="p-3 bg-orange-100 rounded-xl">
-                <svg
-                  class="w-6 h-6 text-orange-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h4 class="text-xl font-bold text-gray-900">
-                Usuario Aprobación
-              </h4>
-            </div>
-            <div class="space-y-4">
-              <div
-                class="flex justify-between items-center py-3 border-b border-orange-100"
-              >
-                <span class="text-gray-600 font-medium">Nombre:</span>
-                <span
-                  class="font-bold text-gray-900"
-                  th:text="${entrada?.usuarioAprobacionNombre}"
-                  >Usuario</span
-                >
-              </div>
-              <div class="flex justify-between items-center py-3">
-                <span class="text-gray-600 font-medium">Fecha:</span>
-                <span
-                  class="font-bold text-gray-900"
-                  th:text="${#temporals.format(entrada?.fechaAprobacion, 'dd/MM/yyyy HH:mm')}"
-                  >01/01/2024</span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Productos -->
-        <div
-          class="mb-8"
-          th:if="${entrada?.detalles != null and !entrada.detalles.isEmpty()}"
-        >
-          <div
-            class="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-6 border border-indigo-200/50"
+            class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 mb-8"
+            th:if="${entrada?.detalles != null and !entrada.detalles.isEmpty()}"
           >
             <div class="flex items-center space-x-3 mb-6">
               <div class="p-3 bg-indigo-100 rounded-xl">
@@ -476,16 +382,21 @@
                   />
                 </svg>
               </div>
-              <h4 class="text-xl font-bold text-gray-900">
-                Productos Recibidos
-              </h4>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900">
+                  Productos Recibidos
+                </h3>
+                <p class="text-sm text-gray-600">
+                  Lista de productos en la entrada
+                </p>
+              </div>
             </div>
             <div class="overflow-x-auto">
               <div
                 class="max-h-96 overflow-y-auto scrollbar-thin table-container"
               >
                 <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-white/50 sticky top-0">
+                  <thead class="sticky-header">
                     <tr>
                       <th
                         class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
@@ -544,50 +455,16 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Totales -->
-        <div
-          class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
-          th:if="${entrada?.costoTotal != null}"
-        >
+          <!-- Totales -->
           <div
-            class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200/50"
+            class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 mb-8"
+            th:if="${entrada?.costoTotal != null}"
           >
-            <div class="flex items-center space-x-3 mb-4">
-              <div class="p-2 bg-gray-200 rounded-lg">
+            <div class="flex items-center space-x-3 mb-6">
+              <div class="p-3 bg-blue-100 rounded-xl">
                 <svg
-                  class="w-5 h-5 text-gray-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                  />
-                </svg>
-              </div>
-              <label class="text-sm font-semibold text-gray-700"
-                >Subtotal</label
-              >
-            </div>
-            <input
-              type="text"
-              readonly
-              th:value="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal, 1, 2)}"
-              class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white/80 text-lg font-bold text-gray-900"
-            />
-          </div>
-          <div
-            class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200/50"
-          >
-            <div class="flex items-center space-x-3 mb-4">
-              <div class="p-2 bg-blue-200 rounded-lg">
-                <svg
-                  class="w-5 h-5 text-blue-600"
+                  class="w-6 h-6 text-blue-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -600,24 +477,51 @@
                   />
                 </svg>
               </div>
-              <label class="text-sm font-semibold text-gray-700"
-                >IGV (18%)</label
-              >
+              <div>
+                <h3 class="text-xl font-bold text-gray-900">Totales</h3>
+                <p class="text-sm text-gray-600">Resumen de costos</p>
+              </div>
             </div>
-            <input
-              type="text"
-              readonly
-              th:value="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal * 0.18, 1, 2)}"
-              class="w-full px-4 py-3 border border-blue-200 rounded-xl bg-white/80 text-lg font-bold text-blue-900"
-            />
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="space-y-2">
+                <div class="text-sm text-gray-500">Subtotal</div>
+                <div
+                  class="text-lg font-medium text-gray-900"
+                  th:text="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal, 1, 2)}"
+                >
+                  S/ 0.00
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="text-sm text-gray-500">IGV (18%)</div>
+                <div
+                  class="text-lg font-medium text-gray-900"
+                  th:text="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal * 0.18, 1, 2)}"
+                >
+                  S/ 0.00
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="text-sm text-gray-500">Total</div>
+                <div
+                  class="text-xl font-semibold text-emerald-600"
+                  th:text="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal * 1.18, 1, 2)}"
+                >
+                  S/ 0.00
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- Observaciones -->
           <div
-            class="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-6 border border-emerald-200/50"
+            class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6"
+            th:if="${entrada?.observaciones != null and !entrada.observaciones.isEmpty()}"
           >
             <div class="flex items-center space-x-3 mb-4">
-              <div class="p-2 bg-emerald-200 rounded-lg">
+              <div class="p-3 bg-yellow-100 rounded-xl">
                 <svg
-                  class="w-5 h-5 text-emerald-600"
+                  class="w-6 h-6 text-yellow-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -626,50 +530,22 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                   />
                 </svg>
               </div>
-              <label class="text-sm font-semibold text-gray-700">Total</label>
+              <div>
+                <h3 class="text-xl font-bold text-gray-900">Observaciones</h3>
+                <p class="text-sm text-gray-600">Notas adicionales</p>
+              </div>
             </div>
-            <input
-              type="text"
-              readonly
-              th:value="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal * 1.18, 1, 2)}"
-              class="w-full px-4 py-3 border border-emerald-200 rounded-xl bg-white/80 text-2xl font-bold text-emerald-900"
-            />
+            <p
+              class="text-gray-700 bg-white/80 p-6 rounded-xl text-lg leading-relaxed"
+              th:text="${entrada.observaciones}"
+            >
+              Observaciones
+            </p>
           </div>
-        </div>
-
-        <!-- Observaciones -->
-        <div
-          th:if="${entrada?.observaciones != null and !entrada.observaciones.isEmpty()}"
-          class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-200/50"
-        >
-          <div class="flex items-center space-x-3 mb-4">
-            <div class="p-3 bg-yellow-100 rounded-xl">
-              <svg
-                class="w-6 h-6 text-yellow-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
-            </div>
-            <h4 class="text-xl font-bold text-gray-900">Observaciones</h4>
-          </div>
-          <p
-            class="text-gray-700 bg-white/80 p-6 rounded-xl text-lg leading-relaxed"
-            th:text="${entrada.observaciones}"
-          >
-            Observaciones
-          </p>
         </div>
       </div>
     </div>
