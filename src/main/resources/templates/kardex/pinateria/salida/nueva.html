@@ -139,7 +139,7 @@
                 <option value="">Seleccionar tipo</option>
                 <option
                   th:each="tipo : ${tiposDocumento}"
-                  th:value="${tipo}"
+                  th:value="${tipo.name()}"
                   th:text="${tipo.descripcion}"
                 >
                   Tipo
@@ -251,8 +251,14 @@
                     <input
                       type="text"
                       readonly
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                      class="subtotal-display w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
                       placeholder="0.00"
+                    />
+                    <input
+                      type="hidden"
+                      name="productos[0].subtotal"
+                      class="subtotal-hidden"
+                      value="0"
                     />
                   </div>
                   <div class="flex items-end">
@@ -418,6 +424,10 @@
             }
           });
 
+          // Limpiar campos específicos
+          newProducto.querySelector(".subtotal-display").value = "";
+          newProducto.querySelector(".subtotal-hidden").value = "0";
+
           container.appendChild(newProducto);
           productoIndex++;
         });
@@ -445,9 +455,15 @@
             ) || 0;
           const subtotalItem = cantidad * precio;
 
+          // Actualizar campo de visualización
           item.querySelector(
-            "input[readonly]"
+            ".subtotal-display"
           ).value = `S/ ${subtotalItem.toFixed(2)}`;
+
+          // Actualizar campo oculto
+          item.querySelector(".subtotal-hidden").value =
+            subtotalItem.toFixed(2);
+
           subtotal += subtotalItem;
         });
 

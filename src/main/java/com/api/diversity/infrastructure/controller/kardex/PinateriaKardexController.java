@@ -412,6 +412,37 @@ public class PinateriaKardexController {
             log.info("Salida a procesar: {}", salidaForm);
             log.info("Productos: {}", salidaForm.getProductos());
 
+            // Validar campos requeridos
+            if (salidaForm.getTipoDocumento() == null) {
+                redirectAttributes.addFlashAttribute("error", "Debe seleccionar un tipo de documento");
+                return "redirect:/pinateria/kardex/salida/nueva";
+            }
+
+            if (salidaForm.getClienteId() == null) {
+                redirectAttributes.addFlashAttribute("error", "Debe seleccionar un cliente");
+                return "redirect:/pinateria/kardex/salida/nueva";
+            }
+
+            if (salidaForm.getMotivoSalida() == null || salidaForm.getMotivoSalida().trim().isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Debe seleccionar un motivo de salida");
+                return "redirect:/pinateria/kardex/salida/nueva";
+            }
+
+            // Validar que haya productos
+            if (salidaForm.getProductos() == null || salidaForm.getProductos().isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Debe agregar al menos un producto");
+                return "redirect:/pinateria/kardex/salida/nueva";
+            }
+
+            // Validar fecha de salida
+            if (salidaForm.getFechaSalida() != null) {
+                LocalDate fechaActual = LocalDate.now();
+                if (salidaForm.getFechaSalida().isAfter(fechaActual)) {
+                    redirectAttributes.addFlashAttribute("error", "La fecha de salida no puede ser futura");
+                    return "redirect:/pinateria/kardex/salida/nueva";
+                }
+            }
+
             // Obtener usuario actual
             Long usuarioId = securityContext.getCurrentUserId();
             if (usuarioId == null) {
