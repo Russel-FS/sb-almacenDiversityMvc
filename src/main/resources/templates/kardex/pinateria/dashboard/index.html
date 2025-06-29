@@ -575,34 +575,57 @@
         <div
           class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-10 shadow-sm"
         >
-          <h3
-            class="text-2xl font-semibold text-gray-900 mb-8 flex items-center"
+          <div class="flex items-center justify-between mb-8">
+            <h3 class="text-2xl font-semibold text-gray-900 flex items-center">
+              <svg
+                class="w-7 h-7 text-yellow-500 mr-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              Acciones Rápidas
+            </h3>
+            <div class="flex items-center gap-2 text-sm text-gray-500">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Acceso directo a funciones principales</span>
+            </div>
+          </div>
+
+          <!-- Acciones principales -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
           >
-            <svg
-              class="w-7 h-7 text-yellow-500 mr-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1.5"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
-            Acciones Rápidas
-          </h3>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <a
               href="/pinateria/kardex/entrada/nueva"
-              class="group bg-gradient-to-br from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 p-8 rounded-3xl border border-green-200 transition-all duration-200 text-center"
+              class="group bg-gradient-to-br from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 p-6 rounded-2xl border border-green-200 transition-all duration-200 text-center relative overflow-hidden"
             >
               <div
-                class="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200"
+                class="absolute top-0 right-0 w-20 h-20 bg-green-100 rounded-full -mr-10 -mt-10 opacity-20 group-hover:scale-150 transition-transform duration-300"
+              ></div>
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200 relative z-10"
               >
                 <svg
-                  class="w-8 h-8 text-green-600"
+                  class="w-6 h-6 text-green-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -615,20 +638,28 @@
                   />
                 </svg>
               </div>
-              <h4 class="text-xl font-semibold text-gray-900 mb-2">
+              <h4
+                class="text-lg font-semibold text-gray-900 mb-1 relative z-10"
+              >
                 Nueva Entrada
               </h4>
-              <p class="text-gray-600">Registrar compra de productos</p>
+              <p class="text-sm text-gray-600 relative z-10">
+                Registrar compra
+              </p>
             </a>
+
             <a
               href="/pinateria/kardex/salida/nueva"
-              class="group bg-gradient-to-br from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 p-8 rounded-3xl border border-red-200 transition-all duration-200 text-center"
+              class="group bg-gradient-to-br from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 p-6 rounded-2xl border border-red-200 transition-all duration-200 text-center relative overflow-hidden"
             >
               <div
-                class="w-16 h-16 bg-gradient-to-br from-red-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200"
+                class="absolute top-0 right-0 w-20 h-20 bg-red-100 rounded-full -mr-10 -mt-10 opacity-20 group-hover:scale-150 transition-transform duration-300"
+              ></div>
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-red-100 to-pink-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200 relative z-10"
               >
                 <svg
-                  class="w-8 h-8 text-red-600"
+                  class="w-6 h-6 text-red-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -641,20 +672,26 @@
                   />
                 </svg>
               </div>
-              <h4 class="text-xl font-semibold text-gray-900 mb-2">
+              <h4
+                class="text-lg font-semibold text-gray-900 mb-1 relative z-10"
+              >
                 Nueva Salida
               </h4>
-              <p class="text-gray-600">Registrar venta de productos</p>
+              <p class="text-sm text-gray-600 relative z-10">Registrar venta</p>
             </a>
+
             <a
               href="/pinateria/kardex/movimientos"
-              class="group bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 p-8 rounded-3xl border border-blue-200 transition-all duration-200 text-center"
+              class="group bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 p-6 rounded-2xl border border-blue-200 transition-all duration-200 text-center relative overflow-hidden"
             >
               <div
-                class="w-16 h-16 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-200"
+                class="absolute top-0 right-0 w-20 h-20 bg-blue-100 rounded-full -mr-10 -mt-10 opacity-20 group-hover:scale-150 transition-transform duration-300"
+              ></div>
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200 relative z-10"
               >
                 <svg
-                  class="w-8 h-8 text-blue-600"
+                  class="w-6 h-6 text-blue-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -667,11 +704,151 @@
                   />
                 </svg>
               </div>
-              <h4 class="text-xl font-semibold text-gray-900 mb-2">
-                Ver Movimientos
+              <h4
+                class="text-lg font-semibold text-gray-900 mb-1 relative z-10"
+              >
+                Movimientos
               </h4>
-              <p class="text-gray-600">Historial completo</p>
+              <p class="text-sm text-gray-600 relative z-10">Ver historial</p>
             </a>
+
+            <a
+              href="/pinateria/kardex/reporte"
+              class="group bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 p-6 rounded-2xl border border-purple-200 transition-all duration-200 text-center relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 right-0 w-20 h-20 bg-purple-100 rounded-full -mr-10 -mt-10 opacity-20 group-hover:scale-150 transition-transform duration-300"
+              ></div>
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200 relative z-10"
+              >
+                <svg
+                  class="w-6 h-6 text-purple-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
+                </svg>
+              </div>
+              <h4
+                class="text-lg font-semibold text-gray-900 mb-1 relative z-10"
+              >
+                Reportes
+              </h4>
+              <p class="text-sm text-gray-600 relative z-10">
+                Análisis detallado
+              </p>
+            </a>
+          </div>
+
+          <!-- Acciones secundarias -->
+          <div class="border-t border-gray-100 pt-8">
+            <h4
+              class="text-lg font-semibold text-gray-900 mb-6 flex items-center"
+            >
+              <svg
+                class="w-5 h-5 text-gray-500 mr-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                />
+              </svg>
+              Acciones Adicionales
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <a
+                href="/productos/pinateria"
+                class="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors duration-200 group"
+              >
+                <div
+                  class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-4 group-hover:bg-gray-300 transition-colors"
+                >
+                  <svg
+                    class="w-5 h-5 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">Gestionar Productos</p>
+                  <p class="text-sm text-gray-600">Ver y editar productos</p>
+                </div>
+              </a>
+
+              <a
+                href="/proveedores"
+                class="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors duration-200 group"
+              >
+                <div
+                  class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-4 group-hover:bg-gray-300 transition-colors"
+                >
+                  <svg
+                    class="w-5 h-5 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">Proveedores</p>
+                  <p class="text-sm text-gray-600">Gestionar proveedores</p>
+                </div>
+              </a>
+
+              <a
+                href="/clientes"
+                class="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors duration-200 group"
+              >
+                <div
+                  class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center mr-4 group-hover:bg-gray-300 transition-colors"
+                >
+                  <svg
+                    class="w-5 h-5 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">Clientes</p>
+                  <p class="text-sm text-gray-600">Gestionar clientes</p>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
