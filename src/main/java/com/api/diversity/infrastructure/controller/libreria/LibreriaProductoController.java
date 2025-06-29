@@ -1,4 +1,4 @@
-package com.api.diversity.infrastructure.controller.producto;
+package com.api.diversity.infrastructure.controller.libreria;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,30 +15,31 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.api.diversity.application.dto.ProductoDto;
 import com.api.diversity.application.service.interfaces.ICategoriaService;
-import com.api.diversity.application.service.interfaces.IProductoService; 
+import com.api.diversity.application.service.interfaces.IProductoService;
+import com.api.diversity.domain.enums.TipoRubro;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/admin/productos")
+@RequestMapping("/libreria/productos")
 @RequiredArgsConstructor
-public class AdminProductoController {
+public class LibreriaProductoController {
 
     private final IProductoService productoService;
     private final ICategoriaService categoriaService;
 
     @GetMapping("")
     public String listarProductos(Model model) {
-        model.addAttribute("productos", productoService.findAll());
-        return "productos/admin/lista";
+        model.addAttribute("productos", productoService.findAllByRubro(TipoRubro.LIBRERIA));
+        return "productos/libreria/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("producto", new ProductoDto());
-        model.addAttribute("categorias", categoriaService.findAllIncludingInactive());
-        return "productos/admin/form";
+        model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.LIBRERIA));
+        return "productos/libreria/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -46,8 +47,8 @@ public class AdminProductoController {
         ProductoDto producto = productoService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
         model.addAttribute("producto", producto);
-        model.addAttribute("categorias", categoriaService.findAllIncludingInactive());
-        return "productos/admin/form";
+        model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.LIBRERIA));
+        return "productos/libreria/form";
     }
 
     @PostMapping("/guardar")
@@ -57,23 +58,23 @@ public class AdminProductoController {
             Model model,
             RedirectAttributes redirectAttributes) {
         try {
-            model.addAttribute("categorias", categoriaService.findAllIncludingInactive());
+            model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.LIBRERIA));
             if (result.hasErrors()) {
                 model.addAttribute("mensaje", "Error en los datos del producto");
                 model.addAttribute("tipoMensaje", "error");
-                return "productos/admin/form";
+                return "productos/libreria/form";
             }
 
             productoService.save(producto, imagen);
             redirectAttributes.addFlashAttribute("mensaje", "Producto guardado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
-            return "redirect:/admin/productos";
+            return "redirect:/libreria/productos";
 
         } catch (Exception e) {
             model.addAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
             model.addAttribute("tipoMensaje", "error");
             model.addAttribute("producto", producto);
-            return "productos/admin/form";
+            return "productos/libreria/form";
         }
     }
 
@@ -82,6 +83,6 @@ public class AdminProductoController {
         productoService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Producto eliminado exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "error");
-        return "redirect:/admin/productos";
+        return "redirect:/libreria/productos";
     }
 }

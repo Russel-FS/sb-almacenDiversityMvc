@@ -1,4 +1,4 @@
-package com.api.diversity.infrastructure.controller.producto;
+package com.api.diversity.infrastructure.controller.camara;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -22,24 +22,24 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/libreria/productos")
+@RequestMapping("/camaras/productos")
 @RequiredArgsConstructor
-public class LibreriaProductoController {
+public class CamarasProductoController {
 
     private final IProductoService productoService;
     private final ICategoriaService categoriaService;
 
     @GetMapping("")
     public String listarProductos(Model model) {
-        model.addAttribute("productos", productoService.findAllByRubro(TipoRubro.LIBRERIA));
-        return "productos/libreria/lista";
+        model.addAttribute("productos", productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD));
+        return "productos/camaras/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("producto", new ProductoDto());
-        model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.LIBRERIA));
-        return "productos/libreria/form";
+        model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.CAMARA_SEGURIDAD));
+        return "productos/camaras/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -47,8 +47,8 @@ public class LibreriaProductoController {
         ProductoDto producto = productoService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producto no encontrado"));
         model.addAttribute("producto", producto);
-        model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.LIBRERIA));
-        return "productos/libreria/form";
+        model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.CAMARA_SEGURIDAD));
+        return "productos/camaras/form";
     }
 
     @PostMapping("/guardar")
@@ -58,23 +58,23 @@ public class LibreriaProductoController {
             Model model,
             RedirectAttributes redirectAttributes) {
         try {
-            model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.LIBRERIA));
+            model.addAttribute("categorias", categoriaService.findByRubro(TipoRubro.CAMARA_SEGURIDAD));
             if (result.hasErrors()) {
                 model.addAttribute("mensaje", "Error en los datos del producto");
                 model.addAttribute("tipoMensaje", "error");
-                return "productos/libreria/form";
+                return "productos/camaras/form";
             }
 
             productoService.save(producto, imagen);
             redirectAttributes.addFlashAttribute("mensaje", "Producto guardado exitosamente");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
-            return "redirect:/libreria/productos";
+            return "redirect:/camaras/productos";
 
         } catch (Exception e) {
             model.addAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
             model.addAttribute("tipoMensaje", "error");
             model.addAttribute("producto", producto);
-            return "productos/libreria/form";
+            return "productos/camaras/form";
         }
     }
 
@@ -83,6 +83,6 @@ public class LibreriaProductoController {
         productoService.deleteById(id);
         flash.addFlashAttribute("mensaje", "Producto eliminado exitosamente.");
         flash.addFlashAttribute("tipoMensaje", "error");
-        return "redirect:/libreria/productos";
+        return "redirect:/camaras/productos";
     }
 }

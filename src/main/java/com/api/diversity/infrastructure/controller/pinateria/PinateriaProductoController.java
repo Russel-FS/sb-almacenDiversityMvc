@@ -1,4 +1,4 @@
-package com.api.diversity.infrastructure.controller.producto;
+package com.api.diversity.infrastructure.controller.pinateria;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
