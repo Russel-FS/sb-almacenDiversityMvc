@@ -788,44 +788,44 @@
           </div>
         </div>
       </div>
+
+      <!-- Script para el mensaje de error -->
+      <script th:if="${error}">
+        document.addEventListener("DOMContentLoaded", function () {
+          const mensaje = document.getElementById("mensajeError");
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-0", "translate-y-4");
+            mensaje.classList.add("opacity-100", "translate-y-0");
+          }, 100);
+
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-100", "translate-y-0");
+            mensaje.classList.add("opacity-0", "translate-y-4");
+            setTimeout(() => {
+              mensaje.remove();
+            }, 1000);
+          }, 5000);
+        });
+      </script>
+
+      <!-- Script para el mensaje de éxito -->
+      <script th:if="${success}">
+        document.addEventListener("DOMContentLoaded", function () {
+          const mensaje = document.getElementById("mensajeSuccess");
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-0", "translate-y-4");
+            mensaje.classList.add("opacity-100", "translate-y-0");
+          }, 100);
+
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-100", "translate-y-0");
+            mensaje.classList.add("opacity-0", "translate-y-4");
+            setTimeout(() => {
+              mensaje.remove();
+            }, 1000);
+          }, 5000);
+        });
+      </script>
     </section>
-
-    <!-- Script para el mensaje de error -->
-    <script th:if="${error}">
-      document.addEventListener("DOMContentLoaded", function () {
-        const mensaje = document.getElementById("mensajeError");
-        setTimeout(() => {
-          mensaje.classList.remove("opacity-0", "translate-y-4");
-          mensaje.classList.add("opacity-100", "translate-y-0");
-        }, 100);
-
-        setTimeout(() => {
-          mensaje.classList.remove("opacity-100", "translate-y-0");
-          mensaje.classList.add("opacity-0", "translate-y-4");
-          setTimeout(() => {
-            mensaje.remove();
-          }, 1000);
-        }, 5000);
-      });
-    </script>
-
-    <!-- Script para el mensaje de éxito -->
-    <script th:if="${success}">
-      document.addEventListener("DOMContentLoaded", function () {
-        const mensaje = document.getElementById("mensajeSuccess");
-        setTimeout(() => {
-          mensaje.classList.remove("opacity-0", "translate-y-4");
-          mensaje.classList.add("opacity-100", "translate-y-0");
-        }, 100);
-
-        setTimeout(() => {
-          mensaje.classList.remove("opacity-100", "translate-y-0");
-          mensaje.classList.add("opacity-0", "translate-y-4");
-          setTimeout(() => {
-            mensaje.remove();
-          }, 1000);
-        }, 5000);
-      });
-    </script>
   </body>
 </html>
