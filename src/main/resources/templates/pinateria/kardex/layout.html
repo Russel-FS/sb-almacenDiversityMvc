@@ -9,18 +9,26 @@
     <title th:text="${titulo}">Kardex - J&C Diversity</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
       body {
-        font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont,
-          sans-serif;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
       }
 
       .nav-tab {
         position: relative;
         transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .nav-tab:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
       }
 
       .nav-tab.active {
@@ -30,42 +38,16 @@
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
       }
 
-      .nav-tab:hover:not(.active) {
-        background: rgba(102, 126, 234, 0.1);
-        transform: translateY(-1px);
-      }
-
       .glass-effect {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       }
 
       .rubro-badge {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.8;
-        }
-      }
-
-      .breadcrumb-item {
-        position: relative;
-      }
-
-      .breadcrumb-item:not(:last-child)::after {
-        content: ">";
-        position: absolute;
-        right: -12px;
-        color: #9ca3af;
-        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
       }
 
       /* scroll */
@@ -74,7 +56,7 @@
       }
 
       .overflow-y-auto::-webkit-scrollbar-track {
-        background: #f1f5f9;
+        background: rgba(241, 245, 249, 0.5);
         border-radius: 8px;
       }
 
@@ -89,49 +71,63 @@
 
       .overflow-y-auto {
         scrollbar-width: thin;
-        scrollbar-color: #cbd5e1 #f1f5f9;
+        scrollbar-color: #cbd5e1 rgba(241, 245, 249, 0.5);
       }
     </style>
   </head>
-  <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+  <body
+    class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen"
+  >
     <!-- Header Principal -->
-    <header class="glass-effect border-b border-gray-200/50 sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4">
+    <header class="glass-effect">
+      <div class="max-w-7xl mx-auto px-6">
         <!-- Header Superior -->
         <div class="flex justify-between items-center h-16">
           <!-- Logo y Rubro -->
-          <div class="flex items-center space-x-4">
-            <a href="/" class="flex items-center space-x-2">
-              <span
-                class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+          <div class="flex items-center space-x-6">
+            <a href="/" class="flex items-center space-x-3 group">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg"
               >
-                J&C
-              </span>
-              <span class="text-xl font-medium text-gray-800">Diversity</span>
+                <span class="text-white font-bold text-lg">J&C</span>
+              </div>
+              <div>
+                <span class="text-xl font-bold text-gray-900">Diversity</span>
+                <div class="text-xs text-gray-500 font-medium">
+                  Sistema de Gestión
+                </div>
+              </div>
             </a>
 
             <!-- Separador -->
-            <div class="w-px h-8 bg-gray-300"></div>
+            <div
+              class="w-px h-8 bg-gradient-to-b from-transparent via-gray-300 to-transparent"
+            ></div>
 
             <!-- Rubro Activo -->
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-3">
               <div
-                class="rubro-badge px-3 py-1 rounded-full text-white text-sm font-semibold"
+                class="rubro-badge px-4 py-2 rounded-xl text-white text-sm font-semibold"
               >
                 <span th:text="${rubro}">Piñatería</span>
               </div>
-              <span class="text-gray-600 font-medium">Kardex</span>
+              <div class="text-gray-700">
+                <span class="font-semibold">Kardex</span>
+                <div class="text-xs text-gray-500 font-medium">
+                  Control de Inventario
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- Acciones del Usuario -->
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-6">
             <a
-              href="/"
-              class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors flex items-center"
+              href="/home"
+              class="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 rounded-xl hover:bg-white/50"
             >
               <svg
-                class="w-4 h-4 mr-1"
+                class="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -143,16 +139,22 @@
                   d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                 />
               </svg>
-              Inicio
+              <span>Inicio</span>
             </a>
 
             <!-- Usuario -->
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-3">
+              <div class="text-right">
+                <div class="text-sm font-semibold text-gray-900">Usuario</div>
+                <div class="text-xs text-gray-500 font-medium">
+                  Administrador
+                </div>
+              </div>
               <div
-                class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+                class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg"
               >
                 <svg
-                  class="w-4 h-4 text-white"
+                  class="w-5 h-5 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -165,20 +167,19 @@
                   />
                 </svg>
               </div>
-              <span class="text-sm font-medium text-gray-700">Usuario</span>
             </div>
           </div>
         </div>
 
         <!-- Menú de Navegación del Kardex -->
-        <nav class="flex items-center space-x-2 py-4">
+        <nav class="flex items-center space-x-3 py-4">
           <!-- Dashboard -->
           <a
             th:href="@{/pinateria/kardex/dashboard}"
             class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-2"
+              class="w-4 h-4 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -199,7 +200,7 @@
             class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-2"
+              class="w-4 h-4 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -220,7 +221,7 @@
             class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-2"
+              class="w-4 h-4 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -241,7 +242,7 @@
             class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-2"
+              class="w-4 h-4 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -262,7 +263,7 @@
             class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-2"
+              class="w-4 h-4 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -277,6 +278,52 @@
             Reportes
           </a>
         </nav>
+
+        <!-- Breadcrumbs con Tailwind y SVG -->
+        <div class="flex items-center space-x-2 py-3 text-sm">
+          <span
+            class="text-gray-600 hover:text-gray-800 transition-colors duration-200 font-medium"
+            >Kardex</span
+          >
+
+          <svg
+            class="w-4 h-4 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+
+          <span
+            class="text-gray-600 hover:text-gray-800 transition-colors duration-200 font-medium"
+            th:text="${rubro}"
+            >Piñatería</span
+          >
+
+          <svg
+            class="w-4 h-4 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+
+          <span class="text-gray-900 font-semibold" th:text="${titulo}"
+            >Dashboard</span
+          >
+        </div>
       </div>
     </header>
 
