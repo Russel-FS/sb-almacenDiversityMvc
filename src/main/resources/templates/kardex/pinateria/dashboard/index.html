@@ -40,14 +40,16 @@
     <div class="min-h-screen">
       <div class="max-w-7xl mx-auto px-4 py-16">
         <!-- Header -->
-        <div class="mb-16">
-          <div class="flex flex-wrap items-center justify-between mb-12">
-            <div class="flex flex-wrap items-center gap-6">
+        <div
+          class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm mb-8"
+        >
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
               <div
-                class="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center shadow-sm"
+                class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mr-4"
               >
                 <svg
-                  class="w-8 h-8 text-white"
+                  class="w-6 h-6 text-purple-800"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -57,28 +59,25 @@
                     stroke-linejoin="round"
                     stroke-width="1.5"
                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
+                  ></path>
                 </svg>
               </div>
               <div>
-                <h1
-                  class="text-5xl font-light text-gray-900 tracking-tight"
-                  th:text="${titulo}"
-                >
-                  Dashboard Kardex - Piñatería
+                <h1 class="text-2xl font-bold text-gray-900">
+                  Dashboard - Piñatería
                 </h1>
-                <p class="text-xl text-gray-600 mt-2" th:text="${subtitulo}">
-                  Resumen del inventario de Piñatería
+                <p class="text-gray-600 mt-1">
+                  Panel de control del inventario
                 </p>
               </div>
             </div>
             <div class="flex items-center gap-4">
               <a
                 href="/"
-                class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+                class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm flex items-center"
               >
                 <svg
-                  class="w-5 h-5 mr-2 inline"
+                  class="w-5 h-5 mr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -94,10 +93,10 @@
               </a>
               <a
                 href="/pinateria/kardex/movimientos"
-                class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+                class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm flex items-center"
               >
                 <svg
-                  class="w-5 h-5 mr-2 inline"
+                  class="w-5 h-5 mr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -113,10 +112,10 @@
               </a>
               <a
                 href="/pinateria/kardex/entrada/nueva"
-                class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-colors duration-200 shadow-sm rounded-2xl"
+                class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-colors duration-200 shadow-sm rounded-2xl flex items-center"
               >
                 <svg
-                  class="w-5 h-5 mr-2 inline"
+                  class="w-5 h-5 mr-2"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -130,67 +129,105 @@
                 </svg>
                 Nueva Entrada
               </a>
+              <a
+                href="/pinateria/kardex/dashboard/descargar/pdf"
+                class="px-6 py-4 bg-red-600 text-white rounded-2xl hover:bg-red-700 transition-colors duration-200 text-sm font-medium shadow-sm flex items-center"
+              >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                PDF
+              </a>
+              <a
+                href="/pinateria/kardex/dashboard/descargar/excel"
+                class="px-6 py-4 bg-green-600 text-white rounded-2xl hover:bg-green-700 transition-colors duration-200 text-sm font-medium shadow-sm flex items-center"
+              >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                Excel
+              </a>
             </div>
           </div>
+        </div>
 
-          <!-- Mensajes -->
-          <div th:if="${error}" id="mensajeError" class="mb-8">
-            <div
-              class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-sm"
-            >
-              <div class="flex items-center">
-                <div
-                  class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4"
+        <!-- Mensajes -->
+        <div th:if="${error}" id="mensajeError" class="mb-8">
+          <div
+            class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-sm"
+          >
+            <div class="flex items-center">
+              <div
+                class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4"
+              >
+                <svg
+                  class="w-6 h-6 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <svg
-                    class="w-6 h-6 text-red-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                    />
-                  </svg>
-                </div>
-                <p
-                  class="text-base font-medium text-red-800"
-                  th:text="${error}"
-                ></p>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
               </div>
+              <p
+                class="text-base font-medium text-red-800"
+                th:text="${error}"
+              ></p>
             </div>
           </div>
+        </div>
 
-          <div th:if="${success}" id="mensajeSuccess" class="mb-8">
-            <div
-              class="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-3xl p-6 shadow-sm"
-            >
-              <div class="flex items-center">
-                <div
-                  class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mr-4"
+        <div th:if="${success}" id="mensajeSuccess" class="mb-8">
+          <div
+            class="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-3xl p-6 shadow-sm"
+          >
+            <div class="flex items-center">
+              <div
+                class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mr-4"
+              >
+                <svg
+                  class="w-6 h-6 text-emerald-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <svg
-                    class="w-6 h-6 text-emerald-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <p
-                  class="text-base font-medium text-emerald-800"
-                  th:text="${success}"
-                ></p>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
               </div>
+              <p
+                class="text-base font-medium text-emerald-800"
+                th:text="${success}"
+              ></p>
             </div>
           </div>
         </div>

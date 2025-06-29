@@ -8,6 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.ByteArrayResource;
+import java.io.ByteArrayOutputStream;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.time.format.DateTimeFormatter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -576,6 +588,776 @@ public class PinateriaKardexController {
             log.error("Error al guardar salida: {}", e.getMessage(), e);
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/pinateria/kardex/salida/nueva";
+        }
+    }
+
+    /**
+     * Descargar reporte del dashboard en PDF
+     */
+    @GetMapping("/dashboard/descargar/pdf")
+    public ResponseEntity<ByteArrayResource> descargarDashboardPDF() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Document document = new Document();
+            PdfWriter.getInstance(document, baos);
+
+            document.open();
+            document.add(new Paragraph("Dashboard Kardex - Piñatería"));
+            document.add(new Paragraph("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+            document.add(new Paragraph(" "));
+
+            // Obtener datos del dashboard
+            List<ProductoDto> productosPinateria = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+            int totalProductos = productosPinateria.size();
+            int productosStockBajo = (int) productosPinateria.stream()
+                    .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                    .count();
+            BigDecimal valorTotalInventario = productosPinateria.stream()
+                    .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                    .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            document.add(new Paragraph("Resumen del Inventario:"));
+            document.add(new Paragraph("Total de productos: " + totalProductos));
+            document.add(new Paragraph("Productos con stock bajo: " + productosStockBajo));
+            document.add(new Paragraph("Valor total del inventario: S/ " + valorTotalInventario));
+
+            document.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dashboard-pinateria.pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando PDF del dashboard: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar reporte del dashboard en Excel
+     */
+    @GetMapping("/dashboard/descargar/excel")
+    public ResponseEntity<ByteArrayResource> descargarDashboardExcel() {
+        try {
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Dashboard Piñatería");
+
+            // Crear estilos
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
+            // Título
+            Row titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Dashboard Kardex - Piñatería");
+            titleCell.setCellStyle(headerStyle);
+
+            // Fecha
+            Row dateRow = sheet.createRow(1);
+            Cell dateCell = dateRow.createCell(0);
+            dateCell.setCellValue("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+            // Obtener datos
+            List<ProductoDto> productosPinateria = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+            int totalProductos = productosPinateria.size();
+            int productosStockBajo = (int) productosPinateria.stream()
+                    .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                    .count();
+            BigDecimal valorTotalInventario = productosPinateria.stream()
+                    .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                    .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            // Datos del resumen
+            Row summaryRow = sheet.createRow(3);
+            Cell summaryCell = summaryRow.createCell(0);
+            summaryCell.setCellValue("Resumen del Inventario");
+            summaryCell.setCellStyle(headerStyle);
+
+            Row totalRow = sheet.createRow(4);
+            totalRow.createCell(0).setCellValue("Total de productos");
+            totalRow.createCell(1).setCellValue(totalProductos);
+
+            Row stockBajoRow = sheet.createRow(5);
+            stockBajoRow.createCell(0).setCellValue("Productos con stock bajo");
+            stockBajoRow.createCell(1).setCellValue(productosStockBajo);
+
+            Row valorRow = sheet.createRow(6);
+            valorRow.createCell(0).setCellValue("Valor total del inventario");
+            valorRow.createCell(1).setCellValue("S/ " + valorTotalInventario);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            workbook.write(baos);
+            workbook.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dashboard-pinateria.xlsx")
+                    .contentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando Excel del dashboard: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar lista de movimientos en PDF
+     */
+    @GetMapping("/movimiento/descargar/pdf")
+    public ResponseEntity<ByteArrayResource> descargarMovimientosPDF() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Document document = new Document();
+            PdfWriter.getInstance(document, baos);
+
+            document.open();
+            document.add(new Paragraph("Movimientos de Inventario - Piñatería"));
+            document.add(new Paragraph("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+            document.add(new Paragraph(" "));
+
+            // Obtener movimientos
+            List<EntradaDto> entradas = entradaService.findTop10ByOrderByFechaEntradaDesc();
+            List<SalidaDto> salidas = salidaService.findTop10ByOrderByFechaSalidaDesc();
+
+            // Tabla de entradas
+            document.add(new Paragraph("Últimas Entradas:"));
+            PdfPTable tablaEntradas = new PdfPTable(4);
+            tablaEntradas.addCell("Fecha");
+            tablaEntradas.addCell("N° Documento");
+            tablaEntradas.addCell("Proveedor");
+            tablaEntradas.addCell("Total");
+
+            for (EntradaDto entrada : entradas) {
+                tablaEntradas.addCell(entrada.getFechaEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                tablaEntradas.addCell(entrada.getNumeroFactura());
+                tablaEntradas.addCell(entrada.getProveedorNombre());
+                tablaEntradas.addCell("S/ " + entrada.getCostoTotal());
+            }
+            document.add(tablaEntradas);
+            document.add(new Paragraph(" "));
+
+            // Tabla de salidas
+            document.add(new Paragraph("Últimas Salidas:"));
+            PdfPTable tablaSalidas = new PdfPTable(4);
+            tablaSalidas.addCell("Fecha");
+            tablaSalidas.addCell("N° Documento");
+            tablaSalidas.addCell("Cliente");
+            tablaSalidas.addCell("Total");
+
+            for (SalidaDto salida : salidas) {
+                tablaSalidas.addCell(salida.getFechaSalida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                tablaSalidas.addCell(salida.getNumeroDocumento());
+                tablaSalidas.addCell(salida.getClienteNombre());
+                tablaSalidas.addCell("S/ " + salida.getTotalVenta());
+            }
+            document.add(tablaSalidas);
+
+            document.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=movimientos-pinateria.pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando PDF de movimientos: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar lista de movimientos en Excel
+     */
+    @GetMapping("/movimiento/descargar/excel")
+    public ResponseEntity<ByteArrayResource> descargarMovimientosExcel() {
+        try {
+            Workbook workbook = new XSSFWorkbook();
+
+            // Hoja de entradas
+            Sheet sheetEntradas = workbook.createSheet("Entradas");
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
+            Row titleRow = sheetEntradas.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Entradas de Inventario - Piñatería");
+            titleCell.setCellStyle(headerStyle);
+
+            Row headerRow = sheetEntradas.createRow(1);
+            headerRow.createCell(0).setCellValue("Fecha");
+            headerRow.createCell(1).setCellValue("N° Documento");
+            headerRow.createCell(2).setCellValue("Proveedor");
+            headerRow.createCell(3).setCellValue("Total");
+
+            List<EntradaDto> entradas = entradaService.findTop10ByOrderByFechaEntradaDesc();
+            int rowNum = 2;
+            for (EntradaDto entrada : entradas) {
+                Row row = sheetEntradas.createRow(rowNum++);
+                row.createCell(0)
+                        .setCellValue(entrada.getFechaEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                row.createCell(1).setCellValue(entrada.getNumeroFactura());
+                row.createCell(2).setCellValue(entrada.getProveedorNombre());
+                row.createCell(3).setCellValue("S/ " + entrada.getCostoTotal());
+            }
+
+            // Hoja de salidas
+            Sheet sheetSalidas = workbook.createSheet("Salidas");
+            Row titleRowSalidas = sheetSalidas.createRow(0);
+            Cell titleCellSalidas = titleRowSalidas.createCell(0);
+            titleCellSalidas.setCellValue("Salidas de Inventario - Piñatería");
+            titleCellSalidas.setCellStyle(headerStyle);
+
+            Row headerRowSalidas = sheetSalidas.createRow(1);
+            headerRowSalidas.createCell(0).setCellValue("Fecha");
+            headerRowSalidas.createCell(1).setCellValue("N° Documento");
+            headerRowSalidas.createCell(2).setCellValue("Cliente");
+            headerRowSalidas.createCell(3).setCellValue("Total");
+
+            List<SalidaDto> salidas = salidaService.findTop10ByOrderByFechaSalidaDesc();
+            rowNum = 2;
+            for (SalidaDto salida : salidas) {
+                Row row = sheetSalidas.createRow(rowNum++);
+                row.createCell(0)
+                        .setCellValue(salida.getFechaSalida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                row.createCell(1).setCellValue(salida.getNumeroDocumento());
+                row.createCell(2).setCellValue(salida.getClienteNombre());
+                row.createCell(3).setCellValue("S/ " + salida.getTotalVenta());
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            workbook.write(baos);
+            workbook.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=movimientos-pinateria.xlsx")
+                    .contentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando Excel de movimientos: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar detalle de entrada en PDF
+     */
+    @GetMapping("/entrada/{id}/descargar/pdf")
+    public ResponseEntity<ByteArrayResource> descargarEntradaPDF(@PathVariable Long id) {
+        try {
+            EntradaDto entrada = entradaService.findById(id);
+            if (entrada == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Document document = new Document();
+            PdfWriter.getInstance(document, baos);
+
+            document.open();
+            document.add(new Paragraph("Comprobante de Entrada - Piñatería"));
+            document.add(new Paragraph(
+                    "Fecha: " + entrada.getFechaEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+            document.add(new Paragraph("N° Documento: " + entrada.getNumeroFactura()));
+            document.add(new Paragraph("Proveedor: " + entrada.getProveedorNombre()));
+            document.add(new Paragraph(" "));
+
+            // Tabla de productos
+            document.add(new Paragraph("Productos:"));
+            PdfPTable tabla = new PdfPTable(4);
+            tabla.addCell("Producto");
+            tabla.addCell("Cantidad");
+            tabla.addCell("Precio Unit.");
+            tabla.addCell("Subtotal");
+
+            for (DetalleEntradaDto detalle : entrada.getDetalles()) {
+                tabla.addCell(detalle.getProductoNombre());
+                tabla.addCell(String.valueOf(detalle.getCantidad()));
+                tabla.addCell("S/ " + detalle.getPrecioUnitario());
+                tabla.addCell("S/ " + detalle.getSubtotal());
+            }
+            document.add(tabla);
+            document.add(new Paragraph("Total: S/ " + entrada.getCostoTotal()));
+
+            document.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=entrada-" + id + ".pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando PDF de entrada: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar detalle de entrada en Excel
+     */
+    @GetMapping("/entrada/{id}/descargar/excel")
+    public ResponseEntity<ByteArrayResource> descargarEntradaExcel(@PathVariable Long id) {
+        try {
+            EntradaDto entrada = entradaService.findById(id);
+            if (entrada == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Entrada " + id);
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
+            // Información de la entrada
+            Row titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Comprobante de Entrada - Piñatería");
+            titleCell.setCellStyle(headerStyle);
+
+            Row infoRow1 = sheet.createRow(1);
+            infoRow1.createCell(0).setCellValue(
+                    "Fecha: " + entrada.getFechaEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            infoRow1.createCell(1).setCellValue("N° Documento: " + entrada.getNumeroFactura());
+
+            Row infoRow2 = sheet.createRow(2);
+            infoRow2.createCell(0).setCellValue("Proveedor: " + entrada.getProveedorNombre());
+
+            // Tabla de productos
+            Row headerRow = sheet.createRow(4);
+            headerRow.createCell(0).setCellValue("Producto");
+            headerRow.createCell(1).setCellValue("Cantidad");
+            headerRow.createCell(2).setCellValue("Precio Unit.");
+            headerRow.createCell(3).setCellValue("Subtotal");
+
+            int rowNum = 5;
+            for (DetalleEntradaDto detalle : entrada.getDetalles()) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(detalle.getProductoNombre());
+                row.createCell(1).setCellValue(detalle.getCantidad());
+                row.createCell(2).setCellValue("S/ " + detalle.getPrecioUnitario());
+                row.createCell(3).setCellValue("S/ " + detalle.getSubtotal());
+            }
+
+            Row totalRow = sheet.createRow(rowNum);
+            totalRow.createCell(0).setCellValue("Total:");
+            totalRow.createCell(3).setCellValue("S/ " + entrada.getCostoTotal());
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            workbook.write(baos);
+            workbook.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=entrada-" + id + ".xlsx")
+                    .contentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando Excel de entrada: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar detalle de salida en PDF
+     */
+    @GetMapping("/salida/{id}/descargar/pdf")
+    public ResponseEntity<ByteArrayResource> descargarSalidaPDF(@PathVariable Long id) {
+        try {
+            SalidaDto salida = salidaService.findById(id);
+            if (salida == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Document document = new Document();
+            PdfWriter.getInstance(document, baos);
+
+            document.open();
+            document.add(new Paragraph("Comprobante de Salida - Piñatería"));
+            document.add(new Paragraph(
+                    "Fecha: " + salida.getFechaSalida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+            document.add(new Paragraph("N° Documento: " + salida.getNumeroDocumento()));
+            document.add(new Paragraph("Cliente: " + salida.getClienteNombre()));
+            document.add(new Paragraph("Tipo Cliente: " + salida.getClienteTipo().getDescripcion()));
+            document.add(new Paragraph(" "));
+
+            // Tabla de productos
+            document.add(new Paragraph("Productos:"));
+            PdfPTable tabla = new PdfPTable(4);
+            tabla.addCell("Producto");
+            tabla.addCell("Cantidad");
+            tabla.addCell("Precio Unit.");
+            tabla.addCell("Subtotal");
+
+            for (DetalleSalidaDto detalle : salida.getDetalles()) {
+                tabla.addCell(detalle.getProductoNombre());
+                tabla.addCell(String.valueOf(detalle.getCantidad()));
+                tabla.addCell("S/ " + detalle.getPrecioUnitario());
+                tabla.addCell("S/ " + detalle.getSubtotal());
+            }
+            document.add(tabla);
+            document.add(new Paragraph("Total: S/ " + salida.getTotalVenta()));
+
+            document.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=salida-" + id + ".pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando PDF de salida: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar detalle de salida en Excel
+     */
+    @GetMapping("/salida/{id}/descargar/excel")
+    public ResponseEntity<ByteArrayResource> descargarSalidaExcel(@PathVariable Long id) {
+        try {
+            SalidaDto salida = salidaService.findById(id);
+            if (salida == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Salida " + id);
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
+            // Información de la salida
+            Row titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Comprobante de Salida - Piñatería");
+            titleCell.setCellStyle(headerStyle);
+
+            Row infoRow1 = sheet.createRow(1);
+            infoRow1.createCell(0).setCellValue(
+                    "Fecha: " + salida.getFechaSalida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            infoRow1.createCell(1).setCellValue("N° Documento: " + salida.getNumeroDocumento());
+
+            Row infoRow2 = sheet.createRow(2);
+            infoRow2.createCell(0).setCellValue("Cliente: " + salida.getClienteNombre());
+            infoRow2.createCell(1).setCellValue("Tipo: " + salida.getClienteTipo().getDescripcion());
+
+            // Tabla de productos
+            Row headerRow = sheet.createRow(4);
+            headerRow.createCell(0).setCellValue("Producto");
+            headerRow.createCell(1).setCellValue("Cantidad");
+            headerRow.createCell(2).setCellValue("Precio Unit.");
+            headerRow.createCell(3).setCellValue("Subtotal");
+
+            int rowNum = 5;
+            for (DetalleSalidaDto detalle : salida.getDetalles()) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(detalle.getProductoNombre());
+                row.createCell(1).setCellValue(detalle.getCantidad());
+                row.createCell(2).setCellValue("S/ " + detalle.getPrecioUnitario());
+                row.createCell(3).setCellValue("S/ " + detalle.getSubtotal());
+            }
+
+            Row totalRow = sheet.createRow(rowNum);
+            totalRow.createCell(0).setCellValue("Total:");
+            totalRow.createCell(3).setCellValue("S/ " + salida.getTotalVenta());
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            workbook.write(baos);
+            workbook.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=salida-" + id + ".xlsx")
+                    .contentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando Excel de salida: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar reporte de inventario en PDF
+     */
+    @GetMapping("/reporte/descargar/inventario/pdf")
+    public ResponseEntity<ByteArrayResource> descargarInventarioPDF() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Document document = new Document();
+            PdfWriter.getInstance(document, baos);
+
+            document.open();
+            document.add(new Paragraph("Reporte de Inventario - Piñatería"));
+            document.add(new Paragraph("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+            document.add(new Paragraph(" "));
+
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+            BigDecimal valorTotal = productos.stream()
+                    .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                    .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            document.add(new Paragraph("Valor total del inventario: S/ " + valorTotal));
+            document.add(new Paragraph(" "));
+
+            // Tabla de productos
+            document.add(new Paragraph("Productos en inventario:"));
+            PdfPTable tabla = new PdfPTable(5);
+            tabla.addCell("Código");
+            tabla.addCell("Producto");
+            tabla.addCell("Stock Actual");
+            tabla.addCell("Precio Venta");
+            tabla.addCell("Valor Total");
+
+            for (ProductoDto producto : productos) {
+                tabla.addCell(producto.getCodigoProducto());
+                tabla.addCell(producto.getNombreProducto());
+                tabla.addCell(String.valueOf(producto.getStockActual()));
+                tabla.addCell("S/ " + producto.getPrecioVenta());
+                BigDecimal valorProducto = producto.getPrecioVenta()
+                        .multiply(BigDecimal.valueOf(producto.getStockActual()));
+                tabla.addCell("S/ " + valorProducto);
+            }
+            document.add(tabla);
+
+            document.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=inventario-pinateria.pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando PDF de inventario: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar reporte de inventario en Excel
+     */
+    @GetMapping("/reporte/descargar/inventario/excel")
+    public ResponseEntity<ByteArrayResource> descargarInventarioExcel() {
+        try {
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Inventario Piñatería");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
+            Row titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Reporte de Inventario - Piñatería");
+            titleCell.setCellStyle(headerStyle);
+
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+            BigDecimal valorTotal = productos.stream()
+                    .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                    .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            Row valorRow = sheet.createRow(1);
+            valorRow.createCell(0).setCellValue("Valor total del inventario: S/ " + valorTotal);
+
+            // Tabla de productos
+            Row headerRow = sheet.createRow(3);
+            headerRow.createCell(0).setCellValue("Código");
+            headerRow.createCell(1).setCellValue("Producto");
+            headerRow.createCell(2).setCellValue("Stock Actual");
+            headerRow.createCell(3).setCellValue("Precio Venta");
+            headerRow.createCell(4).setCellValue("Valor Total");
+
+            int rowNum = 4;
+            for (ProductoDto producto : productos) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(producto.getCodigoProducto());
+                row.createCell(1).setCellValue(producto.getNombreProducto());
+                row.createCell(2).setCellValue(producto.getStockActual());
+                row.createCell(3).setCellValue("S/ " + producto.getPrecioVenta());
+                BigDecimal valorProducto = producto.getPrecioVenta()
+                        .multiply(BigDecimal.valueOf(producto.getStockActual()));
+                row.createCell(4).setCellValue("S/ " + valorProducto);
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            workbook.write(baos);
+            workbook.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=inventario-pinateria.xlsx")
+                    .contentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando Excel de inventario: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar reporte de stock bajo en PDF
+     */
+    @GetMapping("/reporte/descargar/stock-bajo/pdf")
+    public ResponseEntity<ByteArrayResource> descargarStockBajoPDF() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Document document = new Document();
+            PdfWriter.getInstance(document, baos);
+
+            document.open();
+            document.add(new Paragraph("Productos con Stock Bajo - Piñatería"));
+            document.add(new Paragraph("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+            document.add(new Paragraph(" "));
+
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+            List<ProductoDto> productosStockBajo = productos.stream()
+                    .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                    .toList();
+
+            document.add(new Paragraph("Total de productos con stock bajo: " + productosStockBajo.size()));
+            document.add(new Paragraph(" "));
+
+            // Tabla de productos
+            PdfPTable tabla = new PdfPTable(4);
+            tabla.addCell("Código");
+            tabla.addCell("Producto");
+            tabla.addCell("Stock Actual");
+            tabla.addCell("Stock Mínimo");
+
+            for (ProductoDto producto : productosStockBajo) {
+                tabla.addCell(producto.getCodigoProducto());
+                tabla.addCell(producto.getNombreProducto());
+                tabla.addCell(String.valueOf(producto.getStockActual()));
+                tabla.addCell("10");
+            }
+            document.add(tabla);
+
+            document.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stock-bajo-pinateria.pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando PDF de stock bajo: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Descargar reporte de stock bajo en Excel
+     */
+    @GetMapping("/reporte/descargar/stock-bajo/excel")
+    public ResponseEntity<ByteArrayResource> descargarStockBajoExcel() {
+        try {
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Stock Bajo Piñatería");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
+            Row titleRow = sheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0);
+            titleCell.setCellValue("Productos con Stock Bajo - Piñatería");
+            titleCell.setCellStyle(headerStyle);
+
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+            List<ProductoDto> productosStockBajo = productos.stream()
+                    .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                    .toList();
+
+            Row totalRow = sheet.createRow(1);
+            totalRow.createCell(0).setCellValue("Total de productos con stock bajo: " + productosStockBajo.size());
+
+            // Tabla de productos
+            Row headerRow = sheet.createRow(3);
+            headerRow.createCell(0).setCellValue("Código");
+            headerRow.createCell(1).setCellValue("Producto");
+            headerRow.createCell(2).setCellValue("Stock Actual");
+            headerRow.createCell(3).setCellValue("Stock Mínimo");
+
+            int rowNum = 4;
+            for (ProductoDto producto : productosStockBajo) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(producto.getCodigoProducto());
+                row.createCell(1).setCellValue(producto.getNombreProducto());
+                row.createCell(2).setCellValue(producto.getStockActual());
+                row.createCell(3).setCellValue("10");
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            workbook.write(baos);
+            workbook.close();
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stock-bajo-pinateria.xlsx")
+                    .contentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .contentLength(baos.size())
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Error generando Excel de stock bajo: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
         }
     }
 }
