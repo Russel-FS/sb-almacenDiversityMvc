@@ -36,7 +36,7 @@ public class ClienteMapper {
             dto.setEstadoDescripcion(entity.getEstado().name());
         }
         if (entity.getTipoCliente() != null) {
-            dto.setTipoClienteDescripcion(entity.getTipoCliente().name());
+            dto.setTipoClienteDescripcion(entity.getTipoCliente().getDescripcion());
         }
 
         return dto;

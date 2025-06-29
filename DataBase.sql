@@ -149,7 +149,7 @@ CREATE TABLE Proveedores (
 -- Tabla de Clientes
 CREATE TABLE Clientes (
     ID_Cliente BIGINT AUTO_INCREMENT PRIMARY KEY,
-    Tipo_Cliente ENUM('Persona Natural', 'Empresa') NOT NULL,
+    Tipo_Cliente ENUM('Persona_Natural', 'Empresa') NOT NULL,
     Nombre_Completo VARCHAR(100) NOT NULL,
     Razon_Social VARCHAR(100),
     RUC VARCHAR(11),
@@ -169,7 +169,7 @@ CREATE TABLE Clientes (
     CONSTRAINT UQ_Cliente_Email UNIQUE (Email),
     CONSTRAINT CK_Cliente_Tipo CHECK (
         (
-            Tipo_Cliente = 'Persona Natural'
+            Tipo_Cliente = 'Persona_Natural'
             AND Razon_Social IS NULL
         )
         OR (
@@ -487,6 +487,7 @@ ORDER BY Margen_Total DESC;
 
 -- Vista de Validación de Documentos según Normativa SUNAT
 CREATE VIEW Vista_Validacion_Documentos AS
+
 SELECT
     s.ID_Salida,
     s.Numero_Documento,

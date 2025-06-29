@@ -298,6 +298,8 @@
             dniInput.required = false;
             dniInput.disabled = true;
             dniInput.value = "";
+            razonSocialInput.disabled = false;
+            rucInput.disabled = false;
           } else if (selectedTipo === "Persona_Natural") {
             razonSocialInput.required = false;
             rucInput.required = false;
@@ -305,11 +307,15 @@
             dniInput.disabled = false;
             rucInput.value = "";
             razonSocialInput.value = "";
+            razonSocialInput.disabled = true;
+            rucInput.disabled = true;
           } else {
             razonSocialInput.required = false;
             rucInput.required = false;
             dniInput.required = false;
             dniInput.disabled = false;
+            razonSocialInput.disabled = false;
+            rucInput.disabled = false;
           }
         }
 
