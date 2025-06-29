@@ -110,7 +110,7 @@ public class PinateriaKardexController {
         } catch (Exception e) {
             log.error("Error al cargar datos del dashboard de Piñatería: {}", e.getMessage());
 
-            // En caso de error, usar valores por defecto
+            // En caso de errorrr, usar valores por defecto
             model.addAttribute("titulo", "Dashboard Kardex - Piñatería");
             model.addAttribute("subtitulo", "Resumen del inventario de Piñatería");
             model.addAttribute("rubro", "Piñatería");
