@@ -230,7 +230,13 @@ CREATE TABLE Detalle_Entrada (
 CREATE TABLE Salidas (
     ID_Salida BIGINT AUTO_INCREMENT PRIMARY KEY,
     Numero_Documento VARCHAR(50) NOT NULL,
-    Tipo_Documento ENUM('Boleta', 'Factura') NOT NULL,
+    Tipo_Documento ENUM(
+        'FACTURA',
+        'BOLETA',
+        'NOTA_CREDITO',
+        'NOTA_DEBITO',
+        'GUIA_REMISION'
+    ) NOT NULL,
     ID_Cliente BIGINT NOT NULL,
     Fecha_Salida DATETIME DEFAULT CURRENT_TIMESTAMP,
     Motivo_Salida VARCHAR(100),
