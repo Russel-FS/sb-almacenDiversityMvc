@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/pinateria/categorias")
 @RequiredArgsConstructor
-public class PinateriaController {
+public class PinateriaCategoriaController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
@@ -34,7 +34,7 @@ public class PinateriaController {
         List<CategoriaDto> categorias = categoriaService.findByRubro(TipoRubro.PIÑATERIA);
         model.addAttribute("categorias", categorias);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
-        return "categorias/pinateria/lista";
+        return "pinateria/categorias/lista";
     }
 
     @GetMapping("/nuevo")
@@ -45,7 +45,7 @@ public class PinateriaController {
         categoria.setRubro(rubroDto);
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
-        return "categorias/pinateria/form";
+        return "pinateria/categorias/form";
     }
 
     @GetMapping("/editar/{id}")
@@ -61,7 +61,7 @@ public class PinateriaController {
 
         model.addAttribute("categoria", categoria);
         model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
-        return "categorias/pinateria/form";
+        return "pinateria/categorias/form";
     }
 
     @PostMapping("/guardar")
@@ -78,7 +78,7 @@ public class PinateriaController {
 
         if (result.hasErrors()) {
             model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
-            return "categorias/pinateria/form";
+            return "pinateria/categorias/form";
         }
 
         // Verificar que el rubro de la categoría es correcto
