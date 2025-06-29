@@ -122,7 +122,7 @@ public class PinateriaKardexController {
             model.addAttribute("error", "Error al cargar los datos. Por favor, intente nuevamente.");
         }
 
-        return "kardex/pinateria/dashboard/index";
+        return "pinateria/kardex/dashboard/index";
     }
 
     /**
@@ -161,7 +161,7 @@ public class PinateriaKardexController {
             model.addAttribute("error", "Error al cargar los datos. Por favor, intente nuevamente.");
         }
 
-        return "kardex/pinateria/entrada/nueva";
+        return "pinateria/kardex/entrada/nueva";
     }
 
     /**
@@ -188,7 +188,7 @@ public class PinateriaKardexController {
             model.addAttribute("numeroDocumento", numeroDocumento);
             model.addAttribute("tiposDocumento", TipoDocumento.values());
 
-            return "kardex/pinateria/salida/nueva";
+            return "pinateria/kardex/salida/nueva";
         } catch (Exception e) {
             log.error("Error al cargar formulario de nueva salida: {}", e.getMessage(), e);
             model.addAttribute("error", "Error al cargar el formulario: " + e.getMessage());
@@ -237,7 +237,7 @@ public class PinateriaKardexController {
             model.addAttribute("error", "Error al cargar los movimientos. Por favor, intente nuevamente.");
         }
 
-        return "kardex/pinateria/movimiento/lista";
+        return "pinateria/kardex/movimiento/lista";
     }
 
     /**
@@ -297,7 +297,7 @@ public class PinateriaKardexController {
             model.addAttribute("rubro", "Piñatería");
             model.addAttribute("entrada", entrada);
 
-            return "kardex/pinateria/movimiento/entrada-detalle";
+            return "pinateria/kardex/movimiento/entrada-detalle";
 
         } catch (Exception e) {
             log.error("Error al cargar detalle de entrada ID {}: {}", id, e.getMessage(), e);
@@ -329,7 +329,7 @@ public class PinateriaKardexController {
             model.addAttribute("rubro", "Piñatería");
             model.addAttribute("salida", salida);
 
-            return "kardex/pinateria/movimiento/salida-detalle";
+            return "pinateria/kardex/movimiento/salida-detalle";
 
         } catch (Exception e) {
             log.error("Error al cargar detalle de salida ID {}: {}", id, e.getMessage(), e);
@@ -401,7 +401,7 @@ public class PinateriaKardexController {
             model.addAttribute("error", "Error al cargar el reporte. Por favor, intente nuevamente.");
         }
 
-        return "kardex/pinateria/reporte/index";
+        return "pinateria/kardex/reporte/index";
     }
 
     /**
