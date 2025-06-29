@@ -442,15 +442,16 @@ public class PinateriaKardexController {
                     return "redirect:/pinateria/kardex/salida/nueva";
                 }
             }
-            // Si el usuario no ingresa número, se genera automáticamente
+
+            // Si el usuario no ingresa número de documento, se genera automáticamente
             if (salidaForm.getNumeroDocumento() == null || salidaForm.getNumeroDocumento().trim().isEmpty()) {
                 salidaForm
-                        .setNumeroDocumento(entradaService.generarNumeroDocumento(salidaForm.getTipoDocumento()));
+                        .setNumeroDocumento(salidaService.generarNumeroDocumento(salidaForm.getTipoDocumento()));
             } else {
                 // Validar que no exista
                 if (salidaService.existsByNumeroDocumento(salidaForm.getNumeroDocumento())) {
                     redirectAttributes.addFlashAttribute("error", "El número de documento ya existe");
-                    return "redirect:/pinateria/kardex/entrada/nueva";
+                    return "redirect:/pinateria/kardex/salida/nueva";
                 }
             }
 
