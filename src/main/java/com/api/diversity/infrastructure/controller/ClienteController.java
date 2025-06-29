@@ -42,15 +42,22 @@ public class ClienteController {
 
             if (busqueda != null && !busqueda.trim().isEmpty()) {
                 clientes = clienteService.findByNombreCompletoContainingIgnoreCase(busqueda);
-            } else if (estado != null) {
-                clientes = clienteService.findByEstado(estado);
-            } else if (tipoCliente != null) {
-                clientes = clienteService.findByTipoCliente(tipoCliente);
             } else {
-                clientes = clienteService.findAll()
-                        .stream()
-                        .filter(c -> c.getEstado() != EstadoCliente.Eliminado)
-                        .toList();
+                if (estado != null && tipoCliente != null) {
+                    clientes = clienteService.findAll()
+                            .stream()
+                            .filter(c -> c.getEstado() == estado && c.getTipoCliente() == tipoCliente)
+                            .toList();
+                } else if (estado != null) {
+                    clientes = clienteService.findByEstado(estado);
+                } else if (tipoCliente != null) {
+                    clientes = clienteService.findByTipoCliente(tipoCliente);
+                } else {
+                    clientes = clienteService.findAll()
+                            .stream()
+                            .filter(c -> c.getEstado() != EstadoCliente.Eliminado)
+                            .toList();
+                }
             }
 
             // Estadísticas
