@@ -32,9 +32,10 @@ public class ClienteController {
     public String listarClientes(
             @RequestParam(required = false) String busqueda,
             @RequestParam(required = false) EstadoCliente estado,
+            @RequestParam(required = false) TipoCliente tipoCliente,
             Model model) {
 
-        log.info("Listando clientes - búsqueda: {}, estado: {}", busqueda, estado);
+        log.info("Listando clientes - búsqueda: {}, estado: {}, tipo: {}", busqueda, estado, tipoCliente);
 
         try {
             List<ClienteDto> clientes;
@@ -43,6 +44,8 @@ public class ClienteController {
                 clientes = clienteService.findByNombreCompletoContainingIgnoreCase(busqueda);
             } else if (estado != null) {
                 clientes = clienteService.findByEstado(estado);
+            } else if (tipoCliente != null) {
+                clientes = clienteService.findByTipoCliente(tipoCliente);
             } else {
                 clientes = clienteService.findAll()
                         .stream()
@@ -54,6 +57,8 @@ public class ClienteController {
             Long totalClientes = clienteService.countTotal();
             Long clientesActivos = clienteService.countByEstado(EstadoCliente.Activo);
             Long clientesInactivos = clienteService.countByEstado(EstadoCliente.Inactivo);
+            Long personasNaturales = clienteService.countByTipoCliente(TipoCliente.Persona_Natural);
+            Long empresas = clienteService.countByTipoCliente(TipoCliente.Empresa);
 
             // datos
             model.addAttribute("titulo", "Gestión de Clientes");
@@ -62,9 +67,13 @@ public class ClienteController {
             model.addAttribute("totalClientes", totalClientes);
             model.addAttribute("clientesActivos", clientesActivos);
             model.addAttribute("clientesInactivos", clientesInactivos);
+            model.addAttribute("personasNaturales", personasNaturales);
+            model.addAttribute("empresas", empresas);
             model.addAttribute("estados", EstadoCliente.values());
+            model.addAttribute("tiposCliente", TipoCliente.values());
             model.addAttribute("busqueda", busqueda);
             model.addAttribute("estadoFiltro", estado);
+            model.addAttribute("tipoClienteFiltro", tipoCliente);
 
         } catch (Exception e) {
             log.error("Error al listar clientes: {}", e.getMessage(), e);
