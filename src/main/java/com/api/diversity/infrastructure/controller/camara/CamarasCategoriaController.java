@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/camaras/categorias")
 @RequiredArgsConstructor
-public class CamarasController {
+public class CamarasCategoriaController {
     private final ICategoriaService categoriaService;
     private final IRubroService rubroService;
 
