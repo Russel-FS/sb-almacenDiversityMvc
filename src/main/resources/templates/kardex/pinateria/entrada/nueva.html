@@ -356,7 +356,7 @@
                             <option
                               th:each="producto : ${productos}"
                               th:value="${producto.idProducto}"
-                              th:text="${producto.nombreProducto + ' - Stock: ' + (producto.stockActual != null ? producto.stockActual : 0) + ' - Precio: S/ ' + (producto.precioVenta != null ? producto.precioVenta : '0.00')}"
+                              th:text="${producto.nombreProducto + ' - Stock: ' + (producto.stockActual != null ? producto.stockActual : 0)}"
                             >
                               Producto
                             </option>
