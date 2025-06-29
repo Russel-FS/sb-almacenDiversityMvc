@@ -92,7 +92,6 @@ public class ProveedorController {
             } else if (estado != null) {
                 proveedores = proveedorService.findByEstado(estado);
             } else {
-                // Para admin
                 proveedores = proveedorService.findAll();
             }
 

@@ -19,8 +19,6 @@ import com.api.diversity.domain.enums.TipoCliente;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import com.api.diversity.infrastructure.security.CustomUser;
 
 @Controller
 @RequestMapping("/clientes")
@@ -34,10 +32,9 @@ public class ClienteController {
     public String listarClientes(
             @RequestParam(required = false) String busqueda,
             @RequestParam(required = false) EstadoCliente estado,
-            @RequestParam(required = false) TipoCliente tipoCliente,
             Model model) {
 
-        log.info("Listando clientes - búsqueda: {}, estado: {}, tipo: {}", busqueda, estado, tipoCliente);
+        log.info("Listando clientes - búsqueda: {}, estado: {}", busqueda, estado);
 
         try {
             List<ClienteDto> clientes;
@@ -46,12 +43,10 @@ public class ClienteController {
                 clientes = clienteService.findByNombreCompletoContainingIgnoreCase(busqueda);
             } else if (estado != null) {
                 clientes = clienteService.findByEstado(estado);
-            } else if (tipoCliente != null) {
-                clientes = clienteService.findByTipoCliente(tipoCliente);
             } else {
                 clientes = clienteService.findAll()
                         .stream()
-                        .filter(c -> c.getEstado() == EstadoCliente.Activo)
+                        .filter(c -> c.getEstado() != EstadoCliente.Eliminado)
                         .toList();
             }
 
@@ -59,8 +54,6 @@ public class ClienteController {
             Long totalClientes = clienteService.countTotal();
             Long clientesActivos = clienteService.countByEstado(EstadoCliente.Activo);
             Long clientesInactivos = clienteService.countByEstado(EstadoCliente.Inactivo);
-            Long personasNaturales = clienteService.countByTipoCliente(TipoCliente.Persona_Natural);
-            Long empresas = clienteService.countByTipoCliente(TipoCliente.Empresa);
 
             // datos
             model.addAttribute("titulo", "Gestión de Clientes");
@@ -69,32 +62,30 @@ public class ClienteController {
             model.addAttribute("totalClientes", totalClientes);
             model.addAttribute("clientesActivos", clientesActivos);
             model.addAttribute("clientesInactivos", clientesInactivos);
-            model.addAttribute("personasNaturales", personasNaturales);
-            model.addAttribute("empresas", empresas);
             model.addAttribute("estados", EstadoCliente.values());
-            model.addAttribute("tiposCliente", TipoCliente.values());
             model.addAttribute("busqueda", busqueda);
             model.addAttribute("estadoFiltro", estado);
-            model.addAttribute("tipoClienteFiltro", tipoCliente);
 
         } catch (Exception e) {
             log.error("Error al listar clientes: {}", e.getMessage(), e);
             model.addAttribute("error", "Error al cargar la lista de clientes: " + e.getMessage());
+            model.addAttribute("clientes", List.of());
         }
 
         return "clientes/lista";
     }
 
     @GetMapping("/nuevo")
-    public String nuevoCliente(Model model) {
+    public String mostrarFormularioNuevo(Model model) {
         log.info("Mostrando formulario de nuevo cliente");
 
         try {
             model.addAttribute("titulo", "Nuevo Cliente");
-            model.addAttribute("subtitulo", "Registrar nuevo cliente en el sistema");
+            model.addAttribute("subtitulo", "Registrar nuevo cliente");
             model.addAttribute("cliente", new ClienteDto());
             model.addAttribute("tiposCliente", TipoCliente.values());
             model.addAttribute("estados", EstadoCliente.values());
+            model.addAttribute("esNuevo", true);
 
         } catch (Exception e) {
             log.error("Error al cargar formulario de nuevo cliente: {}", e.getMessage(), e);
@@ -107,46 +98,49 @@ public class ClienteController {
     @PostMapping("/guardar")
     public String guardarCliente(
             @ModelAttribute ClienteDto cliente,
-            @AuthenticationPrincipal CustomUser usuarioActual,
             RedirectAttributes redirectAttributes) {
 
-        log.info("Guardando cliente: {} por usuario: {}",
-                cliente.getNombreCompleto(), usuarioActual != null ? usuarioActual.getUsername() : "Sistema");
+        log.info("Guardando cliente: {}", cliente.getNombreCompleto());
 
         try {
-            // Asignar el usuario que crea el cliente
-            if (usuarioActual != null) {
-                cliente.setCreatedBy(usuarioActual.getId());
+            if (cliente.getIdCliente() == null) {
+                // Nuevo cliente
+                clienteService.save(cliente);
+                redirectAttributes.addFlashAttribute("mensaje", "Cliente registrado exitosamente");
+                log.info("Cliente registrado exitosamente: {}", cliente.getNombreCompleto());
+            } else {
+                // Actualizar cliente existente
+                clienteService.update(cliente);
+                redirectAttributes.addFlashAttribute("mensaje", "Cliente actualizado exitosamente");
+                log.info("Cliente actualizado exitosamente: {}", cliente.getNombreCompleto());
             }
-
-            clienteService.save(cliente);
-            redirectAttributes.addFlashAttribute("success",
-                    "Cliente '" + cliente.getNombreCompleto() + "' registrado exitosamente");
 
         } catch (Exception e) {
             log.error("Error al guardar cliente: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error",
-                    "Error al guardar el cliente: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error al guardar cliente: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("cliente", cliente);
+            return "redirect:/clientes/nuevo";
         }
 
         return "redirect:/clientes";
     }
 
     @GetMapping("/editar/{id}")
-    public String editarCliente(@PathVariable Long id, Model model) {
-        log.info("Editando cliente ID: {}", id);
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+        log.info("Mostrando formulario de edición para cliente ID: {}", id);
 
         try {
             ClienteDto cliente = clienteService.findById(id);
 
             model.addAttribute("titulo", "Editar Cliente");
-            model.addAttribute("subtitulo", "Modificar información del cliente");
+            model.addAttribute("subtitulo", "Modificar datos del cliente");
             model.addAttribute("cliente", cliente);
             model.addAttribute("tiposCliente", TipoCliente.values());
             model.addAttribute("estados", EstadoCliente.values());
+            model.addAttribute("esNuevo", false);
 
         } catch (Exception e) {
-            log.error("Error al cargar cliente para editar: {}", e.getMessage(), e);
+            log.error("Error al cargar cliente para edición ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("error", "Error al cargar el cliente: " + e.getMessage());
             return "redirect:/clientes";
         }
@@ -154,56 +148,28 @@ public class ClienteController {
         return "clientes/form";
     }
 
-    @PostMapping("/actualizar")
-    public String actualizarCliente(
-            @ModelAttribute ClienteDto cliente,
-            @AuthenticationPrincipal CustomUser usuarioActual,
-            RedirectAttributes redirectAttributes) {
-
-        log.info("Actualizando cliente ID: {} por usuario: {}",
-                cliente.getIdCliente(), usuarioActual != null ? usuarioActual.getUsername() : "Sistema");
-
-        try {
-            // Asignar el usuario que actualiza el cliente
-            if (usuarioActual != null) {
-                cliente.setUpdatedBy(usuarioActual.getId());
-            }
-
-            clienteService.update(cliente);
-            redirectAttributes.addFlashAttribute("success",
-                    "Cliente '" + cliente.getNombreCompleto() + "' actualizado exitosamente");
-
-        } catch (Exception e) {
-            log.error("Error al actualizar cliente: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error",
-                    "Error al actualizar el cliente: " + e.getMessage());
-        }
-
-        return "redirect:/clientes";
-    }
-
-    @GetMapping("/detalle/{id}")
-    public String detalleCliente(@PathVariable Long id, Model model) {
-        log.info("Mostrando detalle del cliente ID: {}", id);
+    @GetMapping("/ver/{id}")
+    public String verCliente(@PathVariable Long id, Model model) {
+        log.info("Mostrando detalles del cliente ID: {}", id);
 
         try {
             ClienteDto cliente = clienteService.findById(id);
 
-            model.addAttribute("titulo", "Detalle del Cliente");
+            model.addAttribute("titulo", "Detalles del Cliente");
             model.addAttribute("subtitulo", "Información completa del cliente");
             model.addAttribute("cliente", cliente);
 
         } catch (Exception e) {
-            log.error("Error al cargar detalle del cliente: {}", e.getMessage(), e);
-            model.addAttribute("error", "Error al cargar el detalle del cliente: " + e.getMessage());
+            log.error("Error al cargar detalles del cliente ID {}: {}", id, e.getMessage(), e);
+            model.addAttribute("error", "Error al cargar los detalles del cliente: " + e.getMessage());
             return "redirect:/clientes";
         }
 
         return "clientes/detalle";
     }
 
-    @PostMapping("/cambiar-estado/{id}")
-    public String cambiarEstadoCliente(
+    @PostMapping("/{id}/cambiar-estado")
+    public String cambiarEstado(
             @PathVariable Long id,
             @RequestParam EstadoCliente nuevoEstado,
             RedirectAttributes redirectAttributes) {
@@ -211,33 +177,59 @@ public class ClienteController {
         log.info("Cambiando estado del cliente ID: {} a {}", id, nuevoEstado);
 
         try {
-            ClienteDto cliente = clienteService.cambiarEstado(id, nuevoEstado);
-            redirectAttributes.addFlashAttribute("success",
-                    "Estado del cliente '" + cliente.getNombreCompleto() + "' cambiado a " + nuevoEstado);
+            clienteService.cambiarEstado(id, nuevoEstado);
+            redirectAttributes.addFlashAttribute("mensaje",
+                    "Estado del cliente cambiado a " + nuevoEstado.name() + " exitosamente");
 
         } catch (Exception e) {
-            log.error("Error al cambiar estado del cliente: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error",
-                    "Error al cambiar el estado del cliente: " + e.getMessage());
+            log.error("Error al cambiar estado del cliente ID {}: {}", id, e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("error", "Error al cambiar estado: " + e.getMessage());
         }
 
         return "redirect:/clientes";
     }
 
-    @PostMapping("/eliminar/{id}")
-    public String eliminarCliente(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    @PostMapping("/{id}/eliminar")
+    public String eliminarCliente(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
+
         log.info("Eliminando cliente ID: {}", id);
 
         try {
             clienteService.deleteById(id);
-            redirectAttributes.addFlashAttribute("success", "Cliente eliminado exitosamente");
+            redirectAttributes.addFlashAttribute("mensaje", "Cliente eliminado exitosamente");
 
         } catch (Exception e) {
-            log.error("Error al eliminar cliente: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error",
-                    "Error al eliminar el cliente: " + e.getMessage());
+            log.error("Error al eliminar cliente ID {}: {}", id, e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar cliente: " + e.getMessage());
         }
 
         return "redirect:/clientes";
+    }
+
+    @GetMapping("/buscar")
+    public String buscarClientes(
+            @RequestParam String termino,
+            Model model) {
+
+        log.info("Buscando clientes con término: {}", termino);
+
+        try {
+            List<ClienteDto> clientes = clienteService.findByNombreCompletoContainingIgnoreCase(termino);
+
+            model.addAttribute("titulo", "Búsqueda de Clientes");
+            model.addAttribute("subtitulo", "Resultados para: " + termino);
+            model.addAttribute("clientes", clientes);
+            model.addAttribute("termino", termino);
+            model.addAttribute("totalResultados", clientes.size());
+
+        } catch (Exception e) {
+            log.error("Error en búsqueda de clientes: {}", e.getMessage(), e);
+            model.addAttribute("error", "Error en la búsqueda: " + e.getMessage());
+            model.addAttribute("clientes", List.of());
+        }
+
+        return "clientes/lista";
     }
 }
