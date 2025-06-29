@@ -1,5 +1,8 @@
 package com.api.diversity.application.mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.api.diversity.application.dto.RubroDto;
@@ -43,5 +46,14 @@ public class RubroMapper {
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());
         return entity;
+    }
+
+    public List<RubroDto> toDtoList(List<RubroEntity> entities) {
+        if (entities == null) {
+            return null;
+        }
+        return entities.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 }

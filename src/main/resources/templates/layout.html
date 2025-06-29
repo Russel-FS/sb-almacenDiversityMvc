@@ -89,7 +89,8 @@
               </button>
               <div
                 class="dropdown-menu absolute left-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2"
-              >                <a
+              >
+                <a
                   th:href="@{/pinateria/categorias}"
                   class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
                 >
@@ -132,7 +133,8 @@
               </button>
               <div
                 class="dropdown-menu absolute left-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2"
-              >                <a
+              >
+                <a
                   th:href="@{/libreria/categorias}"
                   class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
                 >
@@ -175,7 +177,8 @@
               </button>
               <div
                 class="dropdown-menu absolute left-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2"
-              >                <a
+              >
+                <a
                   th:href="@{/camaras/categorias}"
                   class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
                 >
@@ -195,6 +198,78 @@
                 </a>
               </div>
             </div>
+
+            <!-- Dropdown Kardex -->
+            <div class="dropdown relative group">
+              <button
+                class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 flex items-center"
+              >
+                Kardex
+                <svg
+                  class="w-4 h-4 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 9l-7 7-7-7"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <div
+                class="dropdown-menu absolute left-0 mt-2 w-48 rounded-xl shadow-lg glass-effect border border-gray-100 py-2"
+              >
+                <a
+                  th:href="@{/pinateria/kardex/dashboard}"
+                  class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
+                >
+                  Piñatería
+                </a>
+                <a
+                  th:href="@{/libreria/kardex/dashboard}"
+                  class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
+                >
+                  Librería
+                </a>
+                <a
+                  th:href="@{/camaras/kardex/dashboard}"
+                  class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF]"
+                >
+                  Cámaras
+                </a>
+                <div class="border-t border-gray-100 my-1"></div>
+                <a
+                  th:href="@{/admin/kardex/dashboard}"
+                  class="block px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-50 hover:text-[#2997FF] font-medium"
+                >
+                  Administración
+                </a>
+              </div>
+            </div>
+
+            <!-- Proveedores -->
+            <a
+              th:href="@{/proveedores}"
+              class="nav-link text-sm font-medium text-gray-600 hover:text-gray-900 flex items-center"
+            >
+              <svg
+                class="w-5 h-5 mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M3 7V6a2 2 0 012-2h14a2 2 0 012 2v1M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7M3 7h18"
+                />
+              </svg>
+              <span>Proveedores</span>
+            </a>
 
             <!-- Rubros y Perfil -->
             <div>
@@ -297,6 +372,14 @@
                 </a>
               </div>
             </div>
+
+            <!-- Clientes -->
+            <a
+              href="/clientes"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <i class="fas fa-users mr-2"></i>Clientes
+            </a>
           </div>
         </div>
       </div>

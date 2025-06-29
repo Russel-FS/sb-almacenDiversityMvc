@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo}">Nueva Entrada - Piñatería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header
+      class="bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg"
+    >
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <i class="fas fa-plus text-3xl"></i>
+            <div>
+              <h1 class="text-2xl font-bold" th:text="${titulo}">
+                Nueva Entrada - Piñatería
+              </h1>
+              <p class="text-green-200" th:text="${subtitulo}">
+                Registrar entrada de productos de Piñatería
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/pinateria/kardex/dashboard"
+              class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg transition-colors"
+            >
+              <i class="fas fa-arrow-left mr-2"></i>Volver
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+      <div class="container mx-auto px-6 py-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-8">
+            <a
+              href="/pinateria/kardex/dashboard"
+              class="text-gray-600 hover:text-green-600 transition-colors"
+            >
+              <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+            </a>
+            <a
+              href="/pinateria/kardex/entrada/nueva"
+              class="text-green-600 font-semibold border-b-2 border-green-600 pb-2"
+            >
+              <i class="fas fa-plus mr-2"></i>Nueva Entrada
+            </a>
+            <a
+              href="/pinateria/kardex/salida/nueva"
+              class="text-gray-600 hover:text-green-600 transition-colors"
+            >
+              <i class="fas fa-minus mr-2"></i>Nueva Salida
+            </a>
+            <a
+              href="/pinateria/kardex/movimientos"
+              class="text-gray-600 hover:text-green-600 transition-colors"
+            >
+              <i class="fas fa-exchange-alt mr-2"></i>Movimientos
+            </a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/"
+              class="text-gray-600 hover:text-green-600 transition-colors"
+            >
+              <i class="fas fa-home mr-2"></i>Inicio
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+      <!-- Error Alert -->
+      <div
+        th:if="${error}"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6"
+      >
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        <span th:text="${error}">Error</span>
+      </div>
+
+      <!-- Success Alert -->
+      <div
+        th:if="${success}"
+        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6"
+      >
+        <i class="fas fa-check-circle mr-2"></i>
+        <span th:text="${success}">Éxito</span>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <form
+          th:action="@{/pinateria/kardex/entrada/guardar}"
+          method="post"
+          id="entradaForm"
+        >
+          <!-- Información básica -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                <i class="fas fa-calendar mr-2"></i>Fecha de Entrada
+              </label>
+              <input
+                type="date"
+                name="fechaEntrada"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                <i class="fas fa-file-invoice mr-2"></i>Número de Factura
+              </label>
+              <input
+                type="text"
+                name="numeroFactura"
+                placeholder="Dejar vacío para generar automáticamente"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <p class="text-xs text-gray-500 mt-1">
+                <i class="fas fa-info-circle mr-1"></i>
+                Si no ingresas un número, el sistema generará uno
+                automáticamente
+              </p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                <i class="fas fa-building mr-2"></i>Tipo de Documento
+              </label>
+              <select
+                name="tipoDocumento"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="">Seleccionar tipo</option>
+                <option
+                  th:each="tipo : ${tiposDocumento}"
+                  th:value="${tipo.name()}"
+                  th:text="${tipo.descripcion}"
+                >
+                  Tipo
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Proveedor -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              <i class="fas fa-truck mr-2"></i>Proveedor
+            </label>
+            <select
+              name="proveedorId"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              th:class="${proveedores.empty} ? 'w-full px-3 py-2 border border-red-300 rounded-md bg-red-50' : 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500'"
+            >
+              <option value="">Seleccionar proveedor</option>
+              <option
+                th:each="proveedor : ${proveedores}"
+                th:value="${proveedor.idProveedor}"
+                th:text="${proveedor.razonSocial + ' - ' + proveedor.ruc}"
+              >
+                Proveedor
+              </option>
+            </select>
+            <div
+              th:if="${proveedores.empty}"
+              class="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md"
+            >
+              <div class="flex items-center">
+                <i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i>
+                <span class="text-sm text-yellow-800">
+                  No hay proveedores activos disponibles.
+                  <a
+                    href="/proveedores/nuevo"
+                    class="text-yellow-700 underline hover:text-yellow-900"
+                  >
+                    Registrar un nuevo proveedor
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Productos -->
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+              <i class="fas fa-boxes mr-2"></i>Productos
+            </h3>
+
+            <div id="productosContainer">
+              <div
+                class="producto-item border border-gray-200 rounded-lg p-4 mb-4"
+              >
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Producto</label
+                    >
+                    <select
+                      name="productos[0].productoId"
+                      required
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                      th:class="${productos.empty} ? 'w-full px-3 py-2 border border-red-300 rounded-md bg-red-50' : 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500'"
+                    >
+                      <option value="">Seleccionar producto</option>
+                      <option
+                        th:each="producto : ${productos}"
+                        th:value="${producto.idProducto}"
+                        th:text="${producto.nombreProducto + ' - Stock: ' + (producto.stockActual != null ? producto.stockActual : 0) + ' - Precio: S/ ' + (producto.precioVenta != null ? producto.precioVenta : '0.00')}"
+                      >
+                        Producto
+                      </option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Cantidad</label
+                    >
+                    <input
+                      type="number"
+                      name="productos[0].cantidad"
+                      min="1"
+                      required
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="0"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Precio Unitario</label
+                    >
+                    <input
+                      type="number"
+                      name="productos[0].precioUnitario"
+                      min="0"
+                      step="0.01"
+                      required
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                      >Subtotal</label
+                    >
+                    <input
+                      type="text"
+                      readonly
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div class="flex items-end">
+                    <button
+                      type="button"
+                      class="remove-producto bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md transition-colors"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              th:if="${productos.empty}"
+              class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md"
+            >
+              <div class="flex items-center">
+                <i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i>
+                <span class="text-sm text-yellow-800">
+                  No hay productos de Piñatería disponibles.
+                  <a
+                    href="/pinateria/productos"
+                    class="text-yellow-700 underline hover:text-yellow-900"
+                  >
+                    Registrar un nuevo producto
+                  </a>
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              id="agregarProducto"
+              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors"
+            >
+              <i class="fas fa-plus mr-2"></i>Agregar Producto
+            </button>
+          </div>
+
+          <!-- Totales -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Subtotal</label
+              >
+              <input
+                type="text"
+                id="subtotal"
+                readonly
+                class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                value="S/ 0.00"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >IGV (18%)</label
+              >
+              <input
+                type="text"
+                id="igv"
+                readonly
+                class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                value="S/ 0.00"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Total</label
+              >
+              <input
+                type="text"
+                id="total"
+                readonly
+                class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 font-bold"
+                value="S/ 0.00"
+              />
+            </div>
+          </div>
+
+          <!-- Observaciones -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              <i class="fas fa-sticky-note mr-2"></i>Observaciones
+            </label>
+            <textarea
+              name="observaciones"
+              rows="3"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="Observaciones adicionales..."
+            ></textarea>
+          </div>
+
+          <!-- Botones -->
+          <div class="flex justify-end space-x-4">
+            <a
+              href="/pinateria/kardex/dashboard"
+              class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-md transition-colors"
+            >
+              <i class="fas fa-times mr-2"></i>Cancelar
+            </a>
+            <button
+              type="submit"
+              class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md transition-colors"
+            >
+              <i class="fas fa-save mr-2"></i>Guardar Entrada
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+      <div class="container mx-auto px-6 text-center">
+        <p>&copy; 2024 Sistema de Gestión de Inventarios - Piñatería</p>
+      </div>
+    </footer>
+
+    <script>
+      let productoIndex = 1;
+
+      // Validación de fecha de entrada
+      document
+        .querySelector('input[name="fechaEntrada"]')
+        .addEventListener("change", function () {
+          const fechaEntrada = new Date(this.value);
+          const fechaActual = new Date();
+          const fechaLimite = new Date();
+          fechaLimite.setDate(fechaLimite.getDate() - 30);
+
+          this.classList.remove("border-red-500", "border-green-500");
+          if (fechaEntrada > fechaActual) {
+            this.classList.add("border-red-500");
+            mostrarError("La fecha de entrada no puede ser futura");
+          } else if (fechaEntrada < fechaLimite) {
+            this.classList.add("border-red-500");
+            mostrarError("La fecha de entrada no puede ser anterior a 30 días");
+          } else {
+            this.classList.add("border-green-500");
+            ocultarError();
+          }
+        });
+
+      function mostrarError(mensaje) {
+        let errorDiv = document.getElementById("fechaError");
+        if (!errorDiv) {
+          errorDiv = document.createElement("div");
+          errorDiv.id = "fechaError";
+          errorDiv.className = "text-red-500 text-sm mt-1";
+          document
+            .querySelector('input[name="fechaEntrada"]')
+            .parentNode.appendChild(errorDiv);
+        }
+        errorDiv.textContent = mensaje;
+      }
+
+      function ocultarError() {
+        const errorDiv = document.getElementById("fechaError");
+        if (errorDiv) {
+          errorDiv.remove();
+        }
+      }
+
+      // Agregar nuevo producto
+      document
+        .getElementById("agregarProducto")
+        .addEventListener("click", function () {
+          const container = document.getElementById("productosContainer");
+          const newProducto = document
+            .querySelector(".producto-item")
+            .cloneNode(true);
+
+          newProducto.querySelectorAll("select, input").forEach((input) => {
+            input.name = input.name.replace("[0]", `[${productoIndex}]`);
+            if (input.type !== "hidden") {
+              input.value = "";
+            }
+          });
+
+          container.appendChild(newProducto);
+          productoIndex++;
+        });
+
+      // Eliminar producto
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("remove-producto")) {
+          const productos = document.querySelectorAll(".producto-item");
+          if (productos.length > 1) {
+            e.target.closest(".producto-item").remove();
+            calcularTotales();
+          }
+        }
+      });
+      // metodo para calcular totales
+      function calcularTotales() {
+        let subtotal = 0;
+
+        document.querySelectorAll(".producto-item").forEach((item) => {
+          const cantidad =
+            parseFloat(item.querySelector('input[name*="cantidad"]').value) ||
+            0;
+          const precio =
+            parseFloat(
+              item.querySelector('input[name*="precioUnitario"]').value
+            ) || 0;
+          const subtotalItem = cantidad * precio;
+
+          item.querySelector(
+            "input[readonly]"
+          ).value = `S/ ${subtotalItem.toFixed(2)}`;
+          subtotal += subtotalItem;
+        });
+
+        const igv = subtotal * 0.18;
+        const total = subtotal + igv;
+
+        document.getElementById("subtotal").value = `S/ ${subtotal.toFixed(2)}`;
+        document.getElementById("igv").value = `S/ ${igv.toFixed(2)}`;
+        document.getElementById("total").value = `S/ ${total.toFixed(2)}`;
+      }
+
+      // Calcular totales al cargar la página
+      document.addEventListener("input", function (e) {
+        if (
+          e.target.name.includes("cantidad") ||
+          e.target.name.includes("precioUnitario")
+        ) {
+          calcularTotales();
+        }
+      });
+
+      // Debug del formulario
+      document
+        .getElementById("entradaForm")
+        .addEventListener("submit", function (e) {
+          console.log("Formulario enviándose...");
+
+          // Validar que al menos un producto tenga datos
+          const productos = document.querySelectorAll(".producto-item");
+          let productosValidos = 0;
+
+          productos.forEach((producto) => {
+            const productoId = producto.querySelector(
+              'select[name*="productoId"]'
+            ).value;
+            const cantidad = producto.querySelector(
+              'input[name*="cantidad"]'
+            ).value;
+            const precio = producto.querySelector(
+              'input[name*="precioUnitario"]'
+            ).value;
+
+            if (productoId && cantidad && precio) {
+              productosValidos++;
+            }
+          });
+
+          if (productosValidos === 0) {
+            e.preventDefault();
+            alert("Debe agregar al menos un producto con todos sus datos");
+            return false;
+          }
+
+          console.log("Formulario válido, enviando...");
+        });
+    </script>
+  </body>
+</html>

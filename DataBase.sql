@@ -34,7 +34,6 @@ CREATE TABLE Usuarios (
     Nombre_Usuario VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL,
     Nombre_Completo VARCHAR(100) NOT NULL,
-    ID_Rubro BIGINT NOT NULL,
     Contraseña VARCHAR(255) NOT NULL,
     UrlImagen VARCHAR(255),
     PublicId VARCHAR(100),
@@ -46,9 +45,19 @@ CREATE TABLE Usuarios (
     Ultimo_Acceso DATETIME,
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro),
     CONSTRAINT UQ_Usuario_Nombre UNIQUE (Nombre_Usuario),
     CONSTRAINT UQ_Usuario_Email UNIQUE (Email)
+);
+-- Tabla de asignación de rubros a usuarios
+CREATE TABLE Usuario_Rubros (
+    ID_Usuario_Rubro BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ID_Usuario BIGINT NOT NULL,
+    ID_Rubro BIGINT NOT NULL,
+    Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
+    Fecha_Asignacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (ID_Usuario, ID_Rubro),
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (ID_Rubro) REFERENCES Rubros (ID_Rubro)
 );
 
 -- tabla de asignación de roles a usuarios
@@ -126,7 +135,11 @@ CREATE TABLE Proveedores (
     Direccion TEXT,
     Telefono VARCHAR(20),
     Email VARCHAR(100),
-    Estado ENUM('Activo', 'Inactivo') DEFAULT 'Activo',
+    Estado ENUM(
+        'Activo',
+        'Inactivo',
+        'Eliminado'
+    ) DEFAULT 'Activo',
     Fecha_Creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     Fecha_Modificacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT UQ_Proveedor_RUC UNIQUE (RUC),
@@ -136,7 +149,7 @@ CREATE TABLE Proveedores (
 -- Tabla de Clientes
 CREATE TABLE Clientes (
     ID_Cliente BIGINT AUTO_INCREMENT PRIMARY KEY,
-    Tipo_Cliente ENUM('Persona Natural', 'Empresa') NOT NULL,
+    Tipo_Cliente ENUM('Persona_Natural', 'Empresa') NOT NULL,
     Nombre_Completo VARCHAR(100) NOT NULL,
     Razon_Social VARCHAR(100),
     RUC VARCHAR(11),
@@ -156,7 +169,7 @@ CREATE TABLE Clientes (
     CONSTRAINT UQ_Cliente_Email UNIQUE (Email),
     CONSTRAINT CK_Cliente_Tipo CHECK (
         (
-            Tipo_Cliente = 'Persona Natural'
+            Tipo_Cliente = 'Persona_Natural'
             AND Razon_Social IS NULL
         )
         OR (
@@ -171,6 +184,13 @@ CREATE TABLE Clientes (
 CREATE TABLE Entradas (
     ID_Entrada BIGINT AUTO_INCREMENT PRIMARY KEY,
     Numero_Factura VARCHAR(50) NOT NULL,
+    Tipo_Documento ENUM(
+        'FACTURA',
+        'BOLETA',
+        'NOTA_CREDITO',
+        'NOTA_DEBITO',
+        'GUIA_REMISION'
+    ) NOT NULL,
     ID_Proveedor BIGINT NOT NULL,
     Fecha_Entrada DATETIME DEFAULT CURRENT_TIMESTAMP,
     Costo_Total DECIMAL(10, 2) NOT NULL CHECK (Costo_Total >= 0),
@@ -210,7 +230,13 @@ CREATE TABLE Detalle_Entrada (
 CREATE TABLE Salidas (
     ID_Salida BIGINT AUTO_INCREMENT PRIMARY KEY,
     Numero_Documento VARCHAR(50) NOT NULL,
-    Tipo_Documento ENUM('Boleta', 'Factura') NOT NULL,
+    Tipo_Documento ENUM(
+        'FACTURA',
+        'BOLETA',
+        'NOTA_CREDITO',
+        'NOTA_DEBITO',
+        'GUIA_REMISION'
+    ) NOT NULL,
     ID_Cliente BIGINT NOT NULL,
     Fecha_Salida DATETIME DEFAULT CURRENT_TIMESTAMP,
     Motivo_Salida VARCHAR(100),
@@ -249,252 +275,3 @@ CREATE TABLE Detalle_Salida (
     FOREIGN KEY (ID_Usuario_Registro) REFERENCES Usuarios (ID_Usuario),
     CONSTRAINT UQ_Detalle_Salida_Producto UNIQUE (ID_Salida, ID_Producto)
 );
-
--- Vista de Inventario
-CREATE VIEW Vista_Inventario AS
-SELECT
-    p.ID_Producto,
-    p.Codigo_Producto,
-    p.Nombre_Producto,
-    p.Descripcion,
-    c.Nombre_Categoria,
-    r.Nombre,
-    p.Stock_Actual,
-    p.Stock_Minimo,
-    p.Stock_Maximo,
-    p.Precio_Compra,
-    p.Precio_Venta,
-    (
-        p.Stock_Actual * p.Precio_Compra
-    ) as Valor_Total_Inventario,
-    (
-        p.Stock_Actual * p.Precio_Venta
-    ) as Valor_Total_Venta,
-    CASE
-        WHEN p.Stock_Actual <= p.Stock_Minimo THEN 'Stock Bajo'
-        WHEN p.Stock_Actual >= p.Stock_Maximo THEN 'Stock Alto'
-        ELSE 'Stock Normal'
-    END as Estado_Stock,
-    p.Estado as Estado_Producto,
-    p.Fecha_Creacion,
-    p.Fecha_Modificacion as Ultima_Actualizacion
-FROM
-    Productos p
-    INNER JOIN Categorias c ON p.ID_Categoria = c.ID_Categoria
-    INNER JOIN Rubros r ON c.ID_Rubro = r.ID_Rubro
-WHERE
-    p.Estado != 'Inactivo';
-
--- Vista para consultar usuarios con sus roles
-CREATE VIEW Vista_Usuarios_Roles AS
-SELECT
-    u.ID_Usuario,
-    u.Nombre_Usuario,
-    u.Email,
-    u.Nombre_Completo,
-    u.Estado as Estado_Usuario,
-    r.ID_Rol,
-    r.Nombre_Rol,
-    r.Descripcion as Descripcion_Rol,
-    ur.Estado as Estado_Rol_Asignado,
-    ur.Fecha_Asignacion,
-    GROUP_CONCAT(r.Nombre_Rol SEPARATOR ', ') as Roles_Asignados
-FROM
-    Usuarios u
-    LEFT JOIN User_Roles ur ON u.ID_Usuario = ur.ID_Usuario
-    AND ur.Estado = 'Activo'
-    LEFT JOIN Roles r ON ur.ID_Rol = r.ID_Rol
-    AND r.Estado = 'Activo'
-GROUP BY
-    u.ID_Usuario,
-    u.Nombre_Usuario,
-    u.Email,
-    u.Nombre_Completo,
-    u.Estado;
-
--- Vista para consultar ventas con información del cliente
-CREATE VIEW Vista_Ventas_Clientes AS
-SELECT
-    s.ID_Salida,
-    s.Numero_Documento,
-    s.Tipo_Documento,
-    s.Fecha_Salida,
-    s.Total_Venta,
-    s.Estado as Estado_Venta,
-    c.ID_Cliente,
-    c.Tipo_Cliente,
-    c.Nombre_Completo as Nombre_Cliente,
-    c.Razon_Social,
-    c.RUC,
-    c.DNI,
-    c.Telefono as Telefono_Cliente,
-    c.Email as Email_Cliente,
-    u.Nombre_Completo as Vendedor,
-    s.Observaciones
-FROM
-    Salidas s
-    LEFT JOIN Clientes c ON s.ID_Cliente = c.ID_Cliente
-    LEFT JOIN Usuarios u ON s.ID_Usuario_Registro = u.ID_Usuario
-WHERE
-    s.Estado != 'Anulado';
-
--- Vista de Control de Inventario Eficiente para J&C Diversity
-CREATE VIEW Vista_Control_Inventario AS
-SELECT
-    p.ID_Producto,
-    p.Codigo_Producto,
-    p.Nombre_Producto,
-    c.Nombre_Categoria,
-    r.Nombre as Rubro,
-    p.Stock_Actual,
-    p.Stock_Minimo,
-    p.Stock_Maximo,
-    p.Precio_Compra,
-    p.Precio_Venta,
-    (
-        p.Stock_Actual * p.Precio_Compra
-    ) as Valor_Inventario_Costo,
-    (
-        p.Stock_Actual * p.Precio_Venta
-    ) as Valor_Inventario_Venta,
-    (
-        p.Precio_Venta - p.Precio_Compra
-    ) as Margen_Unitario,
-    (
-        (
-            p.Precio_Venta - p.Precio_Compra
-        ) / p.Precio_Compra * 100
-    ) as Margen_Porcentual,
-    CASE
-        WHEN p.Stock_Actual <= p.Stock_Minimo THEN 'Stock Crítico - Reponer'
-        WHEN p.Stock_Actual <= (
-            p.Stock_Minimo + (
-                (
-                    p.Stock_Maximo - p.Stock_Minimo
-                ) * 0.3
-            )
-        ) THEN 'Stock Bajo'
-        WHEN p.Stock_Actual >= p.Stock_Maximo THEN 'Stock Alto - Revisar'
-        ELSE 'Stock Normal'
-    END as Estado_Stock,
-    CASE
-        WHEN p.Stock_Actual = 0 THEN 'Sin Stock'
-        WHEN p.Stock_Actual <= p.Stock_Minimo THEN 'Crítico'
-        WHEN p.Stock_Actual <= (
-            p.Stock_Minimo + (
-                (
-                    p.Stock_Maximo - p.Stock_Minimo
-                ) * 0.3
-            )
-        ) THEN 'Bajo'
-        WHEN p.Stock_Actual >= p.Stock_Maximo THEN 'Alto'
-        ELSE 'Normal'
-    END as Prioridad_Reposicion,
-    p.Estado as Estado_Producto,
-    p.Fecha_Creacion,
-    p.Fecha_Modificacion as Ultima_Actualizacion
-FROM
-    Productos p
-    INNER JOIN Categorias c ON p.ID_Categoria = c.ID_Categoria
-    INNER JOIN Rubros r ON c.ID_Rubro = r.ID_Rubro
-WHERE
-    p.Estado != 'Eliminado'
-ORDER BY
-    CASE
-        WHEN p.Stock_Actual <= p.Stock_Minimo THEN 1
-        WHEN p.Stock_Actual <= (
-            p.Stock_Minimo + (
-                (
-                    p.Stock_Maximo - p.Stock_Minimo
-                ) * 0.3
-            )
-        ) THEN 2
-        WHEN p.Stock_Actual >= p.Stock_Maximo THEN 3
-        ELSE 4
-    END,
-    p.Stock_Actual ASC;
-
--- Vista de Análisis de Rentabilidad para J&C Diversity
-CREATE VIEW Vista_Rentabilidad AS
-SELECT
-    r.Nombre as Rubro,
-    c.Nombre_Categoria,
-    COUNT(p.ID_Producto) as Total_Productos,
-    SUM(p.Stock_Actual) as Total_Stock,
-    SUM(
-        p.Stock_Actual * p.Precio_Compra
-    ) as Valor_Inventario_Costo,
-    SUM(
-        p.Stock_Actual * p.Precio_Venta
-    ) as Valor_Inventario_Venta,
-    SUM(
-        p.Stock_Actual * (
-            p.Precio_Venta - p.Precio_Compra
-        )
-    ) as Margen_Total,
-    AVG(
-        (
-            p.Precio_Venta - p.Precio_Compra
-        ) / p.Precio_Compra * 100
-    ) as Margen_Promedio_Porcentual,
-    COUNT(
-        CASE
-            WHEN p.Stock_Actual <= p.Stock_Minimo THEN 1
-        END
-    ) as Productos_Stock_Critico,
-    COUNT(
-        CASE
-            WHEN p.Stock_Actual >= p.Stock_Maximo THEN 1
-        END
-    ) as Productos_Stock_Alto,
-    COUNT(
-        CASE
-            WHEN p.Stock_Actual = 0 THEN 1
-        END
-    ) as Productos_Sin_Stock
-FROM
-    Productos p
-    INNER JOIN Categorias c ON p.ID_Categoria = c.ID_Categoria
-    INNER JOIN Rubros r ON c.ID_Rubro = r.ID_Rubro
-WHERE
-    p.Estado != 'Eliminado'
-GROUP BY
-    r.ID_Rubro,
-    r.Nombre,
-    c.ID_Categoria,
-    c.Nombre_Categoria
-ORDER BY Margen_Total DESC;
-
--- Vista de Validación de Documentos según Normativa SUNAT
-CREATE VIEW Vista_Validacion_Documentos AS
-SELECT
-    s.ID_Salida,
-    s.Numero_Documento,
-    s.Tipo_Documento,
-    s.Total_Venta,
-    c.Tipo_Cliente,
-    c.Nombre_Completo,
-    c.DNI,
-    c.RUC,
-    c.Razon_Social,
-    CASE
-        WHEN s.Total_Venta >= 700
-        AND s.Tipo_Documento = 'Boleta' THEN 'ERROR: Monto >= S/ 700 requiere Factura'
-        WHEN s.Total_Venta < 700
-        AND s.Tipo_Documento = 'Factura' THEN 'ADVERTENCIA: Monto < S/ 700 puede usar Boleta'
-        WHEN s.Total_Venta >= 700
-        AND c.Tipo_Cliente = 'Persona Natural'
-        AND c.DNI IS NULL THEN 'ERROR: Factura requiere DNI para persona natural'
-        WHEN s.Total_Venta >= 700
-        AND c.Tipo_Cliente = 'Empresa'
-        AND c.RUC IS NULL THEN 'ERROR: Factura requiere RUC para empresa'
-        ELSE 'DOCUMENTO VÁLIDO'
-    END as Estado_Validacion,
-    CASE
-        WHEN s.Total_Venta >= 700 THEN 'Requiere identificación completa'
-        ELSE 'Identificación opcional'
-    END as Requisito_Identificacion
-FROM Salidas s
-    INNER JOIN Clientes c ON s.ID_Cliente = c.ID_Cliente
-WHERE
-    s.Estado != 'Anulado';

@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,59 +20,61 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @EnableTransactionManagement
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final DataSource dataSource;
-    private final UserDetailsService userDetailsService;
+        private final DataSource dataSource;
+        private final UserDetailsService userDetailsService;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/css/**", "/js/**", "/images/**").permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/auth/login")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/auth/login?error=true")
-                        .permitAll())
-                .rememberMe(remember -> remember
-                        .tokenRepository(persistentTokenRepository())
-                        .tokenValiditySeconds(86400 * 30)
-                        .rememberMeParameter("remember-me")
-                        .key("diversityKey"))
-                .logout(logout -> logout
-                        .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/auth/login")
-                        .deleteCookies("JSESSIONID", "remember-me")
-                        .permitAll())
-                .csrf(csrf -> csrf.disable());
+                http
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers("/auth/login", "/css/**", "/js/**", "/images/**")
+                                                .permitAll()
+                                                .anyRequest().authenticated())
+                                .formLogin(form -> form
+                                                .loginPage("/auth/login")
+                                                .usernameParameter("username")
+                                                .passwordParameter("password")
+                                                .defaultSuccessUrl("/", true)
+                                                .failureUrl("/auth/login?error=true")
+                                                .permitAll())
+                                .rememberMe(remember -> remember
+                                                .tokenRepository(persistentTokenRepository())
+                                                .tokenValiditySeconds(86400 * 30)
+                                                .rememberMeParameter("remember-me")
+                                                .key("diversityKey"))
+                                .logout(logout -> logout
+                                                .logoutUrl("/auth/logout")
+                                                .logoutSuccessUrl("/auth/login")
+                                                .deleteCookies("JSESSIONID", "remember-me")
+                                                .permitAll())
+                                .csrf(csrf -> csrf.disable());
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        builder.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-        return builder.build();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+                AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+                builder.userDetailsService(userDetailsService)
+                                .passwordEncoder(passwordEncoder());
+                return builder.build();
+        }
 
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-        tokenRepository.setDataSource(dataSource);
-        return tokenRepository;
-    }
+        @Bean
+        public PersistentTokenRepository persistentTokenRepository() {
+                JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+                tokenRepository.setDataSource(dataSource);
+                return tokenRepository;
+        }
 
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public static PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 }

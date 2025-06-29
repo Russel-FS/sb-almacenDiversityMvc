@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo}">Detalle de Entrada - Piñatería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header
+      class="bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg"
+    >
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <i class="fas fa-arrow-down text-3xl"></i>
+            <div>
+              <h1 class="text-2xl font-bold" th:text="${titulo}">
+                Detalle de Entrada - Piñatería
+              </h1>
+              <p class="text-green-200" th:text="${subtitulo}">
+                Información detallada de la entrada
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/pinateria/kardex/movimientos"
+              class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg transition-colors"
+            >
+              <i class="fas fa-arrow-left mr-2"></i>Volver
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="bg-white shadow-md">
+      <div class="container mx-auto px-6 py-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-8">
+            <a
+              href="/pinateria/kardex/dashboard"
+              class="text-gray-600 hover:text-green-600 transition-colors"
+            >
+              <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+            </a>
+            <a
+              href="/pinateria/kardex/entrada/nueva"
+              class="text-gray-600 hover:text-green-600 transition-colors"
+            >
+              <i class="fas fa-plus mr-2"></i>Nueva Entrada
+            </a>
+            <a
+              href="/pinateria/kardex/salida/nueva"
+              class="text-gray-600 hover:text-green-600 transition-colors"
+            >
+              <i class="fas fa-minus mr-2"></i>Nueva Salida
+            </a>
+            <a
+              href="/pinateria/kardex/movimientos"
+              class="text-green-600 font-semibold border-b-2 border-green-600 pb-2"
+            >
+              <i class="fas fa-exchange-alt mr-2"></i>Movimientos
+            </a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/"
+              class="text-gray-600 hover:text-green-600 transition-colors"
+            >
+              <i class="fas fa-home mr-2"></i>Inicio
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-8">
+      <!-- Alerta de error -->
+      <div
+        th:if="${error}"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6"
+      >
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        <span th:text="${error}">Error</span>
+      </div>
+
+      <!-- Detalle de Entrada -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <!-- Header de Entrada -->
+        <div
+          class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-t-lg -mt-6 -mx-6 mb-6"
+        >
+          <h3 class="text-lg font-semibold">
+            <i class="fas fa-arrow-down mr-2"></i>Detalle de Entrada
+          </h3>
+        </div>
+
+        <!-- Información General -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">
+              <i class="fas fa-info-circle mr-2 text-green-600"></i>Información
+              General
+            </h4>
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span class="text-gray-600">Número de Factura:</span>
+                <span class="font-medium" th:text="${entrada?.numeroFactura}"
+                  >F001-001</span
+                >
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Fecha de Entrada:</span>
+                <span
+                  class="font-medium"
+                  th:text="${#temporals.format(entrada?.fechaEntrada, 'dd/MM/yyyy HH:mm')}"
+                  >01/01/2024</span
+                >
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Tipo de Documento:</span>
+                <span
+                  class="font-medium"
+                  th:text="${entrada?.tipoDocumento?.descripcion}"
+                  >Factura</span
+                >
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Estado:</span>
+                <span
+                  th:if="${entrada?.estado?.name() == 'Pendiente'}"
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                  >Pendiente</span
+                >
+                <span
+                  th:if="${entrada?.estado?.name() == 'Completado'}"
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                  >Completado</span
+                >
+                <span
+                  th:if="${entrada?.estado?.name() == 'Anulado'}"
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                  >Anulado</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Información del Proveedorrr -->
+          <div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">
+              <i class="fas fa-truck mr-2 text-blue-600"></i>Información del
+              Proveedor
+            </h4>
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span class="text-gray-600">Razón Social:</span>
+                <span class="font-medium" th:text="${entrada?.proveedorNombre}"
+                  >Proveedor</span
+                >
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">RUC:</span>
+                <span
+                  class="font-medium"
+                  th:text="${entrada?.proveedorRuc ?: 'N/A'}"
+                  >12345678</span
+                >
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Dirección:</span>
+                <span
+                  class="font-medium"
+                  th:text="${entrada?.proveedorDireccion ?: 'N/A'}"
+                  >Dirección</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Información de Usuari -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">
+              <i class="fas fa-user mr-2 text-purple-600"></i>Usuario Registro
+            </h4>
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span class="text-gray-600">Nombre:</span>
+                <span
+                  class="font-medium"
+                  th:text="${entrada?.usuarioRegistroNombre}"
+                  >Usuario</span
+                >
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Fecha:</span>
+                <span
+                  class="font-medium"
+                  th:text="${#temporals.format(entrada?.fechaEntrada, 'dd/MM/yyyy HH:mm')}"
+                  >01/01/2024</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div th:if="${entrada?.usuarioAprobacionNombre != null}">
+            <h4 class="text-lg font-semibold text-gray-900 mb-4">
+              <i class="fas fa-user-check mr-2 text-green-600"></i>Usuario
+              Aprobación
+            </h4>
+            <div class="space-y-3">
+              <div class="flex justify-between">
+                <span class="text-gray-600">Nombre:</span>
+                <span
+                  class="font-medium"
+                  th:text="${entrada?.usuarioAprobacionNombre}"
+                  >Usuario</span
+                >
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Fecha:</span>
+                <span
+                  class="font-medium"
+                  th:text="${#temporals.format(entrada?.fechaAprobacion, 'dd/MM/yyyy HH:mm')}"
+                  >01/01/2024</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Productos -->
+        <div
+          class="mb-6"
+          th:if="${entrada?.detalles != null and !entrada.detalles.isEmpty()}"
+        >
+          <h4 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-boxes mr-2 text-orange-600"></i>Productos Recibidos
+          </h4>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Producto
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Cantidad
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Precio Unitario
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Subtotal
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr
+                  th:each="detalle : ${entrada.detalles}"
+                  class="hover:bg-gray-50"
+                >
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    th:text="${detalle?.productoNombre}"
+                  >
+                    Producto
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    th:text="${detalle?.cantidad}"
+                  >
+                    0
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    th:text="${'S/ ' + #numbers.formatDecimal(detalle?.precioUnitario, 1, 2)}"
+                  >
+                    S/ 0.00
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600"
+                    th:text="${'S/ ' + #numbers.formatDecimal(detalle?.subtotal, 1, 2)}"
+                  >
+                    S/ 0.00
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Totales -->
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6"
+          th:if="${entrada?.costoTotal != null}"
+        >
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Subtotal</label
+            >
+            <input
+              type="text"
+              readonly
+              th:value="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal, 1, 2)}"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >IGV (18%)</label
+            >
+            <input
+              type="text"
+              readonly
+              th:value="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal * 0.18, 1, 2)}"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Total</label
+            >
+            <input
+              type="text"
+              readonly
+              th:value="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal * 1.18, 1, 2)}"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 font-bold"
+            />
+          </div>
+        </div>
+
+        <!-- Observaciones -->
+        <div
+          th:if="${entrada?.observaciones != null and !entrada.observaciones.isEmpty()}"
+          class="mb-6"
+        >
+          <h4 class="text-lg font-semibold text-gray-900 mb-4">
+            <i class="fas fa-comment mr-2 text-gray-600"></i>Observaciones
+          </h4>
+          <p
+            class="text-gray-700 bg-gray-50 p-4 rounded-lg"
+            th:text="${entrada.observaciones}"
+          >
+            Observaciones
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+      <div class="container mx-auto px-6 text-center">
+        <p>&copy; 2024 Sistema de Gestión de Inventarios - Piñatería</p>
+      </div>
+    </footer>
+  </body>
+</html>

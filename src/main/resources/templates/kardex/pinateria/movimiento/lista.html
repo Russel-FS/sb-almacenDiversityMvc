@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo}">Movimientos - Piñatería</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50">
+    <header
+      class="bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
+    >
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <i class="fas fa-exchange-alt text-3xl"></i>
+            <div>
+              <h1 class="text-2xl font-bold" th:text="${titulo}">
+                Movimientos - Piñatería
+              </h1>
+              <p class="text-blue-200" th:text="${subtitulo}">
+                Historial de movimientos de Piñatería
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/pinateria/kardex/dashboard"
+              class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition-colors"
+            >
+              <i class="fas fa-arrow-left mr-2"></i>Volver
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="bg-white shadow-md">
+      <div class="container mx-auto px-6 py-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-8">
+            <a
+              href="/pinateria/kardex/dashboard"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+            </a>
+            <a
+              href="/pinateria/kardex/entrada/nueva"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <i class="fas fa-plus mr-2"></i>Nueva Entrada
+            </a>
+            <a
+              href="/pinateria/kardex/salida/nueva"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <i class="fas fa-minus mr-2"></i>Nueva Salida
+            </a>
+            <a
+              href="/pinateria/kardex/movimientos"
+              class="text-blue-600 font-semibold border-b-2 border-blue-600 pb-2"
+            >
+              <i class="fas fa-exchange-alt mr-2"></i>Movimientos
+            </a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <i class="fas fa-home mr-2"></i>Inicio
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-8">
+      <div
+        th:if="${error}"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6"
+      >
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        <span th:text="${error}">Error</span>
+      </div>
+
+      <!-- Entradas -->
+      <div class="bg-white rounded-lg shadow-md mb-6">
+        <div
+          class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-t-lg"
+        >
+          <h3 class="text-lg font-semibold">
+            <i class="fas fa-arrow-down mr-2"></i>Entradas
+          </h3>
+        </div>
+        <div class="p-6">
+          <div th:if="${entradas.empty}" class="text-center text-gray-500 py-8">
+            <i class="fas fa-inbox text-4xl mb-4"></i>
+            <p>No hay entradas registradas</p>
+          </div>
+          <div th:if="${!entradas.empty}" class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Número
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Fecha
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Proveedor
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Total
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Estado
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr
+                  th:each="entrada : ${entradas}"
+                  class="hover:bg-gray-50"
+                  th:if="${entrada != null}"
+                >
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    th:text="${entrada.numeroFactura != null ? entrada.numeroFactura : 'N/A'}"
+                  >
+                    F001-001
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    th:text="${entrada.fechaEntrada != null ? #temporals.format(entrada.fechaEntrada, 'dd/MM/yyyy HH:mm') : 'N/A'}"
+                  >
+                    01/01/2024
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    th:text="${entrada.proveedorNombre != null ? entrada.proveedorNombre : 'N/A'}"
+                  >
+                    Proveedor
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600"
+                    th:text="${entrada.costoTotal != null ? 'S/ ' + #numbers.formatDecimal(entrada.costoTotal, 1, 2) : 'S/ 0.00'}"
+                  >
+                    S/ 0.00
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      th:if="${entrada.estado != null and entrada.estado.name() == 'Pendiente'}"
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                      >Pendiente</span
+                    >
+                    <span
+                      th:if="${entrada.estado != null and entrada.estado.name() == 'Completado'}"
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                      >Completado</span
+                    >
+                    <span
+                      th:if="${entrada.estado != null and entrada.estado.name() == 'Anulado'}"
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                      >Anulado</span
+                    >
+                    <span
+                      th:if="${entrada.estado == null}"
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800"
+                      >Sin Estado</span
+                    >
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <a
+                      th:href="@{/pinateria/kardex/entrada/{id}(id=${entrada.idEntrada})}"
+                      class="text-blue-600 hover:text-blue-900 mr-3"
+                      th:if="${entrada.idEntrada != null}"
+                      title="Ver detalle de entrada"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <span
+                      class="text-gray-400"
+                      th:if="${entrada.idEntrada == null}"
+                    >
+                      <i class="fas fa-eye-slash"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Salidas -->
+      <div class="bg-white rounded-lg shadow-md">
+        <div
+          class="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4 rounded-t-lg"
+        >
+          <h3 class="text-lg font-semibold">
+            <i class="fas fa-arrow-up mr-2"></i>Salidas
+          </h3>
+        </div>
+        <div class="p-6">
+          <div th:if="${salidas.empty}" class="text-center text-gray-500 py-8">
+            <i class="fas fa-shopping-cart text-4xl mb-4"></i>
+            <p>No hay salidas registradas</p>
+          </div>
+          <div th:if="${!salidas.empty}" class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Número
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Fecha
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Cliente
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Total
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Estado
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr
+                  th:each="salida : ${salidas}"
+                  class="hover:bg-gray-50"
+                  th:if="${salida != null}"
+                >
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    th:text="${salida.numeroDocumento != null ? salida.numeroDocumento : 'N/A'}"
+                  >
+                    S001-001
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    th:text="${salida.fechaSalida != null ? #temporals.format(salida.fechaSalida, 'dd/MM/yyyy HH:mm') : 'N/A'}"
+                  >
+                    01/01/2024
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    th:text="${salida.clienteNombre != null ? salida.clienteNombre : 'N/A'}"
+                  >
+                    Cliente
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600"
+                    th:text="${salida.totalVenta != null ? 'S/ ' + #numbers.formatDecimal(salida.totalVenta, 1, 2) : 'S/ 0.00'}"
+                  >
+                    S/ 0.00
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span
+                      th:if="${salida.estado != null and salida.estado.name() == 'Pendiente'}"
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                      >Pendiente</span
+                    >
+                    <span
+                      th:if="${salida.estado != null and salida.estado.name() == 'Completado'}"
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                      >Completado</span
+                    >
+                    <span
+                      th:if="${salida.estado != null and salida.estado.name() == 'Anulado'}"
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                      >Anulado</span
+                    >
+                    <span
+                      th:if="${salida.estado == null}"
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800"
+                      >Sin Estado</span
+                    >
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <a
+                      th:href="@{/pinateria/kardex/salida/{id}(id=${salida.idSalida})}"
+                      class="text-blue-600 hover:text-blue-900 mr-3"
+                      th:if="${salida.idSalida != null}"
+                      title="Ver detalle de salida"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <span
+                      class="text-gray-400"
+                      th:if="${salida.idSalida == null}"
+                    >
+                      <i class="fas fa-eye-slash"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+      <div class="container mx-auto px-6 text-center">
+        <p>&copy; 2024 Sistema de Gestión de Inventarios - Piñatería</p>
+      </div>
+    </footer>
+  </body>
+</html>

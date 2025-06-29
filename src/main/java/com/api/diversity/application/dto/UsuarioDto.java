@@ -19,7 +19,7 @@ public class UsuarioDto {
     private String nombreUsuario;
     private String email;
     private String nombreCompleto;
-    private RubroDto rubro;
+    private List<RubroDto> rubros;
     private String urlImagen;
     private String publicId;
     private String contraseña;

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Proveedores - Diversity</title>
+  </head>
+  <body>
+    <div th:replace="~{layout :: layout(~{::section})}">
+      <section>
+        <!-- Contenedor principal -->
+        <div class="min-h-screen bg-white/50">
+          <div class="max-w-7xl mx-auto px-4 py-16">
+            <!-- Header -->
+            <div class="mb-16">
+              <div class="flex flex-wrap items-center justify-between mb-12">
+                <div class="flex flex-wrap items-center gap-6">
+                  <div
+                    class="w-16 h-16 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl flex items-center justify-center shadow-sm"
+                  >
+                    <svg
+                      class="w-8 h-8 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h1
+                      class="text-5xl font-light text-gray-900 tracking-tight"
+                    >
+                      Proveedores
+                    </h1>
+                    <p class="text-xl text-gray-600 mt-2">
+                      Gestiona tu red de proveedores
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-4">
+                  <a
+                    th:href="@{/proveedores/admin}"
+                    class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+                  >
+                    Vista Admin
+                  </a>
+                  <a
+                    th:href="@{/proveedores/nuevo}"
+                    class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-gray-950 transition-colors duration-200 shadow-sm"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-2 inline"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    Nuevo Proveedor
+                  </a>
+                </div>
+              </div>
+
+              <!-- Mensajes -->
+              <div th:if="${mensaje}" id="mensajeAlerta" class="mb-8">
+                <div
+                  class="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-3xl p-6 shadow-sm"
+                >
+                  <div class="flex items-center">
+                    <div
+                      class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mr-4"
+                    >
+                      <svg
+                        class="w-6 h-6 text-emerald-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p
+                      class="text-base font-medium text-emerald-800"
+                      th:text="${mensaje}"
+                    ></p>
+                  </div>
+                </div>
+              </div>
+
+              <div th:if="${error}" id="mensajeError" class="mb-8">
+                <div
+                  class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-sm"
+                >
+                  <div class="flex items-center">
+                    <div
+                      class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4"
+                    >
+                      <svg
+                        class="w-6 h-6 text-red-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        />
+                      </svg>
+                    </div>
+                    <p
+                      class="text-base font-medium text-red-800"
+                      th:text="${error}"
+                    ></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              <div
+                class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p
+                      class="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                    >
+                      Total Proveedores
+                    </p>
+                    <p
+                      class="text-4xl font-bold text-gray-900"
+                      th:text="${totalProveedores}"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-7 h-7 text-blue-800"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p
+                      class="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                    >
+                      Activos
+                    </p>
+                    <p
+                      class="text-4xl font-bold text-gray-900"
+                      th:text="${proveedoresActivos}"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-7 h-7 text-emerald-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p
+                      class="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                    >
+                      Inactivos
+                    </p>
+                    <p
+                      class="text-4xl font-bold text-gray-900"
+                      th:text="${proveedoresInactivos}"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div
+                    class="w-14 h-14 bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-7 h-7 text-amber-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Buscador -->
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-10 mb-16 shadow-sm"
+            >
+              <div class="flex flex-col lg:flex-row gap-8">
+                <div class="flex-1">
+                  <form
+                    th:action="@{/proveedores}"
+                    method="get"
+                    class="relative"
+                  >
+                    <div class="relative flex">
+                      <input
+                        type="text"
+                        name="busqueda"
+                        th:value="${busqueda}"
+                        placeholder="Buscar proveedores por nombre, razon social..."
+                        class="flex-1 pl-6 pr-20 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 placeholder-gray-400 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                      />
+                      <div
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2"
+                      >
+                        <button
+                          type="submit"
+                          class="px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-gray-950 text-white rounded-full transition-colors duration-200 shadow-sm flex items-center gap-2 text-sm font-semibold"
+                        >
+                          <svg
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                            />
+                          </svg>
+                          Buscar
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="lg:w-64">
+                  <form th:action="@{/proveedores}" method="get">
+                    <input
+                      type="hidden"
+                      name="busqueda"
+                      th:value="${busqueda}"
+                    />
+                    <select
+                      name="estado"
+                      onchange="this.form.submit()"
+                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                    >
+                      <option value="">Todos los estados</option>
+                      <option
+                        th:each="estado : ${estados}"
+                        th:value="${estado}"
+                        th:text="${estado.name()}"
+                        th:selected="${estado == estadoFiltro}"
+                      >
+                        Estado
+                      </option>
+                    </select>
+                  </form>
+                </div>
+                <div class="flex items-center">
+                  <a
+                    th:href="@{/proveedores}"
+                    class="px-8 py-5 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 rounded-2xl transition-colors duration-200 flex items-center gap-3 font-semibold shadow-sm"
+                    title="Limpiar todos los filtros"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      />
+                    </svg>
+                    Limpiar
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lista de proveedores en cards -->
+            <div
+              th:if="${!proveedores.empty}"
+              class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10"
+            >
+              <div
+                th:each="proveedor : ${proveedores}"
+                th:if="${proveedor != null}"
+                class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
+              >
+                <!-- Header de la card -->
+                <div class="flex items-start justify-between mb-8">
+                  <div class="flex items-center gap-5">
+                    <div
+                      class="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center"
+                    >
+                      <svg
+                        class="w-7 h-7 text-blue-800"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.5"
+                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3
+                        class="text-xl font-bold text-gray-900 mb-1"
+                        th:text="${proveedor.razonSocial}"
+                      >
+                        Razón Social
+                      </h3>
+                      <p
+                        class="text-sm text-gray-500 font-medium"
+                        th:text="${proveedor.ruc}"
+                      >
+                        RUC
+                      </p>
+                    </div>
+                  </div>
+                  <span th:switch="${proveedor.estado?.name()}">
+                    <span
+                      th:case="'Activo'"
+                      class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-800"
+                    >
+                      Activo
+                    </span>
+                    <span
+                      th:case="'Inactivo'"
+                      class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800"
+                    >
+                      Inactivo
+                    </span>
+                  </span>
+                </div>
+
+                <!-- Información del proveedor -->
+                <div class="space-y-4 mb-8">
+                  <div class="flex items-center text-sm text-gray-700">
+                    <svg
+                      class="w-5 h-5 text-gray-400 mr-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span th:text="${proveedor.email}" class="font-medium"
+                      >Email</span
+                    >
+                  </div>
+                  <div class="flex items-center text-sm text-gray-700">
+                    <svg
+                      class="w-5 h-5 text-gray-400 mr-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                      />
+                    </svg>
+                    <span
+                      th:text="${proveedor.telefono != null ? proveedor.telefono : 'No especificado'}"
+                      class="font-medium"
+                      >Teléfono</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Acciones -->
+                <div
+                  class="flex items-center gap-4 pt-8 border-t border-gray-100"
+                >
+                  <a
+                    th:href="@{/proveedores/ver/{id}(id=${proveedor.idProveedor})}"
+                    class="flex-1 text-center px-6 py-4 text-sm font-semibold text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-2xl transition-colors duration-200"
+                  >
+                    Ver
+                  </a>
+                  <a
+                    th:href="@{/proveedores/editar/{id}(id=${proveedor.idProveedor})}"
+                    class="flex-1 text-center px-6 py-4 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-colors duration-200"
+                  >
+                    Editar
+                  </a>
+                  <div class="relative">
+                    <button
+                      type="button"
+                      onclick="toggleDropdown(this)"
+                      class="px-6 py-4 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-colors duration-200"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.5"
+                          d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      class="hidden absolute right-0 mt-3 w-56 bg-white rounded-3xl shadow-sm border border-gray-100 z-10"
+                    >
+                      <div class="py-3">
+                        <form
+                          th:action="@{/proveedores/{id}/cambiar-estado(id=${proveedor.idProveedor})}"
+                          method="post"
+                          class="block"
+                        >
+                          <input
+                            type="hidden"
+                            name="nuevoEstado"
+                            value="Activo"
+                          />
+                          <button
+                            type="submit"
+                            class="block w-full text-left px-6 py-4 text-sm text-emerald-700 hover:bg-emerald-50 transition-colors font-medium"
+                            th:if="${proveedor.estado != null and proveedor.estado.name() != 'Activo'}"
+                          >
+                            Activar
+                          </button>
+                        </form>
+                        <form
+                          th:action="@{/proveedores/{id}/cambiar-estado(id=${proveedor.idProveedor})}"
+                          method="post"
+                          class="block"
+                        >
+                          <input
+                            type="hidden"
+                            name="nuevoEstado"
+                            value="Inactivo"
+                          />
+                          <button
+                            type="submit"
+                            class="block w-full text-left px-6 py-4 text-sm text-amber-700 hover:bg-amber-50 transition-colors font-medium"
+                            th:if="${proveedor.estado != null and proveedor.estado.name() != 'Inactivo'}"
+                          >
+                            Desactivar
+                          </button>
+                        </form>
+                        <form
+                          th:action="@{/proveedores/{id}/eliminar(id=${proveedor.idProveedor})}"
+                          method="post"
+                          class="block"
+                          onsubmit="return confirm('¿Está seguro de eliminar este proveedor?')"
+                        >
+                          <button
+                            type="submit"
+                            class="block w-full text-left px-6 py-4 text-sm text-red-700 hover:bg-red-50 transition-colors font-medium"
+                          >
+                            Eliminar
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Estado vacío -->
+            <div th:if="${proveedores.empty}" class="text-center py-24">
+              <div
+                class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-20 shadow-sm"
+              >
+                <div
+                  class="w-24 h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-3xl flex items-center justify-center mx-auto mb-8"
+                >
+                  <svg
+                    class="w-12 h-12 text-gray-800"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1"
+                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">
+                  No hay proveedores registrados
+                </h3>
+                <p class="text-gray-600 mb-10 text-lg">
+                  Comienza agregando tu primer proveedor al sistema
+                </p>
+                <a
+                  href="/proveedores/nuevo"
+                  class="inline-flex items-center px-10 py-5 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-gray-950 text-white rounded-2xl transition-colors duration-200 shadow-sm"
+                >
+                  <svg
+                    class="w-6 h-6 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                  Registrar el primer proveedor
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Script para el mensaje -->
+    <script th:if="${mensaje}">
+      document.addEventListener("DOMContentLoaded", function () {
+        const mensaje = document.getElementById("mensajeAlerta");
+        setTimeout(() => {
+          mensaje.classList.remove("opacity-0", "translate-y-4");
+          mensaje.classList.add("opacity-100", "translate-y-0");
+        }, 100);
+
+        setTimeout(() => {
+          mensaje.classList.remove("opacity-100", "translate-y-0");
+          mensaje.classList.add("opacity-0", "translate-y-4");
+          setTimeout(() => {
+            mensaje.remove();
+          }, 1000);
+        }, 5000);
+      });
+    </script>
+
+    <script th:if="${error}">
+      document.addEventListener("DOMContentLoaded", function () {
+        const mensaje = document.getElementById("mensajeError");
+        setTimeout(() => {
+          mensaje.classList.remove("opacity-0", "translate-y-4");
+          mensaje.classList.add("opacity-100", "translate-y-0");
+        }, 100);
+
+        setTimeout(() => {
+          mensaje.classList.remove("opacity-100", "translate-y-0");
+          mensaje.classList.add("opacity-0", "translate-y-4");
+          setTimeout(() => {
+            mensaje.remove();
+          }, 1000);
+        }, 5000);
+      });
+    </script>
+
+    <script>
+      function toggleDropdown(button) {
+        const dropdown = button.nextElementSibling;
+        const isHidden = dropdown.classList.contains("hidden");
+
+        document.querySelectorAll(".relative .hidden").forEach((d) => {
+          d.classList.add("hidden");
+        });
+
+        if (isHidden) {
+          dropdown.classList.remove("hidden");
+        } else {
+          dropdown.classList.add("hidden");
+        }
+      }
+
+      document.addEventListener("click", function (event) {
+        if (!event.target.closest(".relative")) {
+          document.querySelectorAll(".relative .hidden").forEach((d) => {
+            d.classList.add("hidden");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,5 +1,7 @@
 package com.api.diversity.application.service.interfaces;
 
+import java.util.List;
+
 import com.api.diversity.application.dto.UsuarioDto;
 
 public interface IUsuarioService {
@@ -10,6 +12,8 @@ public interface IUsuarioService {
     void deleteById(Long id);
 
     UsuarioDto findById(Long id);
+
+    List<UsuarioDto> findAll();
 
     boolean existsByEmail(String email);
 

@@ -27,7 +27,7 @@ public class UsuarioMapper {
                 .nombreUsuario(entity.getNombreUsuario())
                 .email(entity.getEmail())
                 .nombreCompleto(entity.getNombreCompleto())
-                .rubro(rubroMapper.toDto(entity.getRubro()))
+                .rubros(rubroMapper.toDtoList(entity.getRubrosActivos()))
                 .urlImagen(entity.getUrlImagen())
                 .publicId(entity.getPublicId())
                 .contraseña(entity.getContraseña())
@@ -49,7 +49,6 @@ public class UsuarioMapper {
         entity.setNombreUsuario(dto.getNombreUsuario());
         entity.setEmail(dto.getEmail());
         entity.setNombreCompleto(dto.getNombreCompleto());
-        entity.setRubro(rubroMapper.toEntity(dto.getRubro()));
         entity.setUrlImagen(dto.getUrlImagen());
         entity.setPublicId(dto.getPublicId());
         entity.setContraseña(dto.getContraseña());
@@ -57,6 +56,7 @@ public class UsuarioMapper {
         entity.setUltimoAcceso(dto.getUltimoAcceso());
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());
+
         return entity;
     }
 

@@ -1,5 +1,8 @@
 package com.api.diversity.application.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,11 +39,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
                 throw new DataIntegrityViolationException("El nombre de usuario ya está registrado");
             }
 
-            // Validar rubro
-            if (usuarioDto.getRubro() == null || usuarioDto.getRubro().getIdRubro() == null) {
-                throw new IllegalArgumentException("El rubro es requerido");
-            }
-
             // Encriptación de contraseña
             if (usuarioDto.getContraseña() != null && !usuarioDto.getContraseña().startsWith("$2a$")) {
                 usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
@@ -60,11 +58,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
         try {
             UsuarioEntity usuarioExistente = usuarioRepository.findById(usuarioDto.getIdUsuario())
                     .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
-
-            // Validar rubro
-            if (usuarioDto.getRubro() == null || usuarioDto.getRubro().getIdRubro() == null) {
-                throw new IllegalArgumentException("El rubro es requerido");
-            }
 
             // Manejo de contraseña
             if (usuarioDto.getContraseña() != null && !usuarioDto.getContraseña().isEmpty()) {
@@ -105,6 +98,19 @@ public class UsuarioServiceImpl implements IUsuarioService {
         } catch (Exception e) {
             log.error("Error al buscar usuario por ID: {}", e.getMessage(), e);
             throw new RuntimeException("Error al buscar usuario: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UsuarioDto> findAll() {
+        try {
+            return usuarioRepository.findAll().stream()
+                    .map(usuarioMapper::toDto)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error al obtener todos los usuarios: {}", e.getMessage(), e);
+            throw new RuntimeException("Error al obtener usuarios: " + e.getMessage(), e);
         }
     }
 
