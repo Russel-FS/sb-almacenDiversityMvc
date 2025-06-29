@@ -367,7 +367,7 @@
           const fechaLimite = new Date();
           fechaLimite.setDate(fechaLimite.getDate() - 7);
 
-          // Resetear estilos
+          // Resetearrrrr estilos
           this.classList.remove("border-red-500", "border-green-500");
 
           if (fechaSalida > fechaActual) {
@@ -382,6 +382,7 @@
           }
         });
 
+      // funcion para mostrar error de fecha
       function mostrarError(mensaje) {
         let errorDiv = document.getElementById("fechaError");
         if (!errorDiv) {
@@ -401,7 +402,7 @@
           errorDiv.remove();
         }
       }
-
+      // Agregar producto dinámicamente
       document
         .getElementById("agregarProducto")
         .addEventListener("click", function () {
@@ -420,7 +421,7 @@
           container.appendChild(newProducto);
           productoIndex++;
         });
-
+      // Remove producto dinámicamente
       document.addEventListener("click", function (e) {
         if (e.target.classList.contains("remove-producto")) {
           const productos = document.querySelectorAll(".producto-item");
@@ -430,7 +431,7 @@
           }
         }
       });
-
+      // Calcular totales al cambiar cantidad o precio
       function calcularTotales() {
         let subtotal = 0;
 
