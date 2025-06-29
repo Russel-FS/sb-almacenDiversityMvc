@@ -22,20 +22,22 @@
         transition: all 0.3s ease;
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(229, 231, 235, 0.8);
       }
 
       .nav-tab:hover {
         background: rgba(255, 255, 255, 0.9);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-color: rgba(209, 213, 219, 0.8);
       }
 
       .nav-tab.active {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        border-color: rgba(102, 126, 234, 0.3);
       }
 
       .glass-effect {
@@ -172,7 +174,7 @@
         </div>
 
         <!-- Menú de Navegación del Kardex -->
-        <nav class="flex items-center space-x-3 py-4">
+        <nav class="flex items-center space-x-3 py-4 border-b border-gray-200">
           <!-- Dashboard -->
           <a
             th:href="@{/pinateria/kardex/dashboard}"
