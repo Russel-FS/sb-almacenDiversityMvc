@@ -37,8 +37,7 @@ public class SalidaMapper {
             dto.setClienteId(entity.getCliente().getIdCliente());
             dto.setClienteNombre(entity.getCliente().getNombreCompleto());
             dto.setClienteDni(entity.getCliente().getDni());
-            dto.setClienteTipo(
-                    entity.getCliente().getTipoCliente() != null ? entity.getCliente().getTipoCliente().name() : null);
+            dto.setClienteTipo(entity.getCliente().getTipoCliente());
         }
 
         // Mapear usuario registro

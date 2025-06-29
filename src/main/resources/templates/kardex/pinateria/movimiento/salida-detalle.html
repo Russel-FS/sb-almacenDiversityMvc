@@ -277,7 +277,7 @@
                 <span class="text-gray-600 font-medium">Tipo:</span>
                 <span
                   class="font-bold text-gray-900"
-                  th:text="${salida.clienteTipo ?: 'N/A'}"
+                  th:text="${salida.clienteTipo?.getDescripcion() ?: 'N/A'}"
                   >Persona Natural</span
                 >
               </div>

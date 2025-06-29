@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.api.diversity.domain.enums.EstadoSalida;
+import com.api.diversity.domain.enums.TipoCliente;
 import com.api.diversity.domain.enums.TipoDocumento;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class SalidaDto {
     private Long clienteId;
     private String clienteNombre;
     private String clienteDni;
-    private String clienteTipo;
+    private TipoCliente clienteTipo;
     private LocalDateTime fechaSalida;
     private String motivoSalida;
     private BigDecimal totalVenta;
