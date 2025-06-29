@@ -48,7 +48,7 @@
             </div>
             <div class="flex items-center gap-3">
               <a
-                th:href="@{/pinateria/kardex/salida/{id}/descargar/pdf(id=${salida.id})}"
+                th:href="@{/pinateria/kardex/salida/{id}/descargar/pdf(id=${salida.idSalida})}"
                 class="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors duration-200 text-sm font-medium flex items-center"
               >
                 <svg
@@ -67,7 +67,7 @@
                 PDF
               </a>
               <a
-                th:href="@{/pinateria/kardex/salida/{id}/descargar/excel(id=${salida.id})}"
+                th:href="@{/pinateria/kardex/salida/{id}/descargar/excel(id=${salida.idSalida})}"
                 class="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors duration-200 text-sm font-medium flex items-center"
               >
                 <svg
