@@ -15,7 +15,7 @@
               <div class="flex flex-wrap items-center justify-between mb-12">
                 <div class="flex flex-wrap items-center gap-6">
                   <div
-                    class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl flex items-center justify-center shadow-xl"
+                    class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl flex items-center justify-center shadow-sm"
                   >
                     <svg
                       class="w-8 h-8 text-white"
@@ -45,7 +45,7 @@
                 <div class="flex items-center gap-4">
                   <a
                     th:href="@{/clientes/nuevo}"
-                    class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
+                    class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-colors duration-200 shadow-sm"
                   >
                     <svg
                       class="w-5 h-5 mr-2 inline"
@@ -68,7 +68,7 @@
               <!-- Mensajes -->
               <div th:if="${mensaje}" id="mensajeAlerta" class="mb-8">
                 <div
-                  class="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-3xl p-6 shadow-lg"
+                  class="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-3xl p-6 shadow-sm"
                 >
                   <div class="flex items-center">
                     <div
@@ -98,7 +98,7 @@
 
               <div th:if="${error}" id="mensajeError" class="mb-8">
                 <div
-                  class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-lg"
+                  class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-sm"
                 >
                   <div class="flex items-center">
                     <div
@@ -130,7 +130,7 @@
             <!-- Estadísticas -->
             <div class="grid grid-cols-1 md:grid-cols-5 gap-8 mb-16">
               <div
-                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-sm"
               >
                 <div class="flex items-center justify-between">
                   <div>
@@ -167,7 +167,7 @@
               </div>
 
               <div
-                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-sm"
               >
                 <div class="flex items-center justify-between">
                   <div>
@@ -204,7 +204,7 @@
               </div>
 
               <div
-                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-sm"
               >
                 <div class="flex items-center justify-between">
                   <div>
@@ -241,7 +241,7 @@
               </div>
 
               <div
-                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-sm"
               >
                 <div class="flex items-center justify-between">
                   <div>
@@ -278,7 +278,7 @@
               </div>
 
               <div
-                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-sm"
               >
                 <div class="flex items-center justify-between">
                   <div>
@@ -317,7 +317,7 @@
 
             <!-- Buscador integrado -->
             <div
-              class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-10 mb-16 shadow-xl"
+              class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-10 mb-16 shadow-sm"
             >
               <div class="flex flex-col lg:flex-row gap-8">
                 <div class="flex-1">
@@ -328,14 +328,14 @@
                         name="busqueda"
                         th:value="${busqueda}"
                         placeholder="Buscar clientes por nombre, email o DNI..."
-                        class="flex-1 pl-6 pr-20 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 placeholder-gray-400 transition-all duration-300 bg-white/50 backdrop-blur-sm"
+                        class="flex-1 pl-6 pr-20 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 placeholder-gray-400 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
                       />
                       <div
                         class="absolute right-3 top-1/2 transform -translate-y-1/2"
                       >
                         <button
                           type="submit"
-                          class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2 text-sm font-semibold"
+                          class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl transition-colors duration-200 shadow-sm flex items-center gap-2 text-sm font-semibold"
                         >
                           <svg
                             class="w-4 h-4"
@@ -366,7 +366,7 @@
                     <select
                       name="estado"
                       onchange="this.form.submit()"
-                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 transition-all duration-300 bg-white/50 backdrop-blur-sm"
+                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
                     >
                       <option value="">Todos los estados</option>
                       <option
@@ -395,7 +395,7 @@
                     <select
                       name="tipoCliente"
                       onchange="this.form.submit()"
-                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 transition-all duration-300 bg-white/50 backdrop-blur-sm"
+                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
                     >
                       <option value="">Todos los tipos</option>
                       <option
@@ -412,7 +412,7 @@
                 <div class="flex items-center">
                   <a
                     th:href="@{/clientes}"
-                    class="px-8 py-5 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 rounded-2xl transition-all duration-300 flex items-center gap-3 font-semibold shadow-lg hover:shadow-xl"
+                    class="px-8 py-5 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 rounded-2xl transition-colors duration-200 flex items-center gap-3 font-semibold shadow-sm"
                     title="Limpiar todos los filtros"
                   >
                     <svg
@@ -442,13 +442,13 @@
               <div
                 th:each="cliente : ${clientes}"
                 th:if="${cliente != null}"
-                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-3 group"
+                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-8 shadow-sm"
               >
                 <!-- Header de la card -->
                 <div class="flex items-start justify-between mb-8">
                   <div class="flex items-center gap-5">
                     <div
-                      class="w-14 h-14 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                      class="w-14 h-14 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center"
                     >
                       <svg
                         class="w-7 h-7 text-indigo-600"
@@ -563,13 +563,13 @@
                 >
                   <a
                     th:href="@{/clientes/ver/{id}(id=${cliente.idCliente})}"
-                    class="flex-1 text-center px-6 py-4 text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-2xl transition-all duration-300"
+                    class="flex-1 text-center px-6 py-4 text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-2xl transition-colors duration-200"
                   >
                     Ver
                   </a>
                   <a
                     th:href="@{/clientes/editar/{id}(id=${cliente.idCliente})}"
-                    class="flex-1 text-center px-6 py-4 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-all duration-300"
+                    class="flex-1 text-center px-6 py-4 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-colors duration-200"
                   >
                     Editar
                   </a>
@@ -577,7 +577,7 @@
                     <button
                       type="button"
                       onclick="toggleDropdown(this)"
-                      class="px-6 py-4 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-all duration-300"
+                      class="px-6 py-4 text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-colors duration-200"
                     >
                       <svg
                         class="w-5 h-5"
@@ -594,7 +594,7 @@
                       </svg>
                     </button>
                     <div
-                      class="hidden absolute right-0 mt-3 w-56 bg-white rounded-3xl shadow-2xl border border-gray-100 z-10"
+                      class="hidden absolute right-0 mt-3 w-56 bg-white rounded-3xl shadow-sm border border-gray-100 z-10"
                     >
                       <div class="py-3">
                         <form
@@ -656,7 +656,7 @@
             <!-- Estado vacío -->
             <div th:if="${clientes.empty}" class="text-center py-24">
               <div
-                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-20 shadow-xl"
+                class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/50 p-20 shadow-sm"
               >
                 <div
                   class="w-24 h-24 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-3xl flex items-center justify-center mx-auto mb-8"
@@ -683,7 +683,7 @@
                 </p>
                 <a
                   href="/clientes/nuevo"
-                  class="inline-flex items-center px-10 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
+                  class="inline-flex items-center px-10 py-5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-2xl transition-colors duration-200 shadow-sm"
                 >
                   <svg
                     class="w-6 h-6 mr-3"
