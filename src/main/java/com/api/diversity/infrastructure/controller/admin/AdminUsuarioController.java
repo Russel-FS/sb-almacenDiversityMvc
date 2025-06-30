@@ -210,13 +210,22 @@ public class AdminUsuarioController {
                 return "admin/usuarios/form";
             }
 
-            // Validar email
+            // Validar que el email no esté duplicadoo
             if (usuario.getIdUsuario() == null) {
                 if (usuarioService.existsByEmail(usuario.getEmail())) {
                     model.addAttribute("titulo", "Nuevo Usuario");
                     model.addAttribute("subtitulo", "Registrar nuevo usuario");
                     model.addAttribute("esNuevo", true);
                     model.addAttribute("error", "El email ya está registrado en el sistema");
+                    return "admin/usuarios/form";
+                }
+
+                // Validar que el nombre de usuario no esté duplicado
+                if (usuarioService.existsByNombreUsuario(usuario.getNombreUsuario())) {
+                    model.addAttribute("titulo", "Nuevo Usuario");
+                    model.addAttribute("subtitulo", "Registrar nuevo usuario");
+                    model.addAttribute("esNuevo", true);
+                    model.addAttribute("error", "El nombre de usuario ya está registrado en el sistema");
                     return "admin/usuarios/form";
                 }
             } else {
@@ -227,6 +236,18 @@ public class AdminUsuarioController {
                         model.addAttribute("subtitulo", "Modificar datos del usuario");
                         model.addAttribute("esNuevo", false);
                         model.addAttribute("error", "El email ya está registrado por otro usuario");
+                        return "admin/usuarios/form";
+                    }
+                } catch (Exception e) {
+
+                }
+                try {
+                    UsuarioDto usuarioExistente = usuarioService.findByNombreUsuario(usuario.getNombreUsuario());
+                    if (usuarioExistente != null && !usuarioExistente.getIdUsuario().equals(usuario.getIdUsuario())) {
+                        model.addAttribute("titulo", "Editar Usuario");
+                        model.addAttribute("subtitulo", "Modificar datos del usuario");
+                        model.addAttribute("esNuevo", false);
+                        model.addAttribute("error", "El nombre de usuario ya está registrado por otro usuario");
                         return "admin/usuarios/form";
                     }
                 } catch (Exception e) {

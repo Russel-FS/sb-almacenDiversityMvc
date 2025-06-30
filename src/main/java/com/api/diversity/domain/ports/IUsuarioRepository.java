@@ -21,4 +21,6 @@ public interface IUsuarioRepository {
     boolean existsByEmail(String email);
 
     boolean existsByNombreUsuario(String nombreUsuario);
+
+    Optional<UsuarioEntity> findByNombreUsuario(String nombreUsuario);
 }

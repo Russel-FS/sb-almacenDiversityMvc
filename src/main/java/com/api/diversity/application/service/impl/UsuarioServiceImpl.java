@@ -128,4 +128,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
             throw new RuntimeException("Error al buscar usuario por email: " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public UsuarioDto findByNombreUsuario(String nombreUsuario) {
+        try {
+            return usuarioRepository.findByNombreUsuario(nombreUsuario)
+                    .map(usuarioMapper::toDto)
+                    .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+        } catch (Exception e) {
+            log.error("Error al buscar usuario por nombre de usuario: {}", e.getMessage(), e);
+            throw new RuntimeException("Error al buscar usuario por nombre de usuario: " + e.getMessage(), e);
+        }
+    }
 }
