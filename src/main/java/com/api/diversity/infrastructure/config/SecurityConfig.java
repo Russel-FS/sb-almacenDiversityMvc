@@ -34,14 +34,19 @@ public class SecurityConfig {
                 http
                                 .authorizeHttpRequests(auth -> auth
                                                 // Rutas públicas
-                                                .requestMatchers("/auth/login", "/css/**", "/js/**", "/images/**",
-                                                                "/static/**")
+                                                .requestMatchers("/", "/home", "/login", "/css/**", "/js/**",
+                                                                "/images/**", "/favicon.ico")
                                                 .permitAll()
 
-                                                // Rutas de administración (solo ADMINISTRADOR)
+                                                // Rutas de administración
                                                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/usuarios/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/productos/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/categorias/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/proveedores/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/usuarios-rubros/**").hasRole("ADMINISTRADOR")
 
-                                                // Rutas de supervisión general (ADMINISTRADOR y SUPERVISOR_GENERAL)
+                                                // Rutas de supervisión general
                                                 .requestMatchers("/supervisor/**")
                                                 .hasAnyRole("ADMINISTRADOR", "SUPERVISOR_GENERAL")
 

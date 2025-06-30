@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::section})}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo} + ' - Admin'">
+      Formulario de Usuario - Admin
+    </title>
+  </head>
+  <body>
+    <section>
+      <!-- Contenedor principal -->
+      <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+        <div class="max-w-4xl mx-auto px-4 py-8">
+          <!-- Mensajes -->
+          <div th:if="${error}" id="mensajeError" class="mb-8">
+            <div
+              class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-sm"
+            >
+              <div class="flex items-center">
+                <div
+                  class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4"
+                >
+                  <svg
+                    class="w-6 h-6 text-red-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                </div>
+                <p
+                  class="text-base font-medium text-red-800"
+                  th:text="${error}"
+                ></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Encabezado -->
+          <div
+            class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm mb-8"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center">
+                <div
+                  class="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mr-6"
+                >
+                  <svg
+                    class="w-8 h-8 text-indigo-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h1
+                    class="text-3xl font-bold text-gray-900 mb-2"
+                    th:text="${titulo}"
+                  >
+                    Formulario de Usuario
+                  </h1>
+                  <p class="text-lg text-gray-600" th:text="${subtitulo}">
+                    Datos del usuario
+                  </p>
+                </div>
+              </div>
+              <a
+                href="/admin/usuarios"
+                class="px-6 py-3 bg-gray-100 text-gray-700 rounded-2xl hover:bg-gray-200 transition-colors duration-200 text-sm font-medium flex items-center"
+              >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                Volver
+              </a>
+            </div>
+          </div>
+
+          <!-- Formulario -->
+          <div
+            class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm overflow-hidden"
+          >
+            <form
+              th:action="@{/admin/usuarios/guardar}"
+              th:object="${usuario}"
+              method="post"
+              class="p-8"
+            >
+              <!-- Información Personal -->
+              <div class="mb-8">
+                <h3
+                  class="text-xl font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-indigo-600 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                  Información Personal
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      for="nombreCompleto"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Nombre Completo *
+                    </label>
+                    <input
+                      type="text"
+                      id="nombreCompleto"
+                      th:field="*{nombreCompleto}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Ingrese el nombre completo"
+                      required
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('nombreCompleto')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{nombreCompleto}"
+                    ></div>
+                  </div>
+
+                  <div>
+                    <label
+                      for="nombreUsuario"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Nombre de Usuario *
+                    </label>
+                    <input
+                      type="text"
+                      id="nombreUsuario"
+                      th:field="*{nombreUsuario}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Ingrese el nombre de usuario"
+                      required
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('nombreUsuario')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{nombreUsuario}"
+                    ></div>
+                  </div>
+
+                  <div>
+                    <label
+                      for="email"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      th:field="*{email}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Ingrese el email"
+                      required
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('email')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{email}"
+                    ></div>
+                  </div>
+
+                  <div>
+                    <label
+                      for="telefono"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Teléfono
+                    </label>
+                    <input
+                      type="tel"
+                      id="telefono"
+                      th:field="*{telefono}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Ingrese el teléfono"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('telefono')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{telefono}"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Contraseña -->
+              <div class="mb-8">
+                <h3
+                  class="text-xl font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-green-600 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                  Contraseña
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      for="contraseña"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Contraseña
+                      <span th:if="${esNuevo}" class="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="password"
+                      id="contraseña"
+                      th:field="*{contraseña}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Ingrese la contraseña"
+                      th:required="${esNuevo}"
+                    />
+                    <p class="mt-2 text-sm text-gray-500">
+                      <span th:if="${esNuevo}"
+                        >La contraseña es obligatoria para nuevos usuarios</span
+                      >
+                      <span th:unless="${esNuevo}"
+                        >Deje vacío para mantener la contraseña actual</span
+                      >
+                    </p>
+                    <div
+                      th:if="${#fields.hasErrors('contraseña')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{contraseña}"
+                    ></div>
+                  </div>
+
+                  <div>
+                    <label
+                      for="confirmarContraseña"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Confirmar Contraseña
+                      <span th:if="${esNuevo}" class="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="password"
+                      id="confirmarContraseña"
+                      name="confirmarContraseña"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Confirme la contraseña"
+                      th:required="${esNuevo}"
+                    />
+                    <div
+                      id="passwordError"
+                      class="mt-2 text-sm text-red-600 hidden"
+                    >
+                      Las contraseñas no coinciden
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Configuración del Sistema -->
+              <div class="mb-8">
+                <h3
+                  class="text-xl font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-purple-600 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  Configuración del Sistema
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      for="estado"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Estado *
+                    </label>
+                    <select
+                      id="estado"
+                      th:field="*{estado}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      required
+                    >
+                      <option value="">Seleccione un estado</option>
+                      <option
+                        th:each="estado : ${estados}"
+                        th:value="${estado}"
+                        th:text="${estado}"
+                      >
+                        Activo
+                      </option>
+                    </select>
+                    <div
+                      th:if="${#fields.hasErrors('estado')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{estado}"
+                    ></div>
+                  </div>
+
+                  <div>
+                    <label
+                      for="roles"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Roles *
+                    </label>
+                    <select
+                      id="roles"
+                      name="roles"
+                      multiple
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 min-h-[120px]"
+                      required
+                    >
+                      <option
+                        th:each="rol : ${roles}"
+                        th:value="${rol.idRol}"
+                        th:text="${rol.nombreRol + ' - ' + rol.descripcion}"
+                      >
+                        ADMINISTRADOR - Acceso total al sistema
+                      </option>
+                    </select>
+                    <p class="mt-2 text-sm text-gray-500">
+                      Mantenga presionado Ctrl (Cmd en Mac) para seleccionar
+                      múltiples roles
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rubros Asignados -->
+              <div class="mb-8">
+                <h3
+                  class="text-xl font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-blue-600 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
+                  </svg>
+                  Rubros Asignados
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div
+                    th:each="rubro : ${rubros}"
+                    class="flex items-center p-4 border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    <input
+                      type="checkbox"
+                      th:id="'rubro-' + ${rubro.idRubro}"
+                      th:name="rubros"
+                      th:value="${rubro.idRubro}"
+                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    />
+                    <label
+                      th:for="'rubro-' + ${rubro.idRubro}"
+                      class="ml-3 text-sm font-medium text-gray-700 cursor-pointer"
+                      th:text="${rubro.nombreRubro}"
+                    >
+                      Rubro
+                    </label>
+                  </div>
+                </div>
+                <p class="mt-4 text-sm text-gray-500">
+                  Seleccione los rubros a los que tendrá acceso el usuario
+                </p>
+              </div>
+
+              <!-- Botones de acción -->
+              <div
+                class="flex items-center justify-end gap-4 pt-6 border-t border-gray-200"
+              >
+                <a
+                  href="/admin/usuarios"
+                  class="px-8 py-3 bg-gray-100 text-gray-700 rounded-2xl hover:bg-gray-200 transition-colors duration-200 text-sm font-medium"
+                >
+                  Cancelar
+                </a>
+                <button
+                  type="submit"
+                  class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 text-sm font-medium shadow-sm flex items-center"
+                >
+                  <svg
+                    class="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span
+                    th:text="${esNuevo ? 'Crear Usuario' : 'Actualizar Usuario'}"
+                    >Guardar</span
+                  >
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Script para el mensaje de error -->
+      <script th:if="${error}">
+        document.addEventListener("DOMContentLoaded", function () {
+          const mensaje = document.getElementById("mensajeError");
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-0", "translate-y-4");
+            mensaje.classList.add("opacity-100", "translate-y-0");
+          }, 100);
+
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-100", "translate-y-0");
+            mensaje.classList.add("opacity-0", "translate-y-4");
+            setTimeout(() => {
+              mensaje.remove();
+            }, 1000);
+          }, 5000);
+        });
+      </script>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const password = document.getElementById("contraseña");
+          const confirmPassword = document.getElementById(
+            "confirmarContraseña"
+          );
+          const passwordError = document.getElementById("passwordError");
+          const form = document.querySelector("form");
+
+          function validatePasswords() {
+            if (
+              password.value &&
+              confirmPassword.value &&
+              password.value !== confirmPassword.value
+            ) {
+              passwordError.classList.remove("hidden");
+              return false;
+            } else {
+              passwordError.classList.add("hidden");
+              return true;
+            }
+          }
+
+          password.addEventListener("input", validatePasswords);
+          confirmPassword.addEventListener("input", validatePasswords);
+
+          form.addEventListener("submit", function (e) {
+            if (!validatePasswords()) {
+              e.preventDefault();
+            }
+          });
+        });
+      </script>
+    </section>
+  </body>
+</html>
