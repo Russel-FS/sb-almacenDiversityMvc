@@ -151,14 +151,6 @@ public class AdminUsuarioController {
             Model model,
             RedirectAttributes redirectAttributes) {
 
-        log.info("Guardando usuario: {}", usuario.getEmail());
-        log.info("Datos del usuario - ID: {}, Nombre: {}, Email: {}, Estado: {}",
-                usuario.getIdUsuario(), usuario.getNombreCompleto(), usuario.getEmail(), usuario.getEstado());
-        log.info("Roles seleccionados: {}", usuario.getRoles() != null ? usuario.getRoles().size() : 0);
-        log.info("Rubros seleccionados: {}", usuario.getRubros() != null ? usuario.getRubros().size() : 0);
-        log.info("Roles IDs: {}", usuario.getRolesIds());
-        log.info("Rubros IDs: {}", usuario.getRubrosIds());
-
         try {
             List<RolDto> roles = rolJpaRepository.findAll().stream()
                     .map(rolMapper::toDto)
@@ -196,12 +188,7 @@ public class AdminUsuarioController {
                 usuario.setRubros(null);
             }
 
-            log.info("Después de conversión - Roles: {}, Rubros: {}",
-                    usuario.getRoles() != null ? usuario.getRoles().size() : 0,
-                    usuario.getRubros() != null ? usuario.getRubros().size() : 0);
-
             if (result.hasErrors()) {
-                log.error("Errores de validación: {}", result.getAllErrors());
                 model.addAttribute("titulo", usuario.getIdUsuario() == null ? "Nuevo Usuario" : "Editar Usuario");
                 model.addAttribute("subtitulo",
                         usuario.getIdUsuario() == null ? "Registrar nuevo usuario" : "Modificar datos del usuario");
@@ -255,9 +242,7 @@ public class AdminUsuarioController {
                 }
             }
 
-            log.info("Guardando usuario en la base de datos...");
             usuarioService.save(usuario);
-            log.info("Usuario guardado exitosamente");
             redirectAttributes.addFlashAttribute("success", "Usuario guardado exitosamente");
             return "redirect:/admin/usuarios";
 
