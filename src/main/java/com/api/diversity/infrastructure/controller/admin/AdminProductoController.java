@@ -40,7 +40,7 @@ public class AdminProductoController {
         try {
             List<ProductoDto> productos = productoService.findAll();
 
-            // Filtro de búsqueda por nombre o código
+            // productoss generalmente ordenados por nombre
             if (busqueda != null && !busqueda.trim().isEmpty()) {
                 productos = productos.stream()
                         .filter(p -> p.getNombreProducto().toLowerCase().contains(busqueda.toLowerCase()) ||

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.api.diversity.application.dto.RolDto;
+import com.api.diversity.application.dto.RubroDto;
 import com.api.diversity.application.dto.UserRoleDto;
 import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.mappers.RolMapper;
@@ -180,7 +181,7 @@ public class AdminUsuarioController {
 
             // rubros
             if (usuario.getRubrosIds() != null && !usuario.getRubrosIds().isEmpty()) {
-                List<com.api.diversity.application.dto.RubroDto> rubrosSeleccionados = rubroService.findAll().stream()
+                List<RubroDto> rubrosSeleccionados = rubroService.findAll().stream()
                         .filter(r -> usuario.getRubrosIds().contains(r.getIdRubro()))
                         .toList();
                 usuario.setRubros(rubrosSeleccionados);
