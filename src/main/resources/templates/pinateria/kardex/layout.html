@@ -9,7 +9,7 @@
     <title th:text="${titulo}">Kardex - J&C Diversity</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -19,35 +19,52 @@
 
       .nav-tab {
         position: relative;
-        transition: all 0.3s ease;
-        background: rgba(255, 255, 255, 0.7);
+        transition: all 0.2s ease;
+        background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(229, 231, 235, 0.8);
+        border: 1px solid rgba(229, 231, 235, 0.6);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       }
 
       .nav-tab:hover {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.95);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         border-color: rgba(209, 213, 219, 0.8);
+        transform: translateY(-1px);
       }
 
       .nav-tab.active {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
         border-color: rgba(102, 126, 234, 0.3);
+        transform: translateY(-1px);
       }
 
       .glass-effect {
-        background: rgba(255, 255, 255, 0.85);
+        background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       }
 
       .rubro-badge {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+      }
+
+      .logo-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+      }
+
+      .user-avatar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
+        border: 1px solid rgba(102, 126, 234, 0.2);
       }
 
       /* scroll */
@@ -92,6 +109,20 @@
       .scrollbar-thin::-webkit-scrollbar-thumb:hover {
         background: rgba(0, 0, 0, 0.3);
       }
+
+      .breadcrumb-item {
+        transition: all 0.2s ease;
+      }
+
+      .breadcrumb-item:hover {
+        color: #667eea;
+        transform: translateY(-1px);
+      }
+
+      .breadcrumb-separator {
+        color: #9ca3af;
+        transition: all 0.2s ease;
+      }
     </style>
   </head>
   <body
@@ -101,18 +132,20 @@
     <header class="glass-effect">
       <div class="max-w-7xl mx-auto px-6">
         <!-- Header Superior -->
-        <div class="flex justify-between items-center h-16">
-          <!-- Logoo y Rubro -->
-          <div class="flex items-center space-x-6">
-            <a href="/" class="flex items-center space-x-3 group">
+        <div class="flex justify-between items-center h-20">
+          <!-- Logo y Rubro -->
+          <div class="flex items-center space-x-8">
+            <a href="/" class="flex items-center space-x-4 group">
               <div
-                class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg"
+                class="logo-container w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-200"
               >
-                <span class="text-white font-bold text-lg">J&C</span>
+                <span class="text-white font-bold text-xl">J&C</span>
               </div>
               <div>
-                <span class="text-xl font-bold text-gray-900">Diversity</span>
-                <div class="text-xs text-gray-500 font-medium">
+                <span class="text-2xl font-bold text-gray-900 tracking-tight"
+                  >Diversity</span
+                >
+                <div class="text-sm text-gray-600 font-medium">
                   Sistema de Gestión
                 </div>
               </div>
@@ -120,19 +153,19 @@
 
             <!-- Separador -->
             <div
-              class="w-px h-8 bg-gradient-to-b from-transparent via-gray-300 to-transparent"
+              class="w-px h-10 bg-gradient-to-b from-transparent via-gray-300 to-transparent"
             ></div>
 
             <!-- Rubro Activo -->
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-4">
               <div
-                class="rubro-badge px-4 py-2 rounded-xl text-white text-sm font-semibold"
+                class="rubro-badge px-5 py-2.5 rounded-2xl text-white text-sm font-semibold"
               >
                 <span th:text="${rubro}">Piñatería</span>
               </div>
-              <div class="text-gray-700">
-                <span class="font-semibold">Kardex</span>
-                <div class="text-xs text-gray-500 font-medium">
+              <div class="text-gray-800">
+                <span class="font-bold text-lg">Kardex</span>
+                <div class="text-sm text-gray-600 font-medium">
                   Control de Inventario
                 </div>
               </div>
@@ -143,10 +176,10 @@
           <div class="flex items-center space-x-6">
             <a
               href="/home"
-              class="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 rounded-xl hover:bg-white/50"
+              class="flex items-center space-x-3 px-5 py-2.5 text-sm font-medium text-gray-700 hover:text-blue-600 transition-all duration-200 rounded-xl hover:bg-white/60 hover:shadow-sm"
             >
               <svg
-                class="w-4 h-4"
+                class="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -162,18 +195,18 @@
             </a>
 
             <!-- Usuario -->
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-4">
               <div class="text-right">
-                <div class="text-sm font-semibold text-gray-900">Usuario</div>
-                <div class="text-xs text-gray-500 font-medium">
+                <div class="text-sm font-bold text-gray-900">Usuario</div>
+                <div class="text-sm text-gray-600 font-medium">
                   Administrador
                 </div>
               </div>
               <div
-                class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg"
+                class="user-avatar w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
               >
                 <svg
-                  class="w-5 h-5 text-white"
+                  class="w-6 h-6 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -191,14 +224,16 @@
         </div>
 
         <!-- Menú de Navegación del Kardex -->
-        <nav class="flex items-center space-x-3 py-4 border-b border-gray-200">
+        <nav
+          class="flex items-center space-x-4 py-6 border-b border-gray-200/60"
+        >
           <!-- Dashboard -->
           <a
             th:href="@{/pinateria/kardex/dashboard}"
-            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-3"
+              class="w-5 h-5 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -216,10 +251,10 @@
           <!-- Movimientos -->
           <a
             th:href="@{/pinateria/kardex/movimientos}"
-            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-3"
+              class="w-5 h-5 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -237,10 +272,10 @@
           <!-- Entradas -->
           <a
             th:href="@{/pinateria/kardex/entrada/nueva}"
-            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-3"
+              class="w-5 h-5 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -258,10 +293,10 @@
           <!-- Salidas -->
           <a
             th:href="@{/pinateria/kardex/salida/nueva}"
-            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-3"
+              class="w-5 h-5 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -279,10 +314,10 @@
           <!-- Reportes -->
           <a
             th:href="@{/pinateria/kardex/reporte}"
-            class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
+            class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
-              class="w-4 h-4 mr-3"
+              class="w-5 h-5 mr-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -299,14 +334,14 @@
         </nav>
 
         <!-- Breadcrumbs con Tailwind y SVG -->
-        <div class="flex items-center space-x-2 py-3 text-sm">
+        <div class="flex items-center space-x-3 py-4 text-sm">
           <span
-            class="text-gray-600 hover:text-gray-800 transition-colors duration-200 font-medium"
+            class="breadcrumb-item text-gray-600 hover:text-gray-800 transition-all duration-200 font-semibold cursor-pointer"
             >Kardex</span
           >
 
           <svg
-            class="w-4 h-4 text-gray-400"
+            class="breadcrumb-separator w-4 h-4"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -320,13 +355,13 @@
           </svg>
 
           <span
-            class="text-gray-600 hover:text-gray-800 transition-colors duration-200 font-medium"
+            class="breadcrumb-item text-gray-600 hover:text-gray-800 transition-all duration-200 font-semibold cursor-pointer"
             th:text="${rubro}"
             >Piñatería</span
           >
 
           <svg
-            class="w-4 h-4 text-gray-400"
+            class="breadcrumb-separator w-4 h-4"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -339,7 +374,7 @@
             />
           </svg>
 
-          <span class="text-gray-900 font-semibold" th:text="${titulo}"
+          <span class="text-gray-900 font-bold text-base" th:text="${titulo}"
             >Dashboard</span
           >
         </div>
