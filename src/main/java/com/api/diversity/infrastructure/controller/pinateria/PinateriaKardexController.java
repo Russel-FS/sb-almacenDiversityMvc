@@ -47,8 +47,11 @@ import com.api.diversity.application.dto.DetalleSalidaDto;
 import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.enums.TipoDocumento;
 import com.api.diversity.domain.enums.EstadoProveedor;
+import com.api.diversity.domain.enums.EstadoSalida;
 import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.infrastructure.security.SecurityContext;
+import com.api.diversity.application.service.interfaces.ISunatService;
+import com.api.diversity.application.dto.SunatResponseDto;
 
 @Controller
 @RequestMapping("/pinateria/kardex")
@@ -61,6 +64,7 @@ public class PinateriaKardexController {
     private final IProductoService productoService;
     private final IProveedorService proveedorService;
     private final IClienteService clienteService;
+    private final ISunatService sunatService;
     private final SecurityContext securityContext;
 
     /**
@@ -1010,6 +1014,25 @@ public class PinateriaKardexController {
             document.add(new Paragraph("N° Documento: " + salida.getNumeroDocumento()));
             document.add(new Paragraph("Cliente: " + salida.getClienteNombre()));
             document.add(new Paragraph("Tipo Cliente: " + salida.getClienteTipo().getDescripcion()));
+
+            // Agregar información de autorización SUNAT si está autorizada
+            if (salida.getCodigoAutorizacion() != null) {
+                document.add(new Paragraph("Estado: AUTORIZADO"));
+                document.add(new Paragraph("Código de Autorización: " + salida.getCodigoAutorizacion()));
+
+                // Generar y agregar código de barras
+                try {
+                    byte[] imagenCodigoBarras = generarImagenCodigoBarras(salida.getCodigoAutorizacion());
+                    com.itextpdf.text.Image imagen = com.itextpdf.text.Image.getInstance(imagenCodigoBarras);
+                    imagen.scaleToFit(200, 50); // Ajustar tamaño
+                    document.add(imagen);
+                } catch (Exception e) {
+                    log.warn("No se pudo generar código de barras: {}", e.getMessage());
+                }
+            } else {
+                document.add(new Paragraph("Estado: " + salida.getEstado().name()));
+            }
+
             document.add(new Paragraph(" "));
 
             // Tabla de productos
@@ -1358,6 +1381,117 @@ public class PinateriaKardexController {
         } catch (Exception e) {
             log.error("Error generando Excel de stock bajo: {}", e.getMessage());
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Generar boleta electrónica para una salida
+     */
+    @PostMapping("/salida/{id}/generar-boleta")
+    public String generarBoletaElectronica(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            log.info("Generando boleta electrónica para salida ID: {}", id);
+
+            // Buscar la salida
+            SalidaDto salida = salidaService.findById(id);
+            if (salida == null) {
+                redirectAttributes.addFlashAttribute("error", "Salida no encontrada");
+                return "redirect:/pinateria/kardex/movimientos";
+            }
+
+            // Verificar si tiene credenciales SUNAT
+            if (!sunatService.tieneCredencialesSUNAT()) {
+                redirectAttributes.addFlashAttribute("error",
+                        "No se han configurado las credenciales de SUNAT. Contacte al administrador.");
+                return "redirect:/pinateria/kardex/salida/" + id;
+            }
+
+            // Generar boleta electrónica
+            SunatResponseDto respuesta = sunatService.generarBoletaElectronica(
+                    salida.getNumeroDocumento(),
+                    salida.getClienteNombre(),
+                    salida.getClienteDni(),
+                    salida.getTotalVenta().doubleValue());
+
+            if (respuesta.isAutorizado()) {
+                // Actualizar la salida con el código de autorización
+                salida.setCodigoAutorizacion(respuesta.getCodigoAutorizacion());
+                salida.setEstado(EstadoSalida.Autorizado);
+                salidaService.update(salida);
+                redirectAttributes.addFlashAttribute("success",
+                        "Boleta electrónica generada exitosamente. Código: " + respuesta.getCodigoAutorizacion());
+            } else {
+                redirectAttributes.addFlashAttribute("error",
+                        "Error generando boleta: " + respuesta.getMensaje());
+            }
+
+        } catch (Exception e) {
+            log.error("Error generando boleta electrónica: {}", e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("error",
+                    "Error generando boleta electrónica: " + e.getMessage());
+        }
+
+        return "redirect:/pinateria/kardex/salida/" + id;
+    }
+
+    /**
+     * Generar código de barras para documento autorizado
+     */
+    @GetMapping("/documento/{id}/codigo-barras")
+    public ResponseEntity<byte[]> generarCodigoBarras(@PathVariable Long id) {
+        try {
+            // Buscar la salida
+            SalidaDto salida = salidaService.findById(id);
+            if (salida == null || salida.getCodigoAutorizacion() == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Generar imagen del código de barras
+            byte[] imagenCodigoBarras = generarImagenCodigoBarras(salida.getCodigoAutorizacion());
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(imagenCodigoBarras);
+
+        } catch (Exception e) {
+            log.error("Error generando código de barras: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    private byte[] generarImagenCodigoBarras(String codigoAutorizacion) {
+        try {
+            // Usar ZXing para generar código de barras Code 128
+            com.google.zxing.BarcodeFormat format = com.google.zxing.BarcodeFormat.CODE_128;
+            com.google.zxing.Writer writer = new com.google.zxing.oned.Code128Writer();
+
+            com.google.zxing.common.BitMatrix bitMatrix = writer.encode(
+                    codigoAutorizacion,
+                    format,
+                    400, // ancho
+                    100 // alto
+            );
+
+            // Convertir a imagen
+            java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(
+                    bitMatrix.getWidth(),
+                    bitMatrix.getHeight(),
+                    java.awt.image.BufferedImage.TYPE_INT_RGB);
+
+            for (int x = 0; x < bitMatrix.getWidth(); x++) {
+                for (int y = 0; y < bitMatrix.getHeight(); y++) {
+                    image.setRGB(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+                }
+            }
+
+            // Convertir a bytes
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            javax.imageio.ImageIO.write(image, "PNG", baos);
+            return baos.toByteArray();
+
+        } catch (Exception e) {
+            log.error("Error generando imagen de código de barras: {}", e.getMessage(), e);
+            return new byte[0];
         }
     }
 }

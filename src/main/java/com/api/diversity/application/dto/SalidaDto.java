@@ -34,6 +34,7 @@ public class SalidaDto {
     private String usuarioAprobacionNombre;
     private LocalDateTime fechaAprobacion;
     private String observaciones;
+    private String codigoAutorizacion;
     private List<DetalleSalidaDto> detalles;
 
     // Campos adicionales para estadísticas

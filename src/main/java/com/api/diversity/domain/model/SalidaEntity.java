@@ -63,6 +63,9 @@ public class SalidaEntity {
     @Column(name = "Estado", nullable = false)
     private EstadoSalida estado;
 
+    @Column(name = "Codigo_Autorizacion")
+    private String codigoAutorizacion;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_Usuario_Registro", nullable = false)
     private UsuarioEntity usuarioRegistro;

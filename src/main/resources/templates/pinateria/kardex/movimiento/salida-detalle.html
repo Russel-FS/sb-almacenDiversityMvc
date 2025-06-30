@@ -113,6 +113,85 @@
                     Volver a Movimientos
                   </a>
                   <div class="h-12 w-px bg-gray-200"></div>
+
+                  <!-- Botón para generar boleta electrónica -->
+                  <div
+                    th:if="${salida.estado.name() == 'Completado' and salida.codigoAutorizacion == null}"
+                    class="flex flex-col gap-2"
+                  >
+                    <form
+                      th:action="@{/pinateria/kardex/salida/{id}/generar-boleta(id=${salida.idSalida})}"
+                      method="post"
+                      class="inline"
+                    >
+                      <button
+                        type="submit"
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors duration-200 rounded-xl shadow-sm"
+                      >
+                        <svg
+                          class="w-4 h-4 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                          ></path>
+                        </svg>
+                        Generar Boleta Electrónica
+                      </button>
+                    </form>
+                  </div>
+
+                  <!-- Mostrar código de autorización si ya está autorizado -->
+                  <div
+                    th:if="${salida.codigoAutorizacion != null}"
+                    class="flex flex-col gap-2"
+                  >
+                    <div
+                      class="inline-flex items-center px-4 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-xl"
+                    >
+                      <svg
+                        class="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                      </svg>
+                      Autorizado
+                    </div>
+                    <div
+                      class="text-xs text-gray-600 font-mono"
+                      th:text="${salida.codigoAutorizacion}"
+                    >
+                      Código de autorización
+                    </div>
+                    <!-- Código de barras -->
+                    <div
+                      class="mt-2 p-3 bg-white border border-gray-200 rounded-lg"
+                    >
+                      <p class="text-xs text-gray-500 mb-2">
+                        Código de Barras:
+                      </p>
+                      <img
+                        th:src="@{/pinateria/kardex/documento/{id}/codigo-barras(id=${salida.idSalida})}"
+                        alt="Código de barras"
+                        class="w-full max-w-xs h-auto"
+                        style="image-rendering: pixelated"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="h-12 w-px bg-gray-200"></div>
                   <div class="flex flex-col gap-2">
                     <a
                       th:href="@{/pinateria/kardex/salida/{id}/descargar/pdf(id=${salida.idSalida})}"

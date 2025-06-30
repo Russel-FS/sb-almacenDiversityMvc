@@ -31,6 +31,7 @@ public class SalidaMapper {
         dto.setEstado(entity.getEstado());
         dto.setFechaAprobacion(entity.getFechaAprobacion());
         dto.setObservaciones(entity.getObservaciones());
+        dto.setCodigoAutorizacion(entity.getCodigoAutorizacion());
 
         // Mapear cliente
         if (entity.getCliente() != null) {

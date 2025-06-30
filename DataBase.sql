@@ -244,8 +244,10 @@ CREATE TABLE Salidas (
     Estado ENUM(
         'Pendiente',
         'Completado',
-        'Anulado'
+        'Anulado',
+        'Autorizado'
     ) DEFAULT 'Pendiente',
+    Codigo_Autorizacion VARCHAR(100),
     ID_Usuario_Registro BIGINT NOT NULL,
     ID_Usuario_Aprobacion BIGINT,
     Fecha_Aprobacion DATETIME,

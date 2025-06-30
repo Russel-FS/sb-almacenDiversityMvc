@@ -156,14 +156,25 @@ public class SalidaServiceImpl implements ISalidaService {
                     .orElseThrow(() -> new EntityNotFoundException("Salida no encontrada"));
 
             // Solo permitir actualizar si está pendiente
-            if (salidaExistente.getEstado() != EstadoSalida.Pendiente) {
-                throw new IllegalStateException("Solo se pueden actualizar salidas pendientes");
-            }
+            /*
+             * if (salidaExistente.getEstado() != EstadoSalida.Pendiente) {
+             * throw new
+             * IllegalStateException("Solo se pueden actualizar salidas pendientes");
+             * }
+             */
 
             // Actualizar campos básicos
             salidaExistente.setNumeroDocumento(salidaDto.getNumeroDocumento());
             salidaExistente.setMotivoSalida(salidaDto.getMotivoSalida());
             salidaExistente.setObservaciones(salidaDto.getObservaciones());
+
+            // Actualizar campos de autorización SUNAT
+            if (salidaDto.getCodigoAutorizacion() != null) {
+                salidaExistente.setCodigoAutorizacion(salidaDto.getCodigoAutorizacion());
+            }
+            if (salidaDto.getEstado() != null) {
+                salidaExistente.setEstado(salidaDto.getEstado());
+            }
 
             // Recalcular total venta si hay detalles
             if (salidaDto.getDetalles() != null) {
