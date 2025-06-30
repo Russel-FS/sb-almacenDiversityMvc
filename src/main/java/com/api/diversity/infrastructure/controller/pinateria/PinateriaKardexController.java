@@ -241,7 +241,7 @@ public class PinateriaKardexController {
     }
 
     /**
-     * Detalle de movimiento de Piñatería (general - mantiene compatibilidad)
+     * Detalle de movimiento de Piñatería
      */
     @GetMapping("/movimientos/{id}")
     public String detalleMovimiento(@PathVariable Long id, Model model) {
@@ -989,7 +989,7 @@ public class PinateriaKardexController {
     }
 
     /**
-     * Descargar detalle de salida en PDF
+     * Descargar detalle de salida en PDFs
      */
     @GetMapping("/salida/{id}/descargar/pdf")
     public ResponseEntity<ByteArrayResource> descargarSalidaPDF(@PathVariable Long id) {
@@ -1246,7 +1246,7 @@ public class PinateriaKardexController {
     }
 
     /**
-     * Descargar reporte de stock bajo en PDF
+     * Descargar reporte de stock bajo en PDFs
      */
     @GetMapping("/reporte/descargar/stock-bajo/pdf")
     public ResponseEntity<ByteArrayResource> descargarStockBajoPDF() {
