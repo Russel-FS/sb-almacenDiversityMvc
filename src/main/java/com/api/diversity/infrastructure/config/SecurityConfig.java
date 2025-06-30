@@ -33,80 +33,47 @@ public class SecurityConfig {
 
                 http
                                 .authorizeHttpRequests(auth -> auth
-                                                // rutas públicas
+                                                // Rutas públicas
                                                 .requestMatchers("/auth/login", "/css/**", "/js/**", "/images/**",
                                                                 "/static/**")
                                                 .permitAll()
 
-                                                // rutas de administración
+                                                // Rutas de administración (solo ADMINISTRADOR)
                                                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
 
-                                                // rutas de supervisión general
+                                                // Rutas de supervisión general (ADMINISTRADOR y SUPERVISOR_GENERAL)
                                                 .requestMatchers("/supervisor/**")
                                                 .hasAnyRole("ADMINISTRADOR", "SUPERVISOR_GENERAL")
 
-                                                // rutas de piñatería
+                                                // Rutas de piñatería
                                                 .requestMatchers("/pinateria/**").hasAnyRole(
                                                                 "ADMINISTRADOR",
                                                                 "SUPERVISOR_GENERAL",
                                                                 "SUPERVISOR_PINATERIA",
                                                                 "OPERADOR_PINATERIA")
 
-                                                // rutas de librería
+                                                // Rutas de librería
                                                 .requestMatchers("/libreria/**").hasAnyRole(
                                                                 "ADMINISTRADOR",
                                                                 "SUPERVISOR_GENERAL",
                                                                 "SUPERVISOR_LIBRERIA",
                                                                 "OPERADOR_LIBRERIA")
 
-                                                // rutas de cámaras
+                                                // Rutas de cámaras
                                                 .requestMatchers("/camaras/**").hasAnyRole(
                                                                 "ADMINISTRADOR",
                                                                 "SUPERVISOR_GENERAL",
                                                                 "SUPERVISOR_CAMARAS",
                                                                 "OPERADOR_CAMARAS")
 
-                                                // rutas de ventas
-                                                .requestMatchers("/**/salida/**", "/**/venta/**").hasAnyRole(
-                                                                "ADMINISTRADOR",
-                                                                "SUPERVISOR_GENERAL",
-                                                                "SUPERVISOR_PINATERIA",
-                                                                "SUPERVISOR_LIBRERIA",
-                                                                "SUPERVISOR_CAMARAS",
-                                                                "OPERADOR_PINATERIA",
-                                                                "OPERADOR_LIBRERIA",
-                                                                "OPERADOR_CAMARAS",
-                                                                "VENDEDOR")
-
-                                                // rutas de almacén
-                                                .requestMatchers("/**/entrada/**", "/**/compra/**").hasAnyRole(
-                                                                "ADMINISTRADOR",
-                                                                "SUPERVISOR_GENERAL",
-                                                                "SUPERVISOR_PINATERIA",
-                                                                "SUPERVISOR_LIBRERIA",
-                                                                "SUPERVISOR_CAMARAS",
-                                                                "OPERADOR_PINATERIA",
-                                                                "OPERADOR_LIBRERIA",
-                                                                "OPERADOR_CAMARAS",
-                                                                "ALMACENERO")
-
-                                                // rutas de reportes
-                                                .requestMatchers("/**/reporte/**", "/**/reportes/**").hasAnyRole(
-                                                                "ADMINISTRADOR",
-                                                                "SUPERVISOR_GENERAL",
-                                                                "SUPERVISOR_PINATERIA",
-                                                                "SUPERVISOR_LIBRERIA",
-                                                                "SUPERVISOR_CAMARAS",
-                                                                "CONTADOR")
-
-                                                // rutas de gestión de usuarios
+                                                // Rutas de gestión de usuarios (solo ADMINISTRADOR)
                                                 .requestMatchers("/usuarios/**", "/roles/**", "/usuario-rubros/**")
                                                 .hasRole("ADMINISTRADOR")
 
-                                                // rutas de gestión de rubros
+                                                // Rutas de gestión de rubros (solo ADMINISTRADOR)
                                                 .requestMatchers("/rubros/**").hasRole("ADMINISTRADOR")
 
-                                                // rutas de gestión de proveedores y clientes
+                                                // Rutas de gestión de proveedores y clientes
                                                 .requestMatchers("/proveedores/**", "/clientes/**").hasAnyRole(
                                                                 "ADMINISTRADOR",
                                                                 "SUPERVISOR_GENERAL",
@@ -117,6 +84,7 @@ public class SecurityConfig {
                                                 // Página principal y home
                                                 .requestMatchers("/", "/home").authenticated()
 
+                                                // Cualquier otra ruta requiere autenticación
                                                 .anyRequest().authenticated())
 
                                 .formLogin(form -> form

@@ -10,7 +10,7 @@ public enum TipoRol {
     SUPERVISOR_LIBRERIA("Supervisor Librería", "Supervisa operaciones de librería"),
     SUPERVISOR_CAMARAS("Supervisor Cámaras", "Supervisa operaciones de cámaras"),
 
-    // roles de operadores por rubro
+    // roles de operadores por rubro0
     OPERADOR_PINATERIA("Operador Piñatería", "Operaciones específicas de piñatería"),
     OPERADOR_LIBRERIA("Operador Librería", "Operaciones específicas de librería"),
     OPERADOR_CAMARAS("Operador Cámaras", "Operaciones específicas de cámaras"),
