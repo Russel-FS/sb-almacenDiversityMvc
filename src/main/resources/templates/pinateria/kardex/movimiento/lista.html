@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{pinateria/kardex/layout :: kardexLayout(~{::section}, 'Movimientos', 'Piñatería')}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movimientos - Piñatería</title>
+    <style>
+      .table-container {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+      }
+
+      .sticky-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(8px);
+        background: rgba(249, 250, 251, 0.8) !important;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <!-- Contenedor principal -->
+      <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+          <!-- Header -->
+          <div class="mb-12">
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm mb-8"
+            >
+              <div class="flex flex-wrap items-center justify-between">
+                <div class="flex flex-wrap items-center gap-6">
+                  <div
+                    class="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-3xl flex items-center justify-center shadow-lg"
+                  >
+                    <svg
+                      class="w-8 h-8 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h1
+                      class="text-4xl font-bold text-gray-900 tracking-tight mb-2"
+                    >
+                      Movimientos de Inventario
+                    </h1>
+                    <p class="text-lg text-gray-600 mb-3">
+                      Gestiona entradas y salidas de productos
+                    </p>
+                    <div class="flex items-center gap-4">
+                      <span
+                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
+                      >
+                        <svg
+                          class="w-4 h-4 mr-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                          ></path>
+                        </svg>
+                        <span
+                          th:text="${(entradas != null ? entradas.size() : 0) + (salidas != null ? salidas.size() : 0)} + ' movimientos'"
+                          >0 movimientos</span
+                        >
+                      </span>
+                      <span
+                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"
+                      >
+                        <svg
+                          class="w-4 h-4 mr-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          ></path>
+                        </svg>
+                        <span
+                          th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy')}"
+                          >Hoy</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="flex flex-col items-end gap-2">
+                    <a
+                      href="/pinateria/kardex/entrada/nueva"
+                      class="inline-flex items-center px-4 py-2 text-sm font-medium text-green-700 bg-white border border-green-600 hover:bg-green-50 transition-colors duration-200 shadow-sm rounded-xl"
+                    >
+                      <svg
+                        class="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        />
+                      </svg>
+                      Nueva Entrada
+                    </a>
+                    <a
+                      href="/pinateria/kardex/salida/nueva"
+                      class="inline-flex items-center px-4 py-2 text-sm font-medium text-red-700 bg-white border border-red-600 hover:bg-red-50 transition-colors duration-200 shadow-sm rounded-xl"
+                    >
+                      <svg
+                        class="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M20 12H4"
+                        />
+                      </svg>
+                      Nueva Salida
+                    </a>
+                  </div>
+                  <div class="h-12 w-px bg-gray-200"></div>
+                  <div class="flex flex-col gap-2">
+                    <a
+                      href="/pinateria/kardex/movimiento/descargar/pdf"
+                      class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 rounded-xl shadow-sm"
+                    >
+                      <svg
+                        class="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        ></path>
+                      </svg>
+                      Descargar PDF
+                    </a>
+                    <a
+                      href="/pinateria/kardex/movimiento/descargar/excel"
+                      class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors duration-200 rounded-xl shadow-sm"
+                    >
+                      <svg
+                        class="w-4 h-4 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        ></path>
+                      </svg>
+                      Descargar Excel
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensajes -->
+          <div th:if="${error}" id="mensajeError" class="mb-8">
+            <div
+              class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-sm"
+            >
+              <div class="flex items-center">
+                <div
+                  class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4"
+                >
+                  <svg
+                    class="w-6 h-6 text-red-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                </div>
+                <p
+                  class="text-base font-medium text-red-800"
+                  th:text="${error}"
+                ></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contenido Principal -->
+          <div class="flex-1 p-8">
+            <!-- Resumen de Estadísticas -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <div
+                class="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-6 border border-emerald-200/50"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-emerald-700">
+                      Total Entradas
+                    </p>
+                    <p
+                      class="text-2xl font-bold text-emerald-900"
+                      th:text="${entradas != null ? entradas.size() : 0}"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div class="p-3 bg-emerald-200 rounded-xl">
+                    <svg
+                      class="w-6 h-6 text-emerald-700"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 border border-red-200/50"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-red-700">
+                      Total Salidas
+                    </p>
+                    <p
+                      class="text-2xl font-bold text-red-900"
+                      th:text="${salidas != null ? salidas.size() : 0}"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div class="p-3 bg-red-200 rounded-xl">
+                    <svg
+                      class="w-6 h-6 text-red-700"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200/50"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-blue-700">
+                      Total Movimientos
+                    </p>
+                    <p
+                      class="text-2xl font-bold text-blue-900"
+                      th:text="${(entradas != null ? entradas.size() : 0) + (salidas != null ? salidas.size() : 0)}"
+                    >
+                      0
+                    </p>
+                  </div>
+                  <div class="p-3 bg-blue-200 rounded-xl">
+                    <svg
+                      class="w-6 h-6 text-blue-700"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200/50"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-medium text-purple-700">
+                      Último Movimiento
+                    </p>
+                    <p
+                      class="text-sm font-semibold text-purple-900"
+                      th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy')}"
+                    >
+                      Hoy
+                    </p>
+                  </div>
+                  <div class="p-3 bg-purple-200 rounded-xl">
+                    <svg
+                      class="w-6 h-6 text-purple-700"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Título de la página -->
+            <div class="mb-8">
+              <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                Movimientos del Kardex
+              </h1>
+              <p class="text-gray-600">
+                Gestiona y visualiza todos los movimientos de entrada y salida
+                de mercancía
+              </p>
+            </div>
+
+            <!-- Sección de Entradas -->
+            <div
+              class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                  <div class="p-3 bg-emerald-100 rounded-xl">
+                    <svg
+                      class="w-6 h-6 text-emerald-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-xl font-bold text-gray-900">
+                      Entradas de Mercancía
+                    </h3>
+                    <p class="text-sm text-gray-600">
+                      Registro de productos ingresados al inventario
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span
+                    class="px-3 py-1 bg-emerald-100 text-emerald-800 text-sm font-medium rounded-full"
+                    th:text="${entradas != null ? entradas.size() : 0} + ' registros'"
+                  >
+                    0 registros
+                  </span>
+                </div>
+              </div>
+              <div class="p-8">
+                <div
+                  th:if="${entradas.empty}"
+                  class="text-center text-gray-500 py-12"
+                >
+                  <div
+                    class="w-16 h-16 bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                  >
+                    <svg
+                      class="w-8 h-8 text-emerald-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                      />
+                    </svg>
+                  </div>
+                  <p class="text-lg font-medium">No hay entradas registradas</p>
+                </div>
+                <div th:if="${!entradas.empty}" class="overflow-x-auto">
+                  <div
+                    class="max-h-96 overflow-y-auto scrollbar-thin table-container"
+                  >
+                    <table class="min-w-full divide-y divide-gray-200">
+                      <thead class="sticky-header">
+                        <tr>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Número
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Tipo
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Fecha
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Proveedor
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Productos
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Total
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Estado
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Acciones
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="bg-white/50 divide-y divide-gray-100">
+                        <tr
+                          th:each="entrada : ${entradas}"
+                          class="hover:bg-gray-50/50 transition-colors duration-200"
+                          th:if="${entrada != null}"
+                        >
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900"
+                            th:text="${entrada.numeroFactura != null ? entrada.numeroFactura : 'N/A'}"
+                          >
+                            F001-001
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <span
+                              class="px-2 py-1 text-xs font-medium rounded-full"
+                              th:classappend="${entrada.tipoDocumento?.name() == 'FACTURA' ? 'bg-blue-100 text-blue-800' : 
+                                             entrada.tipoDocumento?.name() == 'BOLETA' ? 'bg-green-100 text-green-800' : 
+                                             'bg-gray-100 text-gray-800'}"
+                              th:text="${entrada.tipoDocumento?.name()}"
+                            >
+                              FACTURA
+                            </span>
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                            th:text="${entrada.fechaEntrada != null ? #temporals.format(entrada.fechaEntrada, 'dd/MM/yyyy HH:mm') : 'N/A'}"
+                          >
+                            01/01/2024
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                            th:text="${entrada.proveedorNombre != null ? entrada.proveedorNombre : 'N/A'}"
+                          >
+                            Proveedor
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                            th:text="${entrada.detalles != null ? entrada.detalles.size() + ' items' : '0 items'}"
+                          >
+                            0 items
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600"
+                            th:text="${entrada.costoTotal != null ? 'S/ ' + #numbers.formatDecimal(entrada.costoTotal, 1, 2) : 'S/ 0.00'}"
+                          >
+                            S/ 0.00
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <span
+                              th:if="${entrada.estado != null and entrada.estado.name() == 'Pendiente'}"
+                              class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                            >
+                              Pendiente
+                            </span>
+                            <span
+                              th:if="${entrada.estado != null and entrada.estado.name() == 'Completado'}"
+                              class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800"
+                            >
+                              Completado
+                            </span>
+                            <span
+                              th:if="${entrada.estado != null and entrada.estado.name() == 'Anulado'}"
+                              class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-red-100 text-red-800"
+                            >
+                              Anulado
+                            </span>
+                            <span
+                              th:if="${entrada.estado == null}"
+                              class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-100 text-gray-800"
+                            >
+                              Sin Estado
+                            </span>
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                          >
+                            <a
+                              th:href="@{/pinateria/kardex/entrada/{id}(id=${entrada.idEntrada})}"
+                              class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200"
+                              th:if="${entrada.idEntrada != null}"
+                              title="Ver detalle de entrada"
+                            >
+                              <svg
+                                class="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                />
+                              </svg>
+                              Ver
+                            </a>
+                            <span
+                              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-400 bg-gray-50 rounded-lg"
+                              th:if="${entrada.idEntrada == null}"
+                            >
+                              <svg
+                                class="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                                />
+                              </svg>
+                              No disponible
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sección de Salidas -->
+            <div
+              class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 mt-5"
+            >
+              <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                  <div class="p-3 bg-red-100 rounded-xl">
+                    <svg
+                      class="w-6 h-6 text-red-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-xl font-bold text-gray-900">
+                      Salidas de Mercancía
+                    </h3>
+                    <p class="text-sm text-gray-600">
+                      Registro de productos vendidos o retirados
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span
+                    class="px-3 py-1 bg-red-100 text-red-800 text-sm font-medium rounded-full"
+                    th:text="${salidas != null ? salidas.size() : 0} + ' registros'"
+                  >
+                    0 registros
+                  </span>
+                </div>
+              </div>
+              <div class="p-8">
+                <div
+                  th:if="${salidas.empty}"
+                  class="text-center text-gray-500 py-12"
+                >
+                  <div
+                    class="w-16 h-16 bg-gradient-to-br from-red-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                  >
+                    <svg
+                      class="w-8 h-8 text-red-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m6 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"
+                      />
+                    </svg>
+                  </div>
+                  <p class="text-lg font-medium">No hay salidas registradas</p>
+                </div>
+                <div th:if="${!salidas.empty}" class="overflow-x-auto">
+                  <div
+                    class="max-h-96 overflow-y-auto scrollbar-thin table-container"
+                  >
+                    <table class="min-w-full divide-y divide-gray-200">
+                      <thead class="sticky-header">
+                        <tr>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Número
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Tipo
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Fecha
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Cliente
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Productos
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Motivo
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Total
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Estado
+                          </th>
+                          <th
+                            class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                          >
+                            Acciones
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="bg-white/50 divide-y divide-gray-100">
+                        <tr
+                          th:each="salida : ${salidas}"
+                          class="hover:bg-gray-50/50 transition-colors duration-200"
+                          th:if="${salida != null}"
+                        >
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900"
+                            th:text="${salida.numeroDocumento != null ? salida.numeroDocumento : 'N/A'}"
+                          >
+                            S001-001
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <span
+                              class="px-2 py-1 text-xs font-medium rounded-full"
+                              th:classappend="${salida.tipoDocumento?.name() == 'FACTURA' ? 'bg-blue-100 text-blue-800' : 
+                                             salida.tipoDocumento?.name() == 'BOLETA' ? 'bg-green-100 text-green-800' : 
+                                             'bg-gray-100 text-gray-800'}"
+                              th:text="${salida.tipoDocumento?.name()}"
+                            >
+                              FACTURA
+                            </span>
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                            th:text="${salida.fechaSalida != null ? #temporals.format(salida.fechaSalida, 'dd/MM/yyyy HH:mm') : 'N/A'}"
+                          >
+                            01/01/2024
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                            th:text="${salida.clienteNombre != null ? salida.clienteNombre : 'N/A'}"
+                          >
+                            Cliente
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                            th:text="${salida.detalles != null ? salida.detalles.size() + ' items' : '0 items'}"
+                          >
+                            0 items
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-600"
+                            th:text="${salida.motivoSalida != null ? salida.motivoSalida : 'N/A'}"
+                          >
+                            Venta
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600"
+                            th:text="${salida.totalVenta != null ? 'S/ ' + #numbers.formatDecimal(salida.totalVenta, 1, 2) : 'S/ 0.00'}"
+                          >
+                            S/ 0.00
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <span
+                              th:if="${salida.estado != null and salida.estado.name() == 'Pendiente'}"
+                              class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                            >
+                              Pendiente
+                            </span>
+                            <span
+                              th:if="${salida.estado != null and salida.estado.name() == 'Completado'}"
+                              class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800"
+                            >
+                              Completado
+                            </span>
+                            <span
+                              th:if="${salida.estado != null and salida.estado.name() == 'Anulado'}"
+                              class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-red-100 text-red-800"
+                            >
+                              Anulado
+                            </span>
+                            <span
+                              th:if="${salida.estado == null}"
+                              class="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-100 text-gray-800"
+                            >
+                              Sin Estado
+                            </span>
+                          </td>
+                          <td
+                            class="px-6 py-4 whitespace-nowrap text-sm font-medium"
+                          >
+                            <a
+                              th:href="@{/pinateria/kardex/salida/{id}(id=${salida.idSalida})}"
+                              class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200"
+                              th:if="${salida.idSalida != null}"
+                              title="Ver detalle de salida"
+                            >
+                              <svg
+                                class="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                />
+                              </svg>
+                              Ver
+                            </a>
+                            <span
+                              class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-400 bg-gray-50 rounded-lg"
+                              th:if="${salida.idSalida == null}"
+                            >
+                              <svg
+                                class="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                                />
+                              </svg>
+                              No disponible
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Script para el mensaje de error -->
+      <script th:if="${error}">
+        document.addEventListener("DOMContentLoaded", function () {
+          const mensaje = document.getElementById("mensajeError");
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-0", "translate-y-4");
+            mensaje.classList.add("opacity-100", "translate-y-0");
+          }, 100);
+
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-100", "translate-y-0");
+            mensaje.classList.add("opacity-0", "translate-y-4");
+            setTimeout(() => {
+              mensaje.remove();
+            }, 1000);
+          }, 5000);
+        });
+      </script>
+    </section>
+  </body>
+</html>
