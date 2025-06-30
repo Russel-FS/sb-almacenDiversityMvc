@@ -3,7 +3,6 @@ package com.api.diversity.application.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,15 +30,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Transactional
     public UsuarioDto save(UsuarioDto usuarioDto) {
         try {
-            // Validaciones básicas
-            if (usuarioRepository.existsByEmail(usuarioDto.getEmail())) {
-                throw new DataIntegrityViolationException("El email ya está registrado");
-            }
-            if (usuarioRepository.existsByNombreUsuario(usuarioDto.getNombreUsuario())) {
-                throw new DataIntegrityViolationException("El nombre de usuario ya está registrado");
-            }
-
-            // Encriptación de contraseña
+            // Encriptación de contraseña si es nueva
             if (usuarioDto.getContraseña() != null && !usuarioDto.getContraseña().startsWith("$2a$")) {
                 usuarioDto.setContraseña(passwordEncoder.encode(usuarioDto.getContraseña()));
             }

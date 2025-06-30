@@ -151,6 +151,10 @@ public class AdminUsuarioController {
             RedirectAttributes redirectAttributes) {
 
         log.info("Guardando usuario: {}", usuario.getEmail());
+        log.info("Datos del usuario - ID: {}, Nombre: {}, Email: {}, Estado: {}",
+                usuario.getIdUsuario(), usuario.getNombreCompleto(), usuario.getEmail(), usuario.getEstado());
+        log.info("Roles seleccionados: {}", usuario.getRoles() != null ? usuario.getRoles().size() : 0);
+        log.info("Rubros seleccionados: {}", usuario.getRubros() != null ? usuario.getRubros().size() : 0);
 
         try {
             List<RolDto> roles = rolJpaRepository.findAll().stream()
@@ -160,8 +164,31 @@ public class AdminUsuarioController {
             model.addAttribute("roles", roles);
             model.addAttribute("rubros", rubroService.findAll());
             model.addAttribute("estados", EstadoUsuario.values());
+            model.addAttribute("usuario", usuario);
+
+            // roles
+            if (usuario.getRolesIds() != null && !usuario.getRolesIds().isEmpty()) {
+                List<RolDto> rolesSeleccionados = rolJpaRepository.findAllById(usuario.getRolesIds())
+                        .stream().map(rolMapper::toDto).toList();
+                usuario.setRoles(rolesSeleccionados.stream().map(rol -> {
+                    com.api.diversity.application.dto.UserRoleDto ur = new com.api.diversity.application.dto.UserRoleDto();
+                    ur.setRol(rol);
+                    return ur;
+                }).toList());
+            } else {
+                usuario.setRoles(null);
+            }
+            // rubros
+            if (usuario.getRubrosIds() != null && !usuario.getRubrosIds().isEmpty()) {
+                usuario.setRubros(rubroService.findAll().stream()
+                        .filter(r -> usuario.getRubrosIds().contains(r.getIdRubro()))
+                        .toList());
+            } else {
+                usuario.setRubros(null);
+            }
 
             if (result.hasErrors()) {
+                log.error("Errores de validación: {}", result.getAllErrors());
                 model.addAttribute("titulo", usuario.getIdUsuario() == null ? "Nuevo Usuario" : "Editar Usuario");
                 model.addAttribute("subtitulo",
                         usuario.getIdUsuario() == null ? "Registrar nuevo usuario" : "Modificar datos del usuario");
@@ -170,7 +197,7 @@ public class AdminUsuarioController {
                 return "admin/usuarios/form";
             }
 
-            // Validar que el email no esté duplicado (excepto para el mismo usuario)
+            // Validar que el email no esté duplicadoo
             if (usuario.getIdUsuario() == null) {
                 if (usuarioService.existsByEmail(usuario.getEmail())) {
                     model.addAttribute("titulo", "Nuevo Usuario");
@@ -190,10 +217,13 @@ public class AdminUsuarioController {
                         return "admin/usuarios/form";
                     }
                 } catch (Exception e) {
+
                 }
             }
 
+            log.info("Guardando usuario en la base de datos...");
             usuarioService.save(usuario);
+            log.info("Usuario guardado exitosamente");
             redirectAttributes.addFlashAttribute("success", "Usuario guardado exitosamente");
             return "redirect:/admin/usuarios";
 

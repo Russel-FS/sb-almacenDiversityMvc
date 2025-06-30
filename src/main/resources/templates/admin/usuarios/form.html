@@ -360,7 +360,7 @@
                     >
                       <input
                         type="checkbox"
-                        th:field="*{roles}"
+                        th:field="*{rolesIds}"
                         th:value="${rol.idRol}"
                         th:id="'rol_' + ${rol.idRol}"
                         class="peer sr-only role-checkbox"
@@ -450,9 +450,9 @@
                   >
                     <input
                       type="checkbox"
-                      th:id="'rubro-' + ${rubro.idRubro}"
-                      th:name="rubros"
+                      th:field="*{rubrosIds}"
                       th:value="${rubro.idRubro}"
+                      th:id="'rubro-' + ${rubro.idRubro}"
                       class="peer sr-only"
                       x-ref="checkbox"
                       @change="checked = $event.target.checked"
