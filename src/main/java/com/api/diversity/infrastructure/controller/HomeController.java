@@ -38,12 +38,12 @@ public class HomeController {
         log.info("Accediendo a la página principal del sistema");
 
         try {
-            // Obtener productos por rubro
+            // productos por rubro
             List<ProductoDto> productosPinateria = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
             List<ProductoDto> productosLibreria = productoService.findAllByRubro(TipoRubro.LIBRERIA);
             List<ProductoDto> productosCamaras = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
 
-            // Calcular estadísticas generales
+            // estadísticas generales
             int totalProductos = productosPinateria.size() + productosLibreria.size() + productosCamaras.size();
 
             // Productos con stock bajo
@@ -92,7 +92,7 @@ public class HomeController {
             model.addAttribute("totalClientes", clientes.size());
             model.addAttribute("totalProveedores", proveedores.size());
 
-            // Estadísticas por rubro
+            // datos de estadísticas por rubro
             model.addAttribute("productosPinateria", productosPinateria.size());
             model.addAttribute("productosLibreria", productosLibreria.size());
             model.addAttribute("productosCamaras", productosCamaras.size());
