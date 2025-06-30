@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::section})}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo} + ' - Admin'">
+      Formulario de Producto - Admin
+    </title>
+  </head>
+  <body>
+    <section>
+      <!-- Contenedor principal -->
+      <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+        <div class="max-w-4xl mx-auto px-4 py-8">
+          <!-- Mensajes -->
+          <div th:if="${error}" id="mensajeError" class="mb-8">
+            <div
+              class="bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-sm"
+            >
+              <div class="flex items-center">
+                <div
+                  class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4"
+                >
+                  <svg
+                    class="w-6 h-6 text-red-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                </div>
+                <p
+                  class="text-base font-medium text-red-800"
+                  th:text="${error}"
+                ></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Encabezado -->
+          <div
+            class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm mb-8"
+          >
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center">
+                <div
+                  class="w-16 h-16 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center mr-6"
+                >
+                  <svg
+                    class="w-8 h-8 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h1
+                    class="text-3xl font-bold text-gray-900 mb-2"
+                    th:text="${titulo}"
+                  >
+                    Formulario de Producto
+                  </h1>
+                  <p class="text-lg text-gray-600" th:text="${subtitulo}">
+                    Información del producto
+                  </p>
+                </div>
+              </div>
+              <a
+                href="/admin/productos"
+                class="px-6 py-3 bg-gray-600 text-white rounded-2xl hover:bg-gray-700 transition-all duration-200 text-sm font-medium shadow-sm flex items-center group"
+              >
+                <svg
+                  class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                Volver
+              </a>
+            </div>
+          </div>
+
+          <!-- Formulario -->
+          <div
+            class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm overflow-hidden"
+          >
+            <form
+              th:action="@{/admin/productos/guardar}"
+              th:object="${producto}"
+              method="post"
+              enctype="multipart/form-data"
+              class="p-8"
+            >
+              <!-- Información básica -->
+              <div class="mb-8">
+                <h3
+                  class="text-xl font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <div
+                    class="w-8 h-8 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center mr-3"
+                  >
+                    <svg
+                      class="w-4 h-4 text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  Información Básica
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- Código del producto -->
+                  <div>
+                    <label
+                      for="codigoProducto"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Código del Producto
+                    </label>
+                    <input
+                      type="text"
+                      id="codigoProducto"
+                      th:field="*{codigoProducto}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Ingrese el código del producto"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('codigoProducto')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{codigoProducto}"
+                    ></div>
+                  </div>
+
+                  <!-- Nombre del producto -->
+                  <div>
+                    <label
+                      for="nombreProducto"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Nombre del Producto
+                    </label>
+                    <input
+                      type="text"
+                      id="nombreProducto"
+                      th:field="*{nombreProducto}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Ingrese el nombre del producto"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('nombreProducto')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{nombreProducto}"
+                    ></div>
+                  </div>
+
+                  <!-- Descripción -->
+                  <div class="md:col-span-2">
+                    <label
+                      for="descripcion"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Descripción
+                    </label>
+                    <textarea
+                      id="descripcion"
+                      th:field="*{descripcion}"
+                      rows="3"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="Ingrese una descripción del producto"
+                    ></textarea>
+                    <div
+                      th:if="${#fields.hasErrors('descripcion')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{descripcion}"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Categoría y Estado -->
+              <div class="mb-8">
+                <h3
+                  class="text-xl font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <div
+                    class="w-8 h-8 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mr-3"
+                  >
+                    <svg
+                      class="w-4 h-4 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                      />
+                    </svg>
+                  </div>
+                  Clasificación
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- Categoría -->
+                  <div>
+                    <label
+                      for="categoria"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Categoría
+                    </label>
+                    <select
+                      id="categoria"
+                      th:field="*{categoria.idCategoria}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    >
+                      <option value="">Seleccione una categoría</option>
+                      <option
+                        th:each="cat : ${categorias}"
+                        th:value="${cat.idCategoria}"
+                        th:text="${cat.nombreCategoria + ' (' + cat.rubro.nombreRubro + ')'}"
+                      >
+                        Categoría
+                      </option>
+                    </select>
+                    <div
+                      th:if="${#fields.hasErrors('categoria')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{categoria}"
+                    ></div>
+                  </div>
+
+                  <!-- Estado -->
+                  <div>
+                    <label
+                      for="estado"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Estado
+                    </label>
+                    <select
+                      id="estado"
+                      th:field="*{estado}"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    >
+                      <option
+                        th:each="estado : ${estados}"
+                        th:value="${estado}"
+                        th:text="${estado}"
+                      >
+                        Activo
+                      </option>
+                    </select>
+                    <div
+                      th:if="${#fields.hasErrors('estado')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{estado}"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Precios -->
+              <div class="mb-8">
+                <h3
+                  class="text-xl font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <div
+                    class="w-8 h-8 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center mr-3"
+                  >
+                    <svg
+                      class="w-4 h-4 text-amber-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                      />
+                    </svg>
+                  </div>
+                  Información de Precios
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- Precio de compra -->
+                  <div>
+                    <label
+                      for="precioCompra"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Precio de Compra (S/)
+                    </label>
+                    <input
+                      type="number"
+                      id="precioCompra"
+                      th:field="*{precioCompra}"
+                      step="0.01"
+                      min="0"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="0.00"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('precioCompra')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{precioCompra}"
+                    ></div>
+                  </div>
+
+                  <!-- Precio de venta -->
+                  <div>
+                    <label
+                      for="precioVenta"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Precio de Venta (S/)
+                    </label>
+                    <input
+                      type="number"
+                      id="precioVenta"
+                      th:field="*{precioVenta}"
+                      step="0.01"
+                      min="0"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="0.00"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('precioVenta')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{precioVenta}"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stock -->
+              <div class="mb-8">
+                <h3
+                  class="text-xl font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <div
+                    class="w-8 h-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl flex items-center justify-center mr-3"
+                  >
+                    <svg
+                      class="w-4 h-4 text-purple-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                      />
+                    </svg>
+                  </div>
+                  Gestión de Stock
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <!-- Stock actual -->
+                  <div>
+                    <label
+                      for="stockActual"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Stock Actual
+                    </label>
+                    <input
+                      type="number"
+                      id="stockActual"
+                      th:field="*{stockActual}"
+                      min="0"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="0"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('stockActual')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{stockActual}"
+                    ></div>
+                  </div>
+
+                  <!-- Stock mínimo -->
+                  <div>
+                    <label
+                      for="stockMinimo"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Stock Mínimo
+                    </label>
+                    <input
+                      type="number"
+                      id="stockMinimo"
+                      th:field="*{stockMinimo}"
+                      min="0"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="0"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('stockMinimo')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{stockMinimo}"
+                    ></div>
+                  </div>
+
+                  <!-- Stock máximo -->
+                  <div>
+                    <label
+                      for="stockMaximo"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Stock Máximo
+                    </label>
+                    <input
+                      type="number"
+                      id="stockMaximo"
+                      th:field="*{stockMaximo}"
+                      min="0"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder="0"
+                    />
+                    <div
+                      th:if="${#fields.hasErrors('stockMaximo')}"
+                      class="mt-2 text-sm text-red-600"
+                      th:errors="*{stockMaximo}"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Imagen -->
+              <div class="mb-8">
+                <h3
+                  class="text-xl font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <div
+                    class="w-8 h-8 bg-gradient-to-br from-pink-100 to-rose-100 rounded-xl flex items-center justify-center mr-3"
+                  >
+                    <svg
+                      class="w-4 h-4 text-pink-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  Imagen del Producto
+                </h3>
+
+                <div class="space-y-4">
+                  <!-- Imagen actual -->
+                  <div
+                    th:if="${producto.urlImagen}"
+                    class="flex items-center space-x-4"
+                  >
+                    <img
+                      th:src="${producto.urlImagen}"
+                      alt="Imagen actual del producto"
+                      class="w-24 h-24 object-cover rounded-2xl border border-gray-200"
+                    />
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">
+                        Imagen actual
+                      </p>
+                      <p class="text-sm text-gray-500">
+                        Selecciona una nueva imagen para reemplazarla
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Input de imagen -->
+                  <div>
+                    <label
+                      for="imagen"
+                      class="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Nueva Imagen
+                    </label>
+                    <input
+                      type="file"
+                      id="imagen"
+                      name="imagen"
+                      accept="image/*"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    />
+                    <p class="mt-2 text-sm text-gray-500">
+                      Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: 5MB
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botones de acción -->
+              <div
+                class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200"
+              >
+                <a
+                  href="/admin/productos"
+                  class="px-6 py-3 bg-gray-100 text-gray-700 rounded-2xl hover:bg-gray-200 transition-all duration-200 text-sm font-medium"
+                >
+                  Cancelar
+                </a>
+                <button
+                  type="submit"
+                  class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl hover:from-blue-700 hover:to-cyan-700 transition-all duration-200 text-sm font-medium shadow-sm flex items-center group"
+                >
+                  <svg
+                    class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span
+                    th:text="${esNuevo ? 'Crear Producto' : 'Actualizar Producto'}"
+                  >
+                    Guardar
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Script para el mensaje de error -->
+      <script th:if="${error}">
+        document.addEventListener("DOMContentLoaded", function () {
+          const mensaje = document.getElementById("mensajeError");
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-0", "translate-y-4");
+            mensaje.classList.add("opacity-100", "translate-y-0");
+          }, 100);
+
+          setTimeout(() => {
+            mensaje.classList.remove("opacity-100", "translate-y-0");
+            mensaje.classList.add("opacity-0", "translate-y-4");
+            setTimeout(() => {
+              mensaje.remove();
+            }, 1000);
+          }, 5000);
+        });
+      </script>
+    </section>
+  </body>
+</html>
