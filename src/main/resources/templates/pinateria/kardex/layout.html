@@ -73,6 +73,25 @@
         scrollbar-width: thin;
         scrollbar-color: #cbd5e1 rgba(241, 245, 249, 0.5);
       }
+
+      .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      .scrollbar-thin::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+      }
+
+      .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+      }
+
+      .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.3);
+      }
     </style>
   </head>
   <body
@@ -83,7 +102,7 @@
       <div class="max-w-7xl mx-auto px-6">
         <!-- Header Superior -->
         <div class="flex justify-between items-center h-16">
-          <!-- Logo y Rubro -->
+          <!-- Logoo y Rubro -->
           <div class="flex items-center space-x-6">
             <a href="/" class="flex items-center space-x-3 group">
               <div
@@ -259,7 +278,7 @@
 
           <!-- Reportes -->
           <a
-            th:href="@{/pinateria/kardex/reportes}"
+            th:href="@{/pinateria/kardex/reporte}"
             class="nav-tab px-6 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center"
           >
             <svg
