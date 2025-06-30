@@ -164,15 +164,27 @@
                       class="block text-sm font-medium text-gray-700 mb-2"
                     >
                       Nombre de Usuario *
+                      <span
+                        th:unless="${esNuevo}"
+                        class="text-sm text-gray-500 font-normal"
+                        >(No editable)</span
+                      >
                     </label>
                     <input
                       type="text"
                       id="nombreUsuario"
                       th:field="*{nombreUsuario}"
-                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      th:readonly="${!esNuevo}"
+                      th:class="${esNuevo} ? 'w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200' : 'w-full px-4 py-3 border border-gray-200 rounded-2xl bg-gray-50 text-gray-600 cursor-not-allowed'"
                       placeholder="Ingrese el nombre de usuario"
                       required
                     />
+                    <p
+                      th:unless="${esNuevo}"
+                      class="mt-2 text-sm text-gray-500"
+                    >
+                      El nombre de usuario no se puede modificar una vez creado
+                    </p>
                     <div
                       th:if="${#fields.hasErrors('nombreUsuario')}"
                       class="mt-2 text-sm text-red-600"
@@ -186,15 +198,27 @@
                       class="block text-sm font-medium text-gray-700 mb-2"
                     >
                       Email *
+                      <span
+                        th:unless="${esNuevo}"
+                        class="text-sm text-gray-500 font-normal"
+                        >(No editable)</span
+                      >
                     </label>
                     <input
                       type="email"
                       id="email"
                       th:field="*{email}"
-                      class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                      th:readonly="${!esNuevo}"
+                      th:class="${esNuevo} ? 'w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200' : 'w-full px-4 py-3 border border-gray-200 rounded-2xl bg-gray-50 text-gray-600 cursor-not-allowed'"
                       placeholder="Ingrese el email"
                       required
                     />
+                    <p
+                      th:unless="${esNuevo}"
+                      class="mt-2 text-sm text-gray-500"
+                    >
+                      El email no se puede modificar una vez creado el usuario
+                    </p>
                     <div
                       th:if="${#fields.hasErrors('email')}"
                       class="mt-2 text-sm text-red-600"
