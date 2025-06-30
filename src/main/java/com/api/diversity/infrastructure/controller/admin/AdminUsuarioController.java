@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.api.diversity.application.dto.RolDto;
+import com.api.diversity.application.dto.UserRoleDto;
 import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.mappers.RolMapper;
 import com.api.diversity.application.service.interfaces.IRubroService;
@@ -155,6 +156,8 @@ public class AdminUsuarioController {
                 usuario.getIdUsuario(), usuario.getNombreCompleto(), usuario.getEmail(), usuario.getEstado());
         log.info("Roles seleccionados: {}", usuario.getRoles() != null ? usuario.getRoles().size() : 0);
         log.info("Rubros seleccionados: {}", usuario.getRubros() != null ? usuario.getRubros().size() : 0);
+        log.info("Roles IDs: {}", usuario.getRolesIds());
+        log.info("Rubros IDs: {}", usuario.getRubrosIds());
 
         try {
             List<RolDto> roles = rolJpaRepository.findAll().stream()
@@ -168,24 +171,34 @@ public class AdminUsuarioController {
 
             // roles
             if (usuario.getRolesIds() != null && !usuario.getRolesIds().isEmpty()) {
-                List<RolDto> rolesSeleccionados = rolJpaRepository.findAllById(usuario.getRolesIds())
-                        .stream().map(rolMapper::toDto).toList();
-                usuario.setRoles(rolesSeleccionados.stream().map(rol -> {
-                    com.api.diversity.application.dto.UserRoleDto ur = new com.api.diversity.application.dto.UserRoleDto();
-                    ur.setRol(rol);
-                    return ur;
-                }).toList());
+                List<UserRoleDto> userRoles = usuario.getRolesIds().stream()
+                        .map(rolId -> {
+                            UserRoleDto ur = new com.api.diversity.application.dto.UserRoleDto();
+                            RolDto rol = rolJpaRepository.findById(rolId)
+                                    .map(rolMapper::toDto)
+                                    .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + rolId));
+                            ur.setRol(rol);
+                            ur.setEstado(com.api.diversity.domain.enums.EstadoUserRole.Activo);
+                            return ur;
+                        }).toList();
+                usuario.setRoles(userRoles);
             } else {
                 usuario.setRoles(null);
             }
+
             // rubros
             if (usuario.getRubrosIds() != null && !usuario.getRubrosIds().isEmpty()) {
-                usuario.setRubros(rubroService.findAll().stream()
+                List<com.api.diversity.application.dto.RubroDto> rubrosSeleccionados = rubroService.findAll().stream()
                         .filter(r -> usuario.getRubrosIds().contains(r.getIdRubro()))
-                        .toList());
+                        .toList();
+                usuario.setRubros(rubrosSeleccionados);
             } else {
                 usuario.setRubros(null);
             }
+
+            log.info("Después de conversión - Roles: {}, Rubros: {}",
+                    usuario.getRoles() != null ? usuario.getRoles().size() : 0,
+                    usuario.getRubros() != null ? usuario.getRubros().size() : 0);
 
             if (result.hasErrors()) {
                 log.error("Errores de validación: {}", result.getAllErrors());
@@ -197,7 +210,7 @@ public class AdminUsuarioController {
                 return "admin/usuarios/form";
             }
 
-            // Validar que el email no esté duplicadoo
+            // Validar email
             if (usuario.getIdUsuario() == null) {
                 if (usuarioService.existsByEmail(usuario.getEmail())) {
                     model.addAttribute("titulo", "Nuevo Usuario");

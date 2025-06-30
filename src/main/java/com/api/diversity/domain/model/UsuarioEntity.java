@@ -25,6 +25,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.CascadeType;
 
 @Data
 @Entity
@@ -71,10 +72,10 @@ public class UsuarioEntity {
     @Column(name = "Fecha_Modificacion")
     private LocalDateTime fechaModificacion;
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRoleEntity> userRoles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsuarioRubroEntity> usuarioRubros = new ArrayList<>();
 
     public List<RolEntity> getRolesActivos() {
@@ -94,11 +95,16 @@ public class UsuarioEntity {
     }
 
     public void addRole(RolEntity rol) {
-        UserRoleEntity userRole = new UserRoleEntity();
-        userRole.setUsuario(this);
-        userRole.setRol(rol);
-        userRole.setEstado(EstadoUserRole.Activo);
-        userRoles.add(userRole);
+        boolean exists = userRoles.stream()
+                .anyMatch(ur -> ur.getRol().getIdRol().equals(rol.getIdRol()));
+
+        if (!exists) {
+            UserRoleEntity userRole = new UserRoleEntity();
+            userRole.setUsuario(this);
+            userRole.setRol(rol);
+            userRole.setEstado(EstadoUserRole.Activo);
+            userRoles.add(userRole);
+        }
     }
 
     public void removeRole(RolEntity rol) {
@@ -106,11 +112,16 @@ public class UsuarioEntity {
     }
 
     public void addRubro(RubroEntity rubro) {
-        UsuarioRubroEntity usuarioRubro = new UsuarioRubroEntity();
-        usuarioRubro.setUsuario(this);
-        usuarioRubro.setRubro(rubro);
-        usuarioRubro.setEstado(EstadoUsuarioRubro.Activo);
-        usuarioRubros.add(usuarioRubro);
+        boolean exists = usuarioRubros.stream()
+                .anyMatch(ur -> ur.getRubro().getIdRubro().equals(rubro.getIdRubro()));
+
+        if (!exists) {
+            UsuarioRubroEntity usuarioRubro = new UsuarioRubroEntity();
+            usuarioRubro.setUsuario(this);
+            usuarioRubro.setRubro(rubro);
+            usuarioRubro.setEstado(EstadoUsuarioRubro.Activo);
+            usuarioRubros.add(usuarioRubro);
+        }
     }
 
     public void removeRubro(RubroEntity rubro) {

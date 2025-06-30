@@ -62,6 +62,8 @@ public class UsuarioMapper {
         entity.setUltimoAcceso(dto.getUltimoAcceso());
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());
+        entity.getUserRoles().clear();
+        entity.getUsuarioRubros().clear();
 
         // roles
         if (dto.getRoles() != null && !dto.getRoles().isEmpty()) {
@@ -75,7 +77,7 @@ public class UsuarioMapper {
             });
         }
 
-        // Mrubros
+        // rubros
         if (dto.getRubros() != null && !dto.getRubros().isEmpty()) {
             dto.getRubros().forEach(rubroDto -> {
                 RubroEntity rubro = rubroRepository.findById(rubroDto.getIdRubro())
