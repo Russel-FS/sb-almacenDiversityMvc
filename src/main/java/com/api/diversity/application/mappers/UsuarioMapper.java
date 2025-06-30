@@ -7,10 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.domain.model.UsuarioEntity;
-import com.api.diversity.domain.model.RolEntity;
-import com.api.diversity.domain.model.RubroEntity;
-import com.api.diversity.domain.ports.IRolRepository;
-import com.api.diversity.domain.ports.RubroRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,8 +16,6 @@ public class UsuarioMapper {
 
     private final RubroMapper rubroMapper;
     private final UserRoleMapper userRoleMapper;
-    private final IRolRepository rolRepository;
-    private final RubroRepository rubroRepository;
 
     public UsuarioDto toDto(UsuarioEntity entity) {
         if (entity == null) {
@@ -62,29 +56,6 @@ public class UsuarioMapper {
         entity.setUltimoAcceso(dto.getUltimoAcceso());
         entity.setFechaCreacion(dto.getFechaCreacion());
         entity.setFechaModificacion(dto.getFechaModificacion());
-        entity.getUserRoles().clear();
-        entity.getUsuarioRubros().clear();
-
-        // roles
-        if (dto.getRoles() != null && !dto.getRoles().isEmpty()) {
-            dto.getRoles().forEach(userRoleDto -> {
-                if (userRoleDto.getRol() != null) {
-                    RolEntity rol = rolRepository.findById(userRoleDto.getRol().getIdRol())
-                            .orElseThrow(() -> new RuntimeException(
-                                    "Rol no encontrado: " + userRoleDto.getRol().getIdRol()));
-                    entity.addRole(rol);
-                }
-            });
-        }
-
-        // rubros
-        if (dto.getRubros() != null && !dto.getRubros().isEmpty()) {
-            dto.getRubros().forEach(rubroDto -> {
-                RubroEntity rubro = rubroRepository.findById(rubroDto.getIdRubro())
-                        .orElseThrow(() -> new RuntimeException("Rubro no encontrado: " + rubroDto.getIdRubro()));
-                entity.addRubro(rubro);
-            });
-        }
 
         return entity;
     }
