@@ -35,7 +35,7 @@ public class ClienteServiceImpl implements IClienteService {
         try {
             log.info("Guardando nuevo cliente: {}", clienteDto.getNombreCompleto());
 
-            // Validar que el DNI no esté duplicado si se proporciona
+            // Validar que el DNI no esté duplicado si se proporcionaa
             if (clienteDto.getDni() != null && !clienteDto.getDni().trim().isEmpty()) {
                 if (clienteRepository.existsByDni(clienteDto.getDni())) {
                     throw new DataIntegrityViolationException(
