@@ -7,419 +7,36 @@
   <body>
     <div th:replace="~{layout :: layout(~{::section})}">
       <section>
-        <!-- Hero Section -->
+        <!-- Hero de bienvenida -->
         <div class="relative bg-gradient-to-br from-slate-50 to-blue-50">
-          <div class="max-w-7xl mx-auto px-4 py-12">
-            <div class="text-center mb-12">
-              <div
-                class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 border border-blue-200 mb-6"
-              >
-                <svg
-                  class="w-4 h-4 text-blue-600 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  ></path>
-                </svg>
-                <span class="text-sm font-medium text-blue-800"
-                  >Panel de Control</span
-                >
-              </div>
-
-              <h1 class="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
-                Bienvenido a
-                <span
-                  class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-                >
-                  J&C Diversity
-                </span>
-              </h1>
-
-              <p
-                class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
-              >
-                Sistema integral de gestión para nuestras líneas de Piñatería,
-                Librería y Cámaras de Seguridad.
-              </p>
-            </div>
+          <div class="max-w-3xl mx-auto px-4 py-12 text-center">
+            <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              ¡Bienvenido/a,
+              <span th:text="${#authentication.name}">Usuario</span>!
+            </h1>
+            <p class="text-xl text-gray-600 mb-6">
+              Este es el sistema de gestión integral de
+              <b>J&C Diversity</b>.<br />
+              Accede a los módulos y funciones según tu perfil.
+            </p>
           </div>
         </div>
 
-        <!-- Estadísticas Principales -->
-        <div class="max-w-7xl mx-auto px-4 py-8">
-          <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
-          >
-            <!-- Total Productos -->
-            <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
+        <!-- Accesos rápidos -->
+        <div class="max-w-5xl mx-auto px-4 py-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">
+            Accesos rápidos
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <a
+              href="/admin/productos"
+              class="group bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 p-6 rounded-2xl border border-blue-200 transition-all duration-200 text-center"
             >
-              <div class="flex items-center justify-between">
-                <div>
-                  <p
-                    class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide"
-                  >
-                    Total Productos
-                  </p>
-                  <p
-                    class="text-3xl font-bold text-gray-900"
-                    th:text="${totalProductos}"
-                  >
-                    0
-                  </p>
-                </div>
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center"
-                >
-                  <svg
-                    class="w-7 h-7 text-blue-800"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <!-- Stock Bajo -->
-            <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              <div class="flex items-center justify-between">
-                <div>
-                  <p
-                    class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide"
-                  >
-                    Stock Bajo
-                  </p>
-                  <p
-                    class="text-3xl font-bold text-gray-900"
-                    th:text="${totalStockBajo}"
-                  >
-                    0
-                  </p>
-                </div>
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl flex items-center justify-center"
-                >
-                  <svg
-                    class="w-7 h-7 text-amber-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <!-- Valor Total -->
-            <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              <div class="flex items-center justify-between">
-                <div>
-                  <p
-                    class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide"
-                  >
-                    Valor Total
-                  </p>
-                  <p
-                    class="text-3xl font-bold text-gray-900"
-                    th:text="${'S/ ' + #numbers.formatDecimal(valorTotalInventario, 1, 2)}"
-                  >
-                    S/ 0.00
-                  </p>
-                </div>
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl flex items-center justify-center"
-                >
-                  <svg
-                    class="w-7 h-7 text-emerald-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <!-- Total Clientes -->
-            <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              <div class="flex items-center justify-between">
-                <div>
-                  <p
-                    class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide"
-                  >
-                    Clientes
-                  </p>
-                  <p
-                    class="text-3xl font-bold text-gray-900"
-                    th:text="${totalClientes}"
-                  >
-                    0
-                  </p>
-                </div>
-                <div
-                  class="w-14 h-14 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center"
-                >
-                  <svg
-                    class="w-7 h-7 text-purple-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Estadísticas por Rubro -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            <!-- Piñatería -->
-            <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              ...
-            </div>
-            <!-- Librería -->
-            <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              ...
-            </div>
-            <!-- Cámaras -->
-            <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              ...
-            </div>
-          </div>
-
-          <!-- Actividad Reciente -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            <!-- Últimas Entradas -->
-            <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              <div class="border-b border-gray-100 px-6 py-4">
-                <h3
-                  class="text-xl font-semibold text-gray-900 flex items-center"
-                >
-                  <svg
-                    class="w-6 h-6 text-emerald-600 mr-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M7 16l-4-4m0 0l4-4m-4 4h18"
-                    ></path>
-                  </svg>
-                  Últimas Entradas
-                </h3>
-              </div>
-              <div class="p-6">
-                <div
-                  th:if="${ultimasEntradas.empty}"
-                  class="text-center text-gray-500 py-8"
-                >
-                  <div
-                    class="w-16 h-16 bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                  >
-                    <svg
-                      class="w-8 h-8 text-emerald-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
-                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                      ></path>
-                    </svg>
-                  </div>
-                  <p class="text-lg font-medium">No hay entradas recientes</p>
-                </div>
-                <div th:if="${!ultimasEntradas.empty}" class="space-y-4">
-                  <div
-                    th:each="entrada : ${ultimasEntradas}"
-                    class="border-b border-gray-100 py-4 last:border-b-0"
-                  >
-                    <div class="flex items-center justify-between">
-                      <div class="flex-1">
-                        <p
-                          class="font-semibold text-gray-900"
-                          th:text="${entrada.numeroFactura}"
-                        >
-                          F001-001
-                        </p>
-                        <p
-                          class="text-gray-600 text-sm"
-                          th:text="${entrada.proveedorNombre}"
-                        >
-                          Proveedor
-                        </p>
-                      </div>
-                      <div class="text-right">
-                        <p
-                          class="text-lg font-semibold text-emerald-600"
-                          th:text="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal, 1, 2)}"
-                        >
-                          S/ 0.00
-                        </p>
-                        <p
-                          class="text-sm text-gray-500"
-                          th:text="${#temporals.format(entrada.fechaEntrada, 'dd/MM/yyyy')}"
-                        >
-                          01/01/2024
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Últimas Salidas -->
-            <div
-              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              <div class="border-b border-gray-100 px-6 py-4">
-                <h3
-                  class="text-xl font-semibold text-gray-900 flex items-center"
-                >
-                  <svg
-                    class="w-6 h-6 text-red-600 mr-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    ></path>
-                  </svg>
-                  Últimas Salidas
-                </h3>
-              </div>
-              <div class="p-6">
-                <div
-                  th:if="${ultimasSalidas.empty}"
-                  class="text-center text-gray-500 py-8"
-                >
-                  <div
-                    class="w-16 h-16 bg-gradient-to-br from-red-100 to-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                  >
-                    <svg
-                      class="w-8 h-8 text-red-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m6 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"
-                      ></path>
-                    </svg>
-                  </div>
-                  <p class="text-lg font-medium">No hay salidas recientes</p>
-                </div>
-                <div th:if="${!ultimasSalidas.empty}" class="space-y-4">
-                  <div
-                    th:each="salida : ${ultimasSalidas}"
-                    class="border-b border-gray-100 py-4 last:border-b-0"
-                  >
-                    <div class="flex items-center justify-between">
-                      <div class="flex-1">
-                        <p
-                          class="font-semibold text-gray-900"
-                          th:text="${salida.numeroDocumento}"
-                        >
-                          S001-001
-                        </p>
-                        <p
-                          class="text-gray-600 text-sm"
-                          th:text="${salida.clienteNombre}"
-                        >
-                          Cliente
-                        </p>
-                      </div>
-                      <div class="text-right">
-                        <p
-                          class="text-lg font-semibold text-red-600"
-                          th:text="${'S/ ' + #numbers.formatDecimal(salida.totalVenta, 1, 2)}"
-                        >
-                          S/ 0.00
-                        </p>
-                        <p
-                          class="text-sm text-gray-500"
-                          th:text="${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy')}"
-                        >
-                          01/01/2024
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Acciones Rápidas -->
-          <div
-            class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all duration-300"
-          >
-            <div class="flex items-center justify-between mb-8">
-              <h3
-                class="text-2xl font-semibold text-gray-900 flex items-center"
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
               >
                 <svg
-                  class="w-7 h-7 text-blue-500 mr-4"
+                  class="w-6 h-6 text-blue-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -428,123 +45,80 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.5"
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  ></path>
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  />
                 </svg>
-                Acciones Rápidas
-              </h3>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <a
-                href="/admin/productos"
-                class="group bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 p-6 rounded-2xl border border-blue-200 transition-all duration-200 text-center"
+              </div>
+              <h4 class="text-lg font-semibold text-gray-900 mb-1">
+                Productos
+              </h4>
+              <p class="text-sm text-gray-600">Inventario</p>
+            </a>
+            <a
+              href="/clientes"
+              class="group bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 p-6 rounded-2xl border border-purple-200 transition-all duration-200 text-center"
+            >
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
               >
-                <div
-                  class="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
+                <svg
+                  class="w-6 h-6 text-purple-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <svg
-                    class="w-6 h-6 text-blue-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                    ></path>
-                  </svg>
-                </div>
-                <h4 class="text-lg font-semibold text-gray-900 mb-1">
-                  Gestionar Productos
-                </h4>
-                <p class="text-sm text-gray-600">Administrar inventario</p>
-              </a>
-
-              <a
-                href="/clientes"
-                class="group bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 p-6 rounded-2xl border border-purple-200 transition-all duration-200 text-center"
-              >
-                <div
-                  class="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
-                >
-                  <svg
-                    class="w-6 h-6 text-purple-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-                    ></path>
-                  </svg>
-                </div>
-                <h4 class="text-lg font-semibold text-gray-900 mb-1">
-                  Gestionar Clientes
-                </h4>
-                <p class="text-sm text-gray-600">Administrar clientes</p>
-              </a>
-
-              <a
-                href="/proveedores"
-                class="group bg-gradient-to-br from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 p-6 rounded-2xl border border-green-200 transition-all duration-200 text-center"
-              >
-                <div
-                  class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
-                >
-                  <svg
-                    class="w-6 h-6 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    ></path>
-                  </svg>
-                </div>
-                <h4 class="text-lg font-semibold text-gray-900 mb-1">
-                  Gestionar Proveedores
-                </h4>
-                <p class="text-sm text-gray-600">Administrar proveedores</p>
-              </a>
-
-              <a
-                href="/admin/kardex/dashboard"
-                class="group bg-gradient-to-br from-orange-50 to-red-50 hover:from-orange-100 hover:to-red-100 p-6 rounded-2xl border border-orange-200 transition-all duration-200 text-center"
-              >
-                <div
-                  class="w-12 h-12 bg-gradient-to-br from-orange-100 to-red-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
-                >
-                  <svg
-                    class="w-6 h-6 text-orange-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    ></path>
-                  </svg>
-                </div>
-                <h4 class="text-lg font-semibold text-gray-900 mb-1">
-                  Dashboard General
-                </h4>
-                <p class="text-sm text-gray-600">Vista administrativa</p>
-              </a>
-            </div>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                  />
+                </svg>
+              </div>
+              <h4 class="text-lg font-semibold text-gray-900 mb-1">Clientes</h4>
+              <p class="text-sm text-gray-600">Gestión de clientes</p>
+            </a>
+            <!-- Agrega más accesos según los módulos y permisos -->
           </div>
+        </div>
+
+        <!-- Avisos o noticias generales -->
+        <div class="max-w-3xl mx-auto px-4 py-6">
+          <div
+            class="bg-blue-50 border border-blue-200 rounded-2xl p-6 text-center"
+          >
+            <h3 class="text-lg font-semibold text-blue-800 mb-2">
+              Aviso importante
+            </h3>
+            <p class="text-gray-700">
+              El sistema estará en mantenimiento el domingo de 2:00 a 4:00
+              am.<br />
+              Si tienes dudas, contacta a soporte.
+            </p>
+          </div>
+        </div>
+
+        <!-- Soporte y ayuda -->
+        <div class="max-w-3xl mx-auto px-4 py-4 text-center">
+          <a
+            href="mailto:soporte@jcdiversity.com"
+            class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M16 12H8m8 0a4 4 0 11-8 0 4 4 0 018 0zm0 0v1a4 4 0 01-8 0v-1"
+              />
+            </svg>
+            Contactar soporte
+          </a>
         </div>
       </section>
     </div>
