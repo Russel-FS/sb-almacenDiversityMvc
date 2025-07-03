@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.api.diversity.application.dto.ClienteDto;
 import com.api.diversity.application.dto.EntradaDto;
@@ -20,7 +18,8 @@ import com.api.diversity.application.service.interfaces.IProductoService;
 import com.api.diversity.application.service.interfaces.IProveedorService;
 import com.api.diversity.application.service.interfaces.ISalidaService;
 import com.api.diversity.domain.enums.TipoRubro;
-import com.api.diversity.infrastructure.security.CustomUser;
+import com.api.diversity.infrastructure.security.SecurityContext;
+import com.api.diversity.application.dto.UsuarioDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +34,7 @@ public class HomeController {
         private final IProveedorService proveedorService;
         private final IEntradaService entradaService;
         private final ISalidaService salidaService;
+        private final SecurityContext securityContext;
 
         @GetMapping("/")
         public String home(Model model) {
@@ -111,10 +111,10 @@ public class HomeController {
                         model.addAttribute("ultimasEntradas", ultimasEntradas);
                         model.addAttribute("ultimasSalidas", ultimasSalidas);
 
-                        // Agregar nombre completo del usuario autenticado
-                        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                        if (auth != null && auth.getPrincipal() instanceof CustomUser customUser) {
-                                model.addAttribute("nombreCompleto", customUser.getNombreCompleto());
+                        // usuario actual
+                        UsuarioDto usuario = securityContext.getCurrentUserDatabase();
+                        if (usuario != null) {
+                                model.addAttribute("nombreCompleto", usuario.getNombreCompleto());
                         } else {
                                 model.addAttribute("nombreCompleto", "Usuario");
                         }
