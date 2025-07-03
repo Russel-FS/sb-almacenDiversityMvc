@@ -1,5 +1,6 @@
 package com.api.diversity.infrastructure.controller.admin;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.domain.enums.EstadoProducto;
 import com.api.diversity.domain.enums.EstadoProveedor;
 import com.api.diversity.domain.enums.EstadoUsuario;
+import com.api.diversity.domain.enums.TipoRubro;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +78,47 @@ public class AdminDashboardController {
                                         .sorted((p1, p2) -> Integer.compare(p1.getStockActual(), p2.getStockActual()))
                                         .limit(5)
                                         .toList();
+
+                        // --- Estadísticas por rubro (igual que HomeController) ---
+                        List<ProductoDto> productosPinateria = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+                        List<ProductoDto> productosLibreria = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+                        List<ProductoDto> productosCamaras = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
+
+                        int stockBajoPinateria = (int) productosPinateria.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                                        .count();
+                        int stockBajoLibreria = (int) productosLibreria.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                                        .count();
+                        int stockBajoCamaras = (int) productosCamaras.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                                        .count();
+
+                        BigDecimal valorPinateria = productosPinateria.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                                        .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                        BigDecimal valorLibreria = productosLibreria.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                                        .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                        BigDecimal valorCamaras = productosCamaras.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                                        .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                        // Pasar datos de rubros al modelo
+                        model.addAttribute("productosPinateria", productosPinateria.size());
+                        model.addAttribute("productosLibreria", productosLibreria.size());
+                        model.addAttribute("productosCamaras", productosCamaras.size());
+                        model.addAttribute("stockBajoPinateria", stockBajoPinateria);
+                        model.addAttribute("stockBajoLibreria", stockBajoLibreria);
+                        model.addAttribute("stockBajoCamaras", stockBajoCamaras);
+                        model.addAttribute("valorPinateria", valorPinateria);
+                        model.addAttribute("valorLibreria", valorLibreria);
+                        model.addAttribute("valorCamaras", valorCamaras);
+
+                        // --- Fin estadísticas por rubro ---
 
                         model.addAttribute("titulo", "Panel de Administración");
                         model.addAttribute("subtitulo", "Dashboard principal del sistema");
