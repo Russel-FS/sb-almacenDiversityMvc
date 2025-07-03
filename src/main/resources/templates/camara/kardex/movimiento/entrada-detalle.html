@@ -2,12 +2,12 @@
 <html
   lang="es"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{libreria/kardex/layout :: kardexLayout(~{::section}, 'Detalle de Entrada', 'Librería')}"
+  th:replace="~{camara/kardex/layout :: kardexLayout(~{::section}, 'Detalle de Entrada', 'Cámaras de Seguridad')}"
 >
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Detalle de Entrada - Librería</title>
+    <title>Detalle de Entrada - Cámaras de Seguridad</title>
     <style>
       .overflow-y-auto::-webkit-scrollbar {
         width: 6px;
@@ -101,7 +101,8 @@
                       Detalle de Entrada
                     </h1>
                     <p class="text-lg text-gray-600 mb-3">
-                      Información completa de la entrada de productos
+                      Información completa de la entrada de productos de cámaras
+                      de seguridad
                     </p>
                     <div class="flex items-center gap-4">
                       <span
@@ -150,7 +151,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                   <a
-                    th:href="@{/libreria/kardex/movimientos}"
+                    th:href="@{/camara/kardex/movimientos}"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
                   >
                     <svg
@@ -171,7 +172,7 @@
                   <div class="h-12 w-px bg-gray-200"></div>
                   <div class="flex flex-col gap-2">
                     <a
-                      th:href="@{/libreria/kardex/entrada/{id}/descargar/pdf(id=${entrada.idEntrada})}"
+                      th:href="@{/camara/kardex/entrada/{id}/descargar/pdf(id=${entrada.idEntrada})}"
                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 rounded-xl shadow-sm"
                     >
                       <svg
@@ -190,7 +191,7 @@
                       Descargar PDF
                     </a>
                     <a
-                      th:href="@{/libreria/kardex/entrada/{id}/descargar/excel(id=${entrada.idEntrada})}"
+                      th:href="@{/camara/kardex/entrada/{id}/descargar/excel(id=${entrada.idEntrada})}"
                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors duration-200 rounded-xl shadow-sm"
                     >
                       <svg

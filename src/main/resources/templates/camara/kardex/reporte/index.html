@@ -2,12 +2,12 @@
 <html
   lang="es"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{libreria/kardex/layout :: kardexLayout(~{::section}, 'Reporte de Inventario', 'Librería')}"
+  th:replace="~{camara/kardex/layout :: kardexLayout(~{::section}, 'Reporte de Inventario', 'Cámaras de Seguridad')}"
 >
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reporte de Inventario - Librería</title>
+    <title>Reporte de Inventario - Cámaras de Seguridad</title>
   </head>
   <body>
     <section>
@@ -77,7 +77,7 @@
                       Reporte de Inventario
                     </h1>
                     <p class="text-lg text-gray-600" th:text="${subtitulo}">
-                      Análisis y estadísticas de Librería
+                      Análisis y estadísticas de Cámaras de Seguridad
                     </p>
                     <div class="flex items-center gap-4 mt-3">
                       <span
@@ -442,7 +442,7 @@
                 S/ 0.00
               </p>
               <p class="text-gray-600 mt-2">
-                Valor total del inventario de Librería
+                Valor total del inventario de Cámaras de Seguridad
               </p>
             </div>
           </div>
