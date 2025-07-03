@@ -37,7 +37,7 @@ public interface IEntradaService {
 
     Long countByFechaEntradaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
 
-    // Métodos específicos para el Kardex
+    // metodos para el kardex
     EntradaDto aprobarEntrada(Long id, Long usuarioAprobacionId);
 
     EntradaDto anularEntrada(Long id, String motivo);
