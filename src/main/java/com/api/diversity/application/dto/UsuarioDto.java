@@ -28,4 +28,6 @@ public class UsuarioDto {
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
     private List<UserRoleDto> roles;
+    private List<Long> rolesIds;
+    private List<Long> rubrosIds;
 }

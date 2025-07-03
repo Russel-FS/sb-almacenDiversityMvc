@@ -60,13 +60,13 @@ public class DataInitializer implements CommandLineRunner {
         try {
             // creacion de roles por defecto
             for (TipoRol tipoRol : TipoRol.values()) {
-                if (!rolRepository.findByNombreRol(tipoRol.getNombre()).isPresent()) {
+                if (!rolRepository.findByNombreRol(tipoRol.name()).isPresent()) {
                     RolEntity rol = new RolEntity();
-                    rol.setNombreRol(tipoRol.getNombre());
+                    rol.setNombreRol(tipoRol.name());
                     rol.setDescripcion(tipoRol.getDescripcion());
                     rol.setEstado(EstadoRol.Activo);
                     rolRepository.save(rol);
-                    log.info("Rol {} creado exitosamente", tipoRol.getNombre());
+                    log.info("Rol {} creado exitosamente", tipoRol.name());
                 }
             }
 
@@ -84,7 +84,7 @@ public class DataInitializer implements CommandLineRunner {
             }
 
             // rol administrador por defecto
-            RolEntity rolAdmin = rolRepository.findByNombreRol(TipoRol.ADMINISTRADOR.getNombre())
+            RolEntity rolAdmin = rolRepository.findByNombreRol(TipoRol.ADMINISTRADOR.name())
                     .orElseThrow(() -> new RuntimeException("Rol ADMINISTRADOR no encontrado"));
 
             // Buscar todos los rubros para asignar al admin

@@ -33,9 +33,65 @@ public class SecurityConfig {
 
                 http
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/auth/login", "/css/**", "/js/**", "/images/**")
+                                                // Rutas públicas
+                                                .requestMatchers("/", "/home", "/login", "/css/**", "/js/**",
+                                                                "/images/**", "/favicon.ico")
                                                 .permitAll()
+
+                                                // Rutas de administración
+                                                .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/usuarios/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/productos/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/categorias/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/proveedores/**").hasRole("ADMINISTRADOR")
+                                                .requestMatchers("/admin/usuarios-rubros/**").hasRole("ADMINISTRADOR")
+
+                                                // Rutas de supervisión general
+                                                .requestMatchers("/supervisor/**")
+                                                .hasAnyRole("ADMINISTRADOR", "SUPERVISOR_GENERAL")
+
+                                                // Rutas de piñatería
+                                                .requestMatchers("/pinateria/**").hasAnyRole(
+                                                                "ADMINISTRADOR",
+                                                                "SUPERVISOR_GENERAL",
+                                                                "SUPERVISOR_PINATERIA",
+                                                                "OPERADOR_PINATERIA")
+
+                                                // Rutas de librería
+                                                .requestMatchers("/libreria/**").hasAnyRole(
+                                                                "ADMINISTRADOR",
+                                                                "SUPERVISOR_GENERAL",
+                                                                "SUPERVISOR_LIBRERIA",
+                                                                "OPERADOR_LIBRERIA")
+
+                                                // Rutas de cámaras
+                                                .requestMatchers("/camaras/**").hasAnyRole(
+                                                                "ADMINISTRADOR",
+                                                                "SUPERVISOR_GENERAL",
+                                                                "SUPERVISOR_CAMARAS",
+                                                                "OPERADOR_CAMARAS")
+
+                                                // Rutas de gestión de usuarios (solo ADMINISTRADOR)
+                                                .requestMatchers("/usuarios/**", "/roles/**", "/usuario-rubros/**")
+                                                .hasRole("ADMINISTRADOR")
+
+                                                // Rutas de gestión de rubros (solo ADMINISTRADOR)
+                                                .requestMatchers("/rubros/**").hasRole("ADMINISTRADOR")
+
+                                                // Rutas de gestión de proveedores y clientes
+                                                .requestMatchers("/proveedores/**", "/clientes/**").hasAnyRole(
+                                                                "ADMINISTRADOR",
+                                                                "SUPERVISOR_GENERAL",
+                                                                "SUPERVISOR_PINATERIA",
+                                                                "SUPERVISOR_LIBRERIA",
+                                                                "SUPERVISOR_CAMARAS")
+
+                                                // Página principal y home
+                                                .requestMatchers("/", "/home").authenticated()
+
+                                                // Cualquier otra ruta requiere autenticación
                                                 .anyRequest().authenticated())
+
                                 .formLogin(form -> form
                                                 .loginPage("/auth/login")
                                                 .usernameParameter("username")

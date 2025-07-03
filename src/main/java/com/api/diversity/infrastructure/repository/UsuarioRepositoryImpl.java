@@ -55,4 +55,9 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
     public boolean existsByNombreUsuario(String nombreUsuario) {
         return usuarioJpaRepository.existsByNombreUsuario(nombreUsuario);
     }
+
+    @Override
+    public Optional<UsuarioEntity> findByNombreUsuario(String nombreUsuario) {
+        return usuarioJpaRepository.findByNombreUsuario(nombreUsuario);
+    }
 }

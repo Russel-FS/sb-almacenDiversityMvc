@@ -7,7 +7,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestión de Productos - Admin</title>
+    <title>Gestión de Usuarios - Admin</title>
   </head>
   <body>
     <section>
@@ -82,10 +82,10 @@
             <div class="flex items-center justify-between mb-6">
               <div class="flex items-center">
                 <div
-                  class="w-16 h-16 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center mr-6"
+                  class="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mr-6"
                 >
                   <svg
-                    class="w-8 h-8 text-blue-600"
+                    class="w-8 h-8 text-indigo-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -94,7 +94,7 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="1.5"
-                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
                     />
                   </svg>
                 </div>
@@ -103,16 +103,16 @@
                     class="text-3xl font-bold text-gray-900 mb-2"
                     th:text="${titulo}"
                   >
-                    Gestión de Productos
+                    Gestión de Usuarios
                   </h1>
                   <p class="text-lg text-gray-600" th:text="${subtitulo}">
-                    Administración de productos del sistema
+                    Administración de usuarios del sistema
                   </p>
                 </div>
               </div>
               <a
-                href="/admin/productos/nuevo"
-                class="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-2xl hover:from-blue-700 hover:to-cyan-700 transition-all duration-200 text-sm font-medium shadow-sm flex items-center group"
+                href="/admin/usuarios/nuevo"
+                class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 text-sm font-medium shadow-sm flex items-center group"
               >
                 <svg
                   class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
@@ -127,23 +127,23 @@
                     d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                   />
                 </svg>
-                Nuevo Producto
+                Nuevo Usuario
               </a>
             </div>
 
             <!-- Estadísticas -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
               <div
-                class="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-2xl p-6"
+                class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6"
               >
                 <div class="flex items-center justify-between">
                   <div>
                     <p class="text-sm font-semibold text-blue-600 mb-1">
-                      Total Productos
+                      Total Usuarios
                     </p>
                     <p
                       class="text-2xl font-bold text-blue-900"
-                      th:text="${totalProductos}"
+                      th:text="${totalUsuarios}"
                     >
                       0
                     </p>
@@ -161,7 +161,7 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="1.5"
-                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
                       />
                     </svg>
                   </div>
@@ -178,7 +178,7 @@
                     </p>
                     <p
                       class="text-2xl font-bold text-green-900"
-                      th:text="${productosActivos}"
+                      th:text="${usuariosActivos}"
                     >
                       0
                     </p>
@@ -213,7 +213,7 @@
                     </p>
                     <p
                       class="text-2xl font-bold text-amber-900"
-                      th:text="${productosInactivos}"
+                      th:text="${usuariosInactivos}"
                     >
                       0
                     </p>
@@ -244,11 +244,11 @@
                 <div class="flex items-center justify-between">
                   <div>
                     <p class="text-sm font-semibold text-red-600 mb-1">
-                      Stock Bajo
+                      Bloqueados
                     </p>
                     <p
                       class="text-2xl font-bold text-red-900"
-                      th:text="${productosStockBajo}"
+                      th:text="${usuariosBloqueados}"
                     >
                       0
                     </p>
@@ -266,7 +266,7 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="1.5"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"
                       />
                     </svg>
                   </div>
@@ -277,7 +277,7 @@
             <!-- Filtros -->
             <div class="flex flex-col md:flex-row gap-4 mb-6">
               <form
-                th:action="@{/admin/productos}"
+                th:action="@{/admin/usuarios}"
                 method="get"
                 class="flex flex-col md:flex-row gap-4 flex-1"
               >
@@ -286,14 +286,15 @@
                     type="text"
                     name="busqueda"
                     th:value="${busqueda}"
-                    placeholder="Buscar por nombre o código de producto..."
-                    class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    placeholder="Buscar por nombre, email o usuario..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   />
                 </div>
                 <div class="md:w-48">
                   <select
                     name="estado"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    onchange="this.form.submit()"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                   >
                     <option value="">Todos los estados</option>
                     <option
@@ -313,7 +314,7 @@
                   Filtrar
                 </button>
                 <a
-                  href="/admin/productos"
+                  href="/admin/usuarios"
                   class="px-6 py-3 bg-gray-100 text-gray-700 rounded-2xl hover:bg-gray-200 transition-colors duration-200 text-sm font-medium text-center"
                 >
                   Limpiar
@@ -322,7 +323,7 @@
             </div>
           </div>
 
-          <!-- Tabla de productos -->
+          <!-- Tabla de usuarios -->
           <div
             class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm overflow-hidden"
           >
@@ -333,27 +334,27 @@
                     <th
                       class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                     >
-                      Producto
+                      Usuario
                     </th>
                     <th
                       class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                     >
-                      Categoría
+                      Email
                     </th>
                     <th
                       class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                     >
-                      Stock
-                    </th>
-                    <th
-                      class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
-                    >
-                      Precios
+                      Roles
                     </th>
                     <th
                       class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                     >
                       Estado
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      Fecha Registro
                     </th>
                     <th
                       class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
@@ -364,16 +365,16 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                   <tr
-                    th:each="producto : ${productos}"
+                    th:each="usuario : ${usuarios}"
                     class="hover:bg-gray-50 transition-colors duration-200"
                   >
                     <td class="px-6 py-4">
                       <div class="flex items-center">
                         <div
-                          class="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center mr-4"
+                          class="w-10 h-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center mr-4"
                         >
                           <svg
-                            class="w-6 h-6 text-blue-600"
+                            class="w-5 h-5 text-indigo-600"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -382,97 +383,76 @@
                               stroke-linecap="round"
                               stroke-linejoin="round"
                               stroke-width="1.5"
-                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                             />
                           </svg>
                         </div>
                         <div>
                           <p
                             class="text-sm font-semibold text-gray-900"
-                            th:text="${producto.nombreProducto}"
+                            th:text="${usuario.nombreCompleto}"
                           >
-                            Nombre Producto
+                            Nombre Completo
                           </p>
                           <p
                             class="text-sm text-gray-500"
-                            th:text="${producto.codigoProducto}"
+                            th:text="${usuario.nombreUsuario}"
                           >
-                            Código
+                            @usuario
                           </p>
                         </div>
                       </div>
                     </td>
                     <td class="px-6 py-4">
-                      <div>
-                        <p
-                          class="text-sm font-medium text-gray-900"
-                          th:text="${producto.categoria?.nombreCategoria}"
-                        >
-                          Categoría
-                        </p>
-                        <p
-                          class="text-xs text-gray-500"
-                          th:text="${producto.categoria?.rubro?.nombreRubro}"
-                        >
-                          Rubro
-                        </p>
-                      </div>
+                      <p
+                        class="text-sm text-gray-900"
+                        th:text="${usuario.email}"
+                      >
+                        email@ejemplo.com
+                      </p>
                     </td>
                     <td class="px-6 py-4">
-                      <div>
-                        <p
-                          class="text-sm font-medium text-gray-900"
-                          th:text="${producto.stockActual}"
+                      <div class="flex flex-wrap gap-1">
+                        <span
+                          th:each="userRole : ${usuario.roles}"
+                          th:if="${userRole.estado.name() == 'Activo'}"
+                          class="px-2 py-1 text-xs font-medium rounded-full"
+                          th:classappend="${userRole.rol.nombreRol == 'ADMINISTRADOR' ? 'bg-purple-100 text-purple-800' : 
+                                         userRole.rol.nombreRol.contains('SUPERVISOR') ? 'bg-blue-100 text-blue-800' : 
+                                         userRole.rol.nombreRol.contains('OPERADOR') ? 'bg-green-100 text-green-800' : 
+                                         userRole.rol.nombreRol == 'VENDEDOR' ? 'bg-yellow-100 text-yellow-800' : 
+                                         userRole.rol.nombreRol == 'ALMACENERO' ? 'bg-orange-100 text-orange-800' : 
+                                         userRole.rol.nombreRol == 'CONTADOR' ? 'bg-indigo-100 text-indigo-800' : 
+                                         'bg-gray-100 text-gray-800'}"
+                          th:text="${userRole.rol.nombreRol}"
                         >
-                          0
-                        </p>
-                        <div class="flex items-center mt-1">
-                          <span
-                            class="px-2 py-1 text-xs font-medium rounded-full"
-                            th:classappend="${producto.stockActual <= 10 ? 'bg-red-100 text-red-800' : 
-                                           producto.stockActual <= 20 ? 'bg-amber-100 text-amber-800' : 
-                                           'bg-green-100 text-green-800'}"
-                            th:text="${producto.stockActual <= 10 ? 'Bajo' : 
-                                    producto.stockActual <= 20 ? 'Medio' : 'Normal'}"
-                          >
-                            Normal
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="px-6 py-4">
-                      <div>
-                        <p class="text-sm text-gray-900">
-                          <span class="font-medium">Compra:</span>
-                          <span
-                            th:text="${'S/ ' + #numbers.formatDecimal(producto.precioCompra, 1, 2)}"
-                            >S/ 0.00</span
-                          >
-                        </p>
-                        <p class="text-sm text-gray-900">
-                          <span class="font-medium">Venta:</span>
-                          <span
-                            th:text="${'S/ ' + #numbers.formatDecimal(producto.precioVenta, 1, 2)}"
-                            >S/ 0.00</span
-                          >
-                        </p>
+                          ADMINISTRADOR
+                        </span>
                       </div>
                     </td>
                     <td class="px-6 py-4">
                       <span
                         class="px-3 py-1 text-xs font-medium rounded-full"
-                        th:classappend="${producto.estado.name() == 'Activo' ? 'bg-green-100 text-green-800' : 
-                                       producto.estado.name() == 'Inactivo' ? 'bg-amber-100 text-amber-800' : 
+                        th:classappend="${usuario.estado.name() == 'Activo' ? 'bg-green-100 text-green-800' : 
+                                       usuario.estado.name() == 'Inactivo' ? 'bg-amber-100 text-amber-800' : 
                                        'bg-red-100 text-red-800'}"
-                        th:text="${producto.estado}"
+                        th:text="${usuario.estado}"
                       >
                         Activo
                       </span>
                     </td>
                     <td class="px-6 py-4">
+                      <p
+                        class="text-sm text-gray-500"
+                        th:text="${#temporals.format(usuario.fechaCreacion, 'dd/MM/yyyy HH:mm')}"
+                      >
+                        01/01/2024 12:00
+                      </p>
+                    </td>
+                    <td class="px-6 py-4">
                       <div class="flex items-center justify-center gap-2">
                         <a
-                          th:href="@{/admin/productos/editar/{id}(id=${producto.idProducto})}"
+                          th:href="@{/admin/usuarios/editar/{id}(id=${usuario.idUsuario})}"
                           class="p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-colors duration-200"
                           title="Editar"
                         >
@@ -492,7 +472,10 @@
                         </a>
 
                         <!-- Dropdown para cambiar estado -->
-                        <div class="relative">
+                        <div
+                          class="relative"
+                          th:if="${usuario.email != 'admin@gmail.com'}"
+                        >
                           <button
                             class="p-2 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors duration-200"
                             onclick="toggleDropdown(this)"
@@ -516,25 +499,32 @@
                             class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-lg border border-gray-200 py-2 z-10 hidden"
                           >
                             <a
-                              th:href="@{/admin/productos/cambiar-estado/{id}(id=${producto.idProducto}, nuevoEstado='Activo')}"
+                              th:href="@{/admin/usuarios/cambiar-estado/{id}(id=${usuario.idUsuario}, nuevoEstado='Activo')}"
                               class="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 transition-colors duration-200"
                             >
                               Activar
                             </a>
                             <a
-                              th:href="@{/admin/productos/cambiar-estado/{id}(id=${producto.idProducto}, nuevoEstado='Inactivo')}"
+                              th:href="@{/admin/usuarios/cambiar-estado/{id}(id=${usuario.idUsuario}, nuevoEstado='Inactivo')}"
                               class="block px-4 py-2 text-sm text-amber-700 hover:bg-amber-50 transition-colors duration-200"
                             >
                               Desactivar
+                            </a>
+                            <a
+                              th:href="@{/admin/usuarios/cambiar-estado/{id}(id=${usuario.idUsuario}, nuevoEstado='Bloqueado')}"
+                              class="block px-4 py-2 text-sm text-red-700 hover:bg-red-50 transition-colors duration-200"
+                            >
+                              Bloquear
                             </a>
                           </div>
                         </div>
 
                         <a
-                          th:href="@{/admin/productos/eliminar/{id}(id=${producto.idProducto})}"
+                          th:href="@{/admin/usuarios/eliminar/{id}(id=${usuario.idUsuario})}"
+                          th:if="${usuario.email != 'admin@gmail.com'}"
                           class="p-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors duration-200"
                           title="Eliminar"
-                          onclick="return confirm('¿Estás seguro de que quieres eliminar este producto?')"
+                          onclick="return confirm('¿Estás seguro de que quieres eliminar este usuario?')"
                         >
                           <svg
                             class="w-4 h-4"
@@ -557,8 +547,8 @@
               </table>
             </div>
 
-            <!-- Mensaje cuando no hay productos -->
-            <div th:if="${productos.empty}" class="text-center py-12">
+            <!-- Mensaje cuando no hay usuarios -->
+            <div th:if="${usuarios.empty}" class="text-center py-12">
               <div
                 class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-6"
               >
@@ -572,15 +562,15 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="1.5"
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
                   />
                 </svg>
               </div>
               <p class="text-lg font-medium text-gray-500 mb-2">
-                No hay productos registrados
+                No hay usuarios registrados
               </p>
               <p class="text-sm text-gray-400">
-                Comienza creando el primer producto del sistema
+                Comienza creando el primer usuario del sistema
               </p>
             </div>
           </div>
@@ -625,7 +615,7 @@
         });
       </script>
 
-      <!-- Script para dropdownsssssss 2pm -->
+      <!-- Script para dropdown -->
       <script>
         function toggleDropdown(button) {
           const dropdown = button.nextElementSibling;
