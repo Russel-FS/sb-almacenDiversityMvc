@@ -49,6 +49,8 @@ import com.api.diversity.domain.enums.TipoDocumento;
 import com.api.diversity.domain.enums.EstadoProveedor;
 import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.infrastructure.security.SecurityContext;
+import com.api.diversity.application.service.impl.BarcodeService;
+import com.itextpdf.text.Image;
 
 @Controller
 @RequestMapping("/camara/kardex")
@@ -62,6 +64,7 @@ public class CamarasKardexController {
     private final IProveedorService proveedorService;
     private final IClienteService clienteService;
     private final SecurityContext securityContext;
+    private final BarcodeService barcodeService;
 
     /**
      * Dashboard del Kardex para Cámaras de Seguridad
@@ -1013,6 +1016,21 @@ public class CamarasKardexController {
             document.add(new Paragraph("Cliente: " + salida.getClienteNombre()));
             document.add(new Paragraph("Tipo Cliente: " + salida.getClienteTipo().getDescripcion()));
             document.add(new Paragraph(" "));
+
+            // codigo de barras
+            try {
+                String data = salida.getNumeroDocumento();
+                byte[] barcodeBytes = barcodeService.generarCodigoBarras(data, 400, 100);
+                if (barcodeBytes != null && barcodeBytes.length > 0) {
+                    Image barcode = Image.getInstance(barcodeBytes);
+                    barcode.scalePercent(80);
+                    document.add(barcode);
+                    document.add(new Paragraph(data));
+                    document.add(new Paragraph(" "));
+                }
+            } catch (Exception ex) {
+                log.error("Error generando código de barras para PDF: {}", ex.getMessage());
+            }
 
             // Tabla de productos
             document.add(new Paragraph("Productos:"));
