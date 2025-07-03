@@ -211,7 +211,7 @@ public class PinateriaKardexController {
             log.info("Entradas encontradas: {}", entradas != null ? entradas.size() : 0);
             log.info("Salidas encontradas: {}", salidas != null ? salidas.size() : 0);
 
-            // Validar que las listas no sean null
+            // validaciones de que las listas no sean null
             if (entradas == null) {
                 entradas = new ArrayList<>();
             }
