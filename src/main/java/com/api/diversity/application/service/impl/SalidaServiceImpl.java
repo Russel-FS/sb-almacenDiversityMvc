@@ -28,6 +28,8 @@ import com.api.diversity.domain.ports.IDetalleSalidaRepository;
 import com.api.diversity.domain.enums.EstadoSalida;
 import com.api.diversity.domain.enums.EstadoDetalleSalida;
 import com.api.diversity.domain.enums.TipoDocumento;
+import com.api.diversity.domain.enums.TipoRubro;
+import com.api.diversity.application.service.interfaces.IRubroService;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,7 @@ public class SalidaServiceImpl implements ISalidaService {
     private final IDetalleSalidaRepository detalleSalidaRepository;
     private final SalidaMapper salidaMapper;
     private final DetalleSalidaMapper detalleSalidaMapper;
+    private final IRubroService rubroService;
 
     @Override
     @Transactional
@@ -439,5 +442,21 @@ public class SalidaServiceImpl implements ISalidaService {
             log.error("Error al verificar existencia de número de documento: {}", e.getMessage(), e);
             return false;
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SalidaDto> findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro tipoRubro) {
+        Long idRubro = rubroService.findByNombreRubro(tipoRubro.getNombre())
+                .map(r -> r.getIdRubro())
+                .orElse(null);
+        if (idRubro == null) {
+            return List.of();
+        }
+        return salidaRepository.findByRubroId(idRubro).stream()
+                .sorted((s1, s2) -> s2.getFechaSalida().compareTo(s1.getFechaSalida()))
+                .limit(10)
+                .map(salidaMapper::toDto)
+                .collect(java.util.stream.Collectors.toList());
     }
 }

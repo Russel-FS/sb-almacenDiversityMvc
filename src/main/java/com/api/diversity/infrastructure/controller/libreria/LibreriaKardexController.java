@@ -86,17 +86,9 @@ public class LibreriaKardexController {
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            // Obtener últimas entradas de Librería
-            List<EntradaDto> ultimasEntradas = entradaService.findTop10ByOrderByFechaEntradaDesc()
-                    .stream()
-                    .limit(5)
-                    .toList();
-
-            // Obtener últimas salidas de Librería
-            List<SalidaDto> ultimasSalidas = salidaService.findTop10ByOrderByFechaSalidaDesc()
-                    .stream()
-                    .limit(5)
-                    .toList();
+            // Obtener últimas entradas y salidas de Librería para movimientos
+            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
+            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
 
             model.addAttribute("titulo", "Dashboard Kardex - Librería");
             model.addAttribute("subtitulo", "Resumen del inventario de Librería");
@@ -104,8 +96,8 @@ public class LibreriaKardexController {
             model.addAttribute("totalProductos", totalProductos);
             model.addAttribute("productosStockBajo", productosStockBajo);
             model.addAttribute("valorTotalInventario", valorTotalInventario);
-            model.addAttribute("ultimasEntradas", ultimasEntradas);
-            model.addAttribute("ultimasSalidas", ultimasSalidas);
+            model.addAttribute("ultimasEntradas", entradas);
+            model.addAttribute("ultimasSalidas", salidas);
 
         } catch (Exception e) {
             log.error("Error al cargar datos del dashboard de Librería: {}", e.getMessage());
@@ -204,9 +196,9 @@ public class LibreriaKardexController {
         log.info("Accediendo a la lista de movimientos - Librería");
 
         try {
-            // Obtener últimas entradas y salidas de Librería
-            List<EntradaDto> entradas = entradaService.findTop10ByOrderByFechaEntradaDesc();
-            List<SalidaDto> salidas = salidaService.findTop10ByOrderByFechaSalidaDesc();
+            // Obtener últimas entradas y salidas de Librería para movimientos
+            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
+            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
 
             log.info("Entradas encontradas: {}", entradas != null ? entradas.size() : 0);
             log.info("Salidas encontradas: {}", salidas != null ? salidas.size() : 0);
@@ -368,9 +360,11 @@ public class LibreriaKardexController {
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            // Obtener movimientos recientes
-            List<EntradaDto> entradasRecientes = entradaService.findTop10ByOrderByFechaEntradaDesc();
-            List<SalidaDto> salidasRecientes = salidaService.findTop10ByOrderByFechaSalidaDesc();
+            // Obtener movimientos recientes para reportes
+            List<EntradaDto> entradasRecientes = entradaService
+                    .findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
+            List<SalidaDto> salidasRecientes = salidaService
+                    .findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
 
             model.addAttribute("titulo", "Reporte de Inventario - Librería");
             model.addAttribute("subtitulo", "Análisis y estadísticas de Librería");
@@ -727,9 +721,9 @@ public class LibreriaKardexController {
             document.add(new Paragraph("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
             document.add(new Paragraph(" "));
 
-            // Obtener movimientos
-            List<EntradaDto> entradas = entradaService.findTop10ByOrderByFechaEntradaDesc();
-            List<SalidaDto> salidas = salidaService.findTop10ByOrderByFechaSalidaDesc();
+            // Obtener movimientos para descargas PDF/Excel
+            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
+            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
 
             // Tabla de entradas
             document.add(new Paragraph("Últimas Entradas:"));
@@ -806,7 +800,7 @@ public class LibreriaKardexController {
             headerRow.createCell(2).setCellValue("Proveedor");
             headerRow.createCell(3).setCellValue("Total");
 
-            List<EntradaDto> entradas = entradaService.findTop10ByOrderByFechaEntradaDesc();
+            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
             int rowNum = 2;
             for (EntradaDto entrada : entradas) {
                 Row row = sheetEntradas.createRow(rowNum++);
@@ -830,7 +824,7 @@ public class LibreriaKardexController {
             headerRowSalidas.createCell(2).setCellValue("Cliente");
             headerRowSalidas.createCell(3).setCellValue("Total");
 
-            List<SalidaDto> salidas = salidaService.findTop10ByOrderByFechaSalidaDesc();
+            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
             rowNum = 2;
             for (SalidaDto salida : salidas) {
                 Row row = sheetSalidas.createRow(rowNum++);

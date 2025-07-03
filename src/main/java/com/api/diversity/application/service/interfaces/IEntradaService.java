@@ -6,6 +6,7 @@ import java.util.List;
 import com.api.diversity.application.dto.EntradaDto;
 import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.TipoDocumento;
+import com.api.diversity.domain.enums.TipoRubro;
 
 public interface IEntradaService {
 
@@ -45,4 +46,10 @@ public interface IEntradaService {
     String generarNumeroDocumento(TipoDocumento tipoDocumento);
 
     boolean existsByNumeroFactura(String numeroFactura);
+
+    /**
+     * Obtiene las 10 últimas entradas filtradas por TipoRubro, ordenadas por fecha
+     * descendente.
+     */
+    List<EntradaDto> findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro tipoRubro);
 }

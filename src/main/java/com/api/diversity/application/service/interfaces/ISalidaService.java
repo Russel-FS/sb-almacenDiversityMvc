@@ -6,6 +6,7 @@ import java.util.List;
 import com.api.diversity.application.dto.SalidaDto;
 import com.api.diversity.domain.enums.EstadoSalida;
 import com.api.diversity.domain.enums.TipoDocumento;
+import com.api.diversity.domain.enums.TipoRubro;
 
 public interface ISalidaService {
 
@@ -47,4 +48,10 @@ public interface ISalidaService {
     boolean existsByNumeroDocumento(String numeroDocumento);
 
     boolean validarStockDisponible(Long productoId, Integer cantidad);
+
+    /**
+     * Obtiene las 10 últimas salidas filtradas por TipoRubro, ordenadas por fecha
+     * descendente.
+     */
+    List<SalidaDto> findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro tipoRubro);
 }

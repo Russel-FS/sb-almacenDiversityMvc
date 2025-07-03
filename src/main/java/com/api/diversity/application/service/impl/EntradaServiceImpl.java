@@ -28,6 +28,8 @@ import com.api.diversity.domain.ports.IDetalleEntradaRepository;
 import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.EstadoDetalleEntrada;
 import com.api.diversity.domain.enums.TipoDocumento;
+import com.api.diversity.domain.enums.TipoRubro;
+import com.api.diversity.application.service.interfaces.IRubroService;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,7 @@ public class EntradaServiceImpl implements IEntradaService {
     private final IDetalleEntradaRepository detalleEntradaRepository;
     private final EntradaMapper entradaMapper;
     private final DetalleEntradaMapper detalleEntradaMapper;
+    private final IRubroService rubroService;
 
     @Override
     @Transactional
@@ -318,16 +321,6 @@ public class EntradaServiceImpl implements IEntradaService {
             entrada.setUsuarioAprobacion(usuarioAprobacion);
             entrada.setFechaAprobacion(LocalDateTime.now());
 
-            // El stock ya se actualizó al momento de guardar la entrada
-            // No es necesario actualizarlo nuevamente aquí
-            // if (entrada.getDetalles() != null) {
-            // for (DetalleEntradaEntity detalle : entrada.getDetalles()) {
-            // ProductoEntity producto = detalle.getProducto();
-            // producto.setStockActual(producto.getStockActual() + detalle.getCantidad());
-            // productoRepository.save(producto);
-            // }
-            // }
-
             return entradaMapper.toDto(entradaRepository.save(entrada));
         } catch (Exception e) {
             log.error("Error al aprobar entrada: {}", e.getMessage(), e);
@@ -393,5 +386,21 @@ public class EntradaServiceImpl implements IEntradaService {
             log.error("Error al verificar existencia de número de factura: {}", e.getMessage(), e);
             return false;
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<EntradaDto> findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro tipoRubro) {
+        Long idRubro = rubroService.findByNombreRubro(tipoRubro.getNombre())
+                .map(r -> r.getIdRubro())
+                .orElse(null);
+        if (idRubro == null) {
+            return List.of();
+        }
+        return entradaRepository.findByRubroId(idRubro).stream()
+                .sorted((e1, e2) -> e2.getFechaEntrada().compareTo(e1.getFechaEntrada()))
+                .limit(10)
+                .map(entradaMapper::toDto)
+                .collect(Collectors.toList());
     }
 }
