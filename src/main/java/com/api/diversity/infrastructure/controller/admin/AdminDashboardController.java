@@ -79,7 +79,7 @@ public class AdminDashboardController {
                                         .limit(5)
                                         .toList();
 
-                        // --- Estadísticas por rubro (igual que HomeController) ---
+                        // --- Estadísticas por rubro
                         List<ProductoDto> productosPinateria = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
                         List<ProductoDto> productosLibreria = productoService.findAllByRubro(TipoRubro.LIBRERIA);
                         List<ProductoDto> productosCamaras = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
