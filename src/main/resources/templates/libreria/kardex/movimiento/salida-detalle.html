@@ -230,6 +230,19 @@
                     >S001-001</span
                   >
                 </div>
+                <!-- Código de barras -->
+                <div class="flex flex-col items-end mt-2">
+                  <img
+                    th:src="@{/barcode(data=${salida.numeroDocumento})}"
+                    alt="Código de Barras"
+                    class="h-16 select-none"
+                    style="max-width: 220px"
+                  />
+                  <span
+                    class="text-xs text-gray-400 mt-1 font-mono tracking-widest"
+                    th:text="${salida.numeroDocumento}"
+                  ></span>
+                </div>
                 <div
                   class="flex justify-between items-center py-3 border-b border-gray-100"
                 >

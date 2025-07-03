@@ -49,6 +49,8 @@ import com.api.diversity.domain.enums.TipoDocumento;
 import com.api.diversity.domain.enums.EstadoProveedor;
 import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.infrastructure.security.SecurityContext;
+import com.itextpdf.text.Image;
+import com.api.diversity.application.service.impl.BarcodeService;
 
 @Controller
 @RequestMapping("/libreria/kardex")
@@ -62,6 +64,7 @@ public class LibreriaKardexController {
     private final IProveedorService proveedorService;
     private final IClienteService clienteService;
     private final SecurityContext securityContext;
+    private final BarcodeService barcodeService;
 
     /**
      * Dashboard del Kardex para Librería
@@ -998,6 +1001,22 @@ public class LibreriaKardexController {
             PdfWriter.getInstance(document, baos);
 
             document.open();
+
+            // codigo de barras
+            try {
+                String data = salida.getNumeroDocumento();
+                byte[] barcodeBytes = barcodeService.generarCodigoBarras(data, 400, 100);
+                if (barcodeBytes != null && barcodeBytes.length > 0) {
+                    Image barcode = Image.getInstance(barcodeBytes);
+                    barcode.scalePercent(80);
+                    document.add(barcode);
+                    document.add(new Paragraph(data));
+                    document.add(new Paragraph(" "));
+                }
+            } catch (Exception ex) {
+                log.error("Error generando código de barras para PDF: {}", ex.getMessage());
+            }
+
             document.add(new Paragraph("Comprobante de Salida - Librería"));
             document.add(new Paragraph(
                     "Fecha: " + salida.getFechaSalida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
