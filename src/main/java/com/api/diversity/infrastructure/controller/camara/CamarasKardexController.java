@@ -51,7 +51,7 @@ import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.infrastructure.security.SecurityContext;
 
 @Controller
-@RequestMapping("/libreria/kardex")
+@RequestMapping("/camara/kardex")
 @RequiredArgsConstructor
 @Slf4j
 public class CamarasKardexController {
@@ -64,35 +64,37 @@ public class CamarasKardexController {
     private final SecurityContext securityContext;
 
     /**
-     * Dashboard del Kardex para Librería
+     * Dashboard del Kardex para Cámaras de Seguridad
      */
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-        log.info("Accediendo al dashboard del Kardex - Librería");
+        log.info("Accediendo al dashboard del Kardex - Cámaras de Seguridad");
 
         try {
-            // Obtener productos de librería
-            List<ProductoDto> productosLibreria = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+            // Obtener productos de cámaras de seguridad
+            List<ProductoDto> productosCamaras = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
 
             // estadisticas
-            int totalProductos = productosLibreria.size();
-            int productosStockBajo = (int) productosLibreria.stream()
+            int totalProductos = productosCamaras.size();
+            int productosStockBajo = (int) productosCamaras.stream()
                     .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
                     .count();
 
             // Calcular valor total del inventario
-            BigDecimal valorTotalInventario = productosLibreria.stream()
+            BigDecimal valorTotalInventario = productosCamaras.stream()
                     .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            // Obtener últimas entradas y salidas de Librería para movimientos
-            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
-            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
+            // Obtener últimas entradas y salidas de Cámaras de Seguridad para movimientos
+            List<EntradaDto> entradas = entradaService
+                    .findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.CAMARA_SEGURIDAD);
+            List<SalidaDto> salidas = salidaService
+                    .findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.CAMARA_SEGURIDAD);
 
-            model.addAttribute("titulo", "Dashboard Kardex - Librería");
-            model.addAttribute("subtitulo", "Resumen del inventario de Librería");
-            model.addAttribute("rubro", "Librería");
+            model.addAttribute("titulo", "Dashboard Kardex - Cámaras de Seguridad");
+            model.addAttribute("subtitulo", "Resumen del inventario de Cámaras de Seguridad");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
             model.addAttribute("totalProductos", totalProductos);
             model.addAttribute("productosStockBajo", productosStockBajo);
             model.addAttribute("valorTotalInventario", valorTotalInventario);
@@ -100,12 +102,12 @@ public class CamarasKardexController {
             model.addAttribute("ultimasSalidas", salidas);
 
         } catch (Exception e) {
-            log.error("Error al cargar datos del dashboard de Librería: {}", e.getMessage());
+            log.error("Error al cargar datos del dashboard de Cámaras de Seguridad: {}", e.getMessage());
 
             // En caso de error, usar valores por defecto
-            model.addAttribute("titulo", "Dashboard Kardex - Librería");
-            model.addAttribute("subtitulo", "Resumen del inventario de Librería");
-            model.addAttribute("rubro", "Librería");
+            model.addAttribute("titulo", "Dashboard Kardex - Cámaras de Seguridad");
+            model.addAttribute("subtitulo", "Resumen del inventario de Cámaras de Seguridad");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
             model.addAttribute("totalProductos", 0);
             model.addAttribute("productosStockBajo", 0);
             model.addAttribute("valorTotalInventario", BigDecimal.ZERO);
@@ -114,19 +116,19 @@ public class CamarasKardexController {
             model.addAttribute("error", "Error al cargar los datos. Por favor, intente nuevamente.");
         }
 
-        return "libreria/kardex/dashboard/index";
+        return "camara/kardex/dashboard/index";
     }
 
     /**
-     * Nueva entrada para Librería
+     * Nueva entrada para Cámaras de Seguridad
      */
     @GetMapping("/entrada/nueva")
     public String nuevaEntrada(Model model) {
-        log.info("Accediendo al formulario de nueva entrada - Librería");
+        log.info("Accediendo al formulario de nueva entrada - Cámaras de Seguridad");
 
         try {
-            // Cargar productos de Librería
-            List<ProductoDto> productosLibreria = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+            // Cargar productos de Cámaras de Seguridad
+            List<ProductoDto> productosCamaras = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
 
             // Tipos de documento disponibles
             List<TipoDocumento> tiposDocumento = List.of(TipoDocumento.values());
@@ -134,38 +136,38 @@ public class CamarasKardexController {
             // Obtener proveedores activos
             List<ProveedorDto> proveedores = proveedorService.findByEstado(EstadoProveedor.Activo);
 
-            model.addAttribute("titulo", "Nueva Entrada - Librería");
-            model.addAttribute("subtitulo", "Registrar entrada de productos de Librería");
-            model.addAttribute("rubro", "Librería");
-            model.addAttribute("productos", productosLibreria);
+            model.addAttribute("titulo", "Nueva Entrada - Cámaras de Seguridad");
+            model.addAttribute("subtitulo", "Registrar entrada de productos de Cámaras de Seguridad");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
+            model.addAttribute("productos", productosCamaras);
             model.addAttribute("tiposDocumento", tiposDocumento);
             model.addAttribute("proveedores", proveedores);
 
         } catch (Exception e) {
-            log.error("Error al cargar datos para nueva entrada de Librería: {}", e.getMessage());
+            log.error("Error al cargar datos para nueva entrada de Cámaras de Seguridad: {}", e.getMessage());
 
-            model.addAttribute("titulo", "Nueva Entrada - Librería");
-            model.addAttribute("subtitulo", "Registrar entrada de productos de librería");
-            model.addAttribute("rubro", "Librería");
+            model.addAttribute("titulo", "Nueva Entrada - Cámaras de Seguridad");
+            model.addAttribute("subtitulo", "Registrar entrada de productos de cámaras de seguridad");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
             model.addAttribute("productos", new ArrayList<>());
             model.addAttribute("tiposDocumento", new ArrayList<>());
             model.addAttribute("proveedores", new ArrayList<>());
             model.addAttribute("error", "Error al cargar los datos. Por favor, intente nuevamente.");
         }
 
-        return "libreria/kardex/entrada/nueva";
+        return "camara/kardex/entrada/nueva";
     }
 
     /**
-     * Nueva salida para Librería
+     * Nueva salida para Cámaras de Seguridad
      */
     @GetMapping("/salida/nueva")
     public String nuevaSalida(Model model) {
         try {
-            log.info("Cargando formulario de nueva salida para librería");
+            log.info("Cargando formulario de nueva salida para cámaras de seguridad");
 
-            // Obtener productos activos de Librería
-            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+            // Obtener productos activos de Cámaras de Seguridad
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
             log.info("Productos encontrados: {}", productos.size());
 
             // Obtener clientes activos
@@ -180,25 +182,27 @@ public class CamarasKardexController {
             model.addAttribute("numeroDocumento", numeroDocumento);
             model.addAttribute("tiposDocumento", TipoDocumento.values());
 
-            return "libreria/kardex/salida/nueva";
+            return "camara/kardex/salida/nueva";
         } catch (Exception e) {
             log.error("Error al cargar formulario de nueva salida: {}", e.getMessage(), e);
             model.addAttribute("error", "Error al cargar el formulario: " + e.getMessage());
-            return "redirect:/libreria/kardex/dashboard";
+            return "redirect:/camara/kardex/dashboard";
         }
     }
 
     /**
-     * Movimientos de Librería
+     * Movimientos de Cámaras de Seguridad
      */
     @GetMapping("/movimientos")
     public String movimientos(Model model) {
-        log.info("Accediendo a la lista de movimientos - Librería");
+        log.info("Accediendo a la lista de movimientos - Cámaras de Seguridad");
 
         try {
-            // Obtener últimas entradas y salidas de Librería para movimientos
-            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
-            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
+            // Obtener últimas entradas y salidas de Cámaras de Seguridad para movimientos
+            List<EntradaDto> entradas = entradaService
+                    .findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.CAMARA_SEGURIDAD);
+            List<SalidaDto> salidas = salidaService
+                    .findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.CAMARA_SEGURIDAD);
 
             log.info("Entradas encontradas: {}", entradas != null ? entradas.size() : 0);
             log.info("Salidas encontradas: {}", salidas != null ? salidas.size() : 0);
@@ -211,165 +215,165 @@ public class CamarasKardexController {
                 salidas = new ArrayList<>();
             }
 
-            model.addAttribute("titulo", "Movimientos - Librería");
-            model.addAttribute("subtitulo", "Historial de movimientos de Librería");
-            model.addAttribute("rubro", "Librería");
+            model.addAttribute("titulo", "Movimientos - Cámaras de Seguridad");
+            model.addAttribute("subtitulo", "Historial de movimientos de Cámaras de Seguridad");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
             model.addAttribute("entradas", entradas);
             model.addAttribute("salidas", salidas);
 
         } catch (Exception e) {
-            log.error("Error al cargar movimientos de Librería: {}", e.getMessage(), e);
+            log.error("Error al cargar movimientos de Cámaras de Seguridad: {}", e.getMessage(), e);
             List<EntradaDto> entradas = new ArrayList<>();
             List<SalidaDto> salidas = new ArrayList<>();
-            model.addAttribute("titulo", "Movimientos - Librería");
-            model.addAttribute("subtitulo", "Historial de movimientos de Librería");
-            model.addAttribute("rubro", "Librería");
+            model.addAttribute("titulo", "Movimientos - Cámaras de Seguridad");
+            model.addAttribute("subtitulo", "Historial de movimientos de Cámaras de Seguridad");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
             model.addAttribute("entradas", entradas);
             model.addAttribute("salidas", salidas);
             model.addAttribute("error", "Error al cargar los movimientos. Por favor, intente nuevamente.");
         }
 
-        return "libreria/kardex/movimiento/lista";
+        return "camara/kardex/movimiento/lista";
     }
 
     /**
-     * Detalle de movimiento de Librería
+     * Detalle de movimiento de Cámaras de Seguridad
      */
     @GetMapping("/movimientos/{id}")
     public String detalleMovimiento(@PathVariable Long id, Model model) {
-        log.info("Accediendo al detalle del movimiento ID: {} - Librería", id);
+        log.info("Accediendo al detalle del movimiento ID: {} - Cámaras de Seguridad", id);
 
         try {
             // Intentar buscar como entrada primero
             EntradaDto entrada = entradaService.findById(id);
             if (entrada != null) {
                 log.info("Movimiento encontrado como entrada: {}", entrada.getNumeroFactura());
-                return "redirect:/libreria/kardex/entrada/" + id;
+                return "redirect:/camara/kardex/entrada/" + id;
             }
 
             // Si no es entrada, buscar como salida
             SalidaDto salida = salidaService.findById(id);
             if (salida != null) {
                 log.info("Movimiento encontrado como salida: {}", salida.getNumeroDocumento());
-                return "redirect:/libreria/kardex/salida/" + id;
+                return "redirect:/camara/kardex/salida/" + id;
             }
 
             // Si no se encuentra, mostrar error
             log.warn("Movimiento no encontrado con ID: {}", id);
             model.addAttribute("error", "Movimiento no encontrado");
-            return "redirect:/libreria/kardex/movimientos";
+            return "redirect:/camara/kardex/movimientos";
 
         } catch (Exception e) {
             log.error("Error al cargar detalle del movimiento ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("error", "Error al cargar el detalle del movimiento: " + e.getMessage());
-            return "redirect:/libreria/kardex/movimientos";
+            return "redirect:/camara/kardex/movimientos";
         }
     }
 
     /**
-     * Detalle específico de entrada de Librería
+     * Detalle específico de entrada de Cámaras de Seguridad
      */
     @GetMapping("/entrada/{id}")
     public String detalleEntrada(@PathVariable Long id, Model model) {
-        log.info("Accediendo al detalle de entrada ID: {} - Librería", id);
+        log.info("Accediendo al detalle de entrada ID: {} - Cámaras de Seguridad", id);
 
         try {
             EntradaDto entrada = entradaService.findById(id);
             if (entrada == null) {
                 log.warn("Entrada no encontrada con ID: {}", id);
                 model.addAttribute("error", "Entrada no encontrada");
-                return "redirect:/libreria/kardex/movimientos";
+                return "redirect:/camara/kardex/movimientos";
             }
 
             log.info("Entrada encontrada: {}", entrada.getNumeroFactura());
 
-            model.addAttribute("titulo", "Detalle de Entrada - Librería");
+            model.addAttribute("titulo", "Detalle de Entrada - Cámaras de Seguridad");
             model.addAttribute("subtitulo", "Información detallada de la entrada");
             model.addAttribute("movimientoId", id);
-            model.addAttribute("rubro", "Librería");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
             model.addAttribute("entrada", entrada);
 
-            return "libreria/kardex/movimiento/entrada-detalle";
+            return "camara/kardex/movimiento/entrada-detalle";
 
         } catch (Exception e) {
             log.error("Error al cargar detalle de entrada ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("error", "Error al cargar el detalle de la entrada: " + e.getMessage());
-            return "redirect:/libreria/kardex/movimientos";
+            return "redirect:/camara/kardex/movimientos";
         }
     }
 
     /**
-     * Detalle específico de salida de Librería
+     * Detalle específico de salida de Cámaras de Seguridad
      */
     @GetMapping("/salida/{id}")
     public String detalleSalida(@PathVariable Long id, Model model) {
-        log.info("Accediendo al detalle de salida ID: {} - Librería", id);
+        log.info("Accediendo al detalle de salida ID: {} - Cámaras de Seguridad", id);
 
         try {
             SalidaDto salida = salidaService.findById(id);
             if (salida == null) {
                 log.warn("Salida no encontrada con ID: {}", id);
                 model.addAttribute("error", "Salida no encontrada");
-                return "redirect:/libreria/kardex/movimientos";
+                return "redirect:/camara/kardex/movimientos";
             }
 
             log.info("Salida encontrada: {}", salida.getNumeroDocumento());
 
-            model.addAttribute("titulo", "Detalle de Salida - Librería");
+            model.addAttribute("titulo", "Detalle de Salida - Cámaras de Seguridad");
             model.addAttribute("subtitulo", "Información detallada de la salida");
             model.addAttribute("movimientoId", id);
-            model.addAttribute("rubro", "Librería");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
             model.addAttribute("salida", salida);
 
-            return "libreria/kardex/movimiento/salida-detalle";
+            return "camara/kardex/movimiento/salida-detalle";
 
         } catch (Exception e) {
             log.error("Error al cargar detalle de salida ID {}: {}", id, e.getMessage(), e);
             model.addAttribute("error", "Error al cargar el detalle de la salida: " + e.getMessage());
-            return "redirect:/libreria/kardex/movimientos";
+            return "redirect:/camara/kardex/movimientos";
         }
     }
 
     /**
-     * Reporte de inventario de Librería
+     * Reporte de inventario de Cámaras de Seguridad
      */
     @GetMapping("/reporte")
     public String reporteInventario(Model model) {
-        log.info("Accediendo al reporte de inventario - Librería");
+        log.info("Accediendo al reporte de inventario - Cámaras de Seguridad");
 
         try {
-            // Obtener productos de Librería
-            List<ProductoDto> productosLibreria = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+            // Obtener productos de Cámaras de Seguridad
+            List<ProductoDto> productosCamaras = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
 
             // Productos con stock bajo
-            List<ProductoDto> productosStockBajo = productosLibreria.stream()
+            List<ProductoDto> productosStockBajo = productosCamaras.stream()
                     .filter(p -> p.getStockActual() != null
                             && p.getStockActual() < (p.getStockMinimo() != null ? p.getStockMinimo() : 10))
                     .toList();
 
             // Calcular estadísticas
-            int totalProductos = productosLibreria.size();
-            int productosConStock = (int) productosLibreria.stream()
+            int totalProductos = productosCamaras.size();
+            int productosConStock = (int) productosCamaras.stream()
                     .filter(p -> p.getStockActual() != null && p.getStockActual() > 0)
                     .count();
             int productosSinStock = totalProductos - productosConStock;
 
             // Valor total del inventario
-            BigDecimal valorTotalInventario = productosLibreria.stream()
+            BigDecimal valorTotalInventario = productosCamaras.stream()
                     .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
             // Obtener movimientos recientes para reportes
             List<EntradaDto> entradasRecientes = entradaService
-                    .findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
+                    .findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.CAMARA_SEGURIDAD);
             List<SalidaDto> salidasRecientes = salidaService
-                    .findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
+                    .findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.CAMARA_SEGURIDAD);
 
-            model.addAttribute("titulo", "Reporte de Inventario - Librería");
-            model.addAttribute("subtitulo", "Análisis y estadísticas de Librería");
-            model.addAttribute("rubro", "Librería");
-            model.addAttribute("productos", productosLibreria);
+            model.addAttribute("titulo", "Reporte de Inventario - Cámaras de Seguridad");
+            model.addAttribute("subtitulo", "Análisis y estadísticas de Cámaras de Seguridad");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
+            model.addAttribute("productos", productosCamaras);
             model.addAttribute("productosStockBajo", productosStockBajo);
             model.addAttribute("totalProductos", totalProductos);
             model.addAttribute("productosConStock", productosConStock);
@@ -379,11 +383,11 @@ public class CamarasKardexController {
             model.addAttribute("salidasRecientes", salidasRecientes);
 
         } catch (Exception e) {
-            log.error("Error al cargar reporte de inventario de Librería: {}", e.getMessage());
+            log.error("Error al cargar reporte de inventario de Cámaras de Seguridad: {}", e.getMessage());
 
-            model.addAttribute("titulo", "Reporte de Inventario - Librería");
-            model.addAttribute("subtitulo", "Análisis y estadísticas de Librería");
-            model.addAttribute("rubro", "Librería");
+            model.addAttribute("titulo", "Reporte de Inventario - Cámaras de Seguridad");
+            model.addAttribute("subtitulo", "Análisis y estadísticas de Cámaras de Seguridad");
+            model.addAttribute("rubro", "Cámaras de Seguridad");
             model.addAttribute("productos", new ArrayList<>());
             model.addAttribute("productosStockBajo", new ArrayList<>());
             model.addAttribute("totalProductos", 0);
@@ -395,24 +399,24 @@ public class CamarasKardexController {
             model.addAttribute("error", "Error al cargar el reporte. Por favor, intente nuevamente.");
         }
 
-        return "libreria/kardex/reporte/index";
+        return "camara/kardex/reporte/index";
     }
 
     /**
-     * Procesar nueva entrada para Librería
+     * Procesar nueva entrada para Cámaras de Seguridad
      */
     @PostMapping("/entrada/guardar")
     public String guardarEntrada(
             @ModelAttribute EntradaFormDto entradaForm,
             RedirectAttributes redirectAttributes) {
 
-        log.info("Procesando nueva entrada - Librería: {}", entradaForm.getNumeroFactura());
+        log.info("Procesando nueva entrada - Cámaras de Seguridad: {}", entradaForm.getNumeroFactura());
 
         try {
             // Validar que haya productos
             if (entradaForm.getProductos() == null || entradaForm.getProductos().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Debe agregar al menos un producto");
-                return "redirect:/libreria/kardex/entrada/nueva";
+                return "redirect:/camara/kardex/entrada/nueva";
             }
 
             // Validar fecha de entrada
@@ -420,12 +424,12 @@ public class CamarasKardexController {
 
             if (entradaForm.getFechaEntrada().isAfter(fechaActual)) {
                 redirectAttributes.addFlashAttribute("error", "La fecha de entrada no puede ser futura");
-                return "redirect:/libreria/kardex/entrada/nueva";
+                return "redirect:/camara/kardex/entrada/nueva";
             }
 
             if (entradaForm.getFechaEntrada().isBefore(fechaActual.minusDays(30))) {
                 redirectAttributes.addFlashAttribute("error", "La fecha de entrada no puede ser anterior a 30 días");
-                return "redirect:/libreria/kardex/entrada/nueva";
+                return "redirect:/camara/kardex/entrada/nueva";
             }
 
             // Si el usuario no ingresa número, se genera automáticamente
@@ -435,7 +439,7 @@ public class CamarasKardexController {
                 // Validar que no exista
                 if (entradaService.existsByNumeroFactura(entradaForm.getNumeroFactura())) {
                     redirectAttributes.addFlashAttribute("error", "El número de factura/documento ya existe");
-                    return "redirect:/libreria/kardex/entrada/nueva";
+                    return "redirect:/camara/kardex/entrada/nueva";
                 }
             }
 
@@ -446,7 +450,7 @@ public class CamarasKardexController {
             Long usuarioId = securityContext.getCurrentUserId();
             if (usuarioId == null) {
                 redirectAttributes.addFlashAttribute("error", "Usuario no autenticado");
-                return "redirect:/libreria/kardex/entrada/nueva";
+                return "redirect:/camara/kardex/entrada/nueva";
             }
 
             // Crear EntradaDto
@@ -479,16 +483,16 @@ public class CamarasKardexController {
 
             redirectAttributes.addFlashAttribute("success",
                     "Entrada registrada exitosamente. Número: " + entradaForm.getNumeroFactura());
-            return "redirect:/libreria/kardex/dashboard";
+            return "redirect:/camara/kardex/dashboard";
         } catch (Exception e) {
             log.error("Error al guardar entrada: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/libreria/kardex/entrada/nueva";
+            return "redirect:/camara/kardex/entrada/nueva";
         }
     }
 
     /**
-     * Procesar nueva salida para Librería
+     * Procesar nueva salida para Cámaras de Seguridad
      */
     @PostMapping("/salida/guardar")
     public String guardarSalida(@ModelAttribute SalidaFormDto salidaForm,
@@ -500,23 +504,23 @@ public class CamarasKardexController {
             // Validar campos requeridos
             if (salidaForm.getTipoDocumento() == null) {
                 redirectAttributes.addFlashAttribute("error", "Debe seleccionar un tipo de documento");
-                return "redirect:/libreria/kardex/salida/nueva";
+                return "redirect:/camara/kardex/salida/nueva";
             }
 
             if (salidaForm.getClienteId() == null) {
                 redirectAttributes.addFlashAttribute("error", "Debe seleccionar un cliente");
-                return "redirect:/libreria/kardex/salida/nueva";
+                return "redirect:/camara/kardex/salida/nueva";
             }
 
             if (salidaForm.getMotivoSalida() == null || salidaForm.getMotivoSalida().trim().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Debe seleccionar un motivo de salida");
-                return "redirect:/libreria/kardex/salida/nueva";
+                return "redirect:/camara/kardex/salida/nueva";
             }
 
             // Validar que haya productos
             if (salidaForm.getProductos() == null || salidaForm.getProductos().isEmpty()) {
                 redirectAttributes.addFlashAttribute("error", "Debe agregar al menos un producto");
-                return "redirect:/libreria/kardex/salida/nueva";
+                return "redirect:/camara/kardex/salida/nueva";
             }
 
             // Validar fecha de salida
@@ -524,7 +528,7 @@ public class CamarasKardexController {
                 LocalDate fechaActual = LocalDate.now();
                 if (salidaForm.getFechaSalida().isAfter(fechaActual)) {
                     redirectAttributes.addFlashAttribute("error", "La fecha de salida no puede ser futura");
-                    return "redirect:/libreria/kardex/salida/nueva";
+                    return "redirect:/camara/kardex/salida/nueva";
                 }
             }
 
@@ -536,7 +540,7 @@ public class CamarasKardexController {
                 // Validar que no exista
                 if (salidaService.existsByNumeroDocumento(salidaForm.getNumeroDocumento())) {
                     redirectAttributes.addFlashAttribute("error", "El número de documento ya existe");
-                    return "redirect:/libreria/kardex/salida/nueva";
+                    return "redirect:/camara/kardex/salida/nueva";
                 }
             }
 
@@ -544,7 +548,7 @@ public class CamarasKardexController {
             Long usuarioId = securityContext.getCurrentUserId();
             if (usuarioId == null) {
                 redirectAttributes.addFlashAttribute("error", "Usuario no autenticado");
-                return "redirect:/libreria/kardex/salida/nueva";
+                return "redirect:/camara/kardex/salida/nueva";
             }
 
             // Crear SalidaDto
@@ -577,11 +581,11 @@ public class CamarasKardexController {
 
             redirectAttributes.addFlashAttribute("success",
                     "Salida registrada exitosamente con número: " + salidaForm.getNumeroDocumento());
-            return "redirect:/libreria/kardex/dashboard";
+            return "redirect:/camara/kardex/dashboard";
         } catch (Exception e) {
             log.error("Error al guardar salida: {}", e.getMessage(), e);
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/libreria/kardex/salida/nueva";
+            return "redirect:/camara/kardex/salida/nueva";
         }
     }
 
@@ -596,17 +600,17 @@ public class CamarasKardexController {
             PdfWriter.getInstance(document, baos);
 
             document.open();
-            document.add(new Paragraph("Dashboard Kardex - Librería"));
+            document.add(new Paragraph("Dashboard Kardex - Cámaras de Seguridad"));
             document.add(new Paragraph("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
             document.add(new Paragraph(" "));
 
             // Obtener datos del dashboard
-            List<ProductoDto> productosLibreria = productoService.findAllByRubro(TipoRubro.LIBRERIA);
-            int totalProductos = productosLibreria.size();
-            int productosStockBajo = (int) productosLibreria.stream()
+            List<ProductoDto> productosCamaras = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
+            int totalProductos = productosCamaras.size();
+            int productosStockBajo = (int) productosCamaras.stream()
                     .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
                     .count();
-            BigDecimal valorTotalInventario = productosLibreria.stream()
+            BigDecimal valorTotalInventario = productosCamaras.stream()
                     .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -621,7 +625,7 @@ public class CamarasKardexController {
             ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dashboard-libreria.pdf")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dashboard-camaras.pdf")
                     .contentType(MediaType.APPLICATION_PDF)
                     .contentLength(baos.size())
                     .body(resource);
@@ -639,7 +643,7 @@ public class CamarasKardexController {
     public ResponseEntity<ByteArrayResource> descargarDashboardExcel() {
         try {
             Workbook workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("Dashboard Librería");
+            Sheet sheet = workbook.createSheet("Dashboard Cámaras de Seguridad");
 
             // Crear estilos
             CellStyle headerStyle = workbook.createCellStyle();
@@ -650,7 +654,7 @@ public class CamarasKardexController {
             // Título
             Row titleRow = sheet.createRow(0);
             Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("Dashboard Kardex - Librería");
+            titleCell.setCellValue("Dashboard Kardex - Cámaras de Seguridad");
             titleCell.setCellStyle(headerStyle);
 
             // Fecha
@@ -659,12 +663,12 @@ public class CamarasKardexController {
             dateCell.setCellValue("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
             // Obtener datos
-            List<ProductoDto> productosLibreria = productoService.findAllByRubro(TipoRubro.LIBRERIA);
-            int totalProductos = productosLibreria.size();
-            int productosStockBajo = (int) productosLibreria.stream()
+            List<ProductoDto> productosCamaras = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
+            int totalProductos = productosCamaras.size();
+            int productosStockBajo = (int) productosCamaras.stream()
                     .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
                     .count();
-            BigDecimal valorTotalInventario = productosLibreria.stream()
+            BigDecimal valorTotalInventario = productosCamaras.stream()
                     .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -694,7 +698,7 @@ public class CamarasKardexController {
             ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dashboard-libreria.xlsx")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=dashboard-camaras.xlsx")
                     .contentType(MediaType
                             .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                     .contentLength(baos.size())
@@ -717,13 +721,15 @@ public class CamarasKardexController {
             PdfWriter.getInstance(document, baos);
 
             document.open();
-            document.add(new Paragraph("Movimientos de Inventario - Librería"));
+            document.add(new Paragraph("Movimientos de Inventario - Cámaras de Seguridad"));
             document.add(new Paragraph("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
             document.add(new Paragraph(" "));
 
             // Obtener movimientos para descargas PDF/Excel
-            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
-            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
+            List<EntradaDto> entradas = entradaService
+                    .findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.CAMARA_SEGURIDAD);
+            List<SalidaDto> salidas = salidaService
+                    .findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.CAMARA_SEGURIDAD);
 
             // Tabla de entradas
             document.add(new Paragraph("Últimas Entradas:"));
@@ -763,7 +769,7 @@ public class CamarasKardexController {
             ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=movimientos-libreria.pdf")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=movimientos-camaras.pdf")
                     .contentType(MediaType.APPLICATION_PDF)
                     .contentLength(baos.size())
                     .body(resource);
@@ -791,7 +797,7 @@ public class CamarasKardexController {
 
             Row titleRow = sheetEntradas.createRow(0);
             Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("Entradas de Inventario - Librería");
+            titleCell.setCellValue("Entradas de Inventario - Cámaras de Seguridad");
             titleCell.setCellStyle(headerStyle);
 
             Row headerRow = sheetEntradas.createRow(1);
@@ -800,7 +806,8 @@ public class CamarasKardexController {
             headerRow.createCell(2).setCellValue("Proveedor");
             headerRow.createCell(3).setCellValue("Total");
 
-            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.LIBRERIA);
+            List<EntradaDto> entradas = entradaService
+                    .findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.CAMARA_SEGURIDAD);
             int rowNum = 2;
             for (EntradaDto entrada : entradas) {
                 Row row = sheetEntradas.createRow(rowNum++);
@@ -815,7 +822,7 @@ public class CamarasKardexController {
             Sheet sheetSalidas = workbook.createSheet("Salidas");
             Row titleRowSalidas = sheetSalidas.createRow(0);
             Cell titleCellSalidas = titleRowSalidas.createCell(0);
-            titleCellSalidas.setCellValue("Salidas de Inventario - Librería");
+            titleCellSalidas.setCellValue("Salidas de Inventario - Cámaras de Seguridad");
             titleCellSalidas.setCellStyle(headerStyle);
 
             Row headerRowSalidas = sheetSalidas.createRow(1);
@@ -824,7 +831,8 @@ public class CamarasKardexController {
             headerRowSalidas.createCell(2).setCellValue("Cliente");
             headerRowSalidas.createCell(3).setCellValue("Total");
 
-            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.LIBRERIA);
+            List<SalidaDto> salidas = salidaService
+                    .findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.CAMARA_SEGURIDAD);
             rowNum = 2;
             for (SalidaDto salida : salidas) {
                 Row row = sheetSalidas.createRow(rowNum++);
@@ -842,7 +850,7 @@ public class CamarasKardexController {
             ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=movimientos-libreria.xlsx")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=movimientos-camaras.xlsx")
                     .contentType(MediaType
                             .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                     .contentLength(baos.size())
@@ -870,7 +878,7 @@ public class CamarasKardexController {
             PdfWriter.getInstance(document, baos);
 
             document.open();
-            document.add(new Paragraph("Comprobante de Entrada - Librería"));
+            document.add(new Paragraph("Comprobante de Entrada - Cámaras de Seguridad"));
             document.add(new Paragraph(
                     "Fecha: " + entrada.getFechaEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
             document.add(new Paragraph("N° Documento: " + entrada.getNumeroFactura()));
@@ -932,7 +940,7 @@ public class CamarasKardexController {
             // Información de la entradaa
             Row titleRow = sheet.createRow(0);
             Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("Comprobante de Entrada - Librería");
+            titleCell.setCellValue("Comprobante de Entrada - Cámaras de Seguridad");
             titleCell.setCellStyle(headerStyle);
 
             Row infoRow1 = sheet.createRow(1);
@@ -998,7 +1006,7 @@ public class CamarasKardexController {
             PdfWriter.getInstance(document, baos);
 
             document.open();
-            document.add(new Paragraph("Comprobante de Salida - Librería"));
+            document.add(new Paragraph("Comprobante de Salida - Cámaras de Seguridad"));
             document.add(new Paragraph(
                     "Fecha: " + salida.getFechaSalida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
             document.add(new Paragraph("N° Documento: " + salida.getNumeroDocumento()));
@@ -1061,7 +1069,7 @@ public class CamarasKardexController {
             // informacion de salida
             Row titleRow = sheet.createRow(0);
             Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("Comprobante de Salida - Librería");
+            titleCell.setCellValue("Comprobante de Salida - Cámaras de Seguridad");
             titleCell.setCellStyle(headerStyle);
 
             Row infoRow1 = sheet.createRow(1);
@@ -1123,11 +1131,11 @@ public class CamarasKardexController {
             PdfWriter.getInstance(document, baos);
 
             document.open();
-            document.add(new Paragraph("Reporte de Inventario - Librería"));
+            document.add(new Paragraph("Reporte de Inventario - Cámaras de Seguridad"));
             document.add(new Paragraph("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
             document.add(new Paragraph(" "));
 
-            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
             BigDecimal valorTotal = productos.stream()
                     .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
@@ -1161,7 +1169,7 @@ public class CamarasKardexController {
             ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=inventario-libreria.pdf")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=inventario-camaras.pdf")
                     .contentType(MediaType.APPLICATION_PDF)
                     .contentLength(baos.size())
                     .body(resource);
@@ -1179,7 +1187,7 @@ public class CamarasKardexController {
     public ResponseEntity<ByteArrayResource> descargarInventarioExcel() {
         try {
             Workbook workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("Inventario Librería");
+            Sheet sheet = workbook.createSheet("Inventario Cámaras de Seguridad");
 
             CellStyle headerStyle = workbook.createCellStyle();
             Font headerFont = workbook.createFont();
@@ -1188,10 +1196,10 @@ public class CamarasKardexController {
 
             Row titleRow = sheet.createRow(0);
             Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("Reporte de Inventario - Librería");
+            titleCell.setCellValue("Reporte de Inventario - Cámaras de Seguridad");
             titleCell.setCellStyle(headerStyle);
 
-            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
             BigDecimal valorTotal = productos.stream()
                     .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
@@ -1227,7 +1235,7 @@ public class CamarasKardexController {
             ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=inventario-libreria.xlsx")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=inventario-camaras.xlsx")
                     .contentType(MediaType
                             .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                     .contentLength(baos.size())
@@ -1250,11 +1258,11 @@ public class CamarasKardexController {
             PdfWriter.getInstance(document, baos);
 
             document.open();
-            document.add(new Paragraph("Productos con Stock Bajo - Librería"));
+            document.add(new Paragraph("Productos con Stock Bajo - Cámaras de Seguridad"));
             document.add(new Paragraph("Fecha: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
             document.add(new Paragraph(" "));
 
-            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
             List<ProductoDto> productosStockBajo = productos.stream()
                     .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
                     .toList();
@@ -1282,7 +1290,7 @@ public class CamarasKardexController {
             ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stock-bajo-libreria.pdf")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stock-bajo-camaras.pdf")
                     .contentType(MediaType.APPLICATION_PDF)
                     .contentLength(baos.size())
                     .body(resource);
@@ -1300,7 +1308,7 @@ public class CamarasKardexController {
     public ResponseEntity<ByteArrayResource> descargarStockBajoExcel() {
         try {
             Workbook workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("Stock Bajo Librería");
+            Sheet sheet = workbook.createSheet("Stock Bajo Cámaras de Seguridad");
 
             CellStyle headerStyle = workbook.createCellStyle();
             Font headerFont = workbook.createFont();
@@ -1309,10 +1317,10 @@ public class CamarasKardexController {
 
             Row titleRow = sheet.createRow(0);
             Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("Productos con Stock Bajo - Librería");
+            titleCell.setCellValue("Productos con Stock Bajo - Cámaras de Seguridad");
             titleCell.setCellStyle(headerStyle);
 
-            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+            List<ProductoDto> productos = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
             List<ProductoDto> productosStockBajo = productos.stream()
                     .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
                     .toList();
@@ -1343,7 +1351,7 @@ public class CamarasKardexController {
             ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stock-bajo-libreria.xlsx")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=stock-bajo-camaras.xlsx")
                     .contentType(MediaType
                             .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
                     .contentLength(baos.size())
