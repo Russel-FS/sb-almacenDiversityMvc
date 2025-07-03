@@ -86,17 +86,11 @@ public class PinateriaKardexController {
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            // Obtener últimas entradas de Piñatería
-            List<EntradaDto> ultimasEntradas = entradaService.findTop10ByOrderByFechaEntradaDesc()
-                    .stream()
-                    .limit(5)
-                    .toList();
-
-            // Obtener últimas salidas de Piñatería
-            List<SalidaDto> ultimasSalidas = salidaService.findTop10ByOrderByFechaSalidaDesc()
-                    .stream()
-                    .limit(5)
-                    .toList();
+            // Obtener últimas entradas y salidas de Piñatería para dashboard
+            List<EntradaDto> ultimasEntradas = entradaService
+                    .findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.PIÑATERIA);
+            List<SalidaDto> ultimasSalidas = salidaService
+                    .findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.PIÑATERIA);
 
             model.addAttribute("titulo", "Dashboard Kardex - Piñatería");
             model.addAttribute("subtitulo", "Resumen del inventario de Piñatería");
@@ -204,9 +198,9 @@ public class PinateriaKardexController {
         log.info("Accediendo a la lista de movimientos - Piñatería");
 
         try {
-            // Obtener últimas entradas y salidas de Piñatería
-            List<EntradaDto> entradas = entradaService.findTop10ByOrderByFechaEntradaDesc();
-            List<SalidaDto> salidas = salidaService.findTop10ByOrderByFechaSalidaDesc();
+            // Obtener últimas entradas y salidas de Piñatería para movimientos
+            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.PIÑATERIA);
+            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.PIÑATERIA);
 
             log.info("Entradas encontradas: {}", entradas != null ? entradas.size() : 0);
             log.info("Salidas encontradas: {}", salidas != null ? salidas.size() : 0);
@@ -368,9 +362,11 @@ public class PinateriaKardexController {
                     .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            // Obtener movimientos recientes
-            List<EntradaDto> entradasRecientes = entradaService.findTop10ByOrderByFechaEntradaDesc();
-            List<SalidaDto> salidasRecientes = salidaService.findTop10ByOrderByFechaSalidaDesc();
+            // Obtener movimientos recientes para reportes
+            List<EntradaDto> entradasRecientes = entradaService
+                    .findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.PIÑATERIA);
+            List<SalidaDto> salidasRecientes = salidaService
+                    .findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.PIÑATERIA);
 
             model.addAttribute("titulo", "Reporte de Inventario - Piñatería");
             model.addAttribute("subtitulo", "Análisis y estadísticas de Piñatería");
@@ -728,8 +724,8 @@ public class PinateriaKardexController {
             document.add(new Paragraph(" "));
 
             // Obtener movimientos
-            List<EntradaDto> entradas = entradaService.findTop10ByOrderByFechaEntradaDesc();
-            List<SalidaDto> salidas = salidaService.findTop10ByOrderByFechaSalidaDesc();
+            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.PIÑATERIA);
+            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.PIÑATERIA);
 
             // Tabla de entradas
             document.add(new Paragraph("Últimas Entradas:"));
@@ -806,7 +802,7 @@ public class PinateriaKardexController {
             headerRow.createCell(2).setCellValue("Proveedor");
             headerRow.createCell(3).setCellValue("Total");
 
-            List<EntradaDto> entradas = entradaService.findTop10ByOrderByFechaEntradaDesc();
+            List<EntradaDto> entradas = entradaService.findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro.PIÑATERIA);
             int rowNum = 2;
             for (EntradaDto entrada : entradas) {
                 Row row = sheetEntradas.createRow(rowNum++);
@@ -830,7 +826,7 @@ public class PinateriaKardexController {
             headerRowSalidas.createCell(2).setCellValue("Cliente");
             headerRowSalidas.createCell(3).setCellValue("Total");
 
-            List<SalidaDto> salidas = salidaService.findTop10ByOrderByFechaSalidaDesc();
+            List<SalidaDto> salidas = salidaService.findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro.PIÑATERIA);
             rowNum = 2;
             for (SalidaDto salida : salidas) {
                 Row row = sheetSalidas.createRow(rowNum++);
