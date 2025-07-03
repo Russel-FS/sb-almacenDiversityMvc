@@ -242,7 +242,7 @@ public class PinateriaKardexController {
         log.info("Accediendo al detalle del movimiento ID: {} - Piñatería", id);
 
         try {
-            // Intentar buscar como entrada primero
+            // buscar como entrada primero
             EntradaDto entrada = entradaService.findById(id);
             if (entrada != null) {
                 log.info("Movimiento encontrado como entrada: {}", entrada.getNumeroFactura());
@@ -256,7 +256,7 @@ public class PinateriaKardexController {
                 return "redirect:/pinateria/kardex/salida/" + id;
             }
 
-            // Si no se encuentra, mostrar error
+            // error si no se encuentra
             log.warn("Movimiento no encontrado con ID: {}", id);
             model.addAttribute("error", "Movimiento no encontrado");
             return "redirect:/pinateria/kardex/movimientos";

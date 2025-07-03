@@ -12,7 +12,12 @@
           <div class="max-w-3xl mx-auto px-4 py-12 text-center">
             <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
               ¡Bienvenido/a,
-              <span th:text="${#authentication.name}">Usuario</span>!
+              <span
+                th:text="${nombreCompleto}"
+                class="inline-block max-w-xs truncate align-bottom"
+                title="[[${nombreCompleto}]]"
+                >Usuario</span
+              >!
             </h1>
             <p class="text-xl text-gray-600 mb-6">
               Este es el sistema de gestión integral de
