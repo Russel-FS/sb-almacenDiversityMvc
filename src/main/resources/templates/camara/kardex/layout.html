@@ -34,10 +34,10 @@
       }
 
       .nav-tab.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
-        border-color: rgba(102, 126, 234, 0.3);
+        background: linear-gradient(135deg, #23272f 0%, #60a5fa 100%);
+        color: #fff;
+        box-shadow: none;
+        border-color: #60a5fa;
         transform: translateY(-1px);
       }
 
@@ -50,21 +50,21 @@
       }
 
       .rubro-badge {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
-        border: 1px solid rgba(102, 126, 234, 0.2);
+        background: linear-gradient(135deg, #23272f 0%, #60a5fa 100%);
+        box-shadow: none;
+        border: 1px solid #60a5fa;
       }
 
       .logo-container {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
-        border: 1px solid rgba(102, 126, 234, 0.2);
+        background: linear-gradient(135deg, #23272f 0%, #60a5fa 100%);
+        box-shadow: none;
+        border: 1px solid #60a5fa;
       }
 
       .user-avatar {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
-        border: 1px solid rgba(102, 126, 234, 0.2);
+        background: linear-gradient(135deg, #23272f 0%, #60a5fa 100%);
+        box-shadow: none;
+        border: 1px solid #60a5fa;
       }
 
       /* scroll */
@@ -128,12 +128,10 @@
   <body
     class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen"
   >
-    <!-- Header Principal -->
+    <!-- Header Princips -->
     <header class="glass-effect">
       <div class="max-w-7xl mx-auto px-6">
-        <!-- Header Superior -->
         <div class="flex justify-between items-center h-20">
-          <!-- Logo y Rubro -->
           <div class="flex items-center space-x-8">
             <a href="/" class="flex items-center space-x-4 group">
               <div
@@ -161,7 +159,7 @@
               <div
                 class="rubro-badge px-5 py-2.5 rounded-2xl text-white text-sm font-semibold"
               >
-                <span th:text="${rubro}">Piñatería</span>
+                <span th:text="${rubro}">Cámaras de Seguridad</span>
               </div>
               <div class="text-gray-800">
                 <span class="font-bold text-lg">Kardex</span>
@@ -223,13 +221,13 @@
           </div>
         </div>
 
-        <!-- Men de Navegación del Kardex -->
+        <!-- Menú de Navegación del Kardex -->
         <nav
           class="flex items-center space-x-4 py-6 border-b border-gray-200/60"
         >
           <!-- Dashboard -->
           <a
-            th:href="@{/pinateria/kardex/dashboard}"
+            th:href="@{/camara/kardex/dashboard}"
             class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
@@ -250,7 +248,7 @@
 
           <!-- Movimientos -->
           <a
-            th:href="@{/pinateria/kardex/movimientos}"
+            th:href="@{/camara/kardex/movimientos}"
             class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
@@ -271,7 +269,7 @@
 
           <!-- Entradas -->
           <a
-            th:href="@{/pinateria/kardex/entrada/nueva}"
+            th:href="@{/camara/kardex/entrada/nueva}"
             class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
@@ -292,7 +290,7 @@
 
           <!-- Salidas -->
           <a
-            th:href="@{/pinateria/kardex/salida/nueva}"
+            th:href="@{/camara/kardex/salida/nueva}"
             class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
@@ -313,7 +311,7 @@
 
           <!-- Reportes -->
           <a
-            th:href="@{/pinateria/kardex/reporte}"
+            th:href="@{/camara/kardex/reporte}"
             class="nav-tab px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-200 flex items-center"
           >
             <svg
@@ -357,7 +355,7 @@
           <span
             class="breadcrumb-item text-gray-600 hover:text-gray-800 transition-all duration-200 font-semibold cursor-pointer"
             th:text="${rubro}"
-            >Piñatería</span
+            >Cámaras de Seguridad</span
           >
 
           <svg

@@ -2,12 +2,12 @@
 <html
   lang="es"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{libreria/kardex/layout :: kardexLayout(~{::section}, 'Movimientos', 'Librería')}"
+  th:replace="~{camara/kardex/layout :: kardexLayout(~{::section}, 'Movimientos', 'Cámaras de Seguridad')}"
 >
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movimientos - Librería</title>
+    <title>Movimientos - Cámaras de Seguridad</title>
     <style>
       .table-container {
         scrollbar-width: thin;
@@ -110,7 +110,7 @@
                 <div class="flex items-center gap-3">
                   <div class="flex flex-col items-end gap-2">
                     <a
-                      href="/libreria/kardex/entrada/nueva"
+                      href="/camara/kardex/entrada/nueva"
                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-green-700 bg-white border border-green-600 hover:bg-green-50 transition-colors duration-200 shadow-sm rounded-xl"
                     >
                       <svg
@@ -129,7 +129,7 @@
                       Nueva Entrada
                     </a>
                     <a
-                      href="/libreria/kardex/salida/nueva"
+                      href="/camara/kardex/salida/nueva"
                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-red-700 bg-white border border-red-600 hover:bg-red-50 transition-colors duration-200 shadow-sm rounded-xl"
                     >
                       <svg
@@ -151,7 +151,7 @@
                   <div class="h-12 w-px bg-gray-200"></div>
                   <div class="flex flex-col gap-2">
                     <a
-                      href="/libreria/kardex/movimiento/descargar/pdf"
+                      href="/camara/kardex/movimiento/descargar/pdf"
                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 rounded-xl shadow-sm"
                     >
                       <svg
@@ -170,7 +170,7 @@
                       Descargar PDF
                     </a>
                     <a
-                      href="/libreria/kardex/movimiento/descargar/excel"
+                      href="/camara/kardex/movimiento/descargar/excel"
                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors duration-200 rounded-xl shadow-sm"
                     >
                       <svg
@@ -562,7 +562,7 @@
                             class="px-6 py-4 whitespace-nowrap text-sm font-medium"
                           >
                             <a
-                              th:href="@{/libreria/kardex/entrada/{id}(id=${entrada.idEntrada})}"
+                              th:href="@{/camara/kardex/entrada/{id}(id=${entrada.idEntrada})}"
                               class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200"
                               th:if="${entrada.idEntrada != null}"
                               title="Ver detalle de entrada"
@@ -816,7 +816,7 @@
                             class="px-6 py-4 whitespace-nowrap text-sm font-medium"
                           >
                             <a
-                              th:href="@{/libreria/kardex/salida/{id}(id=${salida.idSalida})}"
+                              th:href="@{/camara/kardex/salida/{id}(id=${salida.idSalida})}"
                               class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200"
                               th:if="${salida.idSalida != null}"
                               title="Ver detalle de salida"

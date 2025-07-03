@@ -2,12 +2,12 @@
 <html
   lang="es"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{libreria/kardex/layout :: kardexLayout(~{::section}, 'Dashboard', 'Librería')}"
+  th:replace="~{camara/kardex/layout :: kardexLayout(~{::section}, 'Dashboard', 'Cámaras de Seguridad')}"
 >
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - Librería</title>
+    <title>Dashboard - Cámaras de Seguridad</title>
   </head>
   <body>
     <section>
@@ -208,7 +208,7 @@
                     class="text-3xl font-bold text-gray-900"
                     th:text="${rubro}"
                   >
-                    Librería
+                    Cámaras de Seguridad
                   </p>
                 </div>
                 <div
@@ -506,7 +506,7 @@
               class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
             >
               <a
-                href="/libreria/kardex/entrada/nueva"
+                href="/camara/kardex/entrada/nueva"
                 class="group bg-gradient-to-br from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 p-6 rounded-2xl border border-green-200 transition-all duration-200 text-center relative overflow-hidden"
               >
                 <div
@@ -540,7 +540,7 @@
               </a>
 
               <a
-                href="/libreria/kardex/salida/nueva"
+                href="/camara/kardex/salida/nueva"
                 class="group bg-gradient-to-br from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 p-6 rounded-2xl border border-red-200 transition-all duration-200 text-center relative overflow-hidden"
               >
                 <div
@@ -574,7 +574,7 @@
               </a>
 
               <a
-                href="/libreria/kardex/movimientos"
+                href="/camara/kardex/movimientos"
                 class="group bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 p-6 rounded-2xl border border-blue-200 transition-all duration-200 text-center relative overflow-hidden"
               >
                 <div
@@ -606,7 +606,7 @@
               </a>
 
               <a
-                href="/libreria/kardex/reporte"
+                href="/camara/kardex/reporte"
                 class="group bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 p-6 rounded-2xl border border-purple-200 transition-all duration-200 text-center relative overflow-hidden"
               >
                 <div
@@ -643,7 +643,7 @@
             <!-- Botones de Descarga -->
             <div class="flex justify-center gap-4 mb-8">
               <a
-                href="/libreria/kardex/dashboard/descargar/pdf"
+                href="/camara/kardex/dashboard/descargar/pdf"
                 class="px-8 py-4 bg-red-600 text-white rounded-2xl hover:bg-red-700 transition-colors duration-200 text-sm font-medium shadow-sm flex items-center group"
               >
                 <svg
@@ -662,7 +662,7 @@
                 Descargar PDF
               </a>
               <a
-                href="/libreria/kardex/dashboard/descargar/excel"
+                href="/camara/kardex/dashboard/descargar/excel"
                 class="px-8 py-4 bg-green-600 text-white rounded-2xl hover:bg-green-700 transition-colors duration-200 text-sm font-medium shadow-sm flex items-center group"
               >
                 <svg

@@ -2,12 +2,12 @@
 <html
   lang="es"
   xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{libreria/kardex/layout :: kardexLayout(~{::section}, 'Nueva Salida', 'Librería')}"
+  th:replace="~{camara/kardex/layout :: kardexLayout(~{::section}, 'Nueva Salida', 'Cámaras de Seguridad')}"
 >
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nueva Salida - Librería</title>
+    <title>Nueva Salida - Cámaras de Seguridad</title>
   </head>
   <body>
     <section>
@@ -101,13 +101,13 @@
                     Nueva Salida
                   </h1>
                   <p class="text-lg text-gray-600 mt-2">
-                    Registrar salida de productos de Librería
+                    Registrar salida de productos de Cámaras de Seguridad
                   </p>
                 </div>
               </div>
               <div class="flex items-center gap-4">
                 <a
-                  href="/libreria/kardex/dashboard"
+                  href="/camara/kardex/dashboard"
                   class="px-6 py-3 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
                 >
                   <svg
@@ -134,7 +134,7 @@
             class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
           >
             <form
-              th:action="@{/libreria/kardex/salida/guardar}"
+              th:action="@{/camara/kardex/salida/guardar}"
               method="post"
               id="salidaForm"
             >
@@ -451,9 +451,9 @@
                       />
                     </svg>
                     <span class="text-sm text-yellow-800">
-                      No hay productos de Librería disponibles.
+                      No hay productos de Cámaras de Seguridad disponibles.
                       <a
-                        href="/libreria/productos"
+                        href="/camara/productos"
                         class="text-yellow-700 underline hover:text-yellow-900 ml-1"
                       >
                         Registrar un nuevo producto
@@ -558,7 +558,7 @@
               <!-- Botones -->
               <div class="flex justify-end space-x-4">
                 <a
-                  href="/libreria/kardex/dashboard"
+                  href="/camara/kardex/dashboard"
                   class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
                 >
                   <svg
