@@ -38,7 +38,6 @@
           <div
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
-            <!-- Realizar Entrada -->
             <div
               sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
             >
@@ -71,7 +70,6 @@
               </a>
             </div>
 
-            <!-- Realizar Salida -->
             <div
               sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
             >
@@ -104,7 +102,6 @@
               </a>
             </div>
 
-            <!-- Ver Productos -->
             <div
               sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
             >
@@ -137,7 +134,6 @@
               </a>
             </div>
 
-            <!-- Ver Movimientos -->
             <div
               sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
             >
@@ -170,7 +166,6 @@
               </a>
             </div>
 
-            <!-- Clientes -->
             <div
               sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS')"
             >
@@ -202,7 +197,6 @@
               </a>
             </div>
 
-            <!-- Proveedores -->
             <div
               sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS')"
             >
@@ -234,10 +228,9 @@
               </a>
             </div>
 
-            <!-- Administración -->
             <div sec:authorize="hasRole('ADMINISTRADOR')">
               <a
-                href="/admin/dashboard"
+                href="/admin"
                 class="group bg-gradient-to-br from-gray-50 to-slate-50 hover:from-gray-100 hover:to-slate-100 p-6 rounded-2xl border border-gray-200 transition-all duration-200 text-center block"
               >
                 <div
@@ -462,32 +455,44 @@
         <!-- Modal para opciones de entrada -->
         <div
           id="modalEntrada"
-          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal-backdrop"
         >
           <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full modal-content">
               <h3 class="text-xl font-semibold text-gray-900 mb-4">
                 Seleccionar Rubro para Entrada
               </h3>
               <div class="space-y-3">
-                <a
-                  href="/pinateria/kardex/entrada/nueva"
-                  class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
                 >
-                  Piñatería
-                </a>
-                <a
-                  href="/libreria/kardex/entrada/nueva"
-                  class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                  <a
+                    href="/pinateria/kardex/entrada/nueva"
+                    class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Piñatería
+                  </a>
+                </div>
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
-                  Librería
-                </a>
-                <a
-                  href="/camaras/kardex/entrada/nueva"
-                  class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                  <a
+                    href="/libreria/kardex/entrada/nueva"
+                    class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Librería
+                  </a>
+                </div>
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
-                  Cámaras
-                </a>
+                  <a
+                    href="/camara/kardex/entrada/nueva"
+                    class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Cámaras
+                  </a>
+                </div>
               </div>
               <button
                 onclick="cerrarModal('modalEntrada')"
@@ -502,32 +507,44 @@
         <!-- Modal para opciones de salida -->
         <div
           id="modalSalida"
-          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal-backdrop"
         >
           <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full modal-content">
               <h3 class="text-xl font-semibold text-gray-900 mb-4">
                 Seleccionar Rubro para Salida
               </h3>
               <div class="space-y-3">
-                <a
-                  href="/pinateria/kardex/salida/nueva"
-                  class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
                 >
-                  Piñatería
-                </a>
-                <a
-                  href="/libreria/kardex/salida/nueva"
-                  class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                  <a
+                    href="/pinateria/kardex/salida/nueva"
+                    class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Piñatería
+                  </a>
+                </div>
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
-                  Librería
-                </a>
-                <a
-                  href="/camaras/kardex/salida/nueva"
-                  class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                  <a
+                    href="/libreria/kardex/salida/nueva"
+                    class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Librería
+                  </a>
+                </div>
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
-                  Cámaras
-                </a>
+                  <a
+                    href="/camara/kardex/salida/nueva"
+                    class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Cámaras
+                  </a>
+                </div>
               </div>
               <button
                 onclick="cerrarModal('modalSalida')"
@@ -542,32 +559,44 @@
         <!-- Modal para opciones de productos -->
         <div
           id="modalProductos"
-          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal-backdrop"
         >
           <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full modal-content">
               <h3 class="text-xl font-semibold text-gray-900 mb-4">
                 Seleccionar Rubro para Productos
               </h3>
               <div class="space-y-3">
-                <a
-                  href="/pinateria/productos"
-                  class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
                 >
-                  Piñatería
-                </a>
-                <a
-                  href="/libreria/productos"
-                  class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                  <a
+                    href="/pinateria/productos"
+                    class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Piñatería
+                  </a>
+                </div>
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
-                  Librería
-                </a>
-                <a
-                  href="/camaras/productos"
-                  class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                  <a
+                    href="/libreria/productos"
+                    class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Librería
+                  </a>
+                </div>
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
-                  Cámaras
-                </a>
+                  <a
+                    href="/camaras/productos"
+                    class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Cámaras
+                  </a>
+                </div>
               </div>
               <button
                 onclick="cerrarModal('modalProductos')"
@@ -582,32 +611,44 @@
         <!-- Modal para opciones de movimientos -->
         <div
           id="modalMovimientos"
-          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal-backdrop"
         >
           <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full modal-content">
               <h3 class="text-xl font-semibold text-gray-900 mb-4">
                 Seleccionar Rubro para Movimientos
               </h3>
               <div class="space-y-3">
-                <a
-                  href="/pinateria/kardex/movimiento/lista"
-                  class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
                 >
-                  Piñatería
-                </a>
-                <a
-                  href="/libreria/kardex/movimiento/lista"
-                  class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                  <a
+                    href="/pinateria/kardex/movimientos"
+                    class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Piñatería
+                  </a>
+                </div>
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
-                  Librería
-                </a>
-                <a
-                  href="/camaras/kardex/movimiento/lista"
-                  class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                  <a
+                    href="/libreria/kardex/movimientos"
+                    class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Librería
+                  </a>
+                </div>
+                <div
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
-                  Cámaras
-                </a>
+                  <a
+                    href="/camara/kardex/movimientos"
+                    class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors modal-option"
+                  >
+                    Cámaras
+                  </a>
+                </div>
               </div>
               <button
                 onclick="cerrarModal('modalMovimientos')"
@@ -622,28 +663,194 @@
     </div>
 
     <script th:src="@{/js/animations/heroAnimations.js}"></script>
+    <style>
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8) translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      @keyframes modalFadeOut {
+        from {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: scale(0.8) translateY(-20px);
+        }
+      }
+
+      @keyframes backdropFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes backdropFadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      .modal-content {
+        animation: modalFadeIn 0.3s ease-out;
+      }
+
+      .modal-backdrop {
+        animation: backdropFadeIn 0.3s ease-out;
+      }
+
+      .modal-content.closing {
+        animation: modalFadeOut 0.3s ease-in;
+      }
+
+      .modal-backdrop.closing {
+        animation: backdropFadeOut 0.3s ease-in;
+      }
+
+      .modal-option {
+        transition: all 0.2s ease;
+      }
+
+      .modal-option:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+    </style>
     <script>
       function mostrarOpcionesEntrada() {
-        document.getElementById("modalEntrada").classList.remove("hidden");
+        const modal = document.getElementById("modalEntrada");
+        modal.classList.remove("hidden");
+
+        // Animación con Anime.js
+        anime({
+          targets: ".modal-content",
+          scale: [0.8, 1],
+          opacity: [0, 1],
+          translateY: [-20, 0],
+          duration: 300,
+          easing: "easeOutCubic",
+        });
+
+        // Animación para las opciones del modal
+        anime({
+          targets: "#modalEntrada .modal-option",
+          opacity: [0, 1],
+          translateX: [-20, 0],
+          delay: anime.stagger(100),
+          duration: 400,
+          easing: "easeOutCubic",
+        });
       }
 
       function mostrarOpcionesSalida() {
-        document.getElementById("modalSalida").classList.remove("hidden");
+        const modal = document.getElementById("modalSalida");
+        modal.classList.remove("hidden");
+
+        anime({
+          targets: ".modal-content",
+          scale: [0.8, 1],
+          opacity: [0, 1],
+          translateY: [-20, 0],
+          duration: 300,
+          easing: "easeOutCubic",
+        });
+
+        anime({
+          targets: "#modalSalida .modal-option",
+          opacity: [0, 1],
+          translateX: [-20, 0],
+          delay: anime.stagger(100),
+          duration: 400,
+          easing: "easeOutCubic",
+        });
       }
 
       function mostrarOpcionesProductos() {
-        document.getElementById("modalProductos").classList.remove("hidden");
+        const modal = document.getElementById("modalProductos");
+        modal.classList.remove("hidden");
+
+        anime({
+          targets: ".modal-content",
+          scale: [0.8, 1],
+          opacity: [0, 1],
+          translateY: [-20, 0],
+          duration: 300,
+          easing: "easeOutCubic",
+        });
+
+        anime({
+          targets: "#modalProductos .modal-option",
+          opacity: [0, 1],
+          translateX: [-20, 0],
+          delay: anime.stagger(100),
+          duration: 400,
+          easing: "easeOutCubic",
+        });
       }
 
       function mostrarOpcionesMovimientos() {
-        document.getElementById("modalMovimientos").classList.remove("hidden");
+        const modal = document.getElementById("modalMovimientos");
+        modal.classList.remove("hidden");
+
+        anime({
+          targets: ".modal-content",
+          scale: [0.8, 1],
+          opacity: [0, 1],
+          translateY: [-20, 0],
+          duration: 300,
+          easing: "easeOutCubic",
+        });
+
+        anime({
+          targets: "#modalMovimientos .modal-option",
+          opacity: [0, 1],
+          translateX: [-20, 0],
+          delay: anime.stagger(100),
+          duration: 400,
+          easing: "easeOutCubic",
+        });
       }
 
       function cerrarModal(modalId) {
-        document.getElementById(modalId).classList.add("hidden");
+        const modal = document.getElementById(modalId);
+        const modalContent = modal.querySelector(".bg-white");
+        const modalBackdrop = modal;
+
+        // Animación de salida
+        anime({
+          targets: modalContent,
+          scale: [1, 0.8],
+          opacity: [1, 0],
+          translateY: [0, -20],
+          duration: 200,
+          easing: "easeInCubic",
+          complete: function () {
+            modal.classList.add("hidden");
+          },
+        });
+
+        anime({
+          targets: modalBackdrop,
+          opacity: [1, 0],
+          duration: 200,
+          easing: "easeInCubic",
+        });
       }
 
-      // Cerrar modal al hacer clic fuera de él
+      // cerrar modal al hacer clic fuera de él
       document.addEventListener("click", function (event) {
         const modals = [
           "modalEntrada",
@@ -654,9 +861,27 @@
         modals.forEach((modalId) => {
           const modal = document.getElementById(modalId);
           if (event.target === modal) {
-            modal.classList.add("hidden");
+            cerrarModal(modalId);
           }
         });
+      });
+
+      // parar cerra con scape
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          const modals = [
+            "modalEntrada",
+            "modalSalida",
+            "modalProductos",
+            "modalMovimientos",
+          ];
+          modals.forEach((modalId) => {
+            const modal = document.getElementById(modalId);
+            if (!modal.classList.contains("hidden")) {
+              cerrarModal(modalId);
+            }
+          });
+        }
       });
     </script>
   </body>
