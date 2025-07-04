@@ -200,36 +200,154 @@
                       Datos de la Salida
                     </h2>
                   </div>
-                  <div
-                    class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700 text-base"
-                  >
-                    <div>
-                      <span class="font-medium">ID:</span>
-                      <span th:text="${salida.idSalida}"></span>
-                    </div>
-                    <div>
-                      <span class="font-medium">N° Documento:</span>
-                      <span th:text="${salida.numeroDocumento}"></span>
-                    </div>
-                    <div>
-                      <span class="font-medium">Cliente:</span>
-                      <span th:text="${salida.clienteNombre}"></span>
-                    </div>
-                    <div>
-                      <span class="font-medium">Fecha:</span>
+                  <!-- Detalles de la salida minimalista en tarjetas -->
+                  <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
                       <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >ID</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
+                        th:text="${salida.idSalida}"
+                      ></span>
+                    </div>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >N° Documento</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
+                        th:text="${salida.numeroDocumento}"
+                      ></span>
+                    </div>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >Cliente</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
+                        th:text="${salida.clienteNombre}"
+                      ></span>
+                    </div>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >Fecha</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
                         th:text="${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy HH:mm')}"
                       ></span>
                     </div>
-                    <div>
-                      <span class="font-medium">Total Venta:</span> S/
-                      <span th:text="${salida.totalVenta}"></span>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >Total Venta</span
+                      >
+                      <span class="font-semibold text-gray-800"
+                        >S/ <span th:text="${salida.totalVenta}"></span
+                      ></span>
                     </div>
-                    <div>
-                      <span class="font-medium">Motivo:</span>
-                      <span th:text="${salida.motivoSalida}"></span>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >Motivo</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
+                        th:text="${salida.motivoSalida}"
+                      ></span>
                     </div>
                   </div>
+                </div>
+
+                <!-- Tabla más compacta y clara -->
+                <div
+                  class="overflow-x-auto max-h-80 overflow-y-auto mb-8 rounded-2xl border border-gray-200"
+                >
+                  <table class="min-w-full bg-white rounded-2xl text-sm">
+                    <thead>
+                      <tr>
+                        <th
+                          class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                        >
+                          Producto
+                        </th>
+                        <th
+                          class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                        >
+                          Cantidad original
+                        </th>
+                        <th
+                          class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                        >
+                          Cantidad a devolver
+                        </th>
+                        <th
+                          class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                        >
+                          Seleccionar
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        th:each="detalle, iter : ${salida.detalles}"
+                        class="border-b border-gray-100 hover:bg-gray-50"
+                      >
+                        <td
+                          class="px-4 py-2"
+                          th:text="${detalle.productoNombre}"
+                        ></td>
+                        <td
+                          class="px-4 py-2 text-center"
+                          th:text="${detalle.cantidad}"
+                        ></td>
+                        <td class="px-4 py-2">
+                          <input
+                            type="number"
+                            min="0"
+                            th:attr="max=${detalle.cantidad}"
+                            name="productosDevueltos[__${iter.index}__].cantidad"
+                            class="w-20 px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                          />
+                          <input
+                            type="hidden"
+                            th:name="${'productosDevueltos[' + iter.index + '].idProducto'}"
+                            th:value="${detalle.productoId}"
+                          />
+                          <input
+                            type="hidden"
+                            th:name="${'productosDevueltos[' + iter.index + '].precioUnitario'}"
+                            th:value="${detalle.precioUnitario}"
+                          />
+                        </td>
+                        <td class="px-4 py-2 text-center">
+                          <input
+                            type="checkbox"
+                            th:name="${'productosDevueltos[' + iter.index + '].seleccionado'}"
+                            value="true"
+                            class="w-5 h-5 accent-orange-500"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
 
                 <form
@@ -242,99 +360,7 @@
                     th:field="*{idSalidaOriginal}"
                     th:value="${salida.idSalida}"
                   />
-                  <div
-                    class="overflow-x-auto max-h-80 overflow-y-auto mb-6 rounded-2xl border border-gray-200"
-                  >
-                    <table class="min-w-full bg-white rounded-2xl">
-                      <thead>
-                        <tr>
-                          <th
-                            class="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b border-gray-100"
-                          >
-                            Producto
-                          </th>
-                          <th
-                            class="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b border-gray-100"
-                          >
-                            Cantidad original
-                          </th>
-                          <th
-                            class="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b border-gray-100"
-                          >
-                            Cantidad a devolver
-                          </th>
-                          <th
-                            class="px-6 py-4 text-left text-sm font-semibold text-gray-700 border-b border-gray-100"
-                          >
-                            Seleccionar
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr
-                          th:each="detalle, iter : ${salida.detalles}"
-                          class="border-b border-gray-100 hover:bg-gray-50"
-                        >
-                          <td
-                            class="px-6 py-3"
-                            th:text="${detalle.productoNombre}"
-                          ></td>
-                          <td
-                            class="px-6 py-3"
-                            th:text="${detalle.cantidad}"
-                          ></td>
-                          <td class="px-6 py-3">
-                            <input
-                              type="number"
-                              min="0"
-                              th:attr="max=${detalle.cantidad}"
-                              name="productosDevueltos[__${iter.index}__].cantidad"
-                              class="w-24 px-4 py-2 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
-                            />
-                            <input
-                              type="hidden"
-                              th:name="${'productosDevueltos[' + iter.index + '].idProducto'}"
-                              th:value="${detalle.productoId}"
-                            />
-                            <input
-                              type="hidden"
-                              th:name="${'productosDevueltos[' + iter.index + '].precioUnitario'}"
-                              th:value="${detalle.precioUnitario}"
-                            />
-                          </td>
-                          <td class="px-6 py-3">
-                            <input
-                              type="checkbox"
-                              th:name="${'productosDevueltos[' + iter.index + '].seleccionado'}"
-                              value="true"
-                              class="w-5 h-5 accent-orange-500"
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="mb-6">
-                    <label
-                      for="motivoDevolucion"
-                      class="block text-sm font-semibold text-gray-600 mb-2 flex items-center"
-                    >
-                      Motivo de la Devolución
-                      <span
-                        class="text-red-500 ml-1 text-lg"
-                        title="Obligatorio"
-                        >*</span
-                      >
-                    </label>
-                    <textarea
-                      id="motivoDevolucion"
-                      th:field="*{motivoDevolucion}"
-                      rows="2"
-                      required
-                      class="w-full px-6 py-4 border border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-400 rounded-2xl focus:outline-none text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm placeholder-gray-400"
-                    ></textarea>
-                  </div>
-                  <div class="flex flex-col md:flex-row gap-4 justify-end">
+                  <div class="flex flex-col md:flex-row gap-4 justify-end mt-8">
                     <button
                       type="submit"
                       class="px-10 py-4 bg-emerald-600 text-white rounded-2xl hover:bg-emerald-700 transition text-lg font-semibold shadow"
