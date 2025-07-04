@@ -53,6 +53,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                             "ROLE_" + userRole.getRol().getNombreRol().toUpperCase()))
                     .collect(Collectors.toList());
 
+            // Log para debugging
+            log.info("Usuario {} - Roles cargados: {}", email, authorities.stream()
+                    .map(auth -> auth.getAuthority())
+                    .collect(Collectors.joining(", ")));
+
             // Si no hay roles activos, asignar un rol por defecto
             if (authorities.isEmpty()) {
                 authorities.add(new SimpleGrantedAuthority("ROLE_USER"));

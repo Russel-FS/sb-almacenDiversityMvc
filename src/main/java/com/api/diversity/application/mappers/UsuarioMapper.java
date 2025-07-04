@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.domain.model.UsuarioEntity;
+import com.api.diversity.domain.enums.EstadoUserRole;
+import com.api.diversity.domain.enums.EstadoRol;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +37,11 @@ public class UsuarioMapper {
                 .ultimoAcceso(entity.getUltimoAcceso())
                 .fechaCreacion(entity.getFechaCreacion())
                 .fechaModificacion(entity.getFechaModificacion())
-                .roles(userRoleMapper.toDtoList(entity.getUserRoles()))
+                .roles(userRoleMapper.toDtoList(entity.getUserRoles().stream()
+                        .filter(userRole -> userRole.getEstado() == EstadoUserRole.Activo)
+                        .filter(userRole -> userRole.getRol() != null &&
+                                userRole.getRol().getEstado() == EstadoRol.Activo)
+                        .collect(Collectors.toList())))
                 .build();
     }
 

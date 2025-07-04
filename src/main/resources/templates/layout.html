@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content)">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  th:fragment="layout(content)"
+>
   <head>
     <meta charset="UTF-8" />
     <title>J&C Diversity S.A.C.</title>
@@ -74,10 +78,11 @@
 
           <!-- Navegación principal -->
           <nav class="flex items-center space-x-1">
-            <!-- Inicio -->
+            <!-- Inicio - Acceso general para usuarios autenticados -->
             <a
               href="/"
               class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200"
+              sec:authorize="isAuthenticated()"
             >
               <svg
                 class="w-4 h-4 mr-2 inline"
@@ -95,8 +100,11 @@
               Inicio
             </a>
 
-            <!-- Categorías Dropdown -->
-            <div class="dropdown relative group">
+            <!-- Categorías Dropdown - Solo para operadores y supervisores -->
+            <div
+              class="dropdown relative group"
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
+            >
               <button
                 class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
               >
@@ -131,9 +139,11 @@
               <div
                 class="dropdown-menu absolute left-0 mt-2 w-56 rounded-2xl shadow-xl glass-effect py-2 z-50"
               >
+                <!-- Piñatería - Solo para roles de piñatería -->
                 <a
                   th:href="@{/pinateria/categorias}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-pink-500"
@@ -153,9 +163,11 @@
                     <p class="text-xs text-gray-500">Gestionar categorías</p>
                   </div>
                 </a>
+                <!-- Librería - Solo para roles de librería -->
                 <a
                   th:href="@{/libreria/categorias}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-blue-500"
@@ -175,9 +187,11 @@
                     <p class="text-xs text-gray-500">Gestionar categorías</p>
                   </div>
                 </a>
+                <!-- Cámaras - Solo para roles de cámaras -->
                 <a
                   th:href="@{/camaras/categorias}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-purple-500"
@@ -206,8 +220,11 @@
               </div>
             </div>
 
-            <!-- Productos Dropdown -->
-            <div class="dropdown relative group">
+            <!-- Productos Dropdown - Solo para operadores y supervisores -->
+            <div
+              class="dropdown relative group"
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
+            >
               <button
                 class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
               >
@@ -242,9 +259,11 @@
               <div
                 class="dropdown-menu absolute left-0 mt-2 w-56 rounded-2xl shadow-xl glass-effect py-2 z-50"
               >
+                <!-- Piñatería - Solo para roles de piñatería -->
                 <a
                   th:href="@{/pinateria/productos}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-pink-500"
@@ -264,9 +283,11 @@
                     <p class="text-xs text-gray-500">Gestionar productos</p>
                   </div>
                 </a>
+                <!-- Librería - Solo para roles de librería -->
                 <a
                   th:href="@{/libreria/productos}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-blue-500"
@@ -286,9 +307,11 @@
                     <p class="text-xs text-gray-500">Gestionar productos</p>
                   </div>
                 </a>
+                <!-- Cámaras - Solo para roles de cámaras -->
                 <a
                   th:href="@{/camaras/productos}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-purple-500"
@@ -317,8 +340,11 @@
               </div>
             </div>
 
-            <!-- Kardex -->
-            <div class="dropdown relative group">
+            <!-- Kardex - Solo para operadores, supervisores y almaceneros -->
+            <div
+              class="dropdown relative group"
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS', 'ALMACENERO')"
+            >
               <button
                 class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
               >
@@ -353,9 +379,11 @@
               <div
                 class="dropdown-menu absolute left-0 mt-2 w-56 rounded-2xl shadow-xl glass-effect py-2 z-50"
               >
+                <!-- Dashboard Piñatería - Solo para roles de piñatería -->
                 <a
                   th:href="@{/pinateria/kardex/dashboard}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-pink-500"
@@ -375,9 +403,11 @@
                     <p class="text-xs text-gray-500">Control de inventario</p>
                   </div>
                 </a>
+                <!-- Dashboard Librería - Solo para roles de librería -->
                 <a
                   th:href="@{/libreria/kardex/dashboard}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-blue-500"
@@ -397,9 +427,11 @@
                     <p class="text-xs text-gray-500">Control de inventario</p>
                   </div>
                 </a>
+                <!-- Dashboard Cámaras - Solo para roles de cámaras -->
                 <a
-                  th:href="@{/camara/kardex/dashboard}"
+                  th:href="@{/camaras/kardex/dashboard}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-purple-500"
@@ -425,38 +457,18 @@
                     <p class="text-xs text-gray-500">Control de inventario</p>
                   </div>
                 </a>
-                <a
-                  th:href="@{/camara/kardex/dashboard}"
-                  class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
-                >
-                  <svg
-                    class="w-4 h-4 mr-3 text-purple-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                    ></path>
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                    ></path>
-                  </svg>
-                  <div>
-                    <p class="font-medium">Cámaras</p>
-                    <p class="text-xs text-gray-500">Control de inventario</p>
-                  </div>
-                </a>
-                <div class="border-t border-gray-100 my-2"></div>
+
+                <!-- Separador para sección de supervisores -->
+                <div
+                  class="border-t border-gray-100 my-2"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS')"
+                ></div>
+
+                <!-- Pendientes Piñatería - Solo para supervisores de piñatería -->
                 <a
                   th:href="@{/supervisor/kardex/PIÑAT/pendientes}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-pink-500"
@@ -476,9 +488,11 @@
                     <p class="text-xs text-gray-500">Aprobar/Anular</p>
                   </div>
                 </a>
+                <!-- Pendientes Librería - Solo para supervisores de librería -->
                 <a
                   th:href="@{/supervisor/kardex/LIBR/pendientes}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-blue-500"
@@ -498,9 +512,11 @@
                     <p class="text-xs text-gray-500">Aprobar/Anular</p>
                   </div>
                 </a>
+                <!-- Pendientes Cámaras - Solo para supervisores de cámaras -->
                 <a
                   th:href="@{/supervisor/kardex/CSEG/pendientes}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-purple-500"
@@ -526,9 +542,18 @@
                     <p class="text-xs text-gray-500">Aprobar/Anular</p>
                   </div>
                 </a>
+
+                <!-- Separador para sección de almaceneros -->
+                <div
+                  class="border-t border-gray-100 my-2"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'ALMACENERO')"
+                ></div>
+
+                <!-- Devoluciones - Solo para almaceneros -->
                 <a
                   th:href="@{/almacenero/devoluciones/nueva}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'ALMACENERO')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-orange-500"
@@ -550,10 +575,18 @@
                     </p>
                   </div>
                 </a>
-                <div class="border-t border-gray-100 my-2"></div>
+
+                <!-- Separador para sección de administración -->
+                <div
+                  class="border-t border-gray-100 my-2"
+                  sec:authorize="hasRole('ADMINISTRADOR')"
+                ></div>
+
+                <!-- Administración - Solo para administradores -->
                 <a
                   th:href="@{/admin}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasRole('ADMINISTRADOR')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-blue-500"
@@ -582,10 +615,11 @@
               </div>
             </div>
 
-            <!-- Proveedores -->
+            <!-- Proveedores - Solo para administradores -->
             <a
               th:href="@{/proveedores}"
               class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
+              sec:authorize="hasRole('ADMINISTRADOR')"
             >
               <svg
                 class="w-4 h-4 mr-2"
@@ -603,10 +637,11 @@
               Proveedores
             </a>
 
-            <!-- Clientes -->
+            <!-- Clientes - Solo para administradores -->
             <a
-              href="/clientes"
+              th:href="@{/clientes}"
               class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
+              sec:authorize="hasRole('ADMINISTRADOR')"
             >
               <svg
                 class="w-4 h-4 mr-2"
@@ -624,10 +659,11 @@
               Clientes
             </a>
 
-            <!-- Rubros -->
+            <!-- Rubros - Solo para administradores -->
             <a
               th:href="@{/rubros}"
               class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
+              sec:authorize="hasRole('ADMINISTRADOR')"
             >
               <svg
                 class="w-4 h-4 mr-2"
@@ -646,8 +682,11 @@
             </a>
           </nav>
 
-          <!-- Perfil -->
-          <div class="dropdown relative group">
+          <!-- Perfil - Solo para usuarios autenticados -->
+          <div
+            class="dropdown relative group"
+            sec:authorize="isAuthenticated()"
+          >
             <button
               class="flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-50 transition-all duration-200"
             >
@@ -685,9 +724,11 @@
             <div
               class="dropdown-menu absolute right-0 mt-2 w-56 rounded-2xl shadow-xl glass-effect py-2 z-50"
             >
+              <!-- Administración - Solo para administradores -->
               <a
                 th:href="@{/admin}"
                 class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                sec:authorize="hasRole('ADMINISTRADOR')"
               >
                 <svg
                   class="w-4 h-4 mr-3 text-blue-500"

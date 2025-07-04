@@ -41,6 +41,9 @@ public class SecurityConfig {
                                                 .requestMatchers("/error/**", "/error")
                                                 .permitAll()
 
+                                                // Rutas de prueba (solo para desarrollo)
+                                                .requestMatchers("/test/**").authenticated()
+
                                                 // Rutas de administración
                                                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                                                 .requestMatchers("/admin/usuarios/**").hasRole("ADMINISTRADOR")
