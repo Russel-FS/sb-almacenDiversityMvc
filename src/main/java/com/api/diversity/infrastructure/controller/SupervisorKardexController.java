@@ -85,7 +85,8 @@ public class SupervisorKardexController {
             redirectAttributes.addFlashAttribute("mensaje", "Error al aprobar entrada: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
-        return "redirect:/supervisor/kardex/" + rubroCode + "/pendientes";
+        redirectAttributes.addAttribute("rubroCode", rubroCode);
+        return "redirect:/supervisor/kardex/{rubroCode}/pendientes";
     }
 
     @PostMapping("/anular/entrada/{id}")
@@ -100,7 +101,8 @@ public class SupervisorKardexController {
             redirectAttributes.addFlashAttribute("mensaje", "Error al anular entrada: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
-        return "redirect:/supervisor/kardex/" + rubroCode + "/pendientes";
+        redirectAttributes.addAttribute("rubroCode", rubroCode);
+        return "redirect:/supervisor/kardex/{rubroCode}/pendientes";
     }
 
     @PostMapping("/aprobar/salida/{id}")
@@ -117,7 +119,8 @@ public class SupervisorKardexController {
             redirectAttributes.addFlashAttribute("mensaje", "Error al aprobar salida: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
-        return "redirect:/supervisor/kardex/" + rubroCode + "/pendientes";
+        redirectAttributes.addAttribute("rubroCode", rubroCode);
+        return "redirect:/supervisor/kardex/{rubroCode}/pendientes";
     }
 
     @PostMapping("/anular/salida/{id}")
@@ -132,6 +135,7 @@ public class SupervisorKardexController {
             redirectAttributes.addFlashAttribute("mensaje", "Error al anular salida: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
-        return "redirect:/supervisor/kardex/" + rubroCode + "/pendientes";
+        redirectAttributes.addAttribute("rubroCode", rubroCode);
+        return "redirect:/supervisor/kardex/{rubroCode}/pendientes";
     }
 }
