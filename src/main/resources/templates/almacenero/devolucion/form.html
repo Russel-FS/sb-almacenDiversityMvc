@@ -73,7 +73,7 @@
               </div>
             </div>
 
-            <!-- Header del Formulario -->
+            <!-- Header   -->
             <div class="mb-12">
               <div class="flex flex-wrap items-center justify-between mb-8">
                 <div class="flex flex-wrap items-center gap-6">
@@ -129,11 +129,9 @@
               </div>
             </div>
 
-            <!-- Card visual moderno y minimalista para todo el flujo de devolución -->
             <div
               class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm mb-12"
             >
-              <!-- Formulario de búsqueda de salida -->
               <div class="mb-8">
                 <form
                   th:action="@{/almacenero/devoluciones/buscar}"
@@ -276,80 +274,6 @@
                   </div>
                 </div>
 
-                <!-- Tabla más compacta y clara -->
-                <div
-                  class="overflow-x-auto max-h-80 overflow-y-auto mb-8 rounded-2xl border border-gray-200"
-                >
-                  <table class="min-w-full bg-white rounded-2xl text-sm">
-                    <thead>
-                      <tr>
-                        <th
-                          class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
-                        >
-                          Producto
-                        </th>
-                        <th
-                          class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
-                        >
-                          Cantidad original
-                        </th>
-                        <th
-                          class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
-                        >
-                          Cantidad a devolver
-                        </th>
-                        <th
-                          class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
-                        >
-                          Seleccionar
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        th:each="detalle, iter : ${salida.detalles}"
-                        class="border-b border-gray-100 hover:bg-gray-50"
-                      >
-                        <td
-                          class="px-4 py-2"
-                          th:text="${detalle.productoNombre}"
-                        ></td>
-                        <td
-                          class="px-4 py-2 text-center"
-                          th:text="${detalle.cantidad}"
-                        ></td>
-                        <td class="px-4 py-2">
-                          <input
-                            type="number"
-                            min="0"
-                            th:attr="max=${detalle  .cantidad}"
-                            name="productosDevueltos[__${iter.index}__].cantidad"
-                            class="w-20 px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
-                          />
-                          <input
-                            type="hidden"
-                            th:name="${'productosDevueltos[' + iter.index + '].idProducto'}"
-                            th:value="${detalle.productoId}"
-                          />
-                          <input
-                            type="hidden"
-                            th:name="${'productosDevueltos[' + iter.index + '].precioUnitario'}"
-                            th:value="${detalle.precioUnitario}"
-                          />
-                        </td>
-                        <td class="px-4 py-2 text-center">
-                          <input
-                            type="checkbox"
-                            th:name="${'productosDevueltos[' + iter.index + '].seleccionado'}"
-                            value="true"
-                            class="w-5 h-5 accent-orange-500"
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
                 <form
                   th:action="@{/almacenero/devoluciones/procesar}"
                   th:object="${devolucionRequest}"
@@ -360,6 +284,97 @@
                     th:field="*{idSalidaOriginal}"
                     th:value="${salida.idSalida}"
                   />
+
+                  <!-- Tabla -->
+                  <div
+                    class="overflow-x-auto max-h-80 overflow-y-auto mb-8 rounded-2xl border border-gray-200"
+                  >
+                    <table class="min-w-full bg-white rounded-2xl text-sm">
+                      <thead>
+                        <tr>
+                          <th
+                            class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                          >
+                            Producto
+                          </th>
+                          <th
+                            class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                          >
+                            Cantidad original
+                          </th>
+                          <th
+                            class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                          >
+                            Cantidad a devolver
+                          </th>
+                          <th
+                            class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                          >
+                            Seleccionar
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          th:each="detalle, iter : ${salida.detalles}"
+                          class="border-b border-gray-100 hover:bg-gray-50"
+                        >
+                          <td
+                            class="px-4 py-2"
+                            th:text="${detalle.productoNombre}"
+                          ></td>
+                          <td
+                            class="px-4 py-2 text-center"
+                            th:text="${detalle.cantidad}"
+                          ></td>
+                          <td class="px-4 py-2">
+                            <input
+                              type="number"
+                              min="0"
+                              th:attr="max=${detalle.cantidad}"
+                              th:name="${'productosDevueltos[' + iter.index + '].cantidadDevuelta'}"
+                              class="w-20 px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                            />
+                            <input
+                              type="hidden"
+                              th:name="${'productosDevueltos[' + iter.index + '].idProducto'}"
+                              th:value="${detalle.productoId}"
+                            />
+                            <input
+                              type="hidden"
+                              th:name="${'productosDevueltos[' + iter.index + '].precioUnitario'}"
+                              th:value="${detalle.precioUnitario}"
+                            />
+                          </td>
+                          <td class="px-4 py-2 text-center">
+                            <input
+                              type="checkbox"
+                              th:name="${'productosDevueltos[' + iter.index + '].seleccionado'}"
+                              value="true"
+                              class="w-5 h-5 accent-orange-500"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Campo de devolucion -->
+                  <div class="mb-6">
+                    <label
+                      for="motivoDevolucion"
+                      class="block text-sm font-semibold text-gray-600 mb-2"
+                      >Motivo de la Devolución</label
+                    >
+                    <textarea
+                      id="motivoDevolucion"
+                      th:field="*{motivoDevolucion}"
+                      rows="3"
+                      placeholder="Describe el motivo de la devolución..."
+                      class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm resize-none"
+                    ></textarea>
+                  </div>
+
                   <div class="flex flex-col md:flex-row gap-4 justify-end mt-8">
                     <button
                       type="submit"
@@ -389,7 +404,7 @@
       </section>
     </div>
 
-    <!-- Script para ocultar mensajes de alerta después de un tiempo -->
+    <!-- Script para ocultar mensajes -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const mensajeAlert = document.getElementById("mensajeAlert");

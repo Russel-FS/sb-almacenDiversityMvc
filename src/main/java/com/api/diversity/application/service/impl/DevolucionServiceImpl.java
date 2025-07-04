@@ -75,7 +75,7 @@ public class DevolucionServiceImpl implements DevolucionService {
         // Validar la solicitud de devolución actual
         for (var detalleDevolucion : devolucionRequest.getProductosDevueltos()) {
             Long idProducto = detalleDevolucion.getIdProducto();
-            Integer cantidadDevolver = detalleDevolucion.getCantidad();
+            Integer cantidadDevolver = detalleDevolucion.getCantidadDevuelta();
 
             if (!productosVendidos.containsKey(idProducto)) {
                 throw new RuntimeException("El producto con ID " + idProducto + " no fue parte de la salida original.");
@@ -121,16 +121,16 @@ public class DevolucionServiceImpl implements DevolucionService {
                             () -> new RuntimeException("Producto no encontrado: " + detalleDevolucion.getIdProducto()));
 
             // Actualizar stock del producto
-            producto.setStockActual(producto.getStockActual() + detalleDevolucion.getCantidad());
+            producto.setStockActual(producto.getStockActual() + detalleDevolucion.getCantidadDevuelta());
             productoJpaRepository.save(producto);
 
             DetalleEntradaEntity detalleEntrada = new DetalleEntradaEntity();
             detalleEntrada.setEntrada(nuevaEntrada);
             detalleEntrada.setProducto(producto);
-            detalleEntrada.setCantidad(detalleDevolucion.getCantidad());
+            detalleEntrada.setCantidad(detalleDevolucion.getCantidadDevuelta());
             detalleEntrada.setPrecioUnitario(detalleDevolucion.getPrecioUnitario());
             BigDecimal subtotal = detalleDevolucion.getPrecioUnitario()
-                    .multiply(BigDecimal.valueOf(detalleDevolucion.getCantidad()));
+                    .multiply(BigDecimal.valueOf(detalleDevolucion.getCantidadDevuelta()));
             detalleEntrada.setSubtotal(subtotal);
             detalleEntrada.setUsuarioRegistro(usuarioRegistro);
             detalleEntrada.setFechaRegistro(LocalDateTime.now());

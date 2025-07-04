@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DetalleDevolucionDto {
     private Long idProducto;
-    private Integer cantidad;
-    private BigDecimal precioUnitario; // Precio al que se devuelve, podría ser el de venta original
+    private Integer cantidadDevuelta;
+    private BigDecimal precioUnitario;
+    private Boolean seleccionado;
 }
