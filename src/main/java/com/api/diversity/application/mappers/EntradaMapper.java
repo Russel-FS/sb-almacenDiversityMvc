@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.api.diversity.application.dto.EntradaDto;
-import com.api.diversity.domain.enums.TipoEntrada;
 import com.api.diversity.domain.model.EntradaEntity;
 
 import lombok.RequiredArgsConstructor;
