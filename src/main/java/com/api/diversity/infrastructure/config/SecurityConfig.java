@@ -34,7 +34,7 @@ public class SecurityConfig {
                 http
                                 .authorizeHttpRequests(auth -> auth
                                                 // Rutas públicas
-                                                .requestMatchers("/login", "/css/**", "/js/**",
+                                                .requestMatchers("/auth/login", "/auth/logout", "/css/**", "/js/**",
                                                                 "/images/**", "/favicon.ico")
                                                 .permitAll()
                                                 // ruta de errores
@@ -114,12 +114,9 @@ public class SecurityConfig {
                                                 .logoutSuccessUrl("/auth/login")
                                                 .deleteCookies("JSESSIONID", "remember-me")
                                                 .permitAll())
-                                // Manejo de errores de acceso denegaddo
+                                // Manejo de errores de acceso denegado
                                 .exceptionHandling(exceptions -> exceptions
-                                                .accessDeniedPage("/error/access-denied")
-                                                .authenticationEntryPoint((request, response, authException) -> {
-                                                        response.sendRedirect("/auth/login?error=unauthorized");
-                                                }))
+                                                .accessDeniedPage("/error/access-denied"))
                                 .csrf(csrf -> csrf.disable());
 
                 return http.build();
