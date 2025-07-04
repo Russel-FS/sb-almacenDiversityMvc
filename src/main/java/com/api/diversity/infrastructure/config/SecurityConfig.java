@@ -41,9 +41,6 @@ public class SecurityConfig {
                                                 .requestMatchers("/error/**", "/error")
                                                 .permitAll()
 
-                                                // Rutas de prueba (solo para desarrollo)
-                                                .requestMatchers("/test/**").authenticated()
-
                                                 // Rutas de administración
                                                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                                                 .requestMatchers("/admin/usuarios/**").hasRole("ADMINISTRADOR")
@@ -52,9 +49,11 @@ public class SecurityConfig {
                                                 .requestMatchers("/admin/proveedores/**").hasRole("ADMINISTRADOR")
                                                 .requestMatchers("/admin/usuarios-rubros/**").hasRole("ADMINISTRADOR")
 
-                                                // Rutas de supervisión general
+                                                // Rutas de supervisión
                                                 .requestMatchers("/supervisor/**")
-                                                .hasAnyRole("ADMINISTRADOR", "SUPERVISOR_GENERAL")
+                                                .hasAnyRole("ADMINISTRADOR", "SUPERVISOR_GENERAL",
+                                                                "SUPERVISOR_PINATERIA", "SUPERVISOR_LIBRERIA",
+                                                                "SUPERVISOR_CAMARAS")
 
                                                 // Rutas de piñatería
                                                 .requestMatchers("/pinateria/**").hasAnyRole(
