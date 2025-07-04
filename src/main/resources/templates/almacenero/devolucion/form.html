@@ -179,40 +179,54 @@
                 </form>
               </div>
 
-              <!-- Mostrar detalles de la salida y productos si hay resultados -->
+              <!-- detalles de salida -->
               <div th:if="${salidaEncontrada}">
-                <div
-                  class="mb-6 p-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow border border-gray-100"
-                >
-                  <h2 class="text-2xl font-semibold mb-2 text-gray-900">
-                    Datos de la Salida
-                  </h2>
+                <div class="mb-8">
+                  <div class="flex items-center mb-2">
+                    <svg
+                      class="w-6 h-6 text-orange-500 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 10h10a8 8 0 018 8v2M3 10l3 3m-3-3l3-3"
+                      />
+                    </svg>
+                    <h2 class="text-xl font-semibold text-gray-900">
+                      Datos de la Salida
+                    </h2>
+                  </div>
                   <div
-                    class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700"
+                    class="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700 text-base"
                   >
                     <div>
-                      <b>ID:</b> <span th:text="${salida.idSalida}"></span>
+                      <span class="font-medium">ID:</span>
+                      <span th:text="${salida.idSalida}"></span>
                     </div>
                     <div>
-                      <b>Número de Documento:</b>
+                      <span class="font-medium">N° Documento:</span>
                       <span th:text="${salida.numeroDocumento}"></span>
                     </div>
                     <div>
-                      <b>Cliente:</b>
+                      <span class="font-medium">Cliente:</span>
                       <span th:text="${salida.clienteNombre}"></span>
                     </div>
                     <div>
-                      <b>Fecha:</b>
+                      <span class="font-medium">Fecha:</span>
                       <span
                         th:text="${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy HH:mm')}"
                       ></span>
                     </div>
                     <div>
-                      <b>Total Venta:</b> S/
+                      <span class="font-medium">Total Venta:</span> S/
                       <span th:text="${salida.totalVenta}"></span>
                     </div>
                     <div>
-                      <b>Motivo:</b>
+                      <span class="font-medium">Motivo:</span>
                       <span th:text="${salida.motivoSalida}"></span>
                     </div>
                   </div>
@@ -228,10 +242,10 @@
                     th:field="*{idSalidaOriginal}"
                     th:value="${salida.idSalida}"
                   />
-                  <div class="overflow-x-auto mb-6">
-                    <table
-                      class="min-w-full bg-white rounded-2xl shadow border border-gray-200"
-                    >
+                  <div
+                    class="overflow-x-auto max-h-80 overflow-y-auto mb-6 rounded-2xl border border-gray-200"
+                  >
+                    <table class="min-w-full bg-white rounded-2xl">
                       <thead>
                         <tr>
                           <th
@@ -303,14 +317,21 @@
                   <div class="mb-6">
                     <label
                       for="motivoDevolucion"
-                      class="block text-sm font-semibold text-gray-600 mb-2"
-                      >Motivo de la Devolución</label
+                      class="block text-sm font-semibold text-gray-600 mb-2 flex items-center"
                     >
+                      Motivo de la Devolución
+                      <span
+                        class="text-red-500 ml-1 text-lg"
+                        title="Obligatorio"
+                        >*</span
+                      >
+                    </label>
                     <textarea
                       id="motivoDevolucion"
                       th:field="*{motivoDevolucion}"
                       rows="2"
-                      class="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                      required
+                      class="w-full px-6 py-4 border border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-400 rounded-2xl focus:outline-none text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm placeholder-gray-400"
                     ></textarea>
                   </div>
                   <div class="flex flex-col md:flex-row gap-4 justify-end">
