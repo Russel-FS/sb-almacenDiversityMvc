@@ -165,15 +165,15 @@ public class AdminProductoController {
 
     @GetMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        log.info("Eliminando producto ID: {}", id);
+        log.info("Desactivando producto ID: {}", id);
 
         try {
             productoService.deleteById(id);
-            redirectAttributes.addFlashAttribute("success", "Producto eliminado exitosamente");
+            redirectAttributes.addFlashAttribute("success", "Producto desactivado exitosamente");
 
         } catch (Exception e) {
-            log.error("Error al eliminar producto: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error", "Error al eliminar el producto: " + e.getMessage());
+            log.error("Error al desactivar producto: {}", e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("error", "Error al desactivar el producto: " + e.getMessage());
         }
 
         return "redirect:/admin/productos";
