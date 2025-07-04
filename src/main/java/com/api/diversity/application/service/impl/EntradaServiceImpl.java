@@ -111,15 +111,7 @@ public class EntradaServiceImpl implements IEntradaService {
                     // Guardar detalle
                     detalleEntradaRepository.save(detalle);
 
-                    // Actualizar stock del producto
-                    producto.setStockActual(producto.getStockActual() + detalle.getCantidad());
-                    productoRepository.save(producto);
-
-                    log.info("Stock actualizado para producto {}: {} + {} = {}",
-                            producto.getNombreProducto(),
-                            producto.getStockActual() - detalle.getCantidad(),
-                            detalle.getCantidad(),
-                            producto.getStockActual());
+                    // La actualización de stock se moverá al método de aprobación
                 }
             }
 
@@ -311,11 +303,26 @@ public class EntradaServiceImpl implements IEntradaService {
                     .orElseThrow(() -> new EntityNotFoundException("Entrada no encontrada"));
 
             if (entrada.getEstado() != EstadoEntrada.Pendiente) {
-                throw new IllegalStateException("Solo se pueden aprobar entradas pendientes");
+                throw new IllegalStateException(
+                        "Solo se pueden aprobar entradas pendientes. Estado actual: " + entrada.getEstado());
             }
 
             UsuarioEntity usuarioAprobacion = usuarioRepository.findById(usuarioAprobacionId)
                     .orElseThrow(() -> new EntityNotFoundException("Usuario de aprobación no encontrado"));
+
+            // se aumenta el stock de los productos al aprobarr
+            if (entrada.getDetalles() != null) {
+                for (DetalleEntradaEntity detalle : entrada.getDetalles()) {
+                    ProductoEntity producto = detalle.getProducto();
+                    producto.setStockActual(producto.getStockActual() + detalle.getCantidad());
+                    productoRepository.save(producto);
+                    log.info("Stock actualizado para producto {}: {} + {} = {}",
+                            producto.getNombreProducto(),
+                            producto.getStockActual() - detalle.getCantidad(),
+                            detalle.getCantidad(),
+                            producto.getStockActual());
+                }
+            }
 
             entrada.setEstado(EstadoEntrada.Completado);
             entrada.setUsuarioAprobacion(usuarioAprobacion);
@@ -341,8 +348,24 @@ public class EntradaServiceImpl implements IEntradaService {
                 throw new IllegalStateException("La entrada ya está anulada");
             }
 
+            // si la entrada está completada, revertir el stock
+            if (entrada.getEstado() == EstadoEntrada.Completado) {
+                if (entrada.getDetalles() != null) {
+                    for (DetalleEntradaEntity detalle : entrada.getDetalles()) {
+                        ProductoEntity producto = detalle.getProducto();
+                        producto.setStockActual(producto.getStockActual() - detalle.getCantidad());
+                        productoRepository.save(producto);
+                        log.info("Stock revertido para producto {}: {} - {} = {}",
+                                producto.getNombreProducto(),
+                                producto.getStockActual() + detalle.getCantidad(),
+                                detalle.getCantidad(),
+                                producto.getStockActual());
+                    }
+                }
+            }
+
             entrada.setEstado(EstadoEntrada.Anulado);
-            entrada.setObservaciones(motivo);
+            entrada.setObservaciones(motivo != null ? motivo : "Entrada anulada sin motivo específico.");
 
             return entradaMapper.toDto(entradaRepository.save(entrada));
         } catch (Exception e) {
