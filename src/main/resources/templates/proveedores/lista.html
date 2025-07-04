@@ -351,7 +351,6 @@
                 th:if="${proveedor != null}"
                 class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm"
               >
-                <!-- Header de la card -->
                 <div class="flex items-start justify-between mb-8">
                   <div class="flex items-center gap-5">
                     <div
@@ -518,19 +517,6 @@
                             th:if="${proveedor.estado != null and proveedor.estado.name() != 'Inactivo'}"
                           >
                             Desactivar
-                          </button>
-                        </form>
-                        <form
-                          th:action="@{/proveedores/{id}/eliminar(id=${proveedor.idProveedor})}"
-                          method="post"
-                          class="block"
-                          onsubmit="return confirm('¿Está seguro de eliminar este proveedor?')"
-                        >
-                          <button
-                            type="submit"
-                            class="block w-full text-left px-6 py-4 text-sm text-red-700 hover:bg-red-50 transition-colors font-medium"
-                          >
-                            Eliminar
                           </button>
                         </form>
                       </div>
