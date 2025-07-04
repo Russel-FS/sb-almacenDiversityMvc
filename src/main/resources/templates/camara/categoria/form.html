@@ -66,7 +66,7 @@
                       <input type="text" 
                              th:field="*{nombreCategoria}"
                              class="block w-full rounded-lg border-gray-300 bg-white/50 py-3 px-4 text-gray-900 shadow-sm focus:border-gray-900 focus:ring-gray-900 sm:text-sm"
-                             required />
+                             required maxlength="70" />
                     </div>
                     <div th:if="${#fields.hasErrors('nombreCategoria')}" 
                          class="mt-2 text-sm text-red-600"
@@ -82,7 +82,7 @@
                       <textarea th:field="*{descripcion}"
                                 rows="4"
                                 class="block w-full rounded-lg border-gray-300 bg-white/50 py-3 px-4 text-gray-900 shadow-sm focus:border-gray-900 focus:ring-gray-900 sm:text-sm"
-                                placeholder="Describe el propósito de la categoría..."></textarea>
+                                placeholder="Describe el propósito de la categoría..." maxlength="200"></textarea>
                     </div>
                     <div th:if="${#fields.hasErrors('descripcion')}"
                          class="mt-2 text-sm text-red-600"
