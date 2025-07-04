@@ -20,8 +20,8 @@ public class EntradaDto {
     private Long idEntrada;
     private String numeroFactura;
     private TipoDocumento tipoDocumento;
-    private TipoEntrada tipoEntrada; // Nuevo campo
-    private Long idSalidaReferencia; // Nuevo campo
+    private TipoEntrada tipoEntrada;
+    private Long idSalidaReferencia;
     private Long proveedorId;
     private String proveedorNombre;
     private String proveedorRuc;

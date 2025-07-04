@@ -46,6 +46,7 @@ import com.api.diversity.application.dto.DetalleEntradaDto;
 import com.api.diversity.application.dto.DetalleSalidaDto;
 import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.domain.enums.TipoDocumento;
+import com.api.diversity.domain.enums.TipoEntrada;
 import com.api.diversity.domain.enums.EstadoProveedor;
 import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.infrastructure.security.SecurityContext;
@@ -287,6 +288,15 @@ public class PinateriaKardexController {
             }
 
             log.info("Entrada encontrada: {}", entrada.getNumeroFactura());
+
+            // Si es una devolución, obtener la información de la salida original
+            if (entrada.getTipoEntrada() != null && entrada.getTipoEntrada() == TipoEntrada.DEVOLUCION
+                    && entrada.getIdSalidaReferencia() != null) {
+                SalidaDto salidaOriginal = salidaService.findById(entrada.getIdSalidaReferencia());
+                if (salidaOriginal != null) {
+                    model.addAttribute("salidaOriginal", salidaOriginal);
+                }
+            }
 
             model.addAttribute("titulo", "Detalle de Entrada - Piñatería");
             model.addAttribute("subtitulo", "Información detallada de la entrada");
@@ -875,11 +885,32 @@ public class PinateriaKardexController {
             PdfWriter.getInstance(document, baos);
 
             document.open();
-            document.add(new Paragraph("Comprobante de Entrada - Piñatería"));
+
+            // Título del documento según el tipo de entrada
+            String tituloDocumento = "Comprobante de Entrada - Piñatería";
+            if (entrada.getTipoEntrada() != null && entrada.getTipoEntrada().name().equals("DEVOLUCION")) {
+                tituloDocumento = "Comprobante de Devolución - Piñatería";
+            }
+            document.add(new Paragraph(tituloDocumento));
+            document.add(new Paragraph(" "));
+
             document.add(new Paragraph(
                     "Fecha: " + entrada.getFechaEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
             document.add(new Paragraph("N° Documento: " + entrada.getNumeroFactura()));
-            document.add(new Paragraph("Proveedor: " + entrada.getProveedorNombre()));
+
+            if (entrada.getTipoEntrada() != null && entrada.getTipoEntrada().name().equals("COMPRA")) {
+                document.add(new Paragraph("Proveedor: " + entrada.getProveedorNombre()));
+            } else if (entrada.getTipoEntrada() != null && entrada.getTipoEntrada().name().equals("DEVOLUCION")) {
+                document.add(new Paragraph("Tipo de Movimiento: Devolución"));
+                document.add(new Paragraph("ID Salida Referencia: " + entrada.getIdSalidaReferencia()));
+                // Obtener información del cliente de la salida original
+                if (entrada.getIdSalidaReferencia() != null) {
+                    SalidaDto salidaOriginal = salidaService.findById(entrada.getIdSalidaReferencia());
+                    if (salidaOriginal != null) {
+                        document.add(new Paragraph("Cliente: " + salidaOriginal.getClienteNombre()));
+                    }
+                }
+            }
             document.add(new Paragraph(" "));
 
             // Tabla de productos
@@ -897,7 +928,16 @@ public class PinateriaKardexController {
                 tabla.addCell("S/ " + detalle.getSubtotal());
             }
             document.add(tabla);
-            document.add(new Paragraph("Total: S/ " + entrada.getCostoTotal()));
+            document.add(new Paragraph(" "));
+
+            // Totales
+            document.add(new Paragraph("Costo Total: S/ " + entrada.getCostoTotal()));
+            if (entrada.getTipoEntrada() != null && entrada.getTipoEntrada().name().equals("COMPRA")) {
+                document.add(
+                        new Paragraph("IGV (18%): S/ " + entrada.getCostoTotal().multiply(BigDecimal.valueOf(0.18))));
+                document.add(new Paragraph(
+                        "Total con IGV: S/ " + entrada.getCostoTotal().multiply(BigDecimal.valueOf(1.18))));
+            }
 
             document.close();
 
@@ -937,7 +977,11 @@ public class PinateriaKardexController {
             // Información de la entrada
             Row titleRow = sheet.createRow(0);
             Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("Comprobante de Entrada - Piñatería");
+            String title = "Comprobante de Entrada - Piñatería";
+            if (entrada.getTipoEntrada() != null && entrada.getTipoEntrada().name().equals("DEVOLUCION")) {
+                title = "Comprobante de Devolución - Piñatería";
+            }
+            titleCell.setCellValue(title);
             titleCell.setCellStyle(headerStyle);
 
             Row infoRow1 = sheet.createRow(1);
@@ -945,17 +989,32 @@ public class PinateriaKardexController {
                     "Fecha: " + entrada.getFechaEntrada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             infoRow1.createCell(1).setCellValue("N° Documento: " + entrada.getNumeroFactura());
 
-            Row infoRow2 = sheet.createRow(2);
-            infoRow2.createCell(0).setCellValue("Proveedor: " + entrada.getProveedorNombre());
+            int currentRow = 2;
+            if (entrada.getTipoEntrada() != null && entrada.getTipoEntrada().name().equals("COMPRA")) {
+                Row infoRow2 = sheet.createRow(currentRow++);
+                infoRow2.createCell(0).setCellValue("Proveedor: " + entrada.getProveedorNombre());
+            } else if (entrada.getTipoEntrada() != null && entrada.getTipoEntrada().name().equals("DEVOLUCION")) {
+                Row infoRow2 = sheet.createRow(currentRow++);
+                infoRow2.createCell(0).setCellValue("Tipo de Movimiento: Devolución");
+                Row infoRow3 = sheet.createRow(currentRow++);
+                infoRow3.createCell(0).setCellValue("ID Salida Referencia: " + entrada.getIdSalidaReferencia());
+                if (entrada.getIdSalidaReferencia() != null) {
+                    SalidaDto salidaOriginal = salidaService.findById(entrada.getIdSalidaReferencia());
+                    if (salidaOriginal != null) {
+                        Row infoRow4 = sheet.createRow(currentRow++);
+                        infoRow4.createCell(0).setCellValue("Cliente: " + salidaOriginal.getClienteNombre());
+                    }
+                }
+            }
 
             // Tabla de productos
-            Row headerRow = sheet.createRow(4);
+            Row headerRow = sheet.createRow(currentRow + 1);
             headerRow.createCell(0).setCellValue("Producto");
             headerRow.createCell(1).setCellValue("Cantidad");
             headerRow.createCell(2).setCellValue("Precio Unit.");
             headerRow.createCell(3).setCellValue("Subtotal");
 
-            int rowNum = 5;
+            int rowNum = currentRow + 2;
             for (DetalleEntradaDto detalle : entrada.getDetalles()) {
                 Row row = sheet.createRow(rowNum++);
                 row.createCell(0).setCellValue(detalle.getProductoNombre());
@@ -965,8 +1024,19 @@ public class PinateriaKardexController {
             }
 
             Row totalRow = sheet.createRow(rowNum);
-            totalRow.createCell(0).setCellValue("Total:");
+            totalRow.createCell(0).setCellValue("Costo Total:");
             totalRow.createCell(3).setCellValue("S/ " + entrada.getCostoTotal());
+
+            if (entrada.getTipoEntrada() != null && entrada.getTipoEntrada().name().equals("COMPRA")) {
+                Row igvRow = sheet.createRow(rowNum + 1);
+                igvRow.createCell(0).setCellValue("IGV (18%):");
+                igvRow.createCell(3).setCellValue("S/ " + entrada.getCostoTotal().multiply(BigDecimal.valueOf(0.18)));
+
+                Row finalTotalRow = sheet.createRow(rowNum + 2);
+                finalTotalRow.createCell(0).setCellValue("Total con IGV:");
+                finalTotalRow.createCell(3)
+                        .setCellValue("S/ " + entrada.getCostoTotal().multiply(BigDecimal.valueOf(1.18)));
+            }
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             workbook.write(baos);

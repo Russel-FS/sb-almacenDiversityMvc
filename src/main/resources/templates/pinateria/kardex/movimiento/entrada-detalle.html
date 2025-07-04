@@ -416,6 +416,7 @@
             <!-- Información del Proveedor -->
             <div
               class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm mb-8"
+              th:if="${entrada?.tipoEntrada?.name() == 'COMPRA'}"
             >
               <div class="flex items-center space-x-3 mb-6">
                 <div
@@ -470,6 +471,69 @@
                     th:text="${entrada?.proveedorDireccion ?: 'N/A'}"
                   >
                     Dirección
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Información del Cliente esto es solo para devoluciones -->
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm mb-8"
+              th:if="${entrada?.tipoEntrada?.name() == 'DEVOLUCION' and salidaOriginal != null}"
+            >
+              <div class="flex items-center space-x-3 mb-6">
+                <div
+                  class="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center"
+                >
+                  <svg
+                    class="w-7 h-7 text-blue-800"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900">
+                    Información del Cliente
+                  </h3>
+                  <p class="text-sm text-gray-600">
+                    Datos del cliente de la salida original
+                  </p>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="space-y-2">
+                  <div class="text-sm text-gray-500">Nombre Completo</div>
+                  <div
+                    class="font-medium text-gray-900"
+                    th:text="${salidaOriginal?.clienteNombre}"
+                  >
+                    Cliente
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <div class="text-sm text-gray-500">Tipo de Cliente</div>
+                  <div
+                    class="font-medium text-gray-900"
+                    th:text="${salidaOriginal?.clienteTipo?.descripcion}"
+                  >
+                    Persona Natural
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <div class="text-sm text-gray-500">Documento</div>
+                  <div
+                    class="font-medium text-gray-900"
+                    th:text="${salidaOriginal?.clienteDni ?: salidaOriginal?.clienteRuc ?: 'N/A'}"
+                  >
+                    12345678
                   </div>
                 </div>
               </div>
@@ -607,11 +671,17 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-xl font-semibold text-gray-900">
+                  <h3 class="text-xl font-semibold text-gray-900" th:if="${entrada?.tipoEntrada?.name() == 'COMPRA'}">
                     Productos Recibidos
                   </h3>
-                  <p class="text-sm text-gray-600">
+                  <h3 class="text-xl font-semibold text-gray-900" th:if="${entrada?.tipoEntrada?.name() == 'DEVOLUCION'}">
+                    Productos Devueltos
+                  </h3>
+                  <p class="text-sm text-gray-600" th:if="${entrada?.tipoEntrada?.name() == 'COMPRA'}">
                     Lista de productos en la entrada
+                  </p>
+                  <p class="text-sm text-gray-600" th:if="${entrada?.tipoEntrada?.name() == 'DEVOLUCION'}">
+                    Lista de productos devueltos por el cliente
                   </p>
                 </div>
               </div>
@@ -718,7 +788,10 @@
                     S/ 0.00
                   </div>
                 </div>
-                <div class="space-y-2" th:if="${entrada?.tipoEntrada?.name() == 'COMPRA'}">
+                <div
+                  class="space-y-2"
+                  th:if="${entrada?.tipoEntrada?.name() == 'COMPRA'}"
+                >
                   <div class="text-sm text-gray-500">IGV (18%)</div>
                   <div
                     class="text-lg font-medium text-gray-900"
@@ -727,7 +800,10 @@
                     S/ 0.00
                   </div>
                 </div>
-                <div class="space-y-2" th:if="${entrada?.tipoEntrada?.name() == 'COMPRA'}">
+                <div
+                  class="space-y-2"
+                  th:if="${entrada?.tipoEntrada?.name() == 'COMPRA'}"
+                >
                   <div class="text-sm text-gray-500">Total con IGV</div>
                   <div
                     class="text-xl font-semibold text-emerald-600"
