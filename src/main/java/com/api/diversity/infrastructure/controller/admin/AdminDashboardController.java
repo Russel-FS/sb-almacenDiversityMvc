@@ -14,12 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.api.diversity.application.dto.ProductoDto;
 import com.api.diversity.application.dto.UsuarioDto;
 import com.api.diversity.application.service.interfaces.IClienteService;
+import com.api.diversity.application.service.interfaces.IEntradaService;
 import com.api.diversity.application.service.interfaces.IProductoService;
 import com.api.diversity.application.service.interfaces.IProveedorService;
+import com.api.diversity.application.service.interfaces.IRubroService;
+import com.api.diversity.application.service.interfaces.ISalidaService;
 import com.api.diversity.application.service.interfaces.IUsuarioService;
 import com.api.diversity.domain.enums.EstadoCliente;
+import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.EstadoProducto;
 import com.api.diversity.domain.enums.EstadoProveedor;
+import com.api.diversity.domain.enums.EstadoSalida;
 import com.api.diversity.domain.enums.EstadoUsuario;
 import com.api.diversity.domain.enums.TipoRubro;
 
@@ -36,6 +41,9 @@ public class AdminDashboardController {
         private final IProductoService productoService;
         private final IProveedorService proveedorService;
         private final IClienteService clienteService;
+        private final IEntradaService entradaService;
+        private final ISalidaService salidaService;
+        private final IRubroService rubroService;
 
         @GetMapping("")
         public String dashboard(Model model) {
@@ -188,19 +196,69 @@ public class AdminDashboardController {
                         stockBajoPorRubro.put("data", List.of(stockBajoPinateria, stockBajoLibreria, stockBajoCamaras));
                         stockBajoPorRubro.put("backgroundColor", List.of("#fef3c7", "#fecaca", "#fde68a"));
 
-                        // Datos para gráfico de valor de inventario por rubro
-                        BigDecimal valorPinateria = productosPinateria.stream()
-                                        .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
-                                        .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
-                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-                        BigDecimal valorLibreria = productosLibreria.stream()
-                                        .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
-                                        .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
-                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-                        BigDecimal valorCamaras = productosCamaras.stream()
-                                        .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
-                                        .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
-                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                        // id de rubros
+                        Long idRubroPinateria = rubroService.findByNombreRubro(TipoRubro.PIÑATERIA.getNombre())
+                                        .map(r -> r.getIdRubro()).orElse(null);
+                        Long idRubroLibreria = rubroService.findByNombreRubro(TipoRubro.LIBRERIA.getNombre())
+                                        .map(r -> r.getIdRubro()).orElse(null);
+                        Long idRubroCamaras = rubroService.findByNombreRubro(TipoRubro.CAMARA_SEGURIDAD.getNombre())
+                                        .map(r -> r.getIdRubro()).orElse(null);
+
+                        // valor de pitañería
+                        BigDecimal valorPinateria = BigDecimal.ZERO;
+                        if (idRubroPinateria != null) {
+                                // costo de entrada aprobadas
+                                BigDecimal entradasPinateria = entradaService
+                                                .findByRubroIdAndEstado(idRubroPinateria, EstadoEntrada.Completado)
+                                                .stream()
+                                                .map(e -> e.getCostoTotal())
+                                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                                // costo total de salidas aprobadas
+                                BigDecimal salidasPinateria = salidaService
+                                                .findByRubroIdAndEstado(idRubroPinateria, EstadoSalida.Completado)
+                                                .stream()
+                                                .map(s -> s.getTotalVenta())
+                                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                                valorPinateria = entradasPinateria.subtract(salidasPinateria);
+                        }
+
+                        // valor de inventario libreria
+                        BigDecimal valorLibreria = BigDecimal.ZERO;
+                        if (idRubroLibreria != null) {
+                                BigDecimal entradasLibreria = entradaService
+                                                .findByRubroIdAndEstado(idRubroLibreria, EstadoEntrada.Completado)
+                                                .stream()
+                                                .map(e -> e.getCostoTotal())
+                                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                                BigDecimal salidasLibreria = salidaService
+                                                .findByRubroIdAndEstado(idRubroLibreria, EstadoSalida.Completado)
+                                                .stream()
+                                                .map(s -> s.getTotalVenta())
+                                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                                valorLibreria = entradasLibreria.subtract(salidasLibreria);
+                        }
+
+                        // valor de inventario de camaras
+                        BigDecimal valorCamaras = BigDecimal.ZERO;
+                        if (idRubroCamaras != null) {
+                                BigDecimal entradasCamaras = entradaService
+                                                .findByRubroIdAndEstado(idRubroCamaras, EstadoEntrada.Completado)
+                                                .stream()
+                                                .map(e -> e.getCostoTotal())
+                                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                                BigDecimal salidasCamaras = salidaService
+                                                .findByRubroIdAndEstado(idRubroCamaras, EstadoSalida.Completado)
+                                                .stream()
+                                                .map(s -> s.getTotalVenta())
+                                                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                                valorCamaras = entradasCamaras.subtract(salidasCamaras);
+                        }
 
                         Map<String, Object> valorInventarioPorRubro = new HashMap<>();
                         valorInventarioPorRubro.put("labels", List.of("Piñatería", "Librería", "Cámaras"));
@@ -208,7 +266,7 @@ public class AdminDashboardController {
                                         valorLibreria.doubleValue(), valorCamaras.doubleValue()));
                         valorInventarioPorRubro.put("backgroundColor", List.of("#10b981", "#06b6d4", "#6366f1"));
 
-                        // datos de usuario
+                        // datos de usuariso
                         Long usuariosActivos = usuarioService.findAll().stream()
                                         .filter(u -> u.getEstado() == EstadoUsuario.Activo).count();
                         Long usuariosInactivos = usuarioService.findAll().stream()
