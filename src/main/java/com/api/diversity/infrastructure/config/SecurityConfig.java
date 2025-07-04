@@ -91,6 +91,18 @@ public class SecurityConfig {
                                                                 "SUPERVISOR_LIBRERIA",
                                                                 "SUPERVISOR_CAMARAS")
 
+                                                // Rutas de almacenero y devoluciones
+                                                .requestMatchers("/almacenero/**").hasAnyRole(
+                                                                "ADMINISTRADOR",
+                                                                "SUPERVISOR_GENERAL",
+                                                                "SUPERVISOR_PINATERIA",
+                                                                "SUPERVISOR_LIBRERIA",
+                                                                "SUPERVISOR_CAMARAS",
+                                                                "OPERADOR_PINATERIA",
+                                                                "OPERADOR_LIBRERIA",
+                                                                "OPERADOR_CAMARAS",
+                                                                "ALMACENERO")
+
                                                 // Página principal y home
                                                 .requestMatchers("/", "/home").authenticated()
 

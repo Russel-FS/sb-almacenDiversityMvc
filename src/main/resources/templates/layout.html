@@ -546,14 +546,14 @@
                 <!-- Separador para sección de almaceneros -->
                 <div
                   class="border-t border-gray-100 my-2"
-                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'ALMACENERO')"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS', 'ALMACENERO')"
                 ></div>
 
                 <!-- Devoluciones - Solo para almaceneros -->
                 <a
                   th:href="@{/almacenero/devoluciones/nueva}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
-                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'ALMACENERO')"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS', 'ALMACENERO')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-orange-500"
