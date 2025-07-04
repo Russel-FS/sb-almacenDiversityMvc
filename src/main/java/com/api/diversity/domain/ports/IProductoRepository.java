@@ -17,4 +17,6 @@ public interface IProductoRepository {
     List<ProductoEntity> findByCategoria(Long categoriaId);
 
     boolean existsByCodigoProducto(String codigoProducto);
+
+    boolean existsByCodigoProductoAndIdProductoNot(String codigoProducto, Long idProducto);
 }

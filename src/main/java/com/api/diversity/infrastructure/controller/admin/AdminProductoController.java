@@ -90,9 +90,14 @@ public class AdminProductoController {
         log.info("Mostrando formulario de nuevo producto");
 
         try {
+            ProductoDto producto = new ProductoDto();
+            producto.setStockActual(0);
+            producto.setStockMinimo(0);
+            producto.setStockMaximo(100);
+
             model.addAttribute("titulo", "Nuevo Producto");
             model.addAttribute("subtitulo", "Registrar nuevo producto en el sistema");
-            model.addAttribute("producto", new ProductoDto());
+            model.addAttribute("producto", producto);
             model.addAttribute("categorias", categoriaService.findAllIncludingInactive());
             model.addAttribute("estados", EstadoProducto.values());
             model.addAttribute("esNuevo", true);

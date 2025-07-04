@@ -12,4 +12,6 @@ public interface IProductoJpaRepository extends JpaRepository<ProductoEntity, Lo
     List<ProductoEntity> findByCategoria_IdCategoria(Long categoriaId);
 
     boolean existsByCodigoProducto(String codigoProducto);
+
+    boolean existsByCodigoProductoAndIdProductoNot(String codigoProducto, Long idProducto);
 }

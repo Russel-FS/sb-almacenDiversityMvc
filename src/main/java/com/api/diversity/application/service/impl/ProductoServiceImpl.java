@@ -66,15 +66,20 @@ public class ProductoServiceImpl implements IProductoService {
     @Transactional
     public ProductoDto save(ProductoDto producto, MultipartFile imagen) {
 
-        // se valida si es un registro de creacion
+        // validacion de codigo de producto duplicado
         if (producto.getIdProducto() == null) {
-            // validacion de codigo de producto duplicado
+            // Para productos nuevos
             if (productoRepository.existsByCodigoProducto(producto.getCodigoProducto())) {
                 throw new EntityExistsException("El código del producto ya existe");
             }
+        } else {
+            // para productos existentes validacion
+            if (productoRepository.existsByCodigoProductoAndIdProductoNot(producto.getCodigoProducto(),
+                    producto.getIdProducto())) {
+                throw new EntityExistsException("El código del producto ya existe en otro producto");
+            }
         }
 
-        // validar si el producto ya existe y asignar la imagen existente si es una
         // actualización
         if (producto.getIdProducto() != null) {
             var productoExistente = productoRepository.findById(producto.getIdProducto())
@@ -94,6 +99,17 @@ public class ProductoServiceImpl implements IProductoService {
         if (producto.getIdProducto() == null) {
             producto.setCreatedBy(securityContext.getCurrentUserDatabase());
             producto.setFechaCreacion(LocalDateTime.now());
+
+            // Establecer valores por defecto para stock si son null
+            if (producto.getStockActual() == null) {
+                producto.setStockActual(0);
+            }
+            if (producto.getStockMinimo() == null) {
+                producto.setStockMinimo(0);
+            }
+            if (producto.getStockMaximo() == null) {
+                producto.setStockMaximo(100);
+            }
         } else {
             producto.setUpdatedBy(securityContext.getCurrentUserDatabase());
             producto.setFechaModificacion(LocalDateTime.now());
