@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <head>
     <meta charset="UTF-8" />
     <title>J&C Diversity - Panel de Control</title>
@@ -27,79 +30,409 @@
           </div>
         </div>
 
-        <!-- Accesos rápidos -->
-        <div class="max-w-5xl mx-auto px-4 py-8">
+        <!-- Accesos rápidos principales -->
+        <div class="max-w-6xl mx-auto px-4 py-8">
           <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">
             Accesos rápidos
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <a
-              href="/admin/productos"
-              class="group bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 p-6 rounded-2xl border border-blue-200 transition-all duration-200 text-center"
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
+            <!-- Realizar Entrada -->
+            <div
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
             >
-              <div
-                class="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
+              <a
+                href="#"
+                onclick="mostrarOpcionesEntrada()"
+                class="group bg-gradient-to-br from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 p-6 rounded-2xl border border-green-200 transition-all duration-200 text-center block"
               >
-                <svg
-                  class="w-6 h-6 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                  />
-                </svg>
-              </div>
-              <h4 class="text-lg font-semibold text-gray-900 mb-1">
-                Productos
-              </h4>
-              <p class="text-sm text-gray-600">Inventario</p>
-            </a>
-            <a
-              href="/clientes"
-              class="group bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 p-6 rounded-2xl border border-purple-200 transition-all duration-200 text-center"
+                  <svg
+                    class="w-6 h-6 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                </div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-1">
+                  Realizar Entrada
+                </h4>
+                <p class="text-sm text-gray-600">Registrar productos</p>
+              </a>
+            </div>
+
+            <!-- Realizar Salida -->
+            <div
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
             >
-              <div
-                class="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
+              <a
+                href="#"
+                onclick="mostrarOpcionesSalida()"
+                class="group bg-gradient-to-br from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 p-6 rounded-2xl border border-red-200 transition-all duration-200 text-center block"
               >
-                <svg
-                  class="w-6 h-6 text-purple-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-red-100 to-pink-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-                  />
-                </svg>
-              </div>
-              <h4 class="text-lg font-semibold text-gray-900 mb-1">Clientes</h4>
-              <p class="text-sm text-gray-600">Gestión de clientes</p>
-            </a>
-            <!-- Agrega más accesos según los módulos y permisos -->
+                  <svg
+                    class="w-6 h-6 text-red-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M20 12H4"
+                    />
+                  </svg>
+                </div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-1">
+                  Realizar Salida
+                </h4>
+                <p class="text-sm text-gray-600">Despachar productos</p>
+              </a>
+            </div>
+
+            <!-- Ver Productos -->
+            <div
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
+            >
+              <a
+                href="#"
+                onclick="mostrarOpcionesProductos()"
+                class="group bg-gradient-to-br from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 p-6 rounded-2xl border border-blue-200 transition-all duration-200 text-center block"
+              >
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
+                >
+                  <svg
+                    class="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                </div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-1">
+                  Ver Productos
+                </h4>
+                <p class="text-sm text-gray-600">Consultar inventario</p>
+              </a>
+            </div>
+
+            <!-- Ver Movimientos -->
+            <div
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
+            >
+              <a
+                href="#"
+                onclick="mostrarOpcionesMovimientos()"
+                class="group bg-gradient-to-br from-purple-50 to-violet-50 hover:from-purple-100 hover:to-violet-100 p-6 rounded-2xl border border-purple-200 transition-all duration-200 text-center block"
+              >
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-purple-100 to-violet-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
+                >
+                  <svg
+                    class="w-6 h-6 text-purple-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                </div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-1">
+                  Ver Movimientos
+                </h4>
+                <p class="text-sm text-gray-600">Historial de kardex</p>
+              </a>
+            </div>
+
+            <!-- Clientes -->
+            <div
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS')"
+            >
+              <a
+                href="/clientes"
+                class="group bg-gradient-to-br from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 p-6 rounded-2xl border border-orange-200 transition-all duration-200 text-center block"
+              >
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-orange-100 to-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
+                >
+                  <svg
+                    class="w-6 h-6 text-orange-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                    />
+                  </svg>
+                </div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-1">
+                  Clientes
+                </h4>
+                <p class="text-sm text-gray-600">Gestión de clientes</p>
+              </a>
+            </div>
+
+            <!-- Proveedores -->
+            <div
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS')"
+            >
+              <a
+                href="/proveedores"
+                class="group bg-gradient-to-br from-teal-50 to-cyan-50 hover:from-teal-100 hover:to-cyan-100 p-6 rounded-2xl border border-teal-200 transition-all duration-200 text-center block"
+              >
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
+                >
+                  <svg
+                    class="w-6 h-6 text-teal-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                  </svg>
+                </div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-1">
+                  Proveedores
+                </h4>
+                <p class="text-sm text-gray-600">Gestión de proveedores</p>
+              </a>
+            </div>
+
+            <!-- Administración -->
+            <div sec:authorize="hasRole('ADMINISTRADOR')">
+              <a
+                href="/admin/dashboard"
+                class="group bg-gradient-to-br from-gray-50 to-slate-50 hover:from-gray-100 hover:to-slate-100 p-6 rounded-2xl border border-gray-200 transition-all duration-200 text-center block"
+              >
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-gray-100 to-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-200"
+                >
+                  <svg
+                    class="w-6 h-6 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                </div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-1">
+                  Administración
+                </h4>
+                <p class="text-sm text-gray-600">Panel de control</p>
+              </a>
+            </div>
           </div>
         </div>
 
-        <!-- Avisos o noticias generales -->
+        <!-- Estadísticas rápidas -->
+        <div class="max-w-6xl mx-auto px-4 py-8">
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">
+            Resumen del Sistema
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div
+              class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm"
+            >
+              <div class="flex items-center">
+                <div
+                  class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-medium text-gray-600">
+                    Total Productos
+                  </p>
+                  <p
+                    class="text-2xl font-bold text-gray-900"
+                    th:text="${totalProductos}"
+                  >
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm"
+            >
+              <div class="flex items-center">
+                <div
+                  class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-red-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                    />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-medium text-gray-600">Stock Bajo</p>
+                  <p
+                    class="text-2xl font-bold text-gray-900"
+                    th:text="${totalStockBajo}"
+                  >
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm"
+            >
+              <div class="flex items-center">
+                <div
+                  class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                    />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-medium text-gray-600">Clientes</p>
+                  <p
+                    class="text-2xl font-bold text-gray-900"
+                    th:text="${totalClientes}"
+                  >
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm"
+            >
+              <div class="flex items-center">
+                <div
+                  class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-purple-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-medium text-gray-600">Proveedores</p>
+                  <p
+                    class="text-2xl font-bold text-gray-900"
+                    th:text="${totalProveedores}"
+                  >
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Información útil del sistema -->
         <div class="max-w-3xl mx-auto px-4 py-6">
           <div
-            class="bg-blue-50 border border-blue-200 rounded-2xl p-6 text-center"
+            class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 text-center"
           >
             <h3 class="text-lg font-semibold text-blue-800 mb-2">
-              Aviso importante
+              Información del Sistema
             </h3>
-            <p class="text-gray-700">
-              El sistema estará en mantenimiento el domingo de 2:00 a 4:00
-              am.<br />
-              Si tienes dudas, contacta a soporte.
+            <p class="text-gray-700 mb-3">
+              Bienvenido al sistema de gestión de inventario de J&C
+              Diversity.<br />
+              Aquí puedes realizar entradas, salidas, consultar productos y
+              gestionar el kardex.
             </p>
+            <div class="text-sm text-gray-600">
+              <p>• Usa los accesos rápidos para navegar fácilmente</p>
+              <p>• Consulta el historial de movimientos en tu rubro</p>
+              <p>• Mantén actualizado el inventario</p>
+            </div>
           </div>
         </div>
 
@@ -125,8 +458,206 @@
             Contactar soporte
           </a>
         </div>
+
+        <!-- Modal para opciones de entrada -->
+        <div
+          id="modalEntrada"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50"
+        >
+          <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                Seleccionar Rubro para Entrada
+              </h3>
+              <div class="space-y-3">
+                <a
+                  href="/pinateria/kardex/entrada/nueva"
+                  class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Piñatería
+                </a>
+                <a
+                  href="/libreria/kardex/entrada/nueva"
+                  class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Librería
+                </a>
+                <a
+                  href="/camaras/kardex/entrada/nueva"
+                  class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Cámaras
+                </a>
+              </div>
+              <button
+                onclick="cerrarModal('modalEntrada')"
+                class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal para opciones de salida -->
+        <div
+          id="modalSalida"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50"
+        >
+          <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                Seleccionar Rubro para Salida
+              </h3>
+              <div class="space-y-3">
+                <a
+                  href="/pinateria/kardex/salida/nueva"
+                  class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Piñatería
+                </a>
+                <a
+                  href="/libreria/kardex/salida/nueva"
+                  class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Librería
+                </a>
+                <a
+                  href="/camaras/kardex/salida/nueva"
+                  class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Cámaras
+                </a>
+              </div>
+              <button
+                onclick="cerrarModal('modalSalida')"
+                class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal para opciones de productos -->
+        <div
+          id="modalProductos"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50"
+        >
+          <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                Seleccionar Rubro para Productos
+              </h3>
+              <div class="space-y-3">
+                <a
+                  href="/pinateria/productos"
+                  class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Piñatería
+                </a>
+                <a
+                  href="/libreria/productos"
+                  class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Librería
+                </a>
+                <a
+                  href="/camaras/productos"
+                  class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Cámaras
+                </a>
+              </div>
+              <button
+                onclick="cerrarModal('modalProductos')"
+                class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal para opciones de movimientos -->
+        <div
+          id="modalMovimientos"
+          class="fixed inset-0 bg-black bg-opacity-50 hidden z-50"
+        >
+          <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                Seleccionar Rubro para Movimientos
+              </h3>
+              <div class="space-y-3">
+                <a
+                  href="/pinateria/kardex/movimiento/lista"
+                  class="block w-full bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Piñatería
+                </a>
+                <a
+                  href="/libreria/kardex/movimiento/lista"
+                  class="block w-full bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Librería
+                </a>
+                <a
+                  href="/camaras/kardex/movimiento/lista"
+                  class="block w-full bg-green-100 hover:bg-green-200 text-green-800 font-medium py-3 px-4 rounded-xl text-center transition-colors"
+                >
+                  Cámaras
+                </a>
+              </div>
+              <button
+                onclick="cerrarModal('modalMovimientos')"
+                class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
+
     <script th:src="@{/js/animations/heroAnimations.js}"></script>
+    <script>
+      function mostrarOpcionesEntrada() {
+        document.getElementById("modalEntrada").classList.remove("hidden");
+      }
+
+      function mostrarOpcionesSalida() {
+        document.getElementById("modalSalida").classList.remove("hidden");
+      }
+
+      function mostrarOpcionesProductos() {
+        document.getElementById("modalProductos").classList.remove("hidden");
+      }
+
+      function mostrarOpcionesMovimientos() {
+        document.getElementById("modalMovimientos").classList.remove("hidden");
+      }
+
+      function cerrarModal(modalId) {
+        document.getElementById(modalId).classList.add("hidden");
+      }
+
+      // Cerrar modal al hacer clic fuera de él
+      document.addEventListener("click", function (event) {
+        const modals = [
+          "modalEntrada",
+          "modalSalida",
+          "modalProductos",
+          "modalMovimientos",
+        ];
+        modals.forEach((modalId) => {
+          const modal = document.getElementById(modalId);
+          if (event.target === modal) {
+            modal.classList.add("hidden");
+          }
+        });
+      });
+    </script>
   </body>
 </html>
