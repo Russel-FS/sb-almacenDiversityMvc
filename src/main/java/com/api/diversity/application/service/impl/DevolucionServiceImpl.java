@@ -2,7 +2,9 @@ package com.api.diversity.application.service.impl;
 
 import com.api.diversity.application.dto.DevolucionRequestDto;
 import com.api.diversity.application.dto.EntradaDto;
+import com.api.diversity.application.dto.SalidaDto;
 import com.api.diversity.application.mappers.EntradaMapper;
+import com.api.diversity.application.mappers.SalidaMapper;
 import com.api.diversity.application.service.interfaces.DevolucionService;
 import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.TipoEntrada;
@@ -42,6 +44,7 @@ public class DevolucionServiceImpl implements DevolucionService {
     private final UsuarioJpaRepository usuarioJpaRepository;
     private final SecurityContext securityContext;
     private final EntradaMapper entradaMapper;
+    private final SalidaMapper salidaMapper;
 
     @Override
     @Transactional
@@ -143,5 +146,25 @@ public class DevolucionServiceImpl implements DevolucionService {
         detalleEntradaJpaRepository.saveAll(detallesEntrada);
 
         return entradaMapper.toDto(savedEntrada);
+    }
+
+    @Override
+    public SalidaDto buscarSalidaPorIdONumeroDocumento(Long idSalida, String numeroDocumento) {
+        SalidaEntity salida = null;
+        if (idSalida != null) {
+            salida = salidaJpaRepository.findById(idSalida).orElse(null);
+        } else if (numeroDocumento != null && !numeroDocumento.isEmpty()) {
+            List<SalidaEntity> resultados = salidaJpaRepository.findAll();
+            for (SalidaEntity s : resultados) {
+                if (s.getNumeroDocumento().equalsIgnoreCase(numeroDocumento)) {
+                    salida = s;
+                    break;
+                }
+            }
+        }
+        if (salida == null) {
+            throw new RuntimeException("No se encontró la salida con los datos proporcionados");
+        }
+        return salidaMapper.toDto(salida);
     }
 }
