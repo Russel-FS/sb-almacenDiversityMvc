@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.TipoDocumento;
+import com.api.diversity.domain.enums.TipoEntrada;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,8 @@ public class EntradaDto {
     private Long idEntrada;
     private String numeroFactura;
     private TipoDocumento tipoDocumento;
+    private TipoEntrada tipoEntrada; // Nuevo campo
+    private Long idSalidaReferencia; // Nuevo campo
     private Long proveedorId;
     private String proveedorNombre;
     private String proveedorRuc;

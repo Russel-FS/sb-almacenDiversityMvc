@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.api.diversity.application.dto.EntradaDto;
+import com.api.diversity.domain.enums.TipoEntrada;
 import com.api.diversity.domain.model.EntradaEntity;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,8 @@ public class EntradaMapper {
         dto.setIdEntrada(entity.getIdEntrada());
         dto.setNumeroFactura(entity.getNumeroFactura());
         dto.setTipoDocumento(entity.getTipoDocumento());
+        dto.setTipoEntrada(entity.getTipoEntrada()); // Nuevo campo
+        dto.setIdSalidaReferencia(entity.getIdSalidaReferencia()); // Nuevo campo
         dto.setFechaEntrada(entity.getFechaEntrada());
         dto.setCostoTotal(entity.getCostoTotal());
         dto.setEstado(entity.getEstado());
@@ -76,6 +79,8 @@ public class EntradaMapper {
         entity.setIdEntrada(dto.getIdEntrada());
         entity.setNumeroFactura(dto.getNumeroFactura());
         entity.setTipoDocumento(dto.getTipoDocumento());
+        entity.setTipoEntrada(dto.getTipoEntrada()); // Nuevo campo
+        entity.setIdSalidaReferencia(dto.getIdSalidaReferencia()); // Nuevo campo
         entity.setFechaEntrada(dto.getFechaEntrada());
         entity.setCostoTotal(dto.getCostoTotal());
         entity.setEstado(dto.getEstado());

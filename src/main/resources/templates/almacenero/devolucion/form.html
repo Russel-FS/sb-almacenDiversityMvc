@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registrar Devolución</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{layout :: layout(~{::section})}">
+      <section>
+        <!-- Contenedor principal -->
+        <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+          <div class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Mensajes -->
+            <div th:if="${mensaje != null}" id="mensajeAlert" class="mb-8">
+              <div
+                th:class="${tipoMensaje == 'error' ? 'bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-sm' : 'bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-3xl p-6 shadow-sm'}"
+              >
+                <div class="flex items-center">
+                  <div
+                    th:class="${tipoMensaje == 'error' ? 'w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4' : 'w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mr-4'}"
+                  >
+                    <svg
+                      th:if="${tipoMensaje == 'error'}"
+                      class="w-6 h-6 text-red-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                    <svg
+                      th:if="${tipoMensaje == 'success'}"
+                      class="w-6 h-6 text-emerald-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p
+                    class="text-base font-medium"
+                    th:classappend="${tipoMensaje == 'error' ? 'text-red-800' : 'text-emerald-800'}"
+                    th:text="${mensaje}"
+                  ></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Header del Formulario -->
+            <div class="mb-12">
+              <div class="flex flex-wrap items-center justify-between mb-8">
+                <div class="flex flex-wrap items-center gap-6">
+                  <div
+                    class="w-16 h-16 bg-gradient-to-br from-orange-600 to-yellow-600 rounded-3xl flex items-center justify-center shadow-sm"
+                  >
+                    <svg
+                      class="w-8 h-8 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M3 10h10a8 8 0 018 8v2M3 10l3 3m-3-3l3-3"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h1
+                      class="text-4xl font-light text-gray-900 tracking-tight"
+                    >
+                      Registrar Devolución
+                    </h1>
+                    <p class="text-lg text-gray-600 mt-2">
+                      Procesar devoluciones de productos de clientes
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-4">
+                  <a
+                    href="/"
+                    class="px-6 py-3 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-2 inline"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                      />
+                    </svg>
+                    Volver al Inicio
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Formulario -->
+            <div
+              class="glass-effect rounded-3xl border border-gray-200 p-8 shadow-sm"
+            >
+              <form
+                th:action="@{/almacenero/devoluciones/procesar}"
+                th:object="${devolucionRequest}"
+                method="post"
+              >
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                  <div>
+                    <label
+                      for="idSalidaOriginal"
+                      class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                    >
+                      <svg
+                        class="w-4 h-4 inline mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                        />
+                      </svg>
+                      ID de Salida Original:</label
+                    >
+                    <input
+                      type="number"
+                      id="idSalidaOriginal"
+                      name="idSalidaOriginal"
+                      th:field="*{idSalidaOriginal}"
+                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="motivoDevolucion"
+                      class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                    >
+                      <svg
+                        class="w-4 h-4 inline mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      Motivo de la Devolución:</label
+                    >
+                    <textarea
+                      id="motivoDevolucion"
+                      name="motivoDevolucion"
+                      th:field="*{motivoDevolucion}"
+                      rows="3"
+                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <h3
+                  class="text-lg font-semibold text-gray-900 mb-6 flex items-center"
+                >
+                  <svg
+                    class="w-5 h-5 mr-3 text-gray-700"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                  Productos a Devolver
+                </h3>
+                <div id="productos-container" class="space-y-6">
+                  <!-- Los productos se añadirán aquí dinámicamente con JavaScript -->
+                  <div
+                    class="producto-item glass-effect rounded-3xl border border-gray-200 p-8 shadow-sm"
+                  >
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                      <div>
+                        <label
+                          class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                          >ID Producto:</label
+                        >
+                        <input
+                          type="number"
+                          name="productosDevueltos[0].idProducto"
+                          class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                          >Cantidad:</label
+                        >
+                        <input
+                          type="number"
+                          name="productosDevueltos[0].cantidad"
+                          min="1"
+                          class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label
+                          class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
+                          >Precio Unitario:</label
+                        >
+                        <input
+                          type="number"
+                          step="0.01"
+                          name="productosDevueltos[0].precioUnitario"
+                          min="0"
+                          class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                          required
+                        />
+                      </div>
+                      <div class="flex items-end">
+                        <button
+                          type="button"
+                          class="remove-producto-btn w-full px-6 py-5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 shadow-sm rounded-2xl"
+                        >
+                          <svg
+                            class="w-5 h-5 inline mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  id="add-producto-btn"
+                  class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 transition-colors duration-200 shadow-sm rounded-2xl mt-6"
+                >
+                  <svg
+                    class="w-5 h-5 mr-2 inline"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                  Añadir Otro Producto
+                </button>
+
+                <div class="flex justify-end space-x-4 mt-10">
+                  <a
+                    href="/"
+                    class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-2 inline"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                    Cancelar
+                  </a>
+                  <button
+                    type="submit"
+                    class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-colors duration-200 shadow-sm rounded-2xl"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-2 inline"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Procesar Devolución
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Script para ocultar mensajes de alerta después de un tiempo -->
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const mensajeAlert = document.getElementById("mensajeAlert");
+            if (mensajeAlert) {
+              setTimeout(function () {
+                mensajeAlert.style.transition = "opacity 0.5s ease-out";
+                mensajeAlert.style.opacity = "0";
+                setTimeout(function () {
+                  mensajeAlert.remove();
+                }, 500);
+              }, 5000);
+            }
+
+            // Lógica para añadir/eliminar productos dinámicamente
+            let productoIndex = 1; // Empezamos con 1 porque el primero ya está en el HTML
+            const productosContainer = document.getElementById(
+              "productos-container"
+            );
+            const addProductoBtn = document.getElementById("add-producto-btn");
+
+            addProductoBtn.addEventListener("click", () => {
+              const newItem = document.createElement("div");
+              newItem.classList.add(
+                "producto-item",
+                "glass-effect",
+                "rounded-3xl",
+                "border",
+                "border-gray-200",
+                "p-8",
+                "shadow-sm"
+              );
+              newItem.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide">ID Producto:</label>
+                    <input type="number" name="productosDevueltos[${productoIndex}].idProducto" class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm" required />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide">Cantidad:</label>
+                    <input type="number" name="productosDevueltos[${productoIndex}].cantidad" min="1" class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm" required />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide">Precio Unitario:</label>
+                    <input type="number" step="0.01" name="productosDevueltos[${productoIndex}].precioUnitario" min="0" class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm" required />
+                  </div>
+                  <div class="flex items-end">
+                    <button type="button" class="remove-producto-btn w-full px-6 py-5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 shadow-sm rounded-2xl">
+                      <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              `;
+              productosContainer.appendChild(newItem);
+              productoIndex++;
+              attachRemoveListeners();
+            });
+
+            function attachRemoveListeners() {
+              document
+                .querySelectorAll(".remove-producto-btn")
+                .forEach((button) => {
+                  button.onclick = (event) => {
+                    event.target.closest(".producto-item").remove();
+                    reindexProductos();
+                  };
+                });
+            }
+
+            function reindexProductos() {
+              document
+                .querySelectorAll(".producto-item")
+                .forEach((item, index) => {
+                  item.querySelectorAll("input").forEach((input) => {
+                    const name = input.getAttribute("name");
+                    if (name) {
+                      input.setAttribute(
+                        "name",
+                        name.replace(
+                          /productosDevueltos\[\d+\]/,
+                          `productosDevueltos[${index}]`
+                        )
+                      );
+                    }
+                  });
+                });
+              productoIndex =
+                document.querySelectorAll(".producto-item").length;
+            }
+
+            attachRemoveListeners();
+          });
+        </script>
+      </section>
+    </div>
+  </body>
+</html>
