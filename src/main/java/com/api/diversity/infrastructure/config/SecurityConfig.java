@@ -37,6 +37,9 @@ public class SecurityConfig {
                                                 .requestMatchers("/login", "/css/**", "/js/**",
                                                                 "/images/**", "/favicon.ico")
                                                 .permitAll()
+                                                // ruta de errores
+                                                .requestMatchers("/error/**", "/error")
+                                                .permitAll()
 
                                                 // Rutas de administración
                                                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
@@ -109,6 +112,12 @@ public class SecurityConfig {
                                                 .logoutSuccessUrl("/auth/login")
                                                 .deleteCookies("JSESSIONID", "remember-me")
                                                 .permitAll())
+                                // Manejo de errores de acceso denegaddo
+                                .exceptionHandling(exceptions -> exceptions
+                                                .accessDeniedPage("/error/access-denied")
+                                                .authenticationEntryPoint((request, response, authException) -> {
+                                                        response.sendRedirect("/auth/login?error=unauthorized");
+                                                }))
                                 .csrf(csrf -> csrf.disable());
 
                 return http.build();

@@ -1,182 +1,291 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>J&C Diversity S.A.C. - Sistema de Gestión</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@200;300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/login.css">
-</head>
-<body class="hero-gradient min-h-screen text-[#1d1d1f]">
-    <!-- Elementos decorativos flotantes -->
-    <div class="fixed inset-0 pointer-events-none" style="z-index: 0;">
-        <!-- Elemento Piñatería -->
-        <div class="absolute top-20 left-[15%] w-24 h-24 float-normal opacity-20">
-            <svg class="w-full h-full text-pink-400" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L9 7H3L6 12L3 17H9L12 22L15 17H21L18 12L21 7H15L12 2Z"/>
-            </svg>
-        </div>
-        <div class="absolute bottom-20 right-[10%] w-16 h-16 float-reverse opacity-10">
-            <svg class="w-full h-full text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-                <path d="M12 8l-3 6h6z"/>
-            </svg>
-        </div>
+    <link
+      href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@200;300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/login.css" />
+  </head>
+  <body class="hero-gradient min-h-screen text-[#1d1d1f]">
+    <!-- Elementos decorativos flotanttes -->
+    <div class="fixed inset-0 pointer-events-none" style="z-index: 0">
+      <!-- Elemento Piñatería -->
+      <div class="absolute top-20 left-[15%] w-24 h-24 float-normal opacity-20">
+        <svg
+          class="w-full h-full text-pink-400"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M12 2L9 7H3L6 12L3 17H9L12 22L15 17H21L18 12L21 7H15L12 2Z"
+          />
+        </svg>
+      </div>
+      <div
+        class="absolute bottom-20 right-[10%] w-16 h-16 float-reverse opacity-10"
+      >
+        <svg
+          class="w-full h-full text-yellow-400"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+          />
+          <path d="M12 8l-3 6h6z" />
+        </svg>
+      </div>
 
-        <!-- Elemento Libreríaaa -->
-        <div class="absolute top-[30%] right-[20%] w-20 h-20 float-side opacity-15">
-            <svg class="w-full h-full text-blue-400" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z"/>
-                <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/>
-            </svg>
-        </div>
-        <div class="absolute bottom-[25%] left-[20%] w-16 h-16 float-normal opacity-10">
-            <svg class="w-full h-full text-indigo-400" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h6v5H9V4zm-3 15V4h2v15H6zm4 0v-5h6v5h-6z"/>
-            </svg>
-        </div>
+      <!-- Elemento Libreríaaa -->
+      <div
+        class="absolute top-[30%] right-[20%] w-20 h-20 float-side opacity-15"
+      >
+        <svg
+          class="w-full h-full text-blue-400"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z" />
+          <path
+            d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"
+          />
+        </svg>
+      </div>
+      <div
+        class="absolute bottom-[25%] left-[20%] w-16 h-16 float-normal opacity-10"
+      >
+        <svg
+          class="w-full h-full text-indigo-400"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h6v5H9V4zm-3 15V4h2v15H6zm4 0v-5h6v5h-6z"
+          />
+        </svg>
+      </div>
 
-        <!-- Elemento Cámaras de Seguridad -->
-        <div class="absolute top-[15%] right-[30%] w-20 h-20 float-reverse opacity-15">
-            <svg class="w-full h-full text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-            </svg>
-        </div>
-        <div class="absolute bottom-[40%] left-[25%] w-16 h-16 float-side opacity-10">
-            <svg class="w-full h-full text-gray-500" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/>
-                <path d="M12 3L4 9v12h16V9l-8-6zm6 16H6v-9l6-4.5 6 4.5v9z"/>
-            </svg>
-        </div>
+      <!-- Elemento Cámaras de Seguridad -->
+      <div
+        class="absolute top-[15%] right-[30%] w-20 h-20 float-reverse opacity-15"
+      >
+        <svg
+          class="w-full h-full text-gray-400"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"
+          />
+        </svg>
+      </div>
+      <div
+        class="absolute bottom-[40%] left-[25%] w-16 h-16 float-side opacity-10"
+      >
+        <svg
+          class="w-full h-full text-gray-500"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"
+          />
+          <path d="M12 3L4 9v12h16V9l-8-6zm6 16H6v-9l6-4.5 6 4.5v9z" />
+        </svg>
+      </div>
     </div>
 
     <div class="relative min-h-screen flex flex-col justify-between z-10">
-        <!-- Header -->
-        <header class="fixed w-full top-0 z-50">
-            <div class="max-w-screen-xl mx-auto px-6">
-                <div class="py-4 flex justify-between items-center">
-                    <div class="text-sm font-light tracking-wide">
-                        J&C Diversity S.A.C.
-                    </div>
-                    <a href="#" class="text-sm text-gray-500 hover:text-[#1d1d1f] transition-colors duration-300">
-                        Soporte TI
-                    </a>
-                </div>
+      <!-- Header -->
+      <header class="fixed w-full top-0 z-50">
+        <div class="max-w-screen-xl mx-auto px-6">
+          <div class="py-4 flex justify-between items-center">
+            <div class="text-sm font-light tracking-wide">
+              J&C Diversity S.A.C.
             </div>
-        </header>
+            <a
+              href="#"
+              class="text-sm text-gray-500 hover:text-[#1d1d1f] transition-colors duration-300"
+            >
+              Soporte TI
+            </a>
+          </div>
+        </div>
+      </header>
 
-        <!-- Main Content -->
-        <main class="flex-1 flex items-center justify-center px-6 pt-20 pb-16">
-            <div class="w-full max-w-[380px] mx-auto">
-                <!-- Logo Section -->
-                <div class="mb-16 flex justify-center">
-                    <div class="relative w-24 h-24 float-normal">
-                        <div class="absolute inset-0 bg-gradient-to-tr from-[#1d1d1f] to-[#363639] rounded-[38px] rotate-12 opacity-90"></div>
-                        <div class="absolute inset-0 bg-white rounded-[34px] flex items-center justify-center transform -rotate-12">
-                            <div class="relative w-12 h-12 flex items-center justify-center">
-                                <svg class="w-full h-full" viewBox="0 0 48 48" fill="none" stroke="currentColor">
-                                    <path d="M24 12L34 18V30L24 36L14 30V18L24 12Z" stroke-width="2"/>
-                                    <path d="M24 12V36M14 18L34 30M34 18L14 30" stroke-width="2"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
+      <!-- Main Content -->
+      <main class="flex-1 flex items-center justify-center px-6 pt-20 pb-16">
+        <div class="w-full max-w-[380px] mx-auto">
+          <!-- Logo Section -->
+          <div class="mb-16 flex justify-center">
+            <div class="relative w-24 h-24 float-normal">
+              <div
+                class="absolute inset-0 bg-gradient-to-tr from-[#1d1d1f] to-[#363639] rounded-[38px] rotate-12 opacity-90"
+              ></div>
+              <div
+                class="absolute inset-0 bg-white rounded-[34px] flex items-center justify-center transform -rotate-12"
+              >
+                <div
+                  class="relative w-12 h-12 flex items-center justify-center"
+                >
+                  <svg
+                    class="w-full h-full"
+                    viewBox="0 0 48 48"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path
+                      d="M24 12L34 18V30L24 36L14 30V18L24 12Z"
+                      stroke-width="2"
+                    />
+                    <path
+                      d="M24 12V36M14 18L34 30M34 18L14 30"
+                      stroke-width="2"
+                    />
+                  </svg>
                 </div>
-
-                <!-- Main formulario contenedor -->
-                <div class="glass-effect rounded-3xl p-8 shadow-xl">
-                    <!-- titulo  -->
-                    <div class="text-center mb-12">
-                        <h1 class="text-[38px] leading-tight font-normal tracking-tight">
-                            Sistema de Gestión
-                        </h1>
-                        <div class="mt-4 flex justify-center gap-6 text-gray-500">
-                            <span class="text-sm">Piñatería</span>
-                            <span class="text-sm">Librería</span>
-                            <span class="text-sm">Seguridad</span>
-                        </div>
-                    </div>
-
-                    <!-- mensajes de error -->
-                    <div th:if="${param.error}" 
-                         class="mb-8 py-3 text-center">
-                        <p class="text-sm text-red-500 font-light" 
-                           th:text="${param.message != null ? param.message : 'Credenciales incorrectas'}">
-                        </p>
-                    </div>
-
-                    <!-- Form -->
-                    <form th:action="@{/auth/login}" method="POST" class="space-y-6">
-                        <div class="space-y-7">
-                            <div class="relative group">
-                                <input type="email" 
-                                       name="username" 
-                                       required
-                                       class="input-underline w-full py-4 text-[17px] font-light placeholder:text-gray-400 focus:outline-none"
-                                       placeholder="Correo corporativo" />
-                                <div class="absolute bottom-0 left-0 w-0 h-[1px] bg-[#1d1d1f] transition-all duration-300 group-focus-within:w-full"></div>
-                            </div>
-
-                            <div class="relative group">
-                                <input type="password" 
-                                       name="password" 
-                                       required
-                                       class="input-underline w-full py-4 text-[17px] font-light placeholder:text-gray-400 focus:outline-none"
-                                       placeholder="Contraseña" />
-                                <div class="absolute bottom-0 left-0 w-0 h-[1px] bg-[#1d1d1f] transition-all duration-300 group-focus-within:w-full"></div>
-                            </div>
-                        </div>
-
-                        <!-- checkbox recordarme -->
-                        <div class="flex items-center justify-between pt-2">
-                            <label class="flex items-center space-x-3 group cursor-pointer">
-                                <div class="relative">
-                                    <input type="checkbox" 
-                                           id="remember-me" 
-                                           name="remember-me"
-                                           class="peer sr-only" />
-                                    <div class="w-5 h-5 border-2 border-gray-300 rounded-lg peer-checked:bg-[#1d1d1f] peer-checked:border-[#1d1d1f] transition-all duration-300"></div>
-                                    <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-300" 
-                                         viewBox="0 0 12 12" fill="none" stroke="currentColor">
-                                        <path d="M2 6L5 9L10 3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </div>
-                                <span class="text-sm text-gray-500 group-hover:text-[#1d1d1f] transition-colors duration-300">
-                                    Recordar sesión
-                                </span>
-                            </label>
-                        </div>
-
-                        <!-- button de inciar sesion-->
-                        <button type="submit"
-                                class="relative w-full group mt-8">
-                            <div class="absolute inset-0 bg-[#1d1d1f] rounded-2xl opacity-5 group-hover:opacity-10 transition-opacity duration-300"></div>
-                            <div class="relative flex items-center justify-between bg-[#1d1d1f] text-white rounded-2xl px-8 py-4 group-hover:bg-black transition-all duration-300">
-                                <span class="text-[15px] font-light">Acceder al Sistema</span>
-                                <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                                </svg>
-                            </div>
-                        </button>
-                    </form>
-                </div>
+              </div>
             </div>
-        </main>
+          </div>
 
-        <!-- Footer -->
-        <footer class="py-6 px-6">
-            <div class="max-w-screen-xl mx-auto">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-                    <p class="text-xs text-gray-500">
-                        J&C Diversity S.A.C. © 2025 | Lima, Perú
-                    </p>
-                    <div class="flex items-center space-x-6">
-                        <span class="text-xs text-gray-400">Sistema interno de gestión</span>
-                    </div>
-                </div>
+          <!-- formulario contenedor -->
+          <div class="glass-effect rounded-3xl p-8 shadow-xl">
+            <!-- titulo  -->
+            <div class="text-center mb-12">
+              <h1 class="text-[38px] leading-tight font-normal tracking-tight">
+                Sistema de Gestión
+              </h1>
+              <div class="mt-4 flex justify-center gap-6 text-gray-500">
+                <span class="text-sm">Piñatería</span>
+                <span class="text-sm">Librería</span>
+                <span class="text-sm">Seguridad</span>
+              </div>
             </div>
-        </footer>
+
+            <!-- mensajes de error -->
+            <div th:if="${param.error}" class="mb-8 py-3 text-center">
+              <p
+                class="text-sm text-red-500 font-light"
+                th:text="${param.error == 'unauthorized' ? 'Debes iniciar sesión para acceder al sistema' : 'Credenciales incorrectas'}"
+              ></p>
+            </div>
+
+            <!-- Form -->
+            <form th:action="@{/auth/login}" method="POST" class="space-y-6">
+              <div class="space-y-7">
+                <div class="relative group">
+                  <input
+                    type="email"
+                    name="username"
+                    required
+                    class="input-underline w-full py-4 text-[17px] font-light placeholder:text-gray-400 focus:outline-none"
+                    placeholder="Correo corporativo"
+                  />
+                  <div
+                    class="absolute bottom-0 left-0 w-0 h-[1px] bg-[#1d1d1f] transition-all duration-300 group-focus-within:w-full"
+                  ></div>
+                </div>
+
+                <div class="relative group">
+                  <input
+                    type="password"
+                    name="password"
+                    required
+                    class="input-underline w-full py-4 text-[17px] font-light placeholder:text-gray-400 focus:outline-none"
+                    placeholder="Contraseña"
+                  />
+                  <div
+                    class="absolute bottom-0 left-0 w-0 h-[1px] bg-[#1d1d1f] transition-all duration-300 group-focus-within:w-full"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- checkbox recordarme -->
+              <div class="flex items-center justify-between pt-2">
+                <label class="flex items-center space-x-3 group cursor-pointer">
+                  <div class="relative">
+                    <input
+                      type="checkbox"
+                      id="remember-me"
+                      name="remember-me"
+                      class="peer sr-only"
+                    />
+                    <div
+                      class="w-5 h-5 border-2 border-gray-300 rounded-lg peer-checked:bg-[#1d1d1f] peer-checked:border-[#1d1d1f] transition-all duration-300"
+                    ></div>
+                    <svg
+                      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-300"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        d="M2 6L5 9L10 3"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <span
+                    class="text-sm text-gray-500 group-hover:text-[#1d1d1f] transition-colors duration-300"
+                  >
+                    Recordar sesión
+                  </span>
+                </label>
+              </div>
+
+              <!-- button de inciar sesion-->
+              <button type="submit" class="relative w-full group mt-8">
+                <div
+                  class="absolute inset-0 bg-[#1d1d1f] rounded-2xl opacity-5 group-hover:opacity-10 transition-opacity duration-300"
+                ></div>
+                <div
+                  class="relative flex items-center justify-between bg-[#1d1d1f] text-white rounded-2xl px-8 py-4 group-hover:bg-black transition-all duration-300"
+                >
+                  <span class="text-[15px] font-light">Acceder al Sistema</span>
+                  <svg
+                    class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </div>
+              </button>
+            </form>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="py-6 px-6">
+        <div class="max-w-screen-xl mx-auto">
+          <div
+            class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left"
+          >
+            <p class="text-xs text-gray-500">
+              J&C Diversity S.A.C. © 2025 | Lima, Perú
+            </p>
+            <div class="flex items-center space-x-6">
+              <span class="text-xs text-gray-400"
+                >Sistema interno de gestión</span
+              >
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
-</body>
+  </body>
 </html>
