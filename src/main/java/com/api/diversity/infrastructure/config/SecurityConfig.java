@@ -74,11 +74,11 @@ public class SecurityConfig {
                                                                 "SUPERVISOR_CAMARAS",
                                                                 "OPERADOR_CAMARAS")
 
-                                                // Rutas de gestión de usuarios (solo ADMINISTRADOR)
+                                                // Rutas de gestión de usuarios solo admin
                                                 .requestMatchers("/usuarios/**", "/roles/**", "/usuario-rubros/**")
                                                 .hasRole("ADMINISTRADOR")
 
-                                                // Rutas de gestión de rubros (solo ADMINISTRADOR)
+                                                // Rutas de gestión de rubros solo admin
                                                 .requestMatchers("/rubros/**").hasRole("ADMINISTRADOR")
 
                                                 // Rutas de gestión de proveedores y clientes
