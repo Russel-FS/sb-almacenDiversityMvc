@@ -293,7 +293,7 @@
                     class="flex justify-between items-center py-3 border-b border-gray-100"
                   >
                     <span class="text-gray-600 font-medium"
-                      >Número de Factura</span
+                      >Número de Documento</span
                     >
                     <span
                       class="font-bold text-gray-900"
@@ -305,22 +305,50 @@
                     class="flex justify-between items-center py-3 border-b border-gray-100"
                   >
                     <span class="text-gray-600 font-medium"
-                      >Fecha de Entrada</span
-                    >
-                    <span
-                      class="font-bold text-gray-900"
-                      th:text="${#temporals.format(entrada?.fechaEntrada, 'dd/MM/yyyy HH:mm')}"
-                      >01/01/2024</span
-                    >
-                  </div>
-                  <div class="flex justify-between items-center py-3">
-                    <span class="text-gray-600 font-medium"
                       >Tipo de Documento</span
                     >
                     <span
                       class="font-bold text-gray-900"
                       th:text="${entrada?.tipoDocumento?.descripcion}"
                       >Factura</span
+                    >
+                  </div>
+                  <div
+                    class="flex justify-between items-center py-3 border-b border-gray-100"
+                  >
+                    <span class="text-gray-600 font-medium"
+                      >Tipo de Movimiento</span
+                    >
+                    <span
+                      class="font-bold text-gray-900"
+                      th:text="${entrada?.tipoEntrada?.descripcion}"
+                      >Compra</span
+                    >
+                  </div>
+                  <div
+                    class="flex justify-between items-center py-3"
+                    th:if="${entrada?.tipoEntrada?.name() == 'DEVOLUCION'}"
+                  >
+                    <span class="text-gray-600 font-medium"
+                      >ID Salida Referencia</span
+                    >
+                    <span
+                      class="font-bold text-gray-900"
+                      th:text="${entrada?.idSalidaReferencia}"
+                      >123</span
+                    >
+                  </div>
+                  <div
+                    class="flex justify-between items-center py-3"
+                    th:if="${entrada?.tipoEntrada?.name() != 'DEVOLUCION'}"
+                  >
+                    <span class="text-gray-600 font-medium"
+                      >Fecha de Entrada</span
+                    >
+                    <span
+                      class="font-bold text-gray-900"
+                      th:text="${#temporals.format(entrada?.fechaEntrada, 'dd/MM/yyyy HH:mm')}"
+                      >01/01/2024</span
                     >
                   </div>
                 </div>
@@ -668,7 +696,7 @@
               </div>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="space-y-2">
-                  <div class="text-sm text-gray-500">Subtotal</div>
+                  <div class="text-sm text-gray-500">Costo Total</div>
                   <div
                     class="text-lg font-medium text-gray-900"
                     th:text="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal, 1, 2)}"
@@ -676,7 +704,7 @@
                     S/ 0.00
                   </div>
                 </div>
-                <div class="space-y-2">
+                <div class="space-y-2" th:if="${entrada?.tipoEntrada?.name() == 'COMPRA'}">
                   <div class="text-sm text-gray-500">IGV (18%)</div>
                   <div
                     class="text-lg font-medium text-gray-900"
@@ -685,8 +713,8 @@
                     S/ 0.00
                   </div>
                 </div>
-                <div class="space-y-2">
-                  <div class="text-sm text-gray-500">Total</div>
+                <div class="space-y-2" th:if="${entrada?.tipoEntrada?.name() == 'COMPRA'}">
+                  <div class="text-sm text-gray-500">Total con IGV</div>
                   <div
                     class="text-xl font-semibold text-emerald-600"
                     th:text="${'S/ ' + #numbers.formatDecimal(entrada.costoTotal * 1.18, 1, 2)}"
