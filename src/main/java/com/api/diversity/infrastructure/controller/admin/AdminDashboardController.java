@@ -1,8 +1,11 @@
 package com.api.diversity.infrastructure.controller.admin;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -149,5 +152,85 @@ public class AdminDashboardController {
                 }
 
                 return "admin/dashboard";
+        }
+
+        @GetMapping("/api/dashboard/charts")
+        public ResponseEntity<Map<String, Object>> getChartData() {
+                log.info("Obteniendo datos para gráficos del dashboard");
+
+                try {
+                        Map<String, Object> chartData = new HashMap<>();
+
+                        // datos por rubro
+                        List<ProductoDto> productosPinateria = productoService.findAllByRubro(TipoRubro.PIÑATERIA);
+                        List<ProductoDto> productosLibreria = productoService.findAllByRubro(TipoRubro.LIBRERIA);
+                        List<ProductoDto> productosCamaras = productoService.findAllByRubro(TipoRubro.CAMARA_SEGURIDAD);
+
+                        Map<String, Object> productosPorRubro = new HashMap<>();
+                        productosPorRubro.put("labels", List.of("Piñatería", "Librería", "Cámaras"));
+                        productosPorRubro.put("data", List.of(productosPinateria.size(), productosLibreria.size(),
+                                        productosCamaras.size()));
+                        productosPorRubro.put("backgroundColor", List.of("#ec4899", "#3b82f6", "#8b5cf6"));
+
+                        // stok bajo por rubro
+                        int stockBajoPinateria = (int) productosPinateria.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                                        .count();
+                        int stockBajoLibreria = (int) productosLibreria.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                                        .count();
+                        int stockBajoCamaras = (int) productosCamaras.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getStockActual() < 10)
+                                        .count();
+
+                        Map<String, Object> stockBajoPorRubro = new HashMap<>();
+                        stockBajoPorRubro.put("labels", List.of("Piñatería", "Librería", "Cámaras"));
+                        stockBajoPorRubro.put("data", List.of(stockBajoPinateria, stockBajoLibreria, stockBajoCamaras));
+                        stockBajoPorRubro.put("backgroundColor", List.of("#fef3c7", "#fecaca", "#fde68a"));
+
+                        // Datos para gráfico de valor de inventario por rubro
+                        BigDecimal valorPinateria = productosPinateria.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                                        .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                        BigDecimal valorLibreria = productosLibreria.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                                        .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                        BigDecimal valorCamaras = productosCamaras.stream()
+                                        .filter(p -> p.getStockActual() != null && p.getPrecioVenta() != null)
+                                        .map(p -> p.getPrecioVenta().multiply(BigDecimal.valueOf(p.getStockActual())))
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                        Map<String, Object> valorInventarioPorRubro = new HashMap<>();
+                        valorInventarioPorRubro.put("labels", List.of("Piñatería", "Librería", "Cámaras"));
+                        valorInventarioPorRubro.put("data", List.of(valorPinateria.doubleValue(),
+                                        valorLibreria.doubleValue(), valorCamaras.doubleValue()));
+                        valorInventarioPorRubro.put("backgroundColor", List.of("#10b981", "#06b6d4", "#6366f1"));
+
+                        // datos de usuario
+                        Long usuariosActivos = usuarioService.findAll().stream()
+                                        .filter(u -> u.getEstado() == EstadoUsuario.Activo).count();
+                        Long usuariosInactivos = usuarioService.findAll().stream()
+                                        .filter(u -> u.getEstado() == EstadoUsuario.Inactivo).count();
+                        Long usuariosBloqueados = usuarioService.findAll().stream()
+                                        .filter(u -> u.getEstado() == EstadoUsuario.Bloqueado).count();
+
+                        Map<String, Object> estadoUsuarios = new HashMap<>();
+                        estadoUsuarios.put("labels", List.of("Activos", "Inactivos", "Bloqueados"));
+                        estadoUsuarios.put("data", List.of(usuariosActivos, usuariosInactivos, usuariosBloqueados));
+                        estadoUsuarios.put("backgroundColor", List.of("#10b981", "#f59e0b", "#ef4444"));
+
+                        chartData.put("productosPorRubro", productosPorRubro);
+                        chartData.put("stockBajoPorRubro", stockBajoPorRubro);
+                        chartData.put("valorInventarioPorRubro", valorInventarioPorRubro);
+                        chartData.put("estadoUsuarios", estadoUsuarios);
+
+                        return ResponseEntity.ok(chartData);
+
+                } catch (Exception e) {
+                        log.error("Error al obtener datos para gráficos: {}", e.getMessage(), e);
+                        return ResponseEntity.internalServerError().build();
+                }
         }
 }

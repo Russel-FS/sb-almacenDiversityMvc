@@ -774,6 +774,141 @@
             </div>
           </div>
 
+          <!-- Gráficos del Dashboard -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Gráfico de Productos por Rubro -->
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm"
+            >
+              <div class="border-b border-gray-100 px-6 py-4">
+                <h3
+                  class="text-xl font-semibold text-gray-900 flex items-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-blue-600 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                  Productos por Rubro
+                </h3>
+              </div>
+              <div class="p-6">
+                <canvas
+                  id="productosPorRubroChart"
+                  width="400"
+                  height="300"
+                ></canvas>
+              </div>
+            </div>
+
+            <!-- Gráfico de Stock Bajo por Rubro -->
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm"
+            >
+              <div class="border-b border-gray-100 px-6 py-4">
+                <h3
+                  class="text-xl font-semibold text-gray-900 flex items-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-amber-600 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                  Stock Bajo por Rubro
+                </h3>
+              </div>
+              <div class="p-6">
+                <canvas
+                  id="stockBajoPorRubroChart"
+                  width="400"
+                  height="300"
+                ></canvas>
+              </div>
+            </div>
+
+            <!-- Gráfico de Valor de Inventario por Rubro -->
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm"
+            >
+              <div class="border-b border-gray-100 px-6 py-4">
+                <h3
+                  class="text-xl font-semibold text-gray-900 flex items-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-green-600 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                    />
+                  </svg>
+                  Valor de Inventario por Rubro
+                </h3>
+              </div>
+              <div class="p-6">
+                <canvas
+                  id="valorInventarioPorRubroChart"
+                  width="400"
+                  height="300"
+                ></canvas>
+              </div>
+            </div>
+
+            <!-- Gráfico de Estado de Usuarios -->
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 shadow-sm"
+            >
+              <div class="border-b border-gray-100 px-6 py-4">
+                <h3
+                  class="text-xl font-semibold text-gray-900 flex items-center"
+                >
+                  <svg
+                    class="w-6 h-6 text-purple-600 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  Estado de Usuarios
+                </h3>
+              </div>
+              <div class="p-6">
+                <canvas
+                  id="estadoUsuariosChart"
+                  width="400"
+                  height="300"
+                ></canvas>
+              </div>
+            </div>
+          </div>
+
           <!-- Datos Recientes -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Usuarios Recientes -->
@@ -982,6 +1117,210 @@
             minute: "2-digit",
           };
           fechaActual.textContent = ahora.toLocaleDateString("es-ES", opciones);
+        });
+      </script>
+
+      <!-- Script para los gráficos -->
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          function createChart(canvasId, type, data, options = {}) {
+            const ctx = document.getElementById(canvasId).getContext("2d");
+            return new Chart(ctx, {
+              type: type,
+              data: data,
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: "bottom",
+                    labels: {
+                      padding: 20,
+                      usePointStyle: true,
+                      font: {
+                        size: 12,
+                      },
+                    },
+                  },
+                },
+                ...options,
+              },
+            });
+          }
+
+          // peticion para obtener los datos
+          fetch("/admin/api/dashboard/charts")
+            .then((response) => response.json())
+            .then((data) => {
+              // productos
+              createChart(
+                "productosPorRubroChart",
+                "doughnut",
+                {
+                  labels: data.productosPorRubro.labels,
+                  datasets: [
+                    {
+                      data: data.productosPorRubro.data,
+                      backgroundColor: data.productosPorRubro.backgroundColor,
+                      borderWidth: 2,
+                      borderColor: "#ffffff",
+                    },
+                  ],
+                },
+                {
+                  plugins: {
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          const total = context.dataset.data.reduce(
+                            (a, b) => a + b,
+                            0
+                          );
+                          const percentage = (
+                            (context.parsed / total) *
+                            100
+                          ).toFixed(1);
+                          return `${context.label}: ${context.parsed} (${percentage}%)`;
+                        },
+                      },
+                    },
+                  },
+                }
+              );
+
+              // stock bajo por rubro
+              createChart(
+                "stockBajoPorRubroChart",
+                "bar",
+                {
+                  labels: data.stockBajoPorRubro.labels,
+                  datasets: [
+                    {
+                      label: "Productos con Stock Bajo",
+                      data: data.stockBajoPorRubro.data,
+                      backgroundColor: data.stockBajoPorRubro.backgroundColor,
+                      borderColor: data.stockBajoPorRubro.backgroundColor.map(
+                        (color) => color.replace("0.8", "1")
+                      ),
+                      borderWidth: 1,
+                      borderRadius: 8,
+                    },
+                  ],
+                },
+                {
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      ticks: {
+                        stepSize: 1,
+                      },
+                    },
+                  },
+                  plugins: {
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          return `${context.label}: ${context.parsed.y} productos`;
+                        },
+                      },
+                    },
+                  },
+                }
+              );
+
+              // valor de inventario por rubro
+              createChart(
+                "valorInventarioPorRubroChart",
+                "line",
+                {
+                  labels: data.valorInventarioPorRubro.labels,
+                  datasets: [
+                    {
+                      label: "Valor del Inventario (S/)",
+                      data: data.valorInventarioPorRubro.data,
+                      backgroundColor:
+                        data.valorInventarioPorRubro.backgroundColor.map(
+                          (color) => color + "20"
+                        ),
+                      borderColor: data.valorInventarioPorRubro.backgroundColor,
+                      borderWidth: 3,
+                      fill: true,
+                      tension: 0.4,
+                      pointBackgroundColor:
+                        data.valorInventarioPorRubro.backgroundColor,
+                      pointBorderColor: "#ffffff",
+                      pointBorderWidth: 2,
+                      pointRadius: 6,
+                    },
+                  ],
+                },
+                {
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      ticks: {
+                        callback: function (value) {
+                          return "S/ " + value.toLocaleString("es-PE");
+                        },
+                      },
+                    },
+                  },
+                  plugins: {
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          return `${
+                            context.label
+                          }: S/ ${context.parsed.y.toLocaleString("es-PE")}`;
+                        },
+                      },
+                    },
+                  },
+                }
+              );
+
+              // Gráfico de Estado de Usuarios (Pie)
+              createChart(
+                "estadoUsuariosChart",
+                "pie",
+                {
+                  labels: data.estadoUsuarios.labels,
+                  datasets: [
+                    {
+                      data: data.estadoUsuarios.data,
+                      backgroundColor: data.estadoUsuarios.backgroundColor,
+                      borderWidth: 2,
+                      borderColor: "#ffffff",
+                    },
+                  ],
+                },
+                {
+                  plugins: {
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          const total = context.dataset.data.reduce(
+                            (a, b) => a + b,
+                            0
+                          );
+                          const percentage = (
+                            (context.parsed / total) *
+                            100
+                          ).toFixed(1);
+                          return `${context.label}: ${context.parsed} (${percentage}%)`;
+                        },
+                      },
+                    },
+                  },
+                }
+              );
+            })
+            .catch((error) => {
+              console.error(
+                "Error al cargar los datos de los gráficos:",
+                error
+              );
+            });
         });
       </script>
     </section>
