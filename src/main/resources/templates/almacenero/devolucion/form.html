@@ -129,500 +129,206 @@
               </div>
             </div>
 
-            <!-- Formulario de búsqueda de salida -->
-            <div class="mb-8">
-              <form
-                th:action="@{/almacenero/devoluciones/buscar}"
-                method="post"
-                class="flex flex-col md:flex-row gap-4 items-end md:items-end"
-              >
-                <div class="w-full md:w-48">
-                  <label
-                    for="idSalida"
-                    class="block text-sm font-semibold text-gray-600 mb-1"
-                    >ID de Salida</label
-                  >
-                  <input
-                    type="number"
-                    id="idSalida"
-                    name="idSalida"
-                    class="w-full px-4 py-2 border rounded-xl"
-                    th:value="${param.idSalida}"
-                  />
-                </div>
-                <div class="w-full md:w-64">
-                  <label
-                    for="numeroDocumento"
-                    class="block text-sm font-semibold text-gray-600 mb-1"
-                    >Número de Documento</label
-                  >
-                  <input
-                    type="text"
-                    id="numeroDocumento"
-                    name="numeroDocumento"
-                    class="w-full px-4 py-2 border rounded-xl"
-                    th:value="${param.numeroDocumento}"
-                  />
-                </div>
-                <div class="w-full md:w-auto flex-shrink-0">
-                  <button
-                    type="submit"
-                    class="w-full md:w-auto px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
-                  >
-                    Buscar
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            <!-- Mostrar detalles de la salida y productos si hay resultados -->
-            <div th:if="${salidaEncontrada}">
-              <div class="mb-6 p-4 bg-white rounded-2xl shadow">
-                <h2 class="text-xl font-semibold mb-2">Datos de la Salida</h2>
-                <p><b>ID:</b> <span th:text="${salida.idSalida}"></span></p>
-                <p>
-                  <b>Número de Documento:</b>
-                  <span th:text="${salida.numeroDocumento}"></span>
-                </p>
-                <p>
-                  <b>Cliente:</b>
-                  <span th:text="${salida.clienteNombre}"></span>
-                </p>
-                <p>
-                  <b>Fecha:</b>
-                  <span
-                    th:text="${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy HH:mm')}"
-                  ></span>
-                </p>
-                <p>
-                  <b>Total Venta:</b> S/
-                  <span th:text="${salida.totalVenta}"></span>
-                </p>
-                <p>
-                  <b>Motivo:</b> <span th:text="${salida.motivoSalida}"></span>
-                </p>
-              </div>
-
-              <form
-                th:action="@{/almacenero/devoluciones/procesar}"
-                th:object="${devolucionRequest}"
-                method="post"
-              >
-                <input
-                  type="hidden"
-                  th:field="*{idSalidaOriginal}"
-                  th:value="${salida.idSalida}"
-                />
-                <div class="overflow-x-auto mb-6">
-                  <table class="min-w-full bg-white rounded-2xl shadow">
-                    <thead>
-                      <tr>
-                        <th class="px-4 py-2">Producto</th>
-                        <th class="px-4 py-2">Cantidad original</th>
-                        <th class="px-4 py-2">Cantidad a devolver</th>
-                        <th class="px-4 py-2">Seleccionar</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr th:each="detalle, iter : ${salida.detalles}">
-                        <td th:text="${detalle.productoNombre}"></td>
-                        <td th:text="${detalle.cantidad}"></td>
-                        <td>
-                          <input
-                            type="number"
-                            min="0"
-                            th:attr="max=${detalle.cantidad}"
-                            name="productosDevueltos[__${iter.index}__].cantidad"
-                            class="w-20 px-2 py-1 border rounded"
-                          />
-                          <input
-                            type="hidden"
-                            th:name="${'productosDevueltos[' + iter.index + '].idProducto'}"
-                            th:value="${detalle.productoId}"
-                          />
-                          <input
-                            type="hidden"
-                            th:name="${'productosDevueltos[' + iter.index + '].precioUnitario'}"
-                            th:value="${detalle.precioUnitario}"
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="checkbox"
-                            th:name="${'productosDevueltos[' + iter.index + '].seleccionado'}"
-                            value="true"
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="mb-4">
-                  <label
-                    for="motivoDevolucion"
-                    class="block text-sm font-semibold text-gray-600 mb-1"
-                    >Motivo de la Devolución</label
-                  >
-                  <textarea
-                    id="motivoDevolucion"
-                    th:field="*{motivoDevolucion}"
-                    rows="2"
-                    class="w-full px-4 py-2 border rounded-xl"
-                  ></textarea>
-                </div>
-                <div class="flex gap-4">
-                  <button
-                    type="submit"
-                    class="px-6 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition"
-                  >
-                    Devolver seleccionados
-                  </button>
-                  <button
-                    type="button"
-                    onclick="seleccionarTodo()"
-                    class="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition"
-                  >
-                    Devolver todo
-                  </button>
-                  <button
-                    type="reset"
-                    class="px-6 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
-                  >
-                    Limpiar selección
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            <!-- Formulario -->
+            <!-- Card visual moderno para todo el flujo de devolución -->
             <div
-              class="glass-effect rounded-3xl border border-gray-200 p-8 shadow-sm"
+              class="glass-effect rounded-3xl border border-gray-200 p-8 shadow-sm mb-12"
             >
-              <form
-                th:action="@{/almacenero/devoluciones/procesar}"
-                th:object="${devolucionRequest}"
-                method="post"
-              >
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                  <div>
+              <!-- Formulario de búsqueda de salida -->
+              <div class="mb-8">
+                <form
+                  th:action="@{/almacenero/devoluciones/buscar}"
+                  method="post"
+                  class="flex flex-col md:flex-row gap-4 items-end md:items-end"
+                >
+                  <div class="w-full md:w-48">
                     <label
-                      for="idSalidaOriginal"
-                      class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
-                    >
-                      <svg
-                        class="w-4 h-4 inline mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                        />
-                      </svg>
-                      ID de Salida Original:</label
+                      for="idSalida"
+                      class="block text-sm font-semibold text-gray-600 mb-1"
+                      >ID de Salida</label
                     >
                     <input
                       type="number"
-                      id="idSalidaOriginal"
-                      name="idSalidaOriginal"
-                      th:field="*{idSalidaOriginal}"
-                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
-                      required
+                      id="idSalida"
+                      name="idSalida"
+                      class="w-full px-4 py-2 border rounded-xl"
+                      th:value="${param.idSalida}"
                     />
                   </div>
-                  <div>
+                  <div class="w-full md:w-64">
+                    <label
+                      for="numeroDocumento"
+                      class="block text-sm font-semibold text-gray-600 mb-1"
+                      >Número de Documento</label
+                    >
+                    <input
+                      type="text"
+                      id="numeroDocumento"
+                      name="numeroDocumento"
+                      class="w-full px-4 py-2 border rounded-xl"
+                      th:value="${param.numeroDocumento}"
+                    />
+                  </div>
+                  <div class="w-full md:w-auto flex-shrink-0">
+                    <button
+                      type="submit"
+                      class="w-full md:w-auto px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+                    >
+                      Buscar
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Mostrar detalles de la salida y productos si hay resultados -->
+              <div th:if="${salidaEncontrada}">
+                <div class="mb-6 p-4 bg-white rounded-2xl shadow">
+                  <h2 class="text-xl font-semibold mb-2">Datos de la Salida</h2>
+                  <p><b>ID:</b> <span th:text="${salida.idSalida}"></span></p>
+                  <p>
+                    <b>Número de Documento:</b>
+                    <span th:text="${salida.numeroDocumento}"></span>
+                  </p>
+                  <p>
+                    <b>Cliente:</b>
+                    <span th:text="${salida.clienteNombre}"></span>
+                  </p>
+                  <p>
+                    <b>Fecha:</b>
+                    <span
+                      th:text="${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy HH:mm')}"
+                    ></span>
+                  </p>
+                  <p>
+                    <b>Total Venta:</b> S/
+                    <span th:text="${salida.totalVenta}"></span>
+                  </p>
+                  <p>
+                    <b>Motivo:</b>
+                    <span th:text="${salida.motivoSalida}"></span>
+                  </p>
+                </div>
+
+                <form
+                  th:action="@{/almacenero/devoluciones/procesar}"
+                  th:object="${devolucionRequest}"
+                  method="post"
+                >
+                  <input
+                    type="hidden"
+                    th:field="*{idSalidaOriginal}"
+                    th:value="${salida.idSalida}"
+                  />
+                  <div class="overflow-x-auto mb-6">
+                    <table class="min-w-full bg-white rounded-2xl shadow">
+                      <thead>
+                        <tr>
+                          <th class="px-4 py-2">Producto</th>
+                          <th class="px-4 py-2">Cantidad original</th>
+                          <th class="px-4 py-2">Cantidad a devolver</th>
+                          <th class="px-4 py-2">Seleccionar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr th:each="detalle, iter : ${salida.detalles}">
+                          <td th:text="${detalle.productoNombre}"></td>
+                          <td th:text="${detalle.cantidad}"></td>
+                          <td>
+                            <input
+                              type="number"
+                              min="0"
+                              th:attr="max=${detalle.cantidad}"
+                              name="productosDevueltos[__${iter.index}__].cantidad"
+                              class="w-20 px-2 py-1 border rounded"
+                            />
+                            <input
+                              type="hidden"
+                              th:name="${'productosDevueltos[' + iter.index + '].idProducto'}"
+                              th:value="${detalle.productoId}"
+                            />
+                            <input
+                              type="hidden"
+                              th:name="${'productosDevueltos[' + iter.index + '].precioUnitario'}"
+                              th:value="${detalle.precioUnitario}"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="checkbox"
+                              th:name="${'productosDevueltos[' + iter.index + '].seleccionado'}"
+                              value="true"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="mb-4">
                     <label
                       for="motivoDevolucion"
-                      class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
-                    >
-                      <svg
-                        class="w-4 h-4 inline mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                      </svg>
-                      Motivo de la Devolución:</label
+                      class="block text-sm font-semibold text-gray-600 mb-1"
+                      >Motivo de la Devolución</label
                     >
                     <textarea
                       id="motivoDevolucion"
-                      name="motivoDevolucion"
                       th:field="*{motivoDevolucion}"
-                      rows="3"
-                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                      rows="2"
+                      class="w-full px-4 py-2 border rounded-xl"
                     ></textarea>
                   </div>
-                </div>
-
-                <h3
-                  class="text-lg font-semibold text-gray-900 mb-6 flex items-center"
-                >
-                  <svg
-                    class="w-5 h-5 mr-3 text-gray-700"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                    />
-                  </svg>
-                  Productos a Devolver
-                </h3>
-                <div id="productos-container" class="space-y-6">
-                  <!-- Los productos se añadirán aquí dinámicamente con JavaScript -->
-                  <div
-                    class="producto-item glass-effect rounded-3xl border border-gray-200 p-8 shadow-sm"
-                  >
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                      <div>
-                        <label
-                          class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
-                          >ID Producto:</label
-                        >
-                        <input
-                          type="number"
-                          name="productosDevueltos[0].idProducto"
-                          class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label
-                          class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
-                          >Cantidad:</label
-                        >
-                        <input
-                          type="number"
-                          name="productosDevueltos[0].cantidad"
-                          min="1"
-                          class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label
-                          class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide"
-                          >Precio Unitario:</label
-                        >
-                        <input
-                          type="number"
-                          step="0.01"
-                          name="productosDevueltos[0].precioUnitario"
-                          min="0"
-                          class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
-                          required
-                        />
-                      </div>
-                      <div class="flex items-end">
-                        <button
-                          type="button"
-                          class="remove-producto-btn w-full px-6 py-5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 shadow-sm rounded-2xl"
-                        >
-                          <svg
-                            class="w-5 h-5 inline mr-2"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                          </svg>
-                          Eliminar
-                        </button>
-                      </div>
-                    </div>
+                  <div class="flex gap-4">
+                    <button
+                      type="submit"
+                      class="px-6 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition"
+                    >
+                      Devolver seleccionados
+                    </button>
+                    <button
+                      type="button"
+                      onclick="seleccionarTodo()"
+                      class="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition"
+                    >
+                      Devolver todo
+                    </button>
+                    <button
+                      type="reset"
+                      class="px-6 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
+                    >
+                      Limpiar selección
+                    </button>
                   </div>
-                </div>
-
-                <button
-                  type="button"
-                  id="add-producto-btn"
-                  class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 transition-colors duration-200 shadow-sm rounded-2xl mt-6"
-                >
-                  <svg
-                    class="w-5 h-5 mr-2 inline"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
-                  Añadir Otro Producto
-                </button>
-
-                <div class="flex justify-end space-x-4 mt-10">
-                  <a
-                    href="/"
-                    class="px-8 py-4 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
-                  >
-                    <svg
-                      class="w-5 h-5 mr-2 inline"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                    Cancelar
-                  </a>
-                  <button
-                    type="submit"
-                    class="px-10 py-4 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-colors duration-200 shadow-sm rounded-2xl"
-                  >
-                    <svg
-                      class="w-5 h-5 mr-2 inline"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    Procesar Devolución
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-
-        <!-- Script para ocultar mensajes de alerta después de un tiempo -->
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            const mensajeAlert = document.getElementById("mensajeAlert");
-            if (mensajeAlert) {
-              setTimeout(function () {
-                mensajeAlert.style.transition = "opacity 0.5s ease-out";
-                mensajeAlert.style.opacity = "0";
-                setTimeout(function () {
-                  mensajeAlert.remove();
-                }, 500);
-              }, 5000);
-            }
-
-            // Lógica para añadir/eliminar productos dinámicamente
-            let productoIndex = 1; // Empezamos con 1 porque el primero ya está en el HTML
-            const productosContainer = document.getElementById(
-              "productos-container"
-            );
-            const addProductoBtn = document.getElementById("add-producto-btn");
-
-            addProductoBtn.addEventListener("click", () => {
-              const newItem = document.createElement("div");
-              newItem.classList.add(
-                "producto-item",
-                "glass-effect",
-                "rounded-3xl",
-                "border",
-                "border-gray-200",
-                "p-8",
-                "shadow-sm"
-              );
-              newItem.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                  <div>
-                    <label class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide">ID Producto:</label>
-                    <input type="number" name="productosDevueltos[${productoIndex}].idProducto" class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm" required />
-                  </div>
-                  <div>
-                    <label class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide">Cantidad:</label>
-                    <input type="number" name="productosDevueltos[${productoIndex}].cantidad" min="1" class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm" required />
-                  </div>
-                  <div>
-                    <label class="block text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wide">Precio Unitario:</label>
-                    <input type="number" step="0.01" name="productosDevueltos[${productoIndex}].precioUnitario" min="0" class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm" required />
-                  </div>
-                  <div class="flex items-end">
-                    <button type="button" class="remove-producto-btn w-full px-6 py-5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 shadow-sm rounded-2xl">
-                      <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
-              `;
-              productosContainer.appendChild(newItem);
-              productoIndex++;
-              attachRemoveListeners();
-            });
-
-            function attachRemoveListeners() {
-              document
-                .querySelectorAll(".remove-producto-btn")
-                .forEach((button) => {
-                  button.onclick = (event) => {
-                    event.target.closest(".producto-item").remove();
-                    reindexProductos();
-                  };
-                });
-            }
-
-            function reindexProductos() {
-              document
-                .querySelectorAll(".producto-item")
-                .forEach((item, index) => {
-                  item.querySelectorAll("input").forEach((input) => {
-                    const name = input.getAttribute("name");
-                    if (name) {
-                      input.setAttribute(
-                        "name",
-                        name.replace(
-                          /productosDevueltos\[\d+\]/,
-                          `productosDevueltos[${index}]`
-                        )
-                      );
-                    }
-                  });
-                });
-              productoIndex =
-                document.querySelectorAll(".producto-item").length;
-            }
-
-            attachRemoveListeners();
-          });
-
-          function seleccionarTodo() {
-            document
-              .querySelectorAll("input[type='checkbox']")
-              .forEach((cb) => (cb.checked = true));
-            document
-              .querySelectorAll("input[type='number']")
-              .forEach((input) => {
-                input.value = input.max;
-              });
-          }
-        </script>
       </section>
     </div>
+
+    <!-- Script para ocultar mensajes de alerta después de un tiempo -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const mensajeAlert = document.getElementById("mensajeAlert");
+        if (mensajeAlert) {
+          setTimeout(function () {
+            mensajeAlert.style.transition = "opacity 0.5s ease-out";
+            mensajeAlert.style.opacity = "0";
+            setTimeout(function () {
+              mensajeAlert.remove();
+            }, 500);
+          }, 5000);
+        }
+      });
+
+      function seleccionarTodo() {
+        document
+          .querySelectorAll('input[type="checkbox"]')
+          .forEach((cb) => (cb.checked = true));
+        document
+          .querySelectorAll('input[type="number"][max]')
+          .forEach((input) => {
+            input.value = input.max;
+          });
+      }
+    </script>
   </body>
 </html>
