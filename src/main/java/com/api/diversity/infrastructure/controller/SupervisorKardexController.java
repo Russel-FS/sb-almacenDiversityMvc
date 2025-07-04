@@ -8,10 +8,13 @@ import com.api.diversity.application.service.interfaces.IRubroService;
 import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.EstadoSalida;
 import com.api.diversity.domain.enums.TipoRubro;
+import com.api.diversity.infrastructure.security.CustomUser;
 import com.api.diversity.application.dto.RubroDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,16 +45,17 @@ public class SupervisorKardexController {
 
             if (rubroOptional.isEmpty()) {
                 model.addAttribute("error", "Rubro no encontrado: " + rubroCode);
-                return "error"; // O una página de error más específica
+                return "error";
             }
 
             Long rubroId = rubroOptional.get().getIdRubro();
 
-            List<EntradaDto> entradasPendientes = entradaService.findByRubroIdAndEstado(rubroId, EstadoEntrada.Pendiente);
+            List<EntradaDto> entradasPendientes = entradaService.findByRubroIdAndEstado(rubroId,
+                    EstadoEntrada.Pendiente);
             List<SalidaDto> salidasPendientes = salidaService.findByRubroIdAndEstado(rubroId, EstadoSalida.Pendiente);
 
-            model.addAttribute("rubroNombre", tipoRubro.getNombre()); // Pasar el nombre para mostrar en la vista
-            model.addAttribute("rubroCode", rubroCode); // Pasar el código para redirecciones
+            model.addAttribute("rubroNombre", tipoRubro.getNombre());
+            model.addAttribute("rubroCode", rubroCode);
             model.addAttribute("entradasPendientes", entradasPendientes);
             model.addAttribute("salidasPendientes", salidasPendientes);
 
@@ -67,10 +71,11 @@ public class SupervisorKardexController {
     }
 
     @PostMapping("/aprobar/entrada/{id}")
-    public String approveEntrada(@PathVariable Long id, @RequestParam String rubroCode, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String approveEntrada(@PathVariable Long id, @RequestParam String rubroCode, HttpSession session,
+            RedirectAttributes redirectAttributes, @AuthenticationPrincipal CustomUser user) {
         try {
-            // TODO: Obtener el ID del usuario de aprobación de la sesión de seguridad
-            Long usuarioAprobacionId = 1L; // Placeholder: Reemplazar con el ID del usuario autenticado
+
+            Long usuarioAprobacionId = user.getId();
 
             entradaService.aprobarEntrada(id, usuarioAprobacionId);
             redirectAttributes.addFlashAttribute("mensaje", "Entrada aprobada exitosamente.");
@@ -84,7 +89,8 @@ public class SupervisorKardexController {
     }
 
     @PostMapping("/anular/entrada/{id}")
-    public String cancelEntrada(@PathVariable Long id, @RequestParam(required = false) String motivo, @RequestParam String rubroCode, RedirectAttributes redirectAttributes) {
+    public String cancelEntrada(@PathVariable Long id, @RequestParam(required = false) String motivo,
+            @RequestParam String rubroCode, RedirectAttributes redirectAttributes) {
         try {
             entradaService.anularEntrada(id, motivo);
             redirectAttributes.addFlashAttribute("mensaje", "Entrada anulada exitosamente.");
@@ -98,10 +104,10 @@ public class SupervisorKardexController {
     }
 
     @PostMapping("/aprobar/salida/{id}")
-    public String approveSalida(@PathVariable Long id, @RequestParam String rubroCode, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String approveSalida(@PathVariable Long id, @RequestParam String rubroCode, HttpSession session,
+            RedirectAttributes redirectAttributes, @AuthenticationPrincipal CustomUser user) {
         try {
-            // TODO: Obtener el ID del usuario de aprobación de la sesión de seguridad
-            Long usuarioAprobacionId = 1L; // Placeholder: Reemplazar con el ID del usuario autenticado
+            Long usuarioAprobacionId = user.getId();
 
             salidaService.aprobarSalida(id, usuarioAprobacionId);
             redirectAttributes.addFlashAttribute("mensaje", "Salida aprobada exitosamente.");
@@ -115,7 +121,8 @@ public class SupervisorKardexController {
     }
 
     @PostMapping("/anular/salida/{id}")
-    public String cancelSalida(@PathVariable Long id, @RequestParam(required = false) String motivo, @RequestParam String rubroCode, RedirectAttributes redirectAttributes) {
+    public String cancelSalida(@PathVariable Long id, @RequestParam(required = false) String motivo,
+            @RequestParam String rubroCode, RedirectAttributes redirectAttributes) {
         try {
             salidaService.anularSalida(id, motivo);
             redirectAttributes.addFlashAttribute("mensaje", "Salida anulada exitosamente.");
