@@ -36,4 +36,6 @@ public interface ISalidaRepository {
     Long countByFechaSalidaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
 
     boolean existsByNumeroDocumento(String numeroDocumento);
+
+    List<SalidaEntity> findByRubroIdAndEstado(Long rubroId, EstadoSalida estado);
 }

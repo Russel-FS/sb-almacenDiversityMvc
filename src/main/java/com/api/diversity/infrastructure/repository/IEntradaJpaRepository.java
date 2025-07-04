@@ -32,4 +32,7 @@ public interface IEntradaJpaRepository extends JpaRepository<EntradaEntity, Long
     Long countByFechaEntradaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
 
     boolean existsByNumeroFactura(String numeroFactura);
+
+    @Query("SELECT e FROM EntradaEntity e JOIN e.detalles d JOIN d.producto p JOIN p.categoria c JOIN c.rubro r WHERE r.idRubro = :rubroId AND e.estado = :estado")
+    List<EntradaEntity> findByRubroIdAndEstado(@Param("rubroId") Long rubroId, @Param("estado") EstadoEntrada estado);
 }

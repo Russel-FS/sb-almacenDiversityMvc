@@ -413,6 +413,19 @@ public class EntradaServiceImpl implements IEntradaService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<EntradaDto> findByRubroIdAndEstado(Long rubroId, EstadoEntrada estado) {
+        try {
+            return entradaRepository.findByRubroIdAndEstado(rubroId, estado).stream()
+                    .map(entradaMapper::toDto)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error al buscar entradas por rubro y estado: {}", e.getMessage(), e);
+            throw new RuntimeException("Error al buscar entradas por rubro y estado: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<EntradaDto> findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro tipoRubro) {
         Long idRubro = rubroService.findByNombreRubro(tipoRubro.getNombre())
                 .map(r -> r.getIdRubro())

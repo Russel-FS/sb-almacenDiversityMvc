@@ -32,4 +32,7 @@ public interface ISalidaJpaRepository extends JpaRepository<SalidaEntity, Long> 
     Long countByFechaSalidaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
 
     boolean existsByNumeroDocumento(String numeroDocumento);
+
+    @Query("SELECT s FROM SalidaEntity s JOIN s.detalles d JOIN d.producto p JOIN p.categoria c JOIN c.rubro r WHERE r.idRubro = :rubroId AND s.estado = :estado")
+    List<SalidaEntity> findByRubroIdAndEstado(@Param("rubroId") Long rubroId, @Param("estado") EstadoSalida estado);
 }

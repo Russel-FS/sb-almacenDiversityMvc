@@ -36,4 +36,6 @@ public interface IEntradaRepository {
     Long countByFechaEntradaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
 
     boolean existsByNumeroFactura(String numeroFactura);
+
+    List<EntradaEntity> findByRubroIdAndEstado(Long rubroId, EstadoEntrada estado);
 }

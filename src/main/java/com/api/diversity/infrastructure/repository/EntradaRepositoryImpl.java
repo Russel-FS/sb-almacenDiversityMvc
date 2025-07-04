@@ -87,4 +87,9 @@ public class EntradaRepositoryImpl implements IEntradaRepository {
     public boolean existsByNumeroFactura(String numeroFactura) {
         return entradaJpaRepository.existsByNumeroFactura(numeroFactura);
     }
+
+    @Override
+    public List<EntradaEntity> findByRubroIdAndEstado(Long rubroId, EstadoEntrada estado) {
+        return entradaJpaRepository.findByRubroIdAndEstado(rubroId, estado);
+    }
 }

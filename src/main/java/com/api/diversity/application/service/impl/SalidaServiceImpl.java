@@ -451,6 +451,19 @@ public class SalidaServiceImpl implements ISalidaService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<SalidaDto> findByRubroIdAndEstado(Long rubroId, EstadoSalida estado) {
+        try {
+            return salidaRepository.findByRubroIdAndEstado(rubroId, estado).stream()
+                    .map(salidaMapper::toDto)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error al buscar salidas por rubro y estado: {}", e.getMessage(), e);
+            throw new RuntimeException("Error al buscar salidas por rubro y estado: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<SalidaDto> findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro tipoRubro) {
         Long idRubro = rubroService.findByNombreRubro(tipoRubro.getNombre())
                 .map(r -> r.getIdRubro())
