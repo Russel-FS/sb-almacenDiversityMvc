@@ -1,6 +1,5 @@
 package com.api.diversity.application.dto;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
