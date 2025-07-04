@@ -75,8 +75,6 @@ public class SalidaServiceImpl implements ISalidaService {
                 }
             }
 
-            // La validación de stock se realizará en el momento de la aprobación
-
             // Crear entidad
             SalidaEntity salida = salidaMapper.toEntity(salidaDto);
             salida.setCliente(cliente);
@@ -114,8 +112,6 @@ public class SalidaServiceImpl implements ISalidaService {
 
                     // Guardar detalle
                     detalleSalidaRepository.save(detalle);
-
-                    // La actualización de stock se moverá al método de aprobación
                 }
             }
 

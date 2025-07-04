@@ -28,6 +28,7 @@ import com.api.diversity.domain.ports.IDetalleEntradaRepository;
 import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.EstadoDetalleEntrada;
 import com.api.diversity.domain.enums.TipoDocumento;
+import com.api.diversity.domain.enums.TipoEntrada;
 import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.application.service.interfaces.IRubroService;
 
@@ -81,6 +82,8 @@ public class EntradaServiceImpl implements IEntradaService {
             entrada.setUsuarioRegistro(usuarioRegistro);
             entrada.setEstado(EstadoEntrada.Pendiente);
             entrada.setFechaEntrada(LocalDateTime.now());
+            entrada.setTipoEntrada(
+                    entradaDto.getTipoEntrada() != null ? entradaDto.getTipoEntrada() : TipoEntrada.COMPRA);
 
             // Calcular costo total
             BigDecimal costoTotal = entradaDto.getDetalles().stream()
@@ -110,8 +113,6 @@ public class EntradaServiceImpl implements IEntradaService {
 
                     // Guardar detalle
                     detalleEntradaRepository.save(detalle);
-
-                    // La actualización de stock se moverá al método de aprobación
                 }
             }
 
