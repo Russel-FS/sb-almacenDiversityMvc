@@ -133,7 +133,7 @@ public class ProductoServiceImpl implements IProductoService {
         Optional<ProductoEntity> productoOpt = productoRepository.findById(id);
         if (productoOpt.isPresent()) {
             ProductoEntity producto = productoOpt.get();
-            producto.setEstado(EstadoProducto.Inactivo);
+            producto.setEstado(EstadoProducto.Eliminado);
             if (producto.getPublicId() != null && !producto.getPublicId().isEmpty()) {
                 cloudinaryService.deleteFile(producto.getPublicId());
             }

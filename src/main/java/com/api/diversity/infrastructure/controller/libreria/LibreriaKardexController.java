@@ -51,6 +51,7 @@ import com.api.diversity.domain.enums.EstadoCliente;
 import com.api.diversity.infrastructure.security.SecurityContext;
 import com.itextpdf.text.Image;
 import com.api.diversity.application.service.impl.BarcodeService;
+import com.api.diversity.application.service.impl.QRService;
 
 @Controller
 @RequestMapping("/libreria/kardex")
@@ -65,6 +66,7 @@ public class LibreriaKardexController {
     private final IClienteService clienteService;
     private final SecurityContext securityContext;
     private final BarcodeService barcodeService;
+    private final QRService qrService;
 
     /**
      * Dashboard del Kardex para Librería
@@ -1002,20 +1004,48 @@ public class LibreriaKardexController {
 
             document.open();
 
-            // codigo de barras
+            // Tabla para mostrar código de barras y QR juntos
+            PdfPTable codigosTable = new PdfPTable(2);
+            codigosTable.setWidthPercentage(80);
+            codigosTable.setSpacingAfter(10f);
+
+            // Código de barras
             try {
                 String data = salida.getNumeroDocumento();
                 byte[] barcodeBytes = barcodeService.generarCodigoBarras(data, 400, 100);
                 if (barcodeBytes != null && barcodeBytes.length > 0) {
                     Image barcode = Image.getInstance(barcodeBytes);
                     barcode.scalePercent(80);
-                    document.add(barcode);
-                    document.add(new Paragraph(data));
-                    document.add(new Paragraph(" "));
+                    codigosTable.addCell(barcode);
+                } else {
+                    codigosTable.addCell("");
                 }
             } catch (Exception ex) {
                 log.error("Error generando código de barras para PDF: {}", ex.getMessage());
+                codigosTable.addCell("");
             }
+
+            // Código QR
+            try {
+                String numero = salida.getNumeroDocumento();
+                String fecha = salida.getFechaSalida()
+                        .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                String total = salida.getTotalVenta().toString();
+                String ruc = salida.getClienteDni();
+                byte[] qrBytes = qrService.generarQRBoleta(numero, fecha, total, ruc, 200, 200);
+                if (qrBytes != null && qrBytes.length > 0) {
+                    Image qr = Image.getInstance(qrBytes);
+                    qr.scalePercent(80);
+                    codigosTable.addCell(qr);
+                } else {
+                    codigosTable.addCell("");
+                }
+            } catch (Exception ex) {
+                log.error("Error generando código QR para PDF: {}", ex.getMessage());
+                codigosTable.addCell("");
+            }
+
+            document.add(codigosTable);
 
             document.add(new Paragraph("Comprobante de Salida - Librería"));
             document.add(new Paragraph(
@@ -1371,6 +1401,25 @@ public class LibreriaKardexController {
         } catch (Exception e) {
             log.error("Error generando Excel de stock bajo: {}", e.getMessage());
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Mostrar boleta de salida
+     */
+    @GetMapping("/salida/{id}/boleta")
+    public String mostrarBoleta(@PathVariable Long id, Model model) {
+        try {
+            SalidaDto salida = salidaService.findById(id);
+            if (salida == null) {
+                return "redirect:/libreria/kardex/movimientos";
+            }
+
+            model.addAttribute("salida", salida);
+            return "libreria/kardex/boleta/boleta";
+        } catch (Exception e) {
+            log.error("Error mostrando boleta: {}", e.getMessage());
+            return "redirect:/libreria/kardex/movimientos";
         }
     }
 }

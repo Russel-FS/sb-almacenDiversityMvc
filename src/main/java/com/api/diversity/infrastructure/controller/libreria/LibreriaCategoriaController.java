@@ -87,10 +87,18 @@ public class LibreriaCategoriaController {
                     "La categoría debe pertenecer al rubro de Librería");
         }
 
-        categoriaService.save(categoria);
-        flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
-        flash.addFlashAttribute("tipoMensaje", "success");
-        return "redirect:/libreria/categorias";
+        try {
+            categoriaService.save(categoria);
+            flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
+            flash.addFlashAttribute("tipoMensaje", "success");
+            return "redirect:/libreria/categorias";
+        } catch (RuntimeException e) {
+            model.addAttribute("rubroActual", TipoRubro.LIBRERIA);
+            model.addAttribute("categoria", categoria);
+            model.addAttribute("mensaje", e.getMessage());
+            model.addAttribute("tipoMensaje", "error");
+            return "libreria/categorias/form";
+        }
     }
 
     @GetMapping("/eliminar/{id}")

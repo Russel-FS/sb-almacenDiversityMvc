@@ -86,10 +86,19 @@ public class CamarasCategoriaController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "La categoría debe pertenecer al rubro de Cámaras de Seguridad");
         }
-        categoriaService.save(categoria);
-        flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
-        flash.addFlashAttribute("tipoMensaje", "success");
-        return "redirect:/camaras/categorias";
+
+        try {
+            categoriaService.save(categoria);
+            flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
+            flash.addFlashAttribute("tipoMensaje", "success");
+            return "redirect:/camaras/categorias";
+        } catch (RuntimeException e) {
+            model.addAttribute("rubroActual", TipoRubro.CAMARA_SEGURIDAD);
+            model.addAttribute("categoria", categoria);
+            model.addAttribute("mensaje", e.getMessage());
+            model.addAttribute("tipoMensaje", "error");
+            return "camara/categoria/form";
+        }
     }
 
     @GetMapping("/eliminar/{id}")

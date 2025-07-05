@@ -63,10 +63,19 @@ public class AdminController {
             return "categorias/form";
         }
 
-        categoriaService.save(categoria);
-        flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
-        flash.addFlashAttribute("tipoMensaje", "success");
-        return "redirect:/admin/categorias";
+        try {
+            categoriaService.save(categoria);
+            flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
+            flash.addFlashAttribute("tipoMensaje", "success");
+            return "redirect:/admin/categorias";
+        } catch (RuntimeException e) {
+            model.addAttribute("rubros", rubroService.findAll());
+            model.addAttribute("esAdmin", true);
+            model.addAttribute("categoria", categoria);
+            model.addAttribute("mensaje", e.getMessage());
+            model.addAttribute("tipoMensaje", "error");
+            return "categorias/form";
+        }
     }
 
     @GetMapping("/eliminar/{id}")
