@@ -52,4 +52,6 @@ public interface IEntradaService {
      * descendente.
      */
     List<EntradaDto> findTop10ByTipoRubroOrderByFechaEntradaDesc(TipoRubro tipoRubro);
+
+    List<EntradaDto> findByRubroIdAndEstado(Long rubroId, EstadoEntrada estado);
 }

@@ -115,6 +115,8 @@
               enctype="multipart/form-data"
               class="p-8"
             >
+              <!-- Campo hidden para el ID del producto -->
+              <input type="hidden" th:field="*{idProducto}" />
               <!-- Información básica -->
               <div class="mb-8">
                 <h3
@@ -409,6 +411,7 @@
                       id="stockActual"
                       th:field="*{stockActual}"
                       min="0"
+                      th:value="${producto.stockActual != null ? producto.stockActual : 0}"
                       class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="0"
                     />
@@ -432,6 +435,7 @@
                       id="stockMinimo"
                       th:field="*{stockMinimo}"
                       min="0"
+                      th:value="${producto.stockMinimo != null ? producto.stockMinimo : 0}"
                       class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       placeholder="0"
                     />
@@ -455,8 +459,9 @@
                       id="stockMaximo"
                       th:field="*{stockMaximo}"
                       min="0"
+                      th:value="${producto.stockMaximo != null ? producto.stockMaximo : 100}"
                       class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="0"
+                      placeholder="100"
                     />
                     <div
                       th:if="${#fields.hasErrors('stockMaximo')}"

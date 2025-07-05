@@ -45,4 +45,9 @@ public class ProductoRepositoryImpl implements IProductoRepository {
     public boolean existsByCodigoProducto(String codigoProducto) {
         return productoJpaRepository.existsByCodigoProducto(codigoProducto);
     }
+
+    @Override
+    public boolean existsByCodigoProductoAndIdProductoNot(String codigoProducto, Long idProducto) {
+        return productoJpaRepository.existsByCodigoProductoAndIdProductoNot(codigoProducto, idProducto);
+    }
 }

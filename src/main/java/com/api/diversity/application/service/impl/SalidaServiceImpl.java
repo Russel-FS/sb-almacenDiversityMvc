@@ -75,23 +75,6 @@ public class SalidaServiceImpl implements ISalidaService {
                 }
             }
 
-            // Validar stock disponible para todos los productos
-            if (salidaDto.getDetalles() != null) {
-                for (DetalleSalidaDto detalleDto : salidaDto.getDetalles()) {
-                    // Obtener producto para validar stock
-                    ProductoEntity producto = productoRepository.findById(detalleDto.getProductoId())
-                            .orElseThrow(() -> new EntityNotFoundException("Producto no encontrado"));
-
-                    // Validar stock disponible
-                    if (!validarStockDisponible(producto, detalleDto.getCantidad())) {
-                        throw new IllegalStateException(
-                                "Stock insuficiente para el producto '" + producto.getNombreProducto() +
-                                        "'. Stock disponible: " + producto.getStockActual() +
-                                        ", Cantidad solicitada: " + detalleDto.getCantidad());
-                    }
-                }
-            }
-
             // Crear entidad
             SalidaEntity salida = salidaMapper.toEntity(salidaDto);
             salida.setCliente(cliente);
@@ -129,16 +112,6 @@ public class SalidaServiceImpl implements ISalidaService {
 
                     // Guardar detalle
                     detalleSalidaRepository.save(detalle);
-
-                    // Actualizar stock del producto
-                    producto.setStockActual(producto.getStockActual() - detalle.getCantidad());
-                    productoRepository.save(producto);
-
-                    log.info("Stock actualizado para producto {}: {} - {} = {}",
-                            producto.getNombreProducto(),
-                            producto.getStockActual() + detalle.getCantidad(),
-                            detalle.getCantidad(),
-                            producto.getStockActual());
                 }
             }
 
@@ -330,19 +303,31 @@ public class SalidaServiceImpl implements ISalidaService {
                     .orElseThrow(() -> new EntityNotFoundException("Salida no encontrada"));
 
             if (salida.getEstado() != EstadoSalida.Pendiente) {
-                throw new IllegalStateException("Solo se pueden aprobar salidas pendientes");
+                throw new IllegalStateException(
+                        "Solo se pueden aprobar salidas pendientes. Estado actual: " + salida.getEstado());
             }
 
             UsuarioEntity usuarioAprobacion = usuarioRepository.findById(usuarioAprobacionId)
                     .orElseThrow(() -> new EntityNotFoundException("Usuario de aprobación no encontrado"));
 
-            // Validar stock disponible antes de aprobar
+            // se valida el stock y se actualiza
             if (salida.getDetalles() != null) {
                 for (DetalleSalidaEntity detalle : salida.getDetalles()) {
-                    if (!validarStockDisponible(detalle.getProducto(), detalle.getCantidad())) {
+                    ProductoEntity producto = detalle.getProducto();
+                    if (!validarStockDisponible(producto, detalle.getCantidad())) {
                         throw new IllegalStateException(
-                                "Stock insuficiente para el producto: " + detalle.getProducto().getNombreProducto());
+                                "Stock insuficiente para el producto: '" + producto.getNombreProducto() +
+                                        "'. Stock disponible: " + producto.getStockActual() +
+                                        ", Cantidad solicitada: " + detalle.getCantidad());
                     }
+                    // Descontar stock
+                    producto.setStockActual(producto.getStockActual() - detalle.getCantidad());
+                    productoRepository.save(producto);
+                    log.info("Stock actualizado para producto {}: {} - {} = {}",
+                            producto.getNombreProducto(),
+                            producto.getStockActual() + detalle.getCantidad(),
+                            detalle.getCantidad(),
+                            producto.getStockActual());
                 }
             }
 
@@ -370,8 +355,24 @@ public class SalidaServiceImpl implements ISalidaService {
                 throw new IllegalStateException("La salida ya está anulada");
             }
 
+            // Si la salida ya fue completada, se debe revertir el stock
+            if (salida.getEstado() == EstadoSalida.Completado) {
+                if (salida.getDetalles() != null) {
+                    for (DetalleSalidaEntity detalle : salida.getDetalles()) {
+                        ProductoEntity producto = detalle.getProducto();
+                        producto.setStockActual(producto.getStockActual() + detalle.getCantidad());
+                        productoRepository.save(producto);
+                        log.info("Stock revertido para producto {}: {} + {} = {}",
+                                producto.getNombreProducto(),
+                                producto.getStockActual() - detalle.getCantidad(),
+                                detalle.getCantidad(),
+                                producto.getStockActual());
+                    }
+                }
+            }
+
             salida.setEstado(EstadoSalida.Anulado);
-            salida.setObservaciones(motivo);
+            salida.setObservaciones(motivo != null ? motivo : "Salida anulada sin motivo específico.");
 
             return salidaMapper.toDto(salidaRepository.save(salida));
         } catch (Exception e) {
@@ -441,6 +442,19 @@ public class SalidaServiceImpl implements ISalidaService {
         } catch (Exception e) {
             log.error("Error al verificar existencia de número de documento: {}", e.getMessage(), e);
             return false;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SalidaDto> findByRubroIdAndEstado(Long rubroId, EstadoSalida estado) {
+        try {
+            return salidaRepository.findByRubroIdAndEstado(rubroId, estado).stream()
+                    .map(salidaMapper::toDto)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error al buscar salidas por rubro y estado: {}", e.getMessage(), e);
+            throw new RuntimeException("Error al buscar salidas por rubro y estado: " + e.getMessage(), e);
         }
     }
 

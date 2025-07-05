@@ -90,9 +90,14 @@ public class AdminProductoController {
         log.info("Mostrando formulario de nuevo producto");
 
         try {
+            ProductoDto producto = new ProductoDto();
+            producto.setStockActual(0);
+            producto.setStockMinimo(0);
+            producto.setStockMaximo(100);
+
             model.addAttribute("titulo", "Nuevo Producto");
             model.addAttribute("subtitulo", "Registrar nuevo producto en el sistema");
-            model.addAttribute("producto", new ProductoDto());
+            model.addAttribute("producto", producto);
             model.addAttribute("categorias", categoriaService.findAllIncludingInactive());
             model.addAttribute("estados", EstadoProducto.values());
             model.addAttribute("esNuevo", true);
@@ -165,15 +170,15 @@ public class AdminProductoController {
 
     @GetMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        log.info("Eliminando producto ID: {}", id);
+        log.info("Desactivando producto ID: {}", id);
 
         try {
             productoService.deleteById(id);
-            redirectAttributes.addFlashAttribute("success", "Producto eliminado exitosamente");
+            redirectAttributes.addFlashAttribute("success", "Producto desactivado exitosamente");
 
         } catch (Exception e) {
-            log.error("Error al eliminar producto: {}", e.getMessage(), e);
-            redirectAttributes.addFlashAttribute("error", "Error al eliminar el producto: " + e.getMessage());
+            log.error("Error al desactivar producto: {}", e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("error", "Error al desactivar el producto: " + e.getMessage());
         }
 
         return "redirect:/admin/productos";

@@ -30,4 +30,22 @@ public enum TipoRubro {
         return descripcion;
     }
 
+    public static TipoRubro fromNombre(String nombre) {
+        for (TipoRubro rubro : TipoRubro.values()) {
+            if (rubro.getNombre().equalsIgnoreCase(nombre)) {
+                return rubro;
+            }
+        }
+        throw new IllegalArgumentException("No se encontró un TipoRubro con el nombre: " + nombre);
+    }
+
+    public static TipoRubro fromCode(String code) {
+        for (TipoRubro rubro : TipoRubro.values()) {
+            if (rubro.getCode().equalsIgnoreCase(code)) {
+                return rubro;
+            }
+        }
+        throw new IllegalArgumentException("No se encontró un TipoRubro con el código: " + code);
+    }
+
 }

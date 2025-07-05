@@ -54,4 +54,6 @@ public interface ISalidaService {
      * descendente.
      */
     List<SalidaDto> findTop10ByTipoRubroOrderByFechaSalidaDesc(TipoRubro tipoRubro);
+
+    List<SalidaDto> findByRubroIdAndEstado(Long rubroId, EstadoSalida estado);
 }

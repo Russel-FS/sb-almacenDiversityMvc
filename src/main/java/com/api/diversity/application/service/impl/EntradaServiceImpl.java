@@ -28,6 +28,7 @@ import com.api.diversity.domain.ports.IDetalleEntradaRepository;
 import com.api.diversity.domain.enums.EstadoEntrada;
 import com.api.diversity.domain.enums.EstadoDetalleEntrada;
 import com.api.diversity.domain.enums.TipoDocumento;
+import com.api.diversity.domain.enums.TipoEntrada;
 import com.api.diversity.domain.enums.TipoRubro;
 import com.api.diversity.application.service.interfaces.IRubroService;
 
@@ -81,6 +82,8 @@ public class EntradaServiceImpl implements IEntradaService {
             entrada.setUsuarioRegistro(usuarioRegistro);
             entrada.setEstado(EstadoEntrada.Pendiente);
             entrada.setFechaEntrada(LocalDateTime.now());
+            entrada.setTipoEntrada(
+                    entradaDto.getTipoEntrada() != null ? entradaDto.getTipoEntrada() : TipoEntrada.COMPRA);
 
             // Calcular costo total
             BigDecimal costoTotal = entradaDto.getDetalles().stream()
@@ -110,16 +113,6 @@ public class EntradaServiceImpl implements IEntradaService {
 
                     // Guardar detalle
                     detalleEntradaRepository.save(detalle);
-
-                    // Actualizar stock del producto
-                    producto.setStockActual(producto.getStockActual() + detalle.getCantidad());
-                    productoRepository.save(producto);
-
-                    log.info("Stock actualizado para producto {}: {} + {} = {}",
-                            producto.getNombreProducto(),
-                            producto.getStockActual() - detalle.getCantidad(),
-                            detalle.getCantidad(),
-                            producto.getStockActual());
                 }
             }
 
@@ -311,11 +304,26 @@ public class EntradaServiceImpl implements IEntradaService {
                     .orElseThrow(() -> new EntityNotFoundException("Entrada no encontrada"));
 
             if (entrada.getEstado() != EstadoEntrada.Pendiente) {
-                throw new IllegalStateException("Solo se pueden aprobar entradas pendientes");
+                throw new IllegalStateException(
+                        "Solo se pueden aprobar entradas pendientes. Estado actual: " + entrada.getEstado());
             }
 
             UsuarioEntity usuarioAprobacion = usuarioRepository.findById(usuarioAprobacionId)
                     .orElseThrow(() -> new EntityNotFoundException("Usuario de aprobación no encontrado"));
+
+            // se aumenta el stock de los productos al aprobarr
+            if (entrada.getDetalles() != null) {
+                for (DetalleEntradaEntity detalle : entrada.getDetalles()) {
+                    ProductoEntity producto = detalle.getProducto();
+                    producto.setStockActual(producto.getStockActual() + detalle.getCantidad());
+                    productoRepository.save(producto);
+                    log.info("Stock actualizado para producto {}: {} + {} = {}",
+                            producto.getNombreProducto(),
+                            producto.getStockActual() - detalle.getCantidad(),
+                            detalle.getCantidad(),
+                            producto.getStockActual());
+                }
+            }
 
             entrada.setEstado(EstadoEntrada.Completado);
             entrada.setUsuarioAprobacion(usuarioAprobacion);
@@ -341,8 +349,24 @@ public class EntradaServiceImpl implements IEntradaService {
                 throw new IllegalStateException("La entrada ya está anulada");
             }
 
+            // si la entrada está completada, revertir el stock
+            if (entrada.getEstado() == EstadoEntrada.Completado) {
+                if (entrada.getDetalles() != null) {
+                    for (DetalleEntradaEntity detalle : entrada.getDetalles()) {
+                        ProductoEntity producto = detalle.getProducto();
+                        producto.setStockActual(producto.getStockActual() - detalle.getCantidad());
+                        productoRepository.save(producto);
+                        log.info("Stock revertido para producto {}: {} - {} = {}",
+                                producto.getNombreProducto(),
+                                producto.getStockActual() + detalle.getCantidad(),
+                                detalle.getCantidad(),
+                                producto.getStockActual());
+                    }
+                }
+            }
+
             entrada.setEstado(EstadoEntrada.Anulado);
-            entrada.setObservaciones(motivo);
+            entrada.setObservaciones(motivo != null ? motivo : "Entrada anulada sin motivo específico.");
 
             return entradaMapper.toDto(entradaRepository.save(entrada));
         } catch (Exception e) {
@@ -385,6 +409,19 @@ public class EntradaServiceImpl implements IEntradaService {
         } catch (Exception e) {
             log.error("Error al verificar existencia de número de factura: {}", e.getMessage(), e);
             return false;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<EntradaDto> findByRubroIdAndEstado(Long rubroId, EstadoEntrada estado) {
+        try {
+            return entradaRepository.findByRubroIdAndEstado(rubroId, estado).stream()
+                    .map(entradaMapper::toDto)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error al buscar entradas por rubro y estado: {}", e.getMessage(), e);
+            throw new RuntimeException("Error al buscar entradas por rubro y estado: " + e.getMessage(), e);
         }
     }
 

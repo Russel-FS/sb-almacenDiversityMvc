@@ -87,4 +87,9 @@ public class SalidaRepositoryImpl implements ISalidaRepository {
     public boolean existsByNumeroDocumento(String numeroDocumento) {
         return salidaJpaRepository.existsByNumeroDocumento(numeroDocumento);
     }
+
+    @Override
+    public List<SalidaEntity> findByRubroIdAndEstado(Long rubroId, EstadoSalida estado) {
+        return salidaJpaRepository.findByRubroIdAndEstado(rubroId, estado);
+    }
 }

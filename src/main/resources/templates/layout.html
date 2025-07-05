@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content)">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  th:fragment="layout(content)"
+>
   <head>
     <meta charset="UTF-8" />
     <title>J&C Diversity S.A.C.</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -73,10 +78,11 @@
 
           <!-- Navegación principal -->
           <nav class="flex items-center space-x-1">
-            <!-- Inicio -->
+            <!-- Inicio - Acceso general para usuarios autenticados -->
             <a
               href="/"
               class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200"
+              sec:authorize="isAuthenticated()"
             >
               <svg
                 class="w-4 h-4 mr-2 inline"
@@ -94,8 +100,11 @@
               Inicio
             </a>
 
-            <!-- Piñatería -->
-            <div class="dropdown relative group">
+            <!-- Categorías Dropdown - Solo para operadores y supervisores -->
+            <div
+              class="dropdown relative group"
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
+            >
               <button
                 class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
               >
@@ -109,10 +118,10 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
                   ></path>
                 </svg>
-                Piñatería
+                Categorías
                 <svg
                   class="w-4 h-4 ml-1 group-hover:rotate-180 transition-transform duration-200"
                   fill="none"
@@ -130,12 +139,14 @@
               <div
                 class="dropdown-menu absolute left-0 mt-2 w-56 rounded-2xl shadow-xl glass-effect py-2 z-50"
               >
+                <!-- Piñatería - Solo para roles de piñatería -->
                 <a
                   th:href="@{/pinateria/categorias}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
                 >
                   <svg
-                    class="w-4 h-4 mr-3 text-blue-500"
+                    class="w-4 h-4 mr-3 text-pink-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -144,78 +155,19 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                     ></path>
                   </svg>
                   <div>
-                    <p class="font-medium">Categorías</p>
+                    <p class="font-medium">Piñatería</p>
                     <p class="text-xs text-gray-500">Gestionar categorías</p>
                   </div>
                 </a>
-                <a
-                  th:href="@{/pinateria/productos}"
-                  class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
-                >
-                  <svg
-                    class="w-4 h-4 mr-3 text-green-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                    ></path>
-                  </svg>
-                  <div>
-                    <p class="font-medium">Productos</p>
-                    <p class="text-xs text-gray-500">Gestionar productos</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-            <!-- Librería -->
-            <div class="dropdown relative group">
-              <button
-                class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
-              >
-                <svg
-                  class="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  ></path>
-                </svg>
-                Librería
-                <svg
-                  class="w-4 h-4 ml-1 group-hover:rotate-180 transition-transform duration-200"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  ></path>
-                </svg>
-              </button>
-              <div
-                class="dropdown-menu absolute left-0 mt-2 w-56 rounded-2xl shadow-xl glass-effect py-2 z-50"
-              >
+                <!-- Librería - Solo para roles de librería -->
                 <a
                   th:href="@{/libreria/categorias}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-blue-500"
@@ -227,20 +179,22 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                     ></path>
                   </svg>
                   <div>
-                    <p class="font-medium">Categorías</p>
+                    <p class="font-medium">Librería</p>
                     <p class="text-xs text-gray-500">Gestionar categorías</p>
                   </div>
                 </a>
+                <!-- Cámaras - Solo para roles de cámaras -->
                 <a
-                  th:href="@{/libreria/productos}"
+                  th:href="@{/camaras/categorias}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
                   <svg
-                    class="w-4 h-4 mr-3 text-green-500"
+                    class="w-4 h-4 mr-3 text-purple-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -249,19 +203,28 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
                     ></path>
                   </svg>
                   <div>
-                    <p class="font-medium">Productos</p>
-                    <p class="text-xs text-gray-500">Gestionar productos</p>
+                    <p class="font-medium">Cámaras</p>
+                    <p class="text-xs text-gray-500">Gestionar categorías</p>
                   </div>
                 </a>
               </div>
             </div>
 
-            <!-- Cámaras -->
-            <div class="dropdown relative group">
+            <!-- Productos Dropdown - Solo para operadores y supervisores -->
+            <div
+              class="dropdown relative group"
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS')"
+            >
               <button
                 class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
               >
@@ -275,16 +238,10 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                  ></path>
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                   ></path>
                 </svg>
-                Cámaras
+                Productos
                 <svg
                   class="w-4 h-4 ml-1 group-hover:rotate-180 transition-transform duration-200"
                   fill="none"
@@ -302,9 +259,35 @@
               <div
                 class="dropdown-menu absolute left-0 mt-2 w-56 rounded-2xl shadow-xl glass-effect py-2 z-50"
               >
+                <!-- Piñatería - Solo para roles de piñatería -->
                 <a
-                  th:href="@{/camaras/categorias}"
+                  th:href="@{/pinateria/productos}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-pink-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    ></path>
+                  </svg>
+                  <div>
+                    <p class="font-medium">Piñatería</p>
+                    <p class="text-xs text-gray-500">Gestionar productos</p>
+                  </div>
+                </a>
+                <!-- Librería - Solo para roles de librería -->
+                <a
+                  th:href="@{/libreria/productos}"
+                  class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-blue-500"
@@ -316,20 +299,22 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                     ></path>
                   </svg>
                   <div>
-                    <p class="font-medium">Categorías</p>
-                    <p class="text-xs text-gray-500">Gestionar categorías</p>
+                    <p class="font-medium">Librería</p>
+                    <p class="text-xs text-gray-500">Gestionar productos</p>
                   </div>
                 </a>
+                <!-- Cámaras - Solo para roles de cámaras -->
                 <a
                   th:href="@{/camaras/productos}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
                   <svg
-                    class="w-4 h-4 mr-3 text-green-500"
+                    class="w-4 h-4 mr-3 text-purple-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -338,19 +323,28 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
                     ></path>
                   </svg>
                   <div>
-                    <p class="font-medium">Productos</p>
+                    <p class="font-medium">Cámaras</p>
                     <p class="text-xs text-gray-500">Gestionar productos</p>
                   </div>
                 </a>
               </div>
             </div>
 
-            <!-- Kardex -->
-            <div class="dropdown relative group">
+            <!-- kardex - Solo para operadores, supervisores y almaceneros -->
+            <div
+              class="dropdown relative group"
+              sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS', 'ALMACENERO')"
+            >
               <button
                 class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
               >
@@ -385,9 +379,11 @@
               <div
                 class="dropdown-menu absolute left-0 mt-2 w-56 rounded-2xl shadow-xl glass-effect py-2 z-50"
               >
+                <!-- Dashboard Piñatería - Solo para roles de piñatería -->
                 <a
                   th:href="@{/pinateria/kardex/dashboard}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'OPERADOR_PINATERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-pink-500"
@@ -407,9 +403,11 @@
                     <p class="text-xs text-gray-500">Control de inventario</p>
                   </div>
                 </a>
+                <!-- Dashboard Librería - Solo para roles de librería -->
                 <a
                   th:href="@{/libreria/kardex/dashboard}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA', 'OPERADOR_LIBRERIA')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-blue-500"
@@ -429,9 +427,11 @@
                     <p class="text-xs text-gray-500">Control de inventario</p>
                   </div>
                 </a>
+                <!-- Dashboard Cámaras - Solo para roles de cámaras -->
                 <a
-                  th:href="@{/camara/kardex/dashboard}"
+                  th:href="@{/camaras/kardex/dashboard}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS', 'OPERADOR_CAMARAS')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-purple-500"
@@ -457,10 +457,136 @@
                     <p class="text-xs text-gray-500">Control de inventario</p>
                   </div>
                 </a>
-                <div class="border-t border-gray-100 my-2"></div>
+
+                <!-- Separador para sección de supervisores -->
+                <div
+                  class="border-t border-gray-100 my-2"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS')"
+                ></div>
+
+                <!-- Pendientes Piñatería - Solo para supervisores de piñatería -->
+                <a
+                  th:href="@{/supervisor/kardex/PIÑAT/pendientes}"
+                  class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA')"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-pink-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    ></path>
+                  </svg>
+                  <div>
+                    <p class="font-medium">Pendientes Piñatería</p>
+                    <p class="text-xs text-gray-500">Aprobar/Anular</p>
+                  </div>
+                </a>
+                <!-- Pendientes Librería - Solo para supervisores de librería -->
+                <a
+                  th:href="@{/supervisor/kardex/LIBR/pendientes}"
+                  class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_LIBRERIA')"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-blue-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                    ></path>
+                  </svg>
+                  <div>
+                    <p class="font-medium">Pendientes Librería</p>
+                    <p class="text-xs text-gray-500">Aprobar/Anular</p>
+                  </div>
+                </a>
+                <!-- Pendientes Cámaras - Solo para supervisores de cámaras -->
+                <a
+                  th:href="@{/supervisor/kardex/CSEG/pendientes}"
+                  class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_CAMARAS')"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-purple-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                  <div>
+                    <p class="font-medium">Pendientes Cámaras</p>
+                    <p class="text-xs text-gray-500">Aprobar/Anular</p>
+                  </div>
+                </a>
+
+                <!-- Separador para sección de almaceneros -->
+                <div
+                  class="border-t border-gray-100 my-2"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS', 'ALMACENERO')"
+                ></div>
+
+                <!-- Devoluciones - Solo para almaceneros -->
+                <a
+                  th:href="@{/almacenero/devoluciones/nueva}"
+                  class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasAnyRole('ADMINISTRADOR', 'SUPERVISOR_GENERAL', 'SUPERVISOR_PINATERIA', 'SUPERVISOR_LIBRERIA', 'SUPERVISOR_CAMARAS', 'OPERADOR_PINATERIA', 'OPERADOR_LIBRERIA', 'OPERADOR_CAMARAS', 'ALMACENERO')"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-orange-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 10h10a8 8 0 018 8v2M3 10l3 3m-3-3l3-3"
+                    ></path>
+                  </svg>
+                  <div>
+                    <p class="font-medium">Registrar Devolución</p>
+                    <p class="text-xs text-gray-500">
+                      Procesar devoluciones de clientes
+                    </p>
+                  </div>
+                </a>
+
+                <!-- Separador para sección de administración -->
+                <div
+                  class="border-t border-gray-100 my-2"
+                  sec:authorize="hasRole('ADMINISTRADOR')"
+                ></div>
+
+                <!-- Administración - Solo para administradores -->
                 <a
                   th:href="@{/admin}"
                   class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                  sec:authorize="hasRole('ADMINISTRADOR')"
                 >
                   <svg
                     class="w-4 h-4 mr-3 text-blue-500"
@@ -489,10 +615,11 @@
               </div>
             </div>
 
-            <!-- Proveedores -->
+            <!-- Proveedores - Solo para administradores -->
             <a
               th:href="@{/proveedores}"
               class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
+              sec:authorize="hasRole('ADMINISTRADOR')"
             >
               <svg
                 class="w-4 h-4 mr-2"
@@ -510,10 +637,11 @@
               Proveedores
             </a>
 
-            <!-- Clientes -->
+            <!-- Clientes - Solo para administradores -->
             <a
-              href="/clientes"
+              th:href="@{/clientes}"
               class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
+              sec:authorize="hasRole('ADMINISTRADOR')"
             >
               <svg
                 class="w-4 h-4 mr-2"
@@ -531,10 +659,11 @@
               Clientes
             </a>
 
-            <!-- Rubros -->
+            <!-- Rubros - Solo para administradores -->
             <a
               th:href="@{/rubros}"
               class="nav-link px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-xl hover:bg-blue-50 transition-all duration-200 flex items-center"
+              sec:authorize="hasRole('ADMINISTRADOR')"
             >
               <svg
                 class="w-4 h-4 mr-2"
@@ -553,8 +682,11 @@
             </a>
           </nav>
 
-          <!-- Perfil -->
-          <div class="dropdown relative group">
+          <!-- Perfil - Solo para usuarios autenticados -->
+          <div
+            class="dropdown relative group"
+            sec:authorize="isAuthenticated()"
+          >
             <button
               class="flex items-center space-x-3 p-2 rounded-xl hover:bg-gray-50 transition-all duration-200"
             >
@@ -592,9 +724,11 @@
             <div
               class="dropdown-menu absolute right-0 mt-2 w-56 rounded-2xl shadow-xl glass-effect py-2 z-50"
             >
+              <!-- Administración - Solo para administradores -->
               <a
                 th:href="@{/admin}"
                 class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                sec:authorize="hasRole('ADMINISTRADOR')"
               >
                 <svg
                   class="w-4 h-4 mr-3 text-blue-500"

@@ -34,8 +34,11 @@ public class SecurityConfig {
                 http
                                 .authorizeHttpRequests(auth -> auth
                                                 // Rutas públicas
-                                                .requestMatchers("/login", "/css/**", "/js/**",
+                                                .requestMatchers("/auth/login", "/auth/logout", "/css/**", "/js/**",
                                                                 "/images/**", "/favicon.ico")
+                                                .permitAll()
+                                                // ruta de errores
+                                                .requestMatchers("/error/**", "/error")
                                                 .permitAll()
 
                                                 // Rutas de administración
@@ -46,9 +49,11 @@ public class SecurityConfig {
                                                 .requestMatchers("/admin/proveedores/**").hasRole("ADMINISTRADOR")
                                                 .requestMatchers("/admin/usuarios-rubros/**").hasRole("ADMINISTRADOR")
 
-                                                // Rutas de supervisión general
+                                                // Rutas de supervisión
                                                 .requestMatchers("/supervisor/**")
-                                                .hasAnyRole("ADMINISTRADOR", "SUPERVISOR_GENERAL")
+                                                .hasAnyRole("ADMINISTRADOR", "SUPERVISOR_GENERAL",
+                                                                "SUPERVISOR_PINATERIA", "SUPERVISOR_LIBRERIA",
+                                                                "SUPERVISOR_CAMARAS")
 
                                                 // Rutas de piñatería
                                                 .requestMatchers("/pinateria/**").hasAnyRole(
@@ -71,11 +76,11 @@ public class SecurityConfig {
                                                                 "SUPERVISOR_CAMARAS",
                                                                 "OPERADOR_CAMARAS")
 
-                                                // Rutas de gestión de usuarios (solo ADMINISTRADOR)
+                                                // Rutas de gestión de usuarios solo admin
                                                 .requestMatchers("/usuarios/**", "/roles/**", "/usuario-rubros/**")
                                                 .hasRole("ADMINISTRADOR")
 
-                                                // Rutas de gestión de rubros (solo ADMINISTRADOR)
+                                                // Rutas de gestión de rubros solo admin
                                                 .requestMatchers("/rubros/**").hasRole("ADMINISTRADOR")
 
                                                 // Rutas de gestión de proveedores y clientes
@@ -85,6 +90,18 @@ public class SecurityConfig {
                                                                 "SUPERVISOR_PINATERIA",
                                                                 "SUPERVISOR_LIBRERIA",
                                                                 "SUPERVISOR_CAMARAS")
+
+                                                // Rutas de almacenero y devoluciones
+                                                .requestMatchers("/almacenero/**").hasAnyRole(
+                                                                "ADMINISTRADOR",
+                                                                "SUPERVISOR_GENERAL",
+                                                                "SUPERVISOR_PINATERIA",
+                                                                "SUPERVISOR_LIBRERIA",
+                                                                "SUPERVISOR_CAMARAS",
+                                                                "OPERADOR_PINATERIA",
+                                                                "OPERADOR_LIBRERIA",
+                                                                "OPERADOR_CAMARAS",
+                                                                "ALMACENERO")
 
                                                 // Página principal y home
                                                 .requestMatchers("/", "/home").authenticated()
@@ -109,6 +126,9 @@ public class SecurityConfig {
                                                 .logoutSuccessUrl("/auth/login")
                                                 .deleteCookies("JSESSIONID", "remember-me")
                                                 .permitAll())
+                                // Manejo de errores de acceso denegado
+                                .exceptionHandling(exceptions -> exceptions
+                                                .accessDeniedPage("/error/access-denied"))
                                 .csrf(csrf -> csrf.disable());
 
                 return http.build();

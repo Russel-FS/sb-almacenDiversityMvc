@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registrar Devolución</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{layout :: layout(~{::section})}">
+      <section>
+        <!-- Contenedor principal -->
+        <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+          <div class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Mensajes -->
+            <div th:if="${mensaje != null}" id="mensajeAlert" class="mb-8">
+              <div
+                th:class="${tipoMensaje == 'error' ? 'bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-3xl p-6 shadow-sm' : 'bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-3xl p-6 shadow-sm'}"
+              >
+                <div class="flex items-center">
+                  <div
+                    th:class="${tipoMensaje == 'error' ? 'w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4' : 'w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mr-4'}"
+                  >
+                    <svg
+                      th:if="${tipoMensaje == 'error'}"
+                      class="w-6 h-6 text-red-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
+                    </svg>
+                    <svg
+                      th:if="${tipoMensaje == 'success'}"
+                      class="w-6 h-6 text-emerald-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p
+                    class="text-base font-medium"
+                    th:classappend="${tipoMensaje == 'error' ? 'text-red-800' : 'text-emerald-800'}"
+                    th:text="${mensaje}"
+                  ></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Header   -->
+            <div class="mb-12">
+              <div class="flex flex-wrap items-center justify-between mb-8">
+                <div class="flex flex-wrap items-center gap-6">
+                  <div
+                    class="w-16 h-16 bg-gradient-to-br from-orange-600 to-yellow-600 rounded-3xl flex items-center justify-center shadow-sm"
+                  >
+                    <svg
+                      class="w-8 h-8 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M3 10h10a8 8 0 018 8v2M3 10l3 3m-3-3l3-3"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h1
+                      class="text-4xl font-light text-gray-900 tracking-tight"
+                    >
+                      Registrar Devolución
+                    </h1>
+                    <p class="text-lg text-gray-600 mt-2">
+                      Procesar devoluciones de productos de clientes
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-4">
+                  <a
+                    href="/"
+                    class="px-6 py-3 text-sm font-medium text-gray-700 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-2xl hover:bg-gray-50 transition-colors duration-200 shadow-sm"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-2 inline"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                      />
+                    </svg>
+                    Volver al Inicio
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200 p-8 shadow-sm mb-12"
+            >
+              <div class="mb-8">
+                <form
+                  th:action="@{/almacenero/devoluciones/buscar}"
+                  method="post"
+                  class="flex flex-col md:flex-row gap-4 items-end md:items-end"
+                >
+                  <div class="w-full md:w-48">
+                    <label
+                      for="idSalida"
+                      class="block text-sm font-semibold text-gray-600 mb-1"
+                      >ID de Salida</label
+                    >
+                    <input
+                      type="number"
+                      id="idSalida"
+                      name="idSalida"
+                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                      th:value="${param.idSalida}"
+                    />
+                  </div>
+                  <div class="w-full md:w-64">
+                    <label
+                      for="numeroDocumento"
+                      class="block text-sm font-semibold text-gray-600 mb-1"
+                      >Número de Documento</label
+                    >
+                    <input
+                      type="text"
+                      id="numeroDocumento"
+                      name="numeroDocumento"
+                      class="w-full px-6 py-5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                      th:value="${param.numeroDocumento}"
+                    />
+                  </div>
+                  <div class="w-full md:w-auto flex-shrink-0">
+                    <button
+                      type="submit"
+                      class="w-full md:w-auto px-8 py-5 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition text-lg font-semibold shadow"
+                    >
+                      Buscar
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- detalles de salida -->
+              <div th:if="${salidaEncontrada}">
+                <div class="mb-8">
+                  <div class="flex items-center mb-2">
+                    <svg
+                      class="w-6 h-6 text-orange-500 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 10h10a8 8 0 018 8v2M3 10l3 3m-3-3l3-3"
+                      />
+                    </svg>
+                    <h2 class="text-xl font-semibold text-gray-900">
+                      Datos de la Salida
+                    </h2>
+                  </div>
+                  <!-- Detalles de la salida minimalista en tarjetas -->
+                  <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >ID</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
+                        th:text="${salida.idSalida}"
+                      ></span>
+                    </div>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >N° Documento</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
+                        th:text="${salida.numeroDocumento}"
+                      ></span>
+                    </div>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >Cliente</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
+                        th:text="${salida.clienteNombre}"
+                      ></span>
+                    </div>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >Fecha</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
+                        th:text="${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy HH:mm')}"
+                      ></span>
+                    </div>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >Total Venta</span
+                      >
+                      <span class="font-semibold text-gray-800"
+                        >S/ <span th:text="${salida.totalVenta}"></span
+                      ></span>
+                    </div>
+                    <div
+                      class="bg-white/80 rounded-2xl shadow p-4 flex flex-col gap-1 border border-gray-100"
+                    >
+                      <span
+                        class="text-xs text-gray-400 uppercase tracking-widest"
+                        >Motivo</span
+                      >
+                      <span
+                        class="font-semibold text-gray-800"
+                        th:text="${salida.motivoSalida}"
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+
+                <form
+                  th:action="@{/almacenero/devoluciones/procesar}"
+                  th:object="${devolucionRequest}"
+                  method="post"
+                >
+                  <input
+                    type="hidden"
+                    th:field="*{idSalidaOriginal}"
+                    th:value="${salida.idSalida}"
+                  />
+
+                  <!-- Tabla -->
+                  <div
+                    class="overflow-x-auto max-h-80 overflow-y-auto mb-8 rounded-2xl border border-gray-200"
+                  >
+                    <table class="min-w-full bg-white rounded-2xl text-sm">
+                      <thead>
+                        <tr>
+                          <th
+                            class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                          >
+                            Producto
+                          </th>
+                          <th
+                            class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                          >
+                            Cantidad original
+                          </th>
+                          <th
+                            class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                          >
+                            Cantidad a devolver
+                          </th>
+                          <th
+                            class="px-4 py-3 text-left font-semibold text-gray-600 border-b border-gray-100"
+                          >
+                            Seleccionar
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          th:each="detalle, iter : ${salida.detalles}"
+                          class="border-b border-gray-100 hover:bg-gray-50"
+                        >
+                          <td
+                            class="px-4 py-2"
+                            th:text="${detalle.productoNombre}"
+                          ></td>
+                          <td
+                            class="px-4 py-2 text-center"
+                            th:text="${detalle.cantidad}"
+                          ></td>
+                          <td class="px-4 py-2">
+                            <input
+                              type="number"
+                              min="0"
+                              th:attr="max=${detalle.cantidad}"
+                              th:name="${'productosDevueltos[' + iter.index + '].cantidadDevuelta'}"
+                              class="w-20 px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm"
+                            />
+                            <input
+                              type="hidden"
+                              th:name="${'productosDevueltos[' + iter.index + '].idProducto'}"
+                              th:value="${detalle.productoId}"
+                            />
+                            <input
+                              type="hidden"
+                              th:name="${'productosDevueltos[' + iter.index + '].precioUnitario'}"
+                              th:value="${detalle.precioUnitario}"
+                            />
+                          </td>
+                          <td class="px-4 py-2 text-center">
+                            <input
+                              type="checkbox"
+                              th:name="${'productosDevueltos[' + iter.index + '].seleccionado'}"
+                              value="true"
+                              class="w-5 h-5 accent-orange-500"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Campo de devolucion -->
+                  <div class="mb-6">
+                    <label
+                      for="motivoDevolucion"
+                      class="block text-sm font-semibold text-gray-600 mb-2"
+                      >Motivo de la Devolución</label
+                    >
+                    <textarea
+                      id="motivoDevolucion"
+                      th:field="*{motivoDevolucion}"
+                      rows="3"
+                      placeholder="Describe el motivo de la devolución..."
+                      class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-gray-900 transition-colors duration-200 bg-white/50 backdrop-blur-sm resize-none"
+                    ></textarea>
+                  </div>
+
+                  <div class="flex flex-col md:flex-row gap-4 justify-end mt-8">
+                    <button
+                      type="submit"
+                      class="px-10 py-4 bg-emerald-600 text-white rounded-2xl hover:bg-emerald-700 transition text-lg font-semibold shadow"
+                    >
+                      Devolver seleccionados
+                    </button>
+                    <button
+                      type="button"
+                      onclick="seleccionarTodo()"
+                      class="px-10 py-4 bg-blue-500 text-white rounded-2xl hover:bg-blue-600 transition text-lg font-semibold shadow"
+                    >
+                      Devolver todo
+                    </button>
+                    <button
+                      type="reset"
+                      class="px-10 py-4 bg-red-500 text-white rounded-2xl hover:bg-red-600 transition text-lg font-semibold shadow"
+                    >
+                      Limpiar selección
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Script para ocultar mensajes -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const mensajeAlert = document.getElementById("mensajeAlert");
+        if (mensajeAlert) {
+          setTimeout(function () {
+            mensajeAlert.style.transition = "opacity 0.5s ease-out";
+            mensajeAlert.style.opacity = "0";
+            setTimeout(function () {
+              mensajeAlert.remove();
+            }, 500);
+          }, 5000);
+        }
+        // Reset minimalista
+        const resetBtn = document.querySelector('button[type="reset"]');
+        if (resetBtn) {
+          resetBtn.addEventListener("click", function () {
+            document
+              .querySelectorAll('input[type="checkbox"]')
+              .forEach((cb) => (cb.checked = false));
+            document
+              .querySelectorAll('input[type="number"][name*="cantidad"]')
+              .forEach((input) => (input.value = ""));
+          });
+        }
+      });
+
+      function seleccionarTodo() {
+        document
+          .querySelectorAll('input[type="checkbox"]')
+          .forEach((cb) => (cb.checked = true));
+        document
+          .querySelectorAll('input[type="number"][max]')
+          .forEach((input) => {
+            input.value = input.max;
+          });
+      }
+    </script>
+  </body>
+</html>

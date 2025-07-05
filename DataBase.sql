@@ -180,52 +180,6 @@ CREATE TABLE Clientes (
     )
 );
 
--- Tabla de Entradas
-CREATE TABLE Entradas (
-    ID_Entrada BIGINT AUTO_INCREMENT PRIMARY KEY,
-    Numero_Factura VARCHAR(50) NOT NULL,
-    Tipo_Documento ENUM(
-        'FACTURA',
-        'BOLETA',
-        'NOTA_CREDITO',
-        'NOTA_DEBITO',
-        'GUIA_REMISION'
-    ) NOT NULL,
-    ID_Proveedor BIGINT NOT NULL,
-    Fecha_Entrada DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Costo_Total DECIMAL(10, 2) NOT NULL CHECK (Costo_Total >= 0),
-    Estado ENUM(
-        'Pendiente',
-        'Completado',
-        'Anulado'
-    ) DEFAULT 'Pendiente',
-    ID_Usuario_Registro BIGINT NOT NULL,
-    ID_Usuario_Aprobacion BIGINT,
-    Fecha_Aprobacion DATETIME,
-    Observaciones TEXT,
-    FOREIGN KEY (ID_Proveedor) REFERENCES Proveedores (ID_Proveedor),
-    FOREIGN KEY (ID_Usuario_Registro) REFERENCES Usuarios (ID_Usuario),
-    FOREIGN KEY (ID_Usuario_Aprobacion) REFERENCES Usuarios (ID_Usuario),
-    CONSTRAINT UQ_Entrada_Factura UNIQUE (Numero_Factura, ID_Proveedor)
-);
-
--- Tabla de Detalle_Entrada
-CREATE TABLE Detalle_Entrada (
-    ID_Detalle_Entrada BIGINT AUTO_INCREMENT PRIMARY KEY,
-    ID_Entrada BIGINT NOT NULL,
-    ID_Producto BIGINT NOT NULL,
-    Cantidad INT NOT NULL CHECK (Cantidad > 0),
-    Precio_Unitario DECIMAL(10, 2) NOT NULL CHECK (Precio_Unitario >= 0),
-    Subtotal DECIMAL(10, 2) NOT NULL CHECK (Subtotal >= 0),
-    ID_Usuario_Registro BIGINT NOT NULL,
-    Fecha_Registro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Estado ENUM('Activo', 'Anulado') DEFAULT 'Activo',
-    FOREIGN KEY (ID_Entrada) REFERENCES Entradas (ID_Entrada),
-    FOREIGN KEY (ID_Producto) REFERENCES Productos (ID_Producto),
-    FOREIGN KEY (ID_Usuario_Registro) REFERENCES Usuarios (ID_Usuario),
-    CONSTRAINT UQ_Detalle_Entrada_Producto UNIQUE (ID_Entrada, ID_Producto)
-);
-
 -- Tabla de Salidas
 CREATE TABLE Salidas (
     ID_Salida BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -274,4 +228,53 @@ CREATE TABLE Detalle_Salida (
     FOREIGN KEY (ID_Producto) REFERENCES Productos (ID_Producto),
     FOREIGN KEY (ID_Usuario_Registro) REFERENCES Usuarios (ID_Usuario),
     CONSTRAINT UQ_Detalle_Salida_Producto UNIQUE (ID_Salida, ID_Producto)
+);
+
+-- Tabla de Entradas
+CREATE TABLE Entradas (
+    ID_Entrada BIGINT AUTO_INCREMENT PRIMARY KEY,
+    Numero_Factura VARCHAR(50) NOT NULL,
+    Tipo_Documento ENUM(
+        'FACTURA',
+        'BOLETA',
+        'NOTA_CREDITO',
+        'NOTA_DEBITO',
+        'GUIA_REMISION'
+    ) NOT NULL,
+    Tipo_Entrada ENUM('COMPRA', 'DEVOLUCION') NOT NULL DEFAULT 'COMPRA',
+    ID_Salida_Referencia BIGINT,
+    ID_Proveedor BIGINT,
+    Fecha_Entrada DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Costo_Total DECIMAL(10, 2) NOT NULL CHECK (Costo_Total >= 0),
+    Estado ENUM(
+        'Pendiente',
+        'Completado',
+        'Anulado'
+    ) DEFAULT 'Pendiente',
+    ID_Usuario_Registro BIGINT NOT NULL,
+    ID_Usuario_Aprobacion BIGINT,
+    Fecha_Aprobacion DATETIME,
+    Observaciones TEXT,
+    FOREIGN KEY (ID_Proveedor) REFERENCES Proveedores (ID_Proveedor),
+    FOREIGN KEY (ID_Usuario_Registro) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (ID_Usuario_Aprobacion) REFERENCES Usuarios (ID_Usuario),
+    FOREIGN KEY (ID_Salida_Referencia) REFERENCES Salidas (ID_Salida),
+    CONSTRAINT UQ_Entrada_Factura UNIQUE (Numero_Factura, ID_Proveedor)
+);
+
+-- Tabla de Detalle_Entrada
+CREATE TABLE Detalle_Entrada (
+    ID_Detalle_Entrada BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ID_Entrada BIGINT NOT NULL,
+    ID_Producto BIGINT NOT NULL,
+    Cantidad INT NOT NULL CHECK (Cantidad > 0),
+    Precio_Unitario DECIMAL(10, 2) NOT NULL CHECK (Precio_Unitario >= 0),
+    Subtotal DECIMAL(10, 2) NOT NULL CHECK (Subtotal >= 0),
+    ID_Usuario_Registro BIGINT NOT NULL,
+    Fecha_Registro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Estado ENUM('Activo', 'Anulado') DEFAULT 'Activo',
+    FOREIGN KEY (ID_Entrada) REFERENCES Entradas (ID_Entrada),
+    FOREIGN KEY (ID_Producto) REFERENCES Productos (ID_Producto),
+    FOREIGN KEY (ID_Usuario_Registro) REFERENCES Usuarios (ID_Usuario),
+    CONSTRAINT UQ_Detalle_Entrada_Producto UNIQUE (ID_Entrada, ID_Producto)
 );
