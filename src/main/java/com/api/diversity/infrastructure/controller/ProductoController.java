@@ -34,7 +34,7 @@ public class ProductoController {
     @GetMapping("")
     public String listarProductos(@RequestParam(required = false) TipoRubro rubro, Model model) {
         List<ProductoDto> productos = productoService.findAllByRubro(rubro);
-        model.addAttribute("productos", productos); 
+        model.addAttribute("productos", productos);
         return "productos/lista";
     }
 
@@ -89,8 +89,8 @@ public class ProductoController {
             @RequestParam TipoRubro rubro,
             RedirectAttributes flash) {
         productoService.deleteById(id);
-        flash.addFlashAttribute("mensaje", "Producto eliminado exitosamente.");
-        flash.addFlashAttribute("tipoMensaje", "error");
+        flash.addFlashAttribute("mensaje", "Producto desactivado exitosamente.");
+        flash.addFlashAttribute("tipoMensaje", "warning");
         return "redirect:/productos?rubro=" + rubro;
     }
 }

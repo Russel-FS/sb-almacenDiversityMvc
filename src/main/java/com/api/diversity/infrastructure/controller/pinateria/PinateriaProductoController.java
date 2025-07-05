@@ -81,8 +81,8 @@ public class PinateriaProductoController {
     @GetMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id, RedirectAttributes flash) {
         productoService.deleteById(id);
-        flash.addFlashAttribute("mensaje", "Producto eliminado exitosamente.");
-        flash.addFlashAttribute("tipoMensaje", "error");
+        flash.addFlashAttribute("mensaje", "Producto desactivado exitosamente.");
+        flash.addFlashAttribute("tipoMensaje", "warning");
         return "redirect:/pinateria/productos";
     }
 }
