@@ -86,10 +86,19 @@ public class PinateriaCategoriaController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "La categoría debe pertenecer al rubro de Piñatería");
         }
-        categoriaService.save(categoria);
-        flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
-        flash.addFlashAttribute("tipoMensaje", "success");
-        return "redirect:/pinateria/categorias";
+
+        try {
+            categoriaService.save(categoria);
+            flash.addFlashAttribute("mensaje", "Categoría guardada exitosamente.");
+            flash.addFlashAttribute("tipoMensaje", "success");
+            return "redirect:/pinateria/categorias";
+        } catch (RuntimeException e) {
+            model.addAttribute("rubroActual", TipoRubro.PIÑATERIA);
+            model.addAttribute("categoria", categoria);
+            model.addAttribute("mensaje", e.getMessage());
+            model.addAttribute("tipoMensaje", "error");
+            return "pinateria/categorias/form";
+        }
     }
 
     @GetMapping("/eliminar/{id}")

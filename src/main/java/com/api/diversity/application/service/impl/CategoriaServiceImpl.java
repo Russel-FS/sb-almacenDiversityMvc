@@ -108,19 +108,48 @@ public class CategoriaServiceImpl implements ICategoriaService {
             throw new RuntimeException("No se puede guardar la categoría sin un usuario autenticado");
         }
 
+        // Verificar si ya existe una categoría con el mismo nombre en el mismo rubro
+        if (categoria.getIdCategoria() == null) {
+            // Es una nueva categoría
+            boolean existeCategoria = categoriaRepository.findAll()
+                    .stream()
+                    .anyMatch(cat -> cat.getNombreCategoria().equalsIgnoreCase(categoria.getNombreCategoria())
+                            && cat.getRubro().getCode().equals(categoria.getRubro().getCode())
+                            && cat.getEstado() != EstadoCategoria.Eliminado);
+
+            if (existeCategoria) {
+                throw new RuntimeException(
+                        "Ya existe una categoría con el nombre '" + categoria.getNombreCategoria() + "' en este rubro");
+            }
+        } else {
+            CategoriaDto categoriaExistente = findById(categoria.getIdCategoria())
+                    .orElseThrow(() -> new RuntimeException("No se encontró la categoría a editar"));
+
+            if (!categoriaExistente.getNombreCategoria().equalsIgnoreCase(categoria.getNombreCategoria())) {
+                boolean existeCategoria = categoriaRepository.findAll()
+                        .stream()
+                        .anyMatch(cat -> cat.getNombreCategoria().equalsIgnoreCase(categoria.getNombreCategoria())
+                                && cat.getRubro().getCode().equals(categoria.getRubro().getCode())
+                                && !cat.getIdCategoria().equals(categoria.getIdCategoria())
+                                && cat.getEstado() != EstadoCategoria.Eliminado);
+
+                if (existeCategoria) {
+                    throw new RuntimeException("Ya existe una categoría con el nombre '"
+                            + categoria.getNombreCategoria() + "' en este rubro");
+                }
+            }
+
+            categoria.setCreatedBy(categoriaExistente.getCreatedBy());
+            categoria.setFechaCreacion(categoriaExistente.getFechaCreacion());
+            categoria.setUpdatedBy(currentUser);
+            categoria.setFechaModificacion(LocalDateTime.now());
+        }
+
         if (categoria.getIdCategoria() == null) {
             categoria.setCreatedBy(currentUser);
             categoria.setUpdatedBy(currentUser);
             categoria.setEstado(EstadoCategoria.Activo);
             categoria.setFechaCreacion(LocalDateTime.now());
-            categoria.setFechaModificacion(LocalDateTime.now());
-        } else {
-            CategoriaDto categoriaExistente = findById(categoria.getIdCategoria())
-                    .orElseThrow(() -> new RuntimeException("No se encontró la categoría a editar"));
-
-            categoria.setCreatedBy(categoriaExistente.getCreatedBy());
-            categoria.setFechaCreacion(categoriaExistente.getFechaCreacion());
-            categoria.setUpdatedBy(currentUser);
             categoria.setFechaModificacion(LocalDateTime.now());
         }
 
@@ -131,12 +160,12 @@ public class CategoriaServiceImpl implements ICategoriaService {
     public void deleteById(Long id) {
         CategoriaDto categoria = findById(id)
                 .orElseThrow(() -> new RuntimeException("No se encontró la categoría a eliminar"));
-        
+
         UsuarioDto currentUser = securityContext.getCurrentUserDatabase();
         if (currentUser == null) {
             throw new RuntimeException("No se puede eliminar la categoría sin un usuario autenticado");
         }
-        
+
         categoria.setEstado(EstadoCategoria.Eliminado);
         categoria.setUpdatedBy(currentUser);
         categoria.setFechaModificacion(LocalDateTime.now());
