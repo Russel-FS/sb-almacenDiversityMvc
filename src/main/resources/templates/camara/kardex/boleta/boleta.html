@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boleta - Cámaras</title>
+    <style>
+      @media print {
+        .no-print {
+          display: none !important;
+        }
+        .boleta-container {
+          box-shadow: none !important;
+          border: none !important;
+        }
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .boleta-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .boleta-header {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .empresa-info h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .empresa-info p {
+        margin: 5px 0;
+        opacity: 0.9;
+      }
+
+      .documento-info {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 2px solid #e9ecef;
+      }
+
+      .documento-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .documento-titulo h2 {
+        margin: 0;
+        color: #495057;
+        font-size: 24px;
+      }
+
+      .documento-numero {
+        text-align: right;
+      }
+
+      .documento-numero h3 {
+        margin: 0;
+        color: #6c757d;
+        font-size: 18px;
+      }
+
+      .codigos-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 0;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+      }
+
+      .codigo-item {
+        text-align: center;
+        flex: 1;
+      }
+
+      .codigo-item h4 {
+        margin: 0 0 10px 0;
+        color: #495057;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .codigo-barras img {
+        max-width: 200px;
+        height: auto;
+      }
+
+      .codigo-qr img {
+        max-width: 150px;
+        height: auto;
+      }
+
+      .cliente-info {
+        padding: 20px;
+        background: #f8f9fa;
+        border-bottom: 2px solid #e9ecef;
+      }
+
+      .cliente-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .cliente-item h4 {
+        margin: 0 0 5px 0;
+        color: #6c757d;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .cliente-item p {
+        margin: 0;
+        color: #495057;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .productos-section {
+        padding: 20px;
+      }
+
+      .productos-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+
+      .productos-table th {
+        background: #495057;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .productos-table td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .productos-table tr:nth-child(even) {
+        background: #f8f9fa;
+      }
+
+      .total-section {
+        padding: 20px;
+        background: #f8f9fa;
+        border-top: 2px solid #e9ecef;
+      }
+
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .total-final {
+        font-size: 20px;
+        font-weight: 700;
+        color: #495057;
+        border-top: 2px solid #495057;
+        padding-top: 10px;
+      }
+
+      .boleta-footer {
+        padding: 20px;
+        background: #495057;
+        color: white;
+        text-align: center;
+      }
+
+      .boleta-footer p {
+        margin: 5px 0;
+        opacity: 0.9;
+      }
+
+      .print-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .print-button:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+      }
+
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .back-button:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Botones de acción -->
+    <button class="print-button no-print" onclick="window.print()">
+      🖨️ Imprimir Boleta
+    </button>
+    <a href="/camara/kardex/movimientos" class="back-button no-print">
+      ← Volver
+    </a>
+
+    <div class="boleta-container">
+      <!-- Encabezado de la empresa -->
+      <div class="boleta-header">
+        <div class="empresa-info">
+          <h1>DIVERSITY</h1>
+          <p>Cámaras de Seguridad y Sistemas</p>
+          <p>Av. Principal 123, Lima - Perú</p>
+          <p>Tel: (01) 123-4567 | Email: info@diversity.com</p>
+        </div>
+      </div>
+
+      <!-- Información del documento -->
+      <div class="documento-info">
+        <div class="documento-header">
+          <div class="documento-titulo">
+            <h2>BOLETA DE VENTA</h2>
+          </div>
+          <div class="documento-numero">
+            <h3 th:text="${salida.numeroDocumento}">BOL-001</h3>
+          </div>
+        </div>
+
+        <!-- Códigos de barras y QR -->
+        <div class="codigos-section">
+          <div class="codigo-item">
+            <h4>Código de Barras</h4>
+            <div class="codigo-barras">
+              <img
+                th:src="@{/barcode(data=${salida.numeroDocumento})}"
+                alt="Código de Barras"
+              />
+            </div>
+          </div>
+          <div class="codigo-item">
+            <h4>Código QR</h4>
+            <div class="codigo-qr">
+              <img
+                th:src="@{/qr/boleta(numero=${salida.numeroDocumento}, 
+                                                   fecha=${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy')}, 
+                                                   total=${salida.totalVenta}, 
+                                                   ruc=${salida.clienteDni})}"
+                alt="Código QR"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Información del cliente -->
+      <div class="cliente-info">
+        <div class="cliente-grid">
+          <div class="cliente-item">
+            <h4>Cliente</h4>
+            <p th:text="${salida.clienteNombre}">Nombre del Cliente</p>
+          </div>
+          <div class="cliente-item">
+            <h4>Tipo de Cliente</h4>
+            <p th:text="${salida.clienteTipo.descripcion}">Persona Natural</p>
+          </div>
+          <div class="cliente-item">
+            <h4>DNI/RUC</h4>
+            <p th:text="${salida.clienteDni}">12345678</p>
+          </div>
+          <div class="cliente-item">
+            <h4>Fecha de Emisión</h4>
+            <p
+              th:text="${#temporals.format(salida.fechaSalida, 'dd/MM/yyyy HH:mm')}"
+            >
+              01/01/2024 10:30
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Productos -->
+      <div class="productos-section">
+        <h3>Detalle de Productos</h3>
+        <table class="productos-table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unit.</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="detalle : ${salida.detalles}">
+              <td th:text="${detalle.productoNombre}">Producto</td>
+              <td th:text="${detalle.cantidad}">1</td>
+              <td th:text="${'S/ ' + detalle.precioUnitario}">S/ 10.00</td>
+              <td th:text="${'S/ ' + detalle.subtotal}">S/ 10.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Total -->
+      <div class="total-section">
+        <div class="total-row total-final">
+          <span>TOTAL:</span>
+          <span th:text="${'S/ ' + salida.totalVenta}">S/ 100.00</span>
+        </div>
+      </div>
+
+      <!-- Pie de página -->
+      <div class="boleta-footer">
+        <p>¡Gracias por su compra!</p>
+        <p>
+          Este documento es una representación impresa de una boleta electrónica
+        </p>
+        <p>Para consultas: www.diversity.com/consulta</p>
+      </div>
+    </div>
+
+    <script>
+      // Auto-print cuando se carga la página (opcional)
+      // window.onload = function() {
+      //     window.print();
+      // };
+    </script>
+  </body>
+</html>
